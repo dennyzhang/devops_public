@@ -6,9 +6,8 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-07 07:22:33>
+## Updated: Time-stamp: <2016-04-07 07:32:14>
 ##-------------------------------------------------------------------
-# file md5 checksum: ca95d8d9756c04b7e031b06a93ee26a1
 ########################### Check Parameters ########################
 function is_ip()
 {
