@@ -6,7 +6,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-07 07:32:14>
+## Updated: Time-stamp: <2016-04-07 07:37:17>
 ##-------------------------------------------------------------------
 ########################### Check Parameters ########################
 function is_ip()
@@ -137,6 +137,10 @@ function check_network()
     fi
 }
 ############################ general ################################
+function list_strip_comments() {
+    my_list=$(echo "$my_list" | grep -v '^#')
+    echo "$my_list"
+}
 
 function os_release() {
     set -e
