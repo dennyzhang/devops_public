@@ -7,7 +7,7 @@
 ##               By default, this file keeps stable and untouched
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-07 09:41:11>
+## Updated: Time-stamp: <2016-04-07 09:44:12>
 ##-------------------------------------------------------------------
 function refresh_common_library() {
     local library_file_checksum=${1?}
@@ -25,7 +25,7 @@ function refresh_common_library() {
     fi
 }
 
-function enable_latest_common_library() {
+function enable_common_library() {
     local file_checksum=${1?}
     local library_file=${2?}
     local library_url=${3?}
@@ -36,5 +36,5 @@ function enable_latest_common_library() {
 file_checksum=${1?"checksum for common bash library"}
 library_download_path=${2:-"/tmp/bash_common_library.sh"}
 library_url=${3:-"https://raw.githubusercontent.com/DennyZhang/devops_public/master/bash/bash_common_library.sh"}
-enable_latest_common_library $file_checksum $library_download_path $library_url
+enable_common_library $file_checksum $library_download_path $library_url
 ## File : enable_latest_common_library.sh ends
