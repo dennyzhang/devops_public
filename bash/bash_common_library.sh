@@ -6,9 +6,17 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-07 08:45:46>
+## Updated: Time-stamp: <2016-04-07 09:22:44>
 ##-------------------------------------------------------------------
-########################### Check Parameters ########################
+########################### Section: Parameters & Status ########################
+function fail_unless_root() {
+    # Make sure only root can run our script
+    if [[ $EUID -ne 0 ]]; then
+        echo "Error: This script must be run as root." 1>&2
+        exit 1
+    fi
+}
+
 function ensure_variable_isset() {
     message=${1?"parameter name should be given"}    
     var=${2:-''}
@@ -19,22 +27,46 @@ function ensure_variable_isset() {
     fi
 }
 
-function ensure_is_root() {
-    # Make sure only root can run our script
-    if [[ $EUID -ne 0 ]]; then
-        echo "Error: This script must be run as root." 1>&2
+function exit_if_error() {
+    if [ $? -ne 0 ];then
         exit 1
     fi
 }
 
-########################### String Manipulation ########################
+function log() {
+    local msg=$*
+    echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n"
+}
+########################### Section: String Manipulation ########################
 function remove_hardline() {
     # handle \n\r of Windows OS
     local str=$*
     echo "$str" | tr -d '\r'
 }
 
-############################ git ################################
+function list_strip_comments() {
+    my_list=${1?}
+    my_list=$(echo "$my_list" | grep -v '^#')
+    echo "$my_list"
+}
+############################ Section: git ################################
+function current_git_sha() {
+    set -e
+    local src_dir=${1?}
+    cd $src_dir
+    sha=$(git log -n 1 | head -n 1 | grep commit | head -n 1 | awk -F' ' '{print $2}')
+    echo $sha
+}
+
+function git_log() {
+    local code_dir=${1?}
+    local tail_count=${2:-"10"}
+    cd $code_dir
+    command="git log -n $tail_count --pretty=format:\"%h - %an, %ar : %s\""
+    echo -e "\n\nShow latest git commits: $command"
+    eval $command
+}
+
 function current_git_sha() {
     set -e
     local src_dir=${1?}
@@ -69,7 +101,13 @@ function git_update_code() {
     git reset --hard
 }
 
-############################ network ################################
+############################ Section: network ################################
+function is_port_listening()
+{
+    port=${1?}
+    lsof -i tcp:$port | grep LISTEN 1>/dev/null
+}
+
 function check_url_200() {
     url=${1?}
     if curl -I $url | grep "HTTP/1.* 200 OK" 2>/dev/null 1>/dev/null; then
@@ -129,11 +167,42 @@ function check_network()
         exit 1
     fi
 }
-############################ general ################################
-function list_strip_comments() {
-    my_list=${1?}
-    my_list=$(echo "$my_list" | grep -v '^#')
-    echo "$my_list"
+############################ Section: docker ################################
+function install_docker() {
+    if ! which docker 1>/dev/null 2>/dev/null; then
+        local os_release_name=$(os_release)
+        if [ "$os_release_name" == "centos" ]; then
+            log "yum install -y docker-io"
+            yum install -y http://mirrors.yun-idc.com/epel/6/i386/epel-release-6-8.noarch.rpm
+            yum install -y docker-io
+            service docker start
+            chkconfig docker on
+        else
+            log "Install docker: wget -qO- https://get.docker.com/ | sh"
+            wget -qO- https://get.docker.com/ | sh
+        fi
+    else
+        log "docker service exists, skip installation"
+    fi
+}
+
+function is_container_running(){
+    local container_name=${1?}
+    if docker ps -a | grep $container_name 1>/dev/null 2>/dev/null; then
+        if docker ps | grep $container_name 1>/dev/null 2>/dev/null; then
+            echo "running"
+        else
+            echo "dead"
+        fi
+    else
+        echo "none"
+    fi
+}
+############################ Section: general ################################
+function generate_checksum() {
+    local dst_dir=${1?}
+    cd $dst_dir
+    ls -1 | grep -v checksum.txt | xargs cksum > checksum.txt
 }
 
 function os_release() {
@@ -156,17 +225,6 @@ function os_release() {
     fi
 }
 
-function log() {
-    local msg=$*
-    echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n"
-}
-
-function is_port_listening()
-{
-    port=${1?}
-    lsof -i tcp:$port | grep LISTEN 1>/dev/null
-}
-
 function ssh_apt_update() {
     set +e
     # Sample: ssh_apt_update "ssh -i $ssh_key_file -p $ssh_port -o StrictHostKeyChecking=no root@$ssh_server_ip"
@@ -183,5 +241,17 @@ function ssh_apt_update() {
     set -e
 }
 
+function update_system() {
+    local os_release_name=$(os_release)
+    if [ "$os_release_name" == "ubuntu" ]; then
+        log "apt-get -y update"
+        rm -rf /var/lib/apt/lists/*
+        apt-get -y update
+    fi
+
+    if [ "$os_release_name" == "redhat" ] || [ "$os_release_name" == "centos" ]; then
+        yum -y update
+    fi
+}
 ######################################################################
 ## File : bash_common_library.sh ends
