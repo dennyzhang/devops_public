@@ -1,13 +1,13 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
-## File : enable_latest_common_library.sh
+## File : enable_common_library.sh
 ## Author : Denny <denny@dennyzhang.com>
 ## Description : Use this file to update common library.
 ##               By default, this file keeps stable and untouched
 ## --
 ## Created : <2016-04-07>
-## Updated: Time-stamp: <2016-04-07 11:38:11>
+## Updated: Time-stamp: <2016-04-08 06:25:22>
 ##-------------------------------------------------------------------
 function refresh_common_library() {
     local library_file=${1?}
@@ -41,5 +41,6 @@ function enable_common_library() {
 file_checksum=${1:-"checksum for common bash library"}
 library_download_path=${2:-"/tmp/bash_common_library.sh"}
 library_url=${3:-"https://raw.githubusercontent.com/DennyZhang/devops_public/master/bash/bash_common_library.sh"}
+
 enable_common_library $library_download_path $library_url $file_checksum
-## File : enable_latest_common_library.sh ends
+## File : enable_common_library.sh ends
