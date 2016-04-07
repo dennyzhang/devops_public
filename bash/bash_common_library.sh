@@ -6,7 +6,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-07 09:22:44>
+## Updated: Time-stamp: <2016-04-07 09:27:16>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -36,6 +36,10 @@ function exit_if_error() {
 function log() {
     local msg=$*
     echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n"
+    
+    if [ -n "$LOG_FILE" ]; then
+        echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n" >> $LOG_FILE
+    fi
 }
 ########################### Section: String Manipulation ########################
 function remove_hardline() {
