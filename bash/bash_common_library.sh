@@ -6,16 +6,9 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-07 07:37:17>
+## Updated: Time-stamp: <2016-04-07 08:12:51>
 ##-------------------------------------------------------------------
 ########################### Check Parameters ########################
-function is_ip()
-{
-    local ip=${1?}
-    [[ $ip =~ ^<0-9>{1,3}\.<0-9>{1,3}\.<0-9>{1,3}\.<0-9>{1,3}$ ]]
-    return $?
-}
-
 function ensure_variable_isset() {
     message=${1?"parameter name should be given"}    
     var=${2:-''}
