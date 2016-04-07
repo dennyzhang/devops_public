@@ -1,12 +1,12 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
-## @copyright 2015 DennyZhang.com
+## @copyright 2016 DennyZhang.com
 ## File : bash_common_library.sh
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-07 09:27:16>
+## Updated: Time-stamp: <2016-04-07 09:28:50>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
