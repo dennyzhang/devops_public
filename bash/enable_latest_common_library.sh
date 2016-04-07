@@ -6,8 +6,8 @@
 ## Description : Use this file to update common library.
 ##               By default, this file keeps stable and untouched
 ## --
-## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-07 09:44:12>
+## Created : <2016-04-07>
+## Updated: Time-stamp: <2016-04-07 09:44:42>
 ##-------------------------------------------------------------------
 function refresh_common_library() {
     local library_file_checksum=${1?}
