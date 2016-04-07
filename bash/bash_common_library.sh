@@ -6,7 +6,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-07 08:12:51>
+## Updated: Time-stamp: <2016-04-07 08:45:46>
 ##-------------------------------------------------------------------
 ########################### Check Parameters ########################
 function ensure_variable_isset() {
@@ -131,6 +131,7 @@ function check_network()
 }
 ############################ general ################################
 function list_strip_comments() {
+    my_list=${1?}
     my_list=$(echo "$my_list" | grep -v '^#')
     echo "$my_list"
 }
