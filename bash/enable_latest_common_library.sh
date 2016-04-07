@@ -7,7 +7,7 @@
 ##               By default, this file keeps stable and untouched
 ## --
 ## Created : <2016-04-07>
-## Updated: Time-stamp: <2016-04-07 09:44:42>
+## Updated: Time-stamp: <2016-04-07 11:34:26>
 ##-------------------------------------------------------------------
 function refresh_common_library() {
     local library_file_checksum=${1?}
@@ -29,7 +29,11 @@ function enable_common_library() {
     local file_checksum=${1?}
     local library_file=${2?}
     local library_url=${3?}
-    refresh_common_library $file_checksum $library_file $library_url
+    if [ -n "$FORCE_DOWNLOAD" ]; then
+        wget -O $library_file $library_url
+    else
+        refresh_common_library $file_checksum $library_file $library_url
+    fi
     . $library_file
 }
 
