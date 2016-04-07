@@ -7,12 +7,12 @@
 ##               By default, this file keeps stable and untouched
 ## --
 ## Created : <2016-04-07>
-## Updated: Time-stamp: <2016-04-07 11:34:26>
+## Updated: Time-stamp: <2016-04-07 11:38:11>
 ##-------------------------------------------------------------------
 function refresh_common_library() {
-    local library_file_checksum=${1?}
-    local library_file=${2?}
-    local library_url=${3?}
+    local library_file=${1?}
+    local library_url=${2?}
+    local library_file_checksum=${3?}
     if [ ! -f $library_file ]; then
         echo "download bash common library"
         wget -O $library_file $library_url
@@ -26,19 +26,20 @@ function refresh_common_library() {
 }
 
 function enable_common_library() {
-    local file_checksum=${1?}
-    local library_file=${2?}
-    local library_url=${3?}
-    if [ -n "$FORCE_DOWNLOAD" ]; then
+    local library_file=${1?}
+    local library_url=${2?}
+    local file_checksum=${3:-""}
+    if [ "x${file_checksum}" = "x" ]; then
         wget -O $library_file $library_url
     else
-        refresh_common_library $file_checksum $library_file $library_url
+        refresh_common_library $library_file $library_url $file_checksum
     fi
     . $library_file
 }
 
-file_checksum=${1?"checksum for common bash library"}
+# When checksum is not given, we will force re-download
+file_checksum=${1:-"checksum for common bash library"}
 library_download_path=${2:-"/tmp/bash_common_library.sh"}
 library_url=${3:-"https://raw.githubusercontent.com/DennyZhang/devops_public/master/bash/bash_common_library.sh"}
-enable_common_library $file_checksum $library_download_path $library_url
+enable_common_library $library_download_path $library_url $file_checksum
 ## File : enable_latest_common_library.sh ends
