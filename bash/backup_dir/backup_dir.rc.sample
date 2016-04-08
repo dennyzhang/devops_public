@@ -1,0 +1,23 @@
+# Directories and files to backup
+BACKUP_DIR="/etc/hosts;/etc/sudoers;/etc/apache2/extra"
+
+# BACKUP_SET_PREFIX will be appended to the head of backupset's filename
+BACKUP_SET_PREFIX="myproject"
+
+############################# OPTIONAL PARAMETERS ###########################
+# Directory to store the backup
+DST_DIR=/data/backup
+
+# If false, skip compressing backupset
+SHOULD_COMPRESS="TRUE"
+
+# Retention for old backup set, which are created many days ago
+#  "0": avoid old backupset retention
+#  Default value is 10 days
+RETENTION_DAYS=10
+
+# logfile of backup_dir.sh
+BACKUP_LOG_FILE="/var/log/ops/backup_dir.log"
+
+# Track running status, valid value is RUNNING, DONE and FAILED
+STATUS_FILE="/var/log/backup_dir_state"
