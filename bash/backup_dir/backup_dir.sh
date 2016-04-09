@@ -1,11 +1,11 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
 ## File : backup_dir.sh
-## Author : Denny <denny.zhang001@gmail.com>
+## Author : Denny <denny@dennyzhang.com>
 ## Description : Backup directory and tar it with timestamp
 ## --
 ## Created : <2015-04-21>
-## Updated: Time-stamp: <2015-08-13 08:41:20>
+## Updated: Time-stamp: <2016-04-09 09:35:43>
 ##-------------------------------------------------------------------
 
 ## Trap exit and dump status

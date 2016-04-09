@@ -1,11 +1,11 @@
 #!/bin/bash
 ##-------------------------------------------------------------------
 ## File : enforce_all_nagios_check.sh
-## Author : Denny <denny.zhang001@gmail.com>
+## Author : Denny <denny@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2015-06-24>
-## Updated: Time-stamp: <2015-08-11 23:58:08>
+## Updated: Time-stamp: <2016-04-09 09:35:43>
 ##-------------------------------------------------------------------
 skip_check_pattern=${1:-""}
 ignore_check_warn=${2:-"0"}
