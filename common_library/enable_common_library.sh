@@ -7,7 +7,7 @@
 ##               By default, this file keeps stable and untouched
 ## --
 ## Created : <2016-04-07>
-## Updated: Time-stamp: <2016-04-10 10:15:42>
+## Updated: Time-stamp: <2016-04-10 10:49:19>
 ##-------------------------------------------------------------------
 function refresh_common_library() {
     local library_file=${1?}
@@ -39,8 +39,11 @@ function enable_common_library() {
 
 # When checksum is not given, we will force re-download
 file_checksum=${1:-"checksum for common bash library"}
-library_download_path=${2:-"/var/lib/bash_common_library.sh"}
-library_url=${3:-"https://raw.githubusercontent.com/DennyZhang/devops_public/master/bash/bash_common_library.sh"}
+library_download_path=${2:-"/var/lib/devops/devops_common_library.sh"}
+library_url=${3:-"https://raw.githubusercontent.com/DennyZhang/devops_public/master/common_library/devops_common_library.sh"}
+
+dir_name=$(dirname $library_download_path)
+[ -d $dir_name ] || mkdir -p $dir_name
 
 enable_common_library $library_download_path $library_url $file_checksum
 ## File : enable_common_library.sh ends
