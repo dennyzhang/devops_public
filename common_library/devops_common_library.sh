@@ -6,7 +6,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-15 07:29:26>
+## Updated: Time-stamp: <2016-04-15 07:47:19>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -56,6 +56,14 @@ function remove_hardline() {
     # handle \n\r of Windows OS
     local str=$*
     echo "$str" | tr -d '\r'
+}
+
+function string_strip_whitespace() {
+    # handle \n\r of Windows OS
+    local str=$*
+    str=$(echo "${str}" |sed -e 's/^[ \t]*//g')
+    str=$(echo "${str}" |sed -e 's/[ \t]*$//g')
+    echo "$str"
 }
 
 function list_strip_comments() {
