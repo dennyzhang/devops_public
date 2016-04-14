@@ -6,13 +6,22 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-14 20:41:30>
+## Updated: Time-stamp: <2016-04-15 07:29:26>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
     # Make sure only root can run our script
     if [[ $EUID -ne 0 ]]; then
         echo "Error: This script must be run as root." 1>&2
+        exit 1
+    fi
+}
+
+function fail_unless_os() {
+    local supported_os=${1?}
+    current_os=$(os_release)
+    if [[ "$supported_os" != *"$current_os"* ]]; then
+        echo "Error: supported OS are $supported_os, while current OS is $current_os"
         exit 1
     fi
 }
