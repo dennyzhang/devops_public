@@ -6,7 +6,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-14 16:51:22>
+## Updated: Time-stamp: <2016-04-14 20:41:30>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -82,12 +82,12 @@ function current_git_sha() {
 
 function git_update_code() {
     set -e
-    local git_repo=${1?}
-    local branch_name=${2?}
-    local working_dir=${3?}
-    local git_repo_url=${4?}
-    local git_pull_outside=${5:-"no"}
+    local branch_name=${1?}
+    local working_dir=${2?}
+    local git_repo_url=${3?}
+    local git_pull_outside=${4:-"no"}
 
+    git_repo=$(echo ${git_repo_url%.git} | awk -F '/' '{print $2}')
     echo "Git update code for '$git_repo_url' to $working_dir, branch_name: $branch_name"
     # checkout code, if absent
     if [ ! -d $working_dir/$branch_name/$git_repo ]; then
