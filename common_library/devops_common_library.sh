@@ -6,7 +6,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-14 12:03:30>
+## Updated: Time-stamp: <2016-04-14 16:51:22>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -111,6 +111,13 @@ function is_port_listening()
 {
     port=${1?}
     lsof -i tcp:$port | grep LISTEN 1>/dev/null
+}
+
+function check_ssh_available() {
+    # Sample: if [ "x$(check_ssh_available $server_ip $server_port)" = "xyes" ] ...
+    local server_ip=${1?}
+    local server_port=${2?}
+    nc -w 1 $server_ip $server_port >/dev/null 2>&1 && echo yes || echo no
 }
 
 function check_url_200() {
