@@ -1,12 +1,12 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
-## File : bash_common_library.sh
+## File : devops_common_library.sh
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-07 09:28:50>
+## Updated: Time-stamp: <2016-04-14 12:03:30>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -18,6 +18,7 @@ function fail_unless_root() {
 }
 
 function ensure_variable_isset() {
+    # Sample: ensure_variable_isset "chef_client_rb must be set" "$chef_client_rb"
     message=${1?"parameter name should be given"}    
     var=${2:-''}
     # TODO support sudo, without source
@@ -258,4 +259,4 @@ function update_system() {
     fi
 }
 ######################################################################
-## File : bash_common_library.sh ends
+## File : devops_common_library.sh ends
