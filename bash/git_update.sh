@@ -5,7 +5,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-15>
-## Updated: Time-stamp: <2016-04-15 17:15:31>
+## Updated: Time-stamp: <2016-04-15 17:55:03>
 ##-------------------------------------------------------------------
 working_dir=${1?}
 git_repo_url=${2?}
@@ -36,5 +36,5 @@ function git_update_code() {
 }
 
 git_repo=$(echo ${git_repo_url%.git} | awk -F '/' '{print $2}')
-git_update_code $git_repo_url $branch_name $working_dir
+git_update_code $git_repo $git_repo_url $branch_name $working_dir
 ## File : git_update.sh ends
