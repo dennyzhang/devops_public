@@ -5,12 +5,11 @@
 ## Description :
 ## --
 ## Created : <2016-04-15>
-## Updated: Time-stamp: <2016-04-15 15:59:02>
+## Updated: Time-stamp: <2016-04-15 17:15:31>
 ##-------------------------------------------------------------------
 working_dir=${1?}
 git_repo_url=${2?}
-git_repo=${3?}
-branch_name=${4?}
+branch_name=${3?}
 
 function git_update_code() {
     set -e
@@ -36,5 +35,6 @@ function git_update_code() {
     output=$(git pull origin $branch_name)
 }
 
-git_update_code $git_repo $git_repo_url $branch_name $working_dir
+git_repo=$(echo ${git_repo_url%.git} | awk -F '/' '{print $2}')
+git_update_code $git_repo_url $branch_name $working_dir
 ## File : git_update.sh ends
