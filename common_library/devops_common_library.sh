@@ -6,7 +6,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-15 07:47:19>
+## Updated: Time-stamp: <2016-04-15 14:00:11>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -197,6 +197,19 @@ function check_network()
     fi
 }
 ############################ Section: docker ################################
+function guess_docker_daemon_ip() {
+    local docker_daemon_ip=""
+    lists="172.18.42.1 172.17.42.1 172.18.0.1 172.17.0.1 192.168.50.10"
+    lists=($lists)
+    for ip in ${lists[*]}; do
+        if ping -c3 $ip 2>/dev/null 1>/dev/null; then
+            docker_daemon_ip=$ip
+            break
+        fi
+    done
+    echo $docker_daemon_ip
+}
+
 function install_docker() {
     if ! which docker 1>/dev/null 2>/dev/null; then
         local os_release_name=$(os_release)
