@@ -6,7 +6,7 @@
 ## Description :
 ## --
 ## Created : <2015-11-30>
-## Updated: Time-stamp: <2016-02-14 18:35:49>
+## Updated: Time-stamp: <2016-04-18 09:42:02>
 ##-------------------------------------------------------------------
 LOG_FILE="/var/log/preinstall_kitchen_verify.log"
 function log() {
@@ -60,7 +60,7 @@ $busser suite cleanup
 log "Running test"
 $busser test
 
-rm -rf $BUSSER_ROOT/bin/busser
+# rm -rf $BUSSER_ROOT/bin/busser
 
 chmod 777 -R /tmp/verifier
 ## File : preinstall_kitchen_verify.sh ends
