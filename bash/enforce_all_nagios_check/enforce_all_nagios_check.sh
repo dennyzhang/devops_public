@@ -3,9 +3,9 @@
 ## File : enforce_all_nagios_check.sh
 ## Author : Denny <denny@dennyzhang.com>, Syrett <syrett_uu@dennyzhang.com>
 ## Description :
-## --
+## ./enforce_all_nagios_check help
 ## Created : <2015-06-24>
-## Updated: Time-stamp: <2016-04-18 17:09:41>
+## Updated: Time-stamp: <2016-04-18 17:44:47>
 ##-------------------------------------------------------------------
 
 function check_one_server(){
