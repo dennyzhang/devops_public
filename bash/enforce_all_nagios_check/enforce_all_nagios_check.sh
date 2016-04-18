@@ -1,77 +1,155 @@
 #!/bin/bash
 ##-------------------------------------------------------------------
 ## File : enforce_all_nagios_check.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <denny.zhang001@gmail.com>
 ## Description :
 ## --
 ## Created : <2015-06-24>
-## Updated: Time-stamp: <2016-04-09 09:35:43>
+## Updated: Time-stamp: <2016-04-18 15:58:19>
 ##-------------------------------------------------------------------
-skip_check_pattern=${1:-""}
-ignore_check_warn=${2:-"0"}
-nagios_check_dir=${3:-""}
 
-if [ -z "$nagios_check_dir" ]; then
-    server_name=`hostname`
-    nagios_check_dir="/etc/nagios3/conf.d/$server_name"
-fi
-
-if [ ! -d $nagios_check_dir ]; then
-    echo "ERROR: $nagios_check_dir doesn't exist"
-    exit 1
-fi
-cd $nagios_check_dir
-
-failed_checks=""
-skipped_checks=""
-IFS=$'\n'
-for f in `ls -1 *.cfg`; do
-    if grep '^ *host_name *' $f 2>/dev/null 1>/dev/null; then
-        host_name=$(grep '^ *host_name *' $f | awk -F' ' '{print $2}' | head -n 1)
-        for check in `grep '^ *check_command' $f | awk -F' ' "{print $2}" | awk -F'!' '{print $2}'`; do
-            command="/usr/lib/nagios/plugins/check_nrpe -H $host_name -c $check"
-            if [ -n "$skip_check_pattern" ]; then
-                if echo $check | grep -iE "$skip_check_pattern" 2>/dev/null 1>/dev/null; then
-                    echo "skip check: $command"
-                    skipped_checks="${skipped_checks}${check};"
-                    continue
+function check_one_server(){
+    local nagios_check_dir=${1}
+    local skip_check_pattern=${2}
+    cd $nagios_check_dir
+    shift
+    shift
+    
+    local failed_checks=""
+    local skipped_checks=""
+    IFS=$'\n'
+    for f in `ls -1 *.cfg`; do
+        if grep '^ *host_name *' $f 2>/dev/null 1>/dev/null; then
+            host_name=$(grep '^ *host_name *' $f | awk -F' ' '{print $2}' | head -n 1)
+            for check in `grep '^ *check_command' $f | awk -F' ' "{print $2}" | awk -F'!' '{print $2}'`; do
+                command="/usr/lib/nagios/plugins/check_nrpe -H $host_name -c $check"
+                if [ -n "$skip_check_pattern" ]; then
+                    if echo $check | grep -iE "$skip_check_pattern" 2>/dev/null 1>/dev/null; then
+                        echo "skip check: $command"
+                        skipped_checks="${skipped_checks}${check};"
+                        continue
+                    fi
                 fi
-            fi
-            echo $command
-            output=`eval $command`
-            errcode=$?
-            # check fail
-            if [ $errcode -ge 2 ]; then
-                failed_checks="${failed_checks}${check};"
-                echo "Error check: $check. output: $output"
-            fi
-
-            if [ $errcode -eq 1 ]; then
-                if [ "$ignore_check_warn" = "1" ] && echo $output | grep WARN 2>&1 1>/dev/null; then
-                    echo "skip failed warn check: $command"
-                    skiped_checks="${skiped_checks}${check};"
-                    continue
-                else
+                echo $command
+                output=`eval $command`
+                errcode=$?
+                # check fail
+                if [ $errcode -ge 2 ]; then
                     failed_checks="${failed_checks}${check};"
                     echo "Error check: $check. output: $output"
                 fi
-            fi
-        done
+                
+                if [ $errcode -eq 1 ]; then
+                    if [ "$ignore_check_warn" = "1" ] && echo $output | grep WARN 2>&1 1>/dev/null; then
+                        echo "skip failed warn check: $command"
+                        skiped_checks="${skiped_checks}${check};"
+                        continue
+                    else
+                        failed_checks="${failed_checks}${check};"
+                        echo "Error check: $check. output: $output"
+                    fi
+                fi
+            done
+        fi
+    done
+    unset IFS
+
+    if [ -n "$skipped_checks" ]; then
+        echo "Skipped_checks:"
+        echo "$skipped_checks"
+    fi
+    if [ -n "$failed_checks" ]; then
+        echo "Failed_checks:"
+        echo "$failed_checks"
+        my_result="failed"
+    else
+        echo "All checks pass"
+        my_result="success"
+    fi
+}
+
+while [[ $# > 1 ]]
+do
+    opt="$1"
+    case $opt in
+        -s|--skip_check_pattern)
+            skip_check_pattern="$2"
+            shift
+            ;;
+        -w|--ignore_check_warn)
+            ignore_check_warn="$2"
+            shift
+            ;;
+        -c|--conf_check_dir)
+            conf_check_dir="$2"
+            shift
+            ;;        
+        -n|--server_names)
+            server_names="$2"
+            shift
+            ;;
+        *)
+            echo "Invalid options: $opt
+DESCRIPTION
+    enforce all nagios to check
+
+The following options are available:
+    -s,--skip_check_pattern: skip some check
+    -w,--ignore_check_warn: ignore check warn
+    -c,--conf_check_dir: check the conf_dir's all check, default value:/etc/nagios3/conf.d
+    -n,--server_names: \$servername1,\$servername2. only check \${conf_check_dir}/\${server_names}'s all check, default value: /etc/nagios3/conf.d/\${server_names}
+"
+            exit 1
+            ;;
+    esac
+    shift
+done
+
+if [ -z "${ignore_check_warn}" ]; then
+    ignore_check_warn="0"
+fi
+
+if [ -z "${conf_check_dir}" ]; then
+    conf_check_dir="/etc/nagios3/conf.d"
+fi
+
+if [ -z "${server_names}" ]; then
+    server_list=`ls -l /etc/nagios3/conf.d/ | grep '^d' | awk '{print $NF}'`
+else
+    server_list=(${server_names//,/ })    
+fi
+
+nagios_check_result=0
+
+echo -ne "==============================================================================\n"
+echo -ne "                             start to nagios checks                           \n"
+echo -ne "==============================================================================\n"
+for server in ${server_list[@]}
+do
+    nagios_check_dir="$conf_check_dir/$server"
+    cd $nagios_check_dir
+    echo -ne "---------------------------$server-----------------------------\n"
+    if [ ! -d $nagios_check_dir ]; then
+        echo "ERROR: $nagios_check_dir doesn't exist"
+        continue
+    fi
+    my_result="failed"
+    check_one_server $nagios_check_dir $skip_check_pattern
+
+    if [ $my_result != "success" ];then
+        nagios_check_result=1
     fi
 done
-unset IFS
 
-echo -ne "========================================================\n"
-if [ -n "$skipped_checks" ]; then
-    echo "Skipped_checks:"
-    echo "$skipped_checks"
-fi
-if [ -n "$failed_checks" ]; then
-    echo "Failed_checks:"
-    echo "$failed_checks"
-    exit 1
+echo -ne "==============================================================================\n"
+echo -ne "                               nagios checks end                              \n"
+echo -ne "==============================================================================\n"
+if [ $nagios_check_result == 0 ];then
+    echo "ALL Server's Nagios Check success!"
 else
-    echo "All checks pass"
-    exit 0
+    echo "Nagios Check failed!"
 fi
+
+exit $nagios_check_result
+
 ## File : enforce_all_nagios_check.sh ends
