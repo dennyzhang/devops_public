@@ -3,11 +3,11 @@
 ## File : enforce_all_nagios_check.sh
 ## Author : Denny <denny@dennyzhang.com>, Syrett <syrett_uu@dennyzhang.com>
 ## Description :
-##     ./enforce_all_nagios_check help
+##     ./enforce_all_nagios_check.sh help
 ##     ./enforce_all_nagios_check.sh -s "check_.*_log|check_memory|check_tomcat_cpu"
 ##
 ## Created : <2015-06-24>
-## Updated: Time-stamp: <2016-04-18 17:47:18>
+## Updated: Time-stamp: <2016-04-18 17:47:51>
 ##-------------------------------------------------------------------
 
 function check_one_server(){
