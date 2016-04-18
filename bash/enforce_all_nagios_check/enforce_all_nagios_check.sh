@@ -1,19 +1,17 @@
 #!/bin/bash
 ##-------------------------------------------------------------------
 ## File : enforce_all_nagios_check.sh
-## Author : Denny <denny.zhang001@gmail.com>
+## Author : Denny <denny@dennyzhang.com>, Syrett <syrett_uu@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2015-06-24>
-## Updated: Time-stamp: <2016-04-18 15:58:19>
+## Updated: Time-stamp: <2016-04-18 17:09:41>
 ##-------------------------------------------------------------------
 
 function check_one_server(){
     local nagios_check_dir=${1}
     local skip_check_pattern=${2}
     cd $nagios_check_dir
-    shift
-    shift
     
     local failed_checks=""
     local skipped_checks=""
@@ -21,7 +19,7 @@ function check_one_server(){
     for f in `ls -1 *.cfg`; do
         if grep '^ *host_name *' $f 2>/dev/null 1>/dev/null; then
             host_name=$(grep '^ *host_name *' $f | awk -F' ' '{print $2}' | head -n 1)
-            for check in `grep '^ *check_command' $f | awk -F' ' "{print $2}" | awk -F'!' '{print $2}'`; do
+            for check in `grep '^ *check_command' $f | awk -F' ' '{print $2}' | awk -F'!' '{print $2}'`; do
                 command="/usr/lib/nagios/plugins/check_nrpe -H $host_name -c $check"
                 if [ -n "$skip_check_pattern" ]; then
                     if echo $check | grep -iE "$skip_check_pattern" 2>/dev/null 1>/dev/null; then
@@ -144,7 +142,7 @@ done
 echo -ne "==============================================================================\n"
 echo -ne "                               nagios checks end                              \n"
 echo -ne "==============================================================================\n"
-if [ $nagios_check_result == 0 ];then
+if [ $nagios_check_result -eq 0 ];then
     echo "ALL Server's Nagios Check success!"
 else
     echo "Nagios Check failed!"
