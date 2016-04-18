@@ -6,7 +6,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-15 14:00:11>
+## Updated: Time-stamp: <2016-04-18 10:48:09>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -226,6 +226,17 @@ function install_docker() {
     else
         log "docker service exists, skip installation"
     fi
+}
+
+function create_enough_loop_device() {
+    file_count=${1:-50}
+    # Docker start may fail, due to no available loopback devices
+    for((i=0; i< $file_count; i++)); do
+        if [ ! -b /dev/loop$i ]; then
+            echo "mknod -m0660 /dev/loop$i b 7 $i"
+            mknod -m0660 /dev/loop$i b 7 $i
+        fi
+    done
 }
 
 function is_container_running(){
