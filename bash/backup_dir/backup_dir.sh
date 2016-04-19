@@ -1,11 +1,15 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
+## @copyright 2016 DennyZhang.com
+## Licensed under MIT 
+##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##
 ## File : backup_dir.sh
 ## Author : Denny <denny@dennyzhang.com>
 ## Description : Backup directory and tar it with timestamp
 ## --
 ## Created : <2015-04-21>
-## Updated: Time-stamp: <2016-04-09 09:35:43>
+## Updated: Time-stamp: <2016-04-19 21:09:46>
 ##-------------------------------------------------------------------
 
 ## Trap exit and dump status

@@ -1,13 +1,16 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
+## Licensed under MIT 
+##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##
 ## File : refresh_common_library.sh
 ## Author : Denny <denny@dennyzhang.com>
 ## Description : Use this file to update common library.
 ## By default, this file keeps stable and untouched
 ## --
 ## Created : <2016-04-07>
-## Updated: Time-stamp: <2016-04-10 14:47:15>
+## Updated: Time-stamp: <2016-04-19 21:10:23>
 ##-------------------------------------------------------------------
 function refresh_common_library() {
     local library_file=${1?}

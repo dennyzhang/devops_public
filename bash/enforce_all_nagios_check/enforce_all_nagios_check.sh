@@ -1,11 +1,15 @@
 #!/bin/bash
 ##-------------------------------------------------------------------
+## @copyright 2016 DennyZhang.com
+## Licensed under MIT 
+##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##
 ## File : enforce_all_nagios_check.sh
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2015-06-24>
-## Updated: Time-stamp: <2016-04-09 09:35:43>
+## Updated: Time-stamp: <2016-04-19 21:09:50>
 ##-------------------------------------------------------------------
 skip_check_pattern=${1:-""}
 ignore_check_warn=${2:-"0"}

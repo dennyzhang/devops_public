@@ -1,11 +1,15 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
+## @copyright 2016 DennyZhang.com
+## Licensed under MIT 
+##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##
 ## File : inject_ssh_key.sh
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2015-05-13>
-## Updated: Time-stamp: <2016-04-09 09:35:43>
+## Updated: Time-stamp: <2016-04-19 21:09:57>
 ##-------------------------------------------------------------------
 user_home_list=${1?"To who the ssh key shall be injected. Users are separated by comma"}
 ssh_email=${2?"email associated to this ssh key"}

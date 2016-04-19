@@ -1,5 +1,9 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
+## @copyright 2016 DennyZhang.com
+## Licensed under MIT 
+##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##
 ## File: check_proc_mem.sh
 ## Author : Denny <denny.zhang001@gmail.com>
 ## Description :
@@ -8,7 +12,7 @@
 ## Link: http://www.dennyzhang.com/nagois_monitor_process_memory
 ##
 ## Created : <2014-10-25>
-## Updated: Time-stamp: <2015-05-22 20:01:41>
+## Updated: Time-stamp: <2016-04-19 21:10:31>
 ##-------------------------------------------------------------------
 if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
     [ "$3" = "-c" ] && [ "$4" -gt "0" ]; then

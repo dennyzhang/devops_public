@@ -1,12 +1,15 @@
 #!/bin/bash -x
 ##-------------------------------------------------------------------
-## @copyright 2015 DennyZhang.com
+## @copyright 2016 DennyZhang.com
+## Licensed under MIT 
+##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##
 ## File : preinstall_kitchen_verify.sh
 ## Author : Denny <denny.zhang001@gmail.com>
 ## Description :
 ## --
 ## Created : <2015-11-30>
-## Updated: Time-stamp: <2016-04-18 09:42:02>
+## Updated: Time-stamp: <2016-04-19 21:10:13>
 ##-------------------------------------------------------------------
 LOG_FILE="/var/log/preinstall_kitchen_verify.log"
 function log() {

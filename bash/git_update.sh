@@ -1,11 +1,15 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
+## @copyright 2016 DennyZhang.com
+## Licensed under MIT 
+##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##
 ## File : git_update.sh
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-04-15>
-## Updated: Time-stamp: <2016-04-19 11:32:17>
+## Updated: Time-stamp: <2016-04-19 21:09:53>
 ##-------------------------------------------------------------------
 working_dir=${1?}
 git_repo_url=${2?}
