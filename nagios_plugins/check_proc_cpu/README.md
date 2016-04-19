@@ -19,7 +19,7 @@ check_proc_cpu.sh -w 200 -c 400 --pidfile /var/run/tomcat7.pid
 check_proc_cpu.sh -w 200 -c 400 --pid 11325
 check_proc_cpu.sh -w 200 -c 400 --cmdpattern "tomcat7.*java.*Dcom"
 
-Copyright (C) 2015 DennyZhang (denny.zhang001@gmail.com)
+Copyright (C) 2015 DennyZhang (denny@dennyzhang.com)
 ```
 
 Sample output:

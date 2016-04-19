@@ -5,14 +5,14 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File: check_proc_cpu.sh
-## Author : Denny <denny.zhang001@gmail.com>
+## Author : Denny <denny@dennyzhang.com>
 ## Description :
 ## --
 ##
 ## Link: http://www.dennyzhang.com/nagois_monitor_process_cpu
 ##
 ## Created : <2015-02-25>
-## Updated: Time-stamp: <2016-04-19 21:10:26>
+## Updated: Time-stamp: <2016-04-19 21:11:14>
 ##-------------------------------------------------------------------
 if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
     [ "$3" = "-c" ] && [ "$4" -gt "0" ]; then
@@ -61,7 +61,7 @@ else
     echo "check_proc_cpu.sh -w 200 -c 400 --pid 11325"
     echo "check_proc_cpu.sh -w 200 -c 400 --cmdpattern \"tomcat7.*java.*Dcom\""
     echo ""
-    echo "Copyright (C) 2015 DennyZhang (denny.zhang001@gmail.com)"
+    echo "Copyright (C) 2015 DennyZhang (denny@dennyzhang.com)"
     exit
 fi
 ## File - check_proc_cpu.sh ends
