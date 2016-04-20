@@ -9,12 +9,12 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-04-20 21:20:10>
+## Updated: Time-stamp: <2016-04-20 21:46:59>
 ##-------------------------------------------------------------------
 ################################################################
 # How To Use
-#        export git_update_url="https://raw.githubusercontent.com/TOTVS/mdmpublic/master/git_update.sh"
-#        export ssh_email="denny.devops@dennyzhang.com"
+#        export git_update_url="https://raw.githubusercontent.com/TEST/test/master/git_update.sh"
+#        export ssh_email="auto.devops@test.com"
 #
 #        export ssh_public_key="AAAAB3NzaC1yc2EAAAADAQABAAABAQClL5PmH01x8eRPQ7FsodNT172ZIXiE2CT3RhBZpPpMFCdUyFTGBRfgbX/UE86MfycPHkzNnKemFNJOqFVdzK7eTIayxX9FYPOk+ONi2sbKkwAE4No+R0d4/ehoVzflbYXRWyxLqDKkqbJPDxY39xS2V7h4bSQWwrMyeYoGBn82AW5vSoonQMIrxe+bm6zWWtL6SzsYM/KNM1T+2pfU7Rq/YQPs2tf07rauyeT3bylhUf/CUqVPt2Xpf4qgmpGqp9Hyoy7FIfBHmCgXLRpia2KhpYr0j08s8cxBx1PEJiQ6EaWO2WlzyJIqgU2t9piDHEIUd6yCPmpshLtlOvno6KN5"
 #
