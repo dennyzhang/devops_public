@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-04-20 21:12:33>
+## Updated: Time-stamp: <2016-04-20 21:20:10>
 ##-------------------------------------------------------------------
 ################################################################
 # How To Use
@@ -53,10 +53,10 @@ function enable_chef_deployment() {
     log "enable chef deployment"
     install_packages "wget" "wget"
     install_packages "git" "git"
-    download_facility $git_update_url "/root/git_update.sh"
-    inject_git_deploy_key "/root/.ssh/git_id_rsa" $git_deploy_key
-    git_ssh_config "/root/.ssh/config" $ssh_config_content
-    inject_ssh_authorized_keys $ssh_email $ssh_public_key
+    download_facility "$git_update_url" "/root/git_update.sh"
+    inject_git_deploy_key "/root/.ssh/git_id_rsa" "$git_deploy_key"
+    git_ssh_config "/root/.ssh/config" "$ssh_config_content"
+    inject_ssh_authorized_keys "$ssh_email" "$ssh_public_key"
 
 }
 function install_packages() {
@@ -93,11 +93,11 @@ EOF
 function git_ssh_config() {
     local ssh_config_file=${1?}
     shift
-    local ssh_config_content=$*
+    local ssh_config_content="$*"
 
     log "configure $ssh_config_file"
     cat > $ssh_config_file <<EOF
-$ssh_content
+$ssh_config_content
 EOF
 }
 
