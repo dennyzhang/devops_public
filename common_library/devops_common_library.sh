@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-19 21:10:18>
+## Updated: Time-stamp: <2016-04-24 13:43:53>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -69,7 +69,7 @@ function string_strip_whitespace() {
     echo "$str"
 }
 
-function list_strip_comments() {
+function string_strip_comments() {
     my_list=${1?}
     my_list=$(echo "$my_list" | grep -v '^#')
     echo "$my_list"
