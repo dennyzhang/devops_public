@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-24 13:43:53>
+## Updated: Time-stamp: <2016-04-24 15:39:12>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -70,9 +70,9 @@ function string_strip_whitespace() {
 }
 
 function string_strip_comments() {
-    my_list=${1?}
-    my_list=$(echo "$my_list" | grep -v '^#')
-    echo "$my_list"
+    my_str=${1?}
+    my_str=$(echo "$my_str" | grep -v '^ *#')
+    echo "$my_str"
 }
 ############################ Section: git ################################
 function current_git_sha() {
