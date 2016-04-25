@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-06-24>
-## Updated: Time-stamp: <2016-04-25 11:16:04>
+## Updated: Time-stamp: <2016-04-25 11:18:16>
 ##-------------------------------------------------------------------
 skip_check_pattern=${1:-""}
 ignore_check_warn=${2:-"0"}
@@ -32,7 +32,7 @@ skipped_checks=""
 IFS=$'\n'
 for f in `ls -1 *.cfg`; do
     if grep '^ *host_name *' "$f" 2>/dev/null 1>/dev/null; then
-        host_name=$(grep '^ *host_name *' $f | awk -F' ' '{print $2}' | head -n 1)
+        host_name=$(grep '^ *host_name *' "$f" | awk -F' ' '{print $2}' | head -n 1)
         for check in `grep '^ *check_command' "$f" | awk -F' ' "{print $2}" | awk -F'!' '{print $2}'`; do
             command="/usr/lib/nagios/plugins/check_nrpe -H $host_name -c $check"
             if [ -n "$skip_check_pattern" ]; then

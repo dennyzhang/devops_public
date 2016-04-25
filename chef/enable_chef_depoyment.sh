@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-04-25 11:16:03>
+## Updated: Time-stamp: <2016-04-25 11:18:24>
 ##-------------------------------------------------------------------
 ################################################################
 # How To Use
@@ -62,7 +62,7 @@ function enable_chef_deployment() {
 function install_packages() {
     local package=${1?}
     local binary_name=${2?}
-    if ! which $binary_name 1>/dev/null 2>&1; then
+    if ! which "$binary_name" 1>/dev/null 2>&1; then
         apt-get install -y "$package"
     fi
 }

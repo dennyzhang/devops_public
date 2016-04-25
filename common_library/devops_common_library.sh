@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-25 11:16:03>
+## Updated: Time-stamp: <2016-04-25 11:20:13>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -48,10 +48,11 @@ function exit_if_error() {
 
 function log() {
     local msg=$*
-    echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n"
+    date_timestamp=`date +['%Y-%m-%d %H:%M:%S']`
+    echo -ne "$date_timestamp $msg\n"
 
     if [ -n "$LOG_FILE" ]; then
-        echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n" >> $LOG_FILE
+        echo -ne "$date_timestamp $msg\n" >> "$LOG_FILE"
     fi
 }
 ########################### Section: String Manipulation ########################
@@ -78,26 +79,18 @@ function string_strip_comments() {
 function current_git_sha() {
     set -e
     local src_dir=${1?}
-    cd $src_dir
+    cd "$src_dir"
     sha=$(git log -n 1 | head -n 1 | grep commit | head -n 1 | awk -F' ' '{print $2}')
-    echo $sha
+    echo "$sha"
 }
 
 function git_log() {
     local code_dir=${1?}
     local tail_count=${2:-"10"}
-    cd $code_dir
+    cd "$code_dir"
     command="git log -n $tail_count --pretty=format:\"%h - %an, %ar : %s\""
     echo -e "\n\nShow latest git commits: $command"
-    eval $command
-}
-
-function current_git_sha() {
-    set -e
-    local src_dir=${1?}
-    cd $src_dir
-    sha=$(git log -n 1 | head -n 1 | grep commit | head -n 1 | awk -F' ' '{print $2}')
-    echo $sha
+    eval "$command"
 }
 
 function git_update_code() {
