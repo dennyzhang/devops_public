@@ -12,7 +12,7 @@
 ## Link: http://https://github.com/DennyZhang/check_proc_fd
 ##
 ## Created : <2014-12-17>
-## Updated: Time-stamp: <2016-04-25 11:16:03>
+## Updated: Time-stamp: <2016-04-25 11:26:13>
 ##-------------------------------------------------------------------
 if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
     [ "$3" = "-c" ] && [ "$4" -gt "0" ]; then
@@ -20,7 +20,7 @@ if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
 
     if [ "$pidPattern" = "--pidfile" ]; then
         pidfile=${6?"pidfile to get pid"}
-        pid=$(cat $pidfile)
+        pid=$(cat "$pidfile")
     elif [ "$pidPattern" = "--cmdpattern" ]; then
         cmdpattern=${6?"command line pattern to find out pid"}
         pid=$(ps -ef | grep "$cmdpattern" | grep -v grep | grep -v check_proc_fd.sh | head -n 1 | awk -F' ' '{print $2}')
@@ -37,7 +37,7 @@ if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
     fi
 
     # Note: nagios need use sudo to run lsof
-    fdcount=`sudo lsof -p $pid | wc -l`
+    fdcount=`sudo lsof -p "$pid" | wc -l`
 
     if [ "$fdcount" -ge "$4" ]; then
         echo "CRITICAL: file opened by pid($pid) is $fdcount. It's more than $4|fd=$fdcount"

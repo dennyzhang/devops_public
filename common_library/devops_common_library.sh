@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-25 11:21:31>
+## Updated: Time-stamp: <2016-04-25 11:24:35>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -101,22 +101,22 @@ function git_update_code() {
     local git_repo_url=${3?}
     local git_pull_outside=${4:-"no"}
 
-    git_repo=$(echo ${git_repo_url%.git} | awk -F '/' '{print $2}')
+    git_repo=$(echo "${git_repo_url%.git}" | awk -F '/' '{print $2}')
     echo "Git update code for '$git_repo_url' to $working_dir, branch_name: $branch_name"
     # checkout code, if absent
-    if [ ! -d $working_dir/$branch_name/$git_repo ]; then
-        mkdir -p $working_dir/$branch_name
-        cd $working_dir/$branch_name
-        git clone --depth 1 $git_repo_url --branch $branch_name --single-branch
+    if [ ! -d "$working_dir/$branch_name/$git_repo" ]; then
+        mkdir -p "$working_dir/$branch_name"
+        cd $"working_dir/$branch_name"
+        git clone --depth 1 "$git_repo_url" --branch "$branch_name" --single-branch
     else
-        cd $working_dir/$branch_name/$git_repo
-        git config remote.origin.url $git_repo_url
+        cd "$working_dir/$branch_name/$git_repo"
+        git config remote.origin.url "$git_repo_url"
         # add retry for network turbulence
-        git pull origin $branch_name || (sleep 2 && git pull origin $branch_name)
+        git pull origin "$branch_name" || (sleep 2 && git pull origin "$branch_name")
     fi
 
-    cd $working_dir/$branch_name/$git_repo
-    git checkout $branch_name
+    cd "$working_dir/$branch_name/$git_repo"
+    git checkout "$branch_name"
     git reset --hard
 }
 
@@ -124,19 +124,19 @@ function git_update_code() {
 function is_port_listening()
 {
     port=${1?}
-    lsof -i tcp:$port | grep LISTEN 1>/dev/null
+    lsof -i "tcp:${port}" | grep LISTEN 1>/dev/null
 }
 
 function check_ssh_available() {
     # Sample: if [ "x$(check_ssh_available $server_ip $server_port)" = "xyes" ] ...
     local server_ip=${1?}
     local server_port=${2?}
-    nc -w 1 $server_ip $server_port >/dev/null 2>&1 && echo yes || echo no
+    nc -w 1 "$server_ip" "$server_port" 1>/dev/null 2>&1 && echo yes || echo no
 }
 
 function check_url_200() {
     url=${1?}
-    if curl -I $url | grep "HTTP/1.* 200 OK" 2>/dev/null 1>/dev/null; then
+    if curl -I "$url" | grep "HTTP/1.* 200 OK" 2>/dev/null 1>/dev/null; then
         echo "yes"
     else
         echo "no"
@@ -171,13 +171,13 @@ function check_network()
         for ((i=1; i <= $max_retries_count; i++))
         do
             # get http_code
-            curl -I -s --connect-timeout $timeout -m $maxtime $website | tee website_tmp.txt
+            curl -I -s --connect-timeout $timeout -m $maxtime "$website" | tee website_tmp.txt
             ret=`cat website_tmp.txt | grep -q "200 OK" && echo yes || echo no`
             if [ "X$ret" = "Xyes" ]; then
                 log "$website connect succeed"
                 break
             fi
-            if [ $i -eq $max_retries_count ];then
+            if [ "$i" = "$max_retries_count" ];then
                 log "$website connect failed"
                 log "The curl result:"
                 cat website_tmp.txt
@@ -238,8 +238,8 @@ function create_enough_loop_device() {
 
 function is_container_running(){
     local container_name=${1?}
-    if docker ps -a | grep $container_name 1>/dev/null 2>/dev/null; then
-        if docker ps | grep $container_name 1>/dev/null 2>/dev/null; then
+    if docker ps -a | grep "$container_name" 1>/dev/null 2>/dev/null; then
+        if docker ps | grep "$container_name" 1>/dev/null 2>/dev/null; then
             echo "running"
         else
             echo "dead"
@@ -251,7 +251,7 @@ function is_container_running(){
 ############################ Section: general ################################
 function generate_checksum() {
     local dst_dir=${1?}
-    cd $dst_dir
+    cd "$dst_dir"
     ls -1 | grep -v checksum.txt | xargs cksum > checksum.txt
 }
 

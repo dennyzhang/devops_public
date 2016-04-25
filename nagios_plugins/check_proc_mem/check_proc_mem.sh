@@ -12,7 +12,7 @@
 ## Link: http://www.dennyzhang.com/nagois_monitor_process_memory
 ##
 ## Created : <2014-10-25>
-## Updated: Time-stamp: <2016-04-25 11:16:03>
+## Updated: Time-stamp: <2016-04-25 11:26:38>
 ##-------------------------------------------------------------------
 if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
     [ "$3" = "-c" ] && [ "$4" -gt "0" ]; then
@@ -20,7 +20,7 @@ if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
 
     if [ "$pidPattern" = "--pidfile" ]; then
         pidfile=${6?"pidfile to get pid"}
-        pid=$(cat $pidfile)
+        pid=$(cat "$pidfile")
     elif [ "$pidPattern" = "--cmdpattern" ]; then
         cmdpattern=${6?"command line pattern to find out pid"}
         pid=$(ps -ef | grep "$cmdpattern" | grep -v grep | grep -v check_proc_mem.sh | head -n 1 | awk -F' ' '{print $2}')
@@ -36,10 +36,10 @@ if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
         exit 2
     fi
 
-    memVmSize=`grep 'VmSize:' /proc/$pid/status | awk -F' ' '{print $2}'`
+    memVmSize=`grep 'VmSize:' "/proc/${pid}/status" | awk -F' ' '{print $2}'`
     memVmSize=$(($memVmSize/1024))
 
-    memVmRSS=`grep 'VmRSS:' /proc/$pid/status | awk -F' ' '{print $2}'`
+    memVmRSS=`grep 'VmRSS:' "/proc/${pid}/status" | awk -F' ' '{print $2}'`
     memVmRSS=$(($memVmRSS/1024))
 
     if [ "$memVmRSS" -ge "$4" ]; then
