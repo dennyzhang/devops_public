@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-25 11:24:35>
+## Updated: Time-stamp: <2016-04-25 12:41:15>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -106,7 +106,7 @@ function git_update_code() {
     # checkout code, if absent
     if [ ! -d "$working_dir/$branch_name/$git_repo" ]; then
         mkdir -p "$working_dir/$branch_name"
-        cd $"working_dir/$branch_name"
+        cd "$working_dir/$branch_name"
         git clone --depth 1 "$git_repo_url" --branch "$branch_name" --single-branch
     else
         cd "$working_dir/$branch_name/$git_repo"
