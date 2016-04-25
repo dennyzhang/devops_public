@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-25 12:41:15>
+## Updated: Time-stamp: <2016-04-25 14:10:55>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -199,12 +199,12 @@ function guess_docker_daemon_ip() {
     lists="172.18.42.1 172.17.42.1 172.18.0.1 172.17.0.1 192.168.50.10"
     lists=($lists)
     for ip in ${lists[*]}; do
-        if ping -c3 $ip 2>/dev/null 1>/dev/null; then
+        if ping -c3 "$ip" 2>/dev/null 1>/dev/null; then
             docker_daemon_ip=$ip
             break
         fi
     done
-    echo $docker_daemon_ip
+    echo "$docker_daemon_ip"
 }
 
 function install_docker() {

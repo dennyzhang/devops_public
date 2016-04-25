@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-05-13>
-## Updated: Time-stamp: <2016-04-25 11:16:04>
+## Updated: Time-stamp: <2016-04-25 14:10:16>
 ##-------------------------------------------------------------------
 user_home_list=${1?"To who the ssh key shall be injected. Users are separated by comma"}
 ssh_email=${2?"email associated to this ssh key"}
@@ -55,6 +55,6 @@ for item in ${username_list[*]}; do
     user_home=($(echo "$item" | tr ':', ' '))
     username=${user_home[0]}
     home_dir=${user_home[1]}
-    inject_ssh_key $username $home_dir "$ssh_email" "$ssh_key"
+    inject_ssh_key "$username" "$home_dir" "$ssh_email" "$ssh_key"
 done
 ## File : inject_ssh_key.sh ends
