@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-04-25 11:18:24>
+## Updated: Time-stamp: <2016-04-25 11:21:35>
 ##-------------------------------------------------------------------
 ################################################################
 # How To Use
@@ -35,10 +35,11 @@
 ################################################################
 function log() {
     local msg=$*
-    echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n"
+    date_timestamp=`date +['%Y-%m-%d %H:%M:%S']`
+    echo -ne "$date_timestamp $msg\n"
 
     if [ -n "$LOG_FILE" ]; then
-        echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n" >> "$LOG_FILE"
+        echo -ne "$date_timestamp $msg\n" >> "$LOG_FILE"
     fi
 }
 

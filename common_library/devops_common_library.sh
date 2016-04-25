@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-25 11:20:13>
+## Updated: Time-stamp: <2016-04-25 11:21:31>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -55,6 +55,7 @@ function log() {
         echo -ne "$date_timestamp $msg\n" >> "$LOG_FILE"
     fi
 }
+
 ########################### Section: String Manipulation ########################
 function remove_hardline() {
     # handle \n\r of Windows OS
