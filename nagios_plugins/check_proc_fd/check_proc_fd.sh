@@ -1,7 +1,7 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
-## Licensed under MIT 
+## Licensed under MIT
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File: check_proc_fd.sh
@@ -12,7 +12,7 @@
 ## Link: http://https://github.com/DennyZhang/check_proc_fd
 ##
 ## Created : <2014-12-17>
-## Updated: Time-stamp: <2016-04-19 21:11:22>
+## Updated: Time-stamp: <2016-04-25 11:16:03>
 ##-------------------------------------------------------------------
 if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
     [ "$3" = "-c" ] && [ "$4" -gt "0" ]; then

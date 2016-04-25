@@ -1,7 +1,7 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
-## Licensed under MIT 
+## Licensed under MIT
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : enable_chef_depoyment.sh
@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-04-20 21:46:59>
+## Updated: Time-stamp: <2016-04-25 11:16:03>
 ##-------------------------------------------------------------------
 ################################################################
 # How To Use
@@ -36,9 +36,9 @@
 function log() {
     local msg=$*
     echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n"
-    
+
     if [ -n "$LOG_FILE" ]; then
-        echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n" >> $LOG_FILE
+        echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n" >> "$LOG_FILE"
     fi
 }
 
@@ -62,19 +62,19 @@ function enable_chef_deployment() {
 function install_packages() {
     local package=${1?}
     local binary_name=${2?}
-    if ! which $binary_name 2>&1 1>/dev/null; then
-        apt-get install -y $package
+    if ! which $binary_name 1>/dev/null 2>&1; then
+        apt-get install -y "$package"
     fi
 }
 
 function download_facility() {
     local url=${1?}
     local dst_file=${2:?}
-    if [ ! -f $dst_file ]; then
+    if [ ! -f "$dst_file" ]; then
         command="wget -O $dst_file $url"
         log "$command"
-        $command
-        chmod 755 $dst_file
+        eval "$command"
+        chmod 755 "$dst_file"
     fi
 }
 
@@ -84,10 +84,10 @@ function inject_git_deploy_key() {
     local ssh_key_content=$*
 
     log "inject git deploy key to $ssh_key"
-    cat > $ssh_key <<EOF
+    cat > "$ssh_key" <<EOF
 $ssh_key_content
 EOF
-    chmod 400 $ssh_key
+    chmod 400 "$ssh_key"
 }
 
 function git_ssh_config() {
@@ -96,19 +96,19 @@ function git_ssh_config() {
     local ssh_config_content="$*"
 
     log "configure $ssh_config_file"
-    cat > $ssh_config_file <<EOF
+    cat > "$ssh_config_file" <<EOF
 $ssh_config_content
 EOF
 }
 
 function inject_ssh_authorized_keys() {
-    local ssh_email=${1?}    
+    local ssh_email=${1?}
     local ssh_public_key=${2?}
 
     local ssh_authorized_key_file="/root/.ssh/authorized_keys"
 
     log "inject ssh authorized keys to $ssh_authorized_key_file"
-    if ! grep $ssh_email $ssh_authorized_key_file 2>&1 1>/dev/null; then
+    if ! grep "$ssh_email" $ssh_authorized_key_file 1>/dev/null 2>&1; then
         echo "ssh-rsa $ssh_public_key $ssh_email" >> $ssh_authorized_key_file
     fi
 }

@@ -1,7 +1,7 @@
 #!/bin/bash
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
-## Licensed under MIT 
+## Licensed under MIT
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : enforce_all_nagios_check.sh
@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-06-24>
-## Updated: Time-stamp: <2016-04-19 21:09:50>
+## Updated: Time-stamp: <2016-04-25 11:16:04>
 ##-------------------------------------------------------------------
 skip_check_pattern=${1:-""}
 ignore_check_warn=${2:-"0"}
@@ -20,29 +20,30 @@ if [ -z "$nagios_check_dir" ]; then
     nagios_check_dir="/etc/nagios3/conf.d/$server_name"
 fi
 
-if [ ! -d $nagios_check_dir ]; then
+if [ ! -d "$nagios_check_dir" ]; then
     echo "ERROR: $nagios_check_dir doesn't exist"
     exit 1
 fi
-cd $nagios_check_dir
+
+cd "$nagios_check_dir"
 
 failed_checks=""
 skipped_checks=""
 IFS=$'\n'
 for f in `ls -1 *.cfg`; do
-    if grep '^ *host_name *' $f 2>/dev/null 1>/dev/null; then
+    if grep '^ *host_name *' "$f" 2>/dev/null 1>/dev/null; then
         host_name=$(grep '^ *host_name *' $f | awk -F' ' '{print $2}' | head -n 1)
-        for check in `grep '^ *check_command' $f | awk -F' ' "{print $2}" | awk -F'!' '{print $2}'`; do
+        for check in `grep '^ *check_command' "$f" | awk -F' ' "{print $2}" | awk -F'!' '{print $2}'`; do
             command="/usr/lib/nagios/plugins/check_nrpe -H $host_name -c $check"
             if [ -n "$skip_check_pattern" ]; then
-                if echo $check | grep -iE "$skip_check_pattern" 2>/dev/null 1>/dev/null; then
+                if echo "$check" | grep -iE "$skip_check_pattern" 2>/dev/null 1>/dev/null; then
                     echo "skip check: $command"
                     skipped_checks="${skipped_checks}${check};"
                     continue
                 fi
             fi
-            echo $command
-            output=`eval $command`
+            echo "$command"
+            output=`eval "$command"`
             errcode=$?
             # check fail
             if [ $errcode -ge 2 ]; then
@@ -51,7 +52,7 @@ for f in `ls -1 *.cfg`; do
             fi
 
             if [ $errcode -eq 1 ]; then
-                if [ "$ignore_check_warn" = "1" ] && echo $output | grep WARN 2>&1 1>/dev/null; then
+                if [ "$ignore_check_warn" = "1" ] && echo "$output" | grep WARN 1>/dev/null 2>&1; then
                     echo "skip failed warn check: $command"
                     skiped_checks="${skiped_checks}${check};"
                     continue

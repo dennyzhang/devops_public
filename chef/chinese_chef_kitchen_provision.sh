@@ -1,7 +1,7 @@
 #!/bin/bash -x
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
-## Licensed under MIT 
+## Licensed under MIT
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : chinese_chef_kitchen_provision.sh
@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-11-30>
-## Updated: Time-stamp: <2016-04-19 21:10:08>
+## Updated: Time-stamp: <2016-04-25 11:16:03>
 ##-------------------------------------------------------------------
 # pre-cache Chef Omnibus installation
 wget -O /tmp/chef_kitchen_provision.sh https://raw.githubusercontent.com/DennyZhang/devops_public/master/chef/chef_kitchen_provision.sh

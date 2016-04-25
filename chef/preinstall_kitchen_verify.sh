@@ -1,7 +1,7 @@
 #!/bin/bash -x
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
-## Licensed under MIT 
+## Licensed under MIT
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : preinstall_kitchen_verify.sh
@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-11-30>
-## Updated: Time-stamp: <2016-04-19 21:11:12>
+## Updated: Time-stamp: <2016-04-25 11:15:29>
 ##-------------------------------------------------------------------
 LOG_FILE="/var/log/preinstall_kitchen_verify.log"
 function log() {
@@ -24,9 +24,9 @@ function log() {
 set +e
 
 export BUSSER_ROOT="/tmp/verifier"
-export BUSSER_ROOT GEM_HOME="/tmp/verifier/gems"; 
-export GEM_HOME GEM_PATH="/tmp/verifier/gems"; 
-export GEM_PATH GEM_CACHE="/tmp/verifier/gems/cache"; 
+export BUSSER_ROOT GEM_HOME="/tmp/verifier/gems";
+export GEM_HOME GEM_PATH="/tmp/verifier/gems";
+export GEM_PATH GEM_CACHE="/tmp/verifier/gems/cache";
 # export GEM_CACHE ruby="/opt/chefdk/embedded/bin/ruby"
 # export gem="/opt/chefdk/embedded/bin/gem"
 export GEM_CACHE ruby="/opt/chef/embedded/bin/ruby"
@@ -36,23 +36,23 @@ export gem_install_args="busser --no-rdoc --no-ri"
 export busser="sudo -E /tmp/verifier/bin/busser"
 export plugins="busser-serverspec"
 
-$gem list busser -i 2>&1 >/dev/null
+$gem list busser -i 1>/dev/null 2>&1
 
-if test $? -ne 0; then   
-    log "-----> Installing Busser ($version)"   
-    $gem install $gem_install_args 
+if test $? -ne 0; then
+    log "-----> Installing Busser ($version)"
+    $gem install "$gem_install_args"
 else
-    log "-----> Busser installation detected ($version)" 
-fi  
+    log "-----> Busser installation detected ($version)"
+fi
 
 log "gem install serverspec"
 $gem install serverspec --no-rdoc --no-ri
 
-if test ! -f "$BUSSER_ROOT/bin/busser"; then  
-    gem_bindir=`$ruby -rrubygems -e "puts Gem.bindir"`  
+if test ! -f "$BUSSER_ROOT/bin/busser"; then
+    gem_bindir=`$ruby -rrubygems -e "puts Gem.bindir"`
     log "$gem_bindir/busser setup"
-    $gem_bindir/busser setup 
-fi  
+    $gem_bindir/busser setup
+fi
 
 log "Installing Busser plugins: $plugins"
 $busser plugin install $plugins

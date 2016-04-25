@@ -1,7 +1,7 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
-## Licensed under MIT 
+## Licensed under MIT
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : devops_common_library.sh
@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-24 15:39:12>
+## Updated: Time-stamp: <2016-04-25 11:16:03>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -31,7 +31,7 @@ function fail_unless_os() {
 
 function ensure_variable_isset() {
     # Sample: ensure_variable_isset "chef_client_rb must be set" "$chef_client_rb"
-    message=${1?"parameter name should be given"}    
+    message=${1?"parameter name should be given"}
     var=${2:-''}
     # TODO support sudo, without source
     if [ -z "$var" ]; then
@@ -49,7 +49,7 @@ function exit_if_error() {
 function log() {
     local msg=$*
     echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n"
-    
+
     if [ -n "$LOG_FILE" ]; then
         echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n" >> $LOG_FILE
     fi
@@ -149,28 +149,28 @@ function check_url_200() {
     fi
 }
 
-function check_network() 
+function check_network()
 {
     # The maximum number of trying to connect website
     local max_retries_count=${1:-3}
-    
+
     # Check website whether can connect, multiple websites, separated by spaces
     local website_list=${2:-"https://bitbucket.org/"}
 
     # Connect timeout
     local timeout=7
-    
+
     # The maximum allowable time data transmission
     local maxtime=10
-    
+
     # If the website cannnt connect,will sleep several second
     local sleep_time=5
-    
+
     # If any one website cannt connect,the flag value is false, otherwise is true.
     local check_flag=true
-    
+
     log "max_retries_count=$max_retries_count, website_list=$website_list"
-    
+
     connect_failed_website=""
     for website in ${website_list[*]}
     do

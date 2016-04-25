@@ -1,7 +1,7 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
-## Licensed under MIT 
+## Licensed under MIT
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : ubuntu1404_inject_163_apt_source.sh
@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-18>
-## Updated: Time-stamp: <2016-04-19 21:10:34>
+## Updated: Time-stamp: <2016-04-25 11:16:02>
 ##-------------------------------------------------------------------
 cat > /etc/apt/sources.list.d/163.list <<EOF
 deb-src http://mirrors.163.com/ubuntu/ trusty-updates main restricted
