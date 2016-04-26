@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-25 14:10:55>
+## Updated: Time-stamp: <2016-04-26 22:46:50>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -99,7 +99,6 @@ function git_update_code() {
     local branch_name=${1?}
     local working_dir=${2?}
     local git_repo_url=${3?}
-    local git_pull_outside=${4:-"no"}
 
     git_repo=$(echo "${git_repo_url%.git}" | awk -F '/' '{print $2}')
     echo "Git update code for '$git_repo_url' to $working_dir, branch_name: $branch_name"
@@ -172,7 +171,7 @@ function check_network()
         do
             # get http_code
             curl -I -s --connect-timeout $timeout -m $maxtime "$website" | tee website_tmp.txt
-            ret=`cat website_tmp.txt | grep -q "200 OK" && echo yes || echo no`
+            ret=$(cat website_tmp.txt | grep -q "200 OK" && echo yes || echo no)
             if [ "X$ret" = "Xyes" ]; then
                 log "$website connect succeed"
                 break
@@ -281,7 +280,7 @@ function ssh_apt_update() {
     ssh_command=${1?}
     echo "Run apt-get -y update"
     apt_get_output=$($ssh_command apt-get -y update)
-    if echo "$apt_get_output" | "Hash Sum mismatch" 2>&1 2>/dev/null; then
+    if echo "$apt_get_output" | "Hash Sum mismatch" 1>/dev/null 2>&1; then
         echo "apt-get update fail with complain of 'Hash Sum mismatch'"
         echo "rm -rf /var/lib/apt/lists/*"
         $ssh_command "rm -rf /var/lib/apt/lists/*"

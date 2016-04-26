@@ -9,14 +9,16 @@
 ## Description :
 ## --
 ## Created : <2015-11-30>
-## Updated: Time-stamp: <2016-04-25 11:18:42>
+## Updated: Time-stamp: <2016-04-26 22:45:45>
 ##-------------------------------------------------------------------
 LOG_FILE="/var/log/preinstall_kitchen_verify.log"
 function log() {
     local msg=$*
-    echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n"
+    date_timestamp=$(date +['%Y-%m-%d %H:%M:%S'])
+    echo -ne "$date_timestamp $msg\n"
+
     if [ -n "$LOG_FILE" ]; then
-        echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n" >> $LOG_FILE
+        echo -ne "$date_timestamp $msg\n" >> "$LOG_FILE"
     fi
 }
 
@@ -49,7 +51,7 @@ log "gem install serverspec"
 $gem install serverspec --no-rdoc --no-ri
 
 if test ! -f "$BUSSER_ROOT/bin/busser"; then
-    gem_bindir=`$ruby -rrubygems -e "puts Gem.bindir"`
+    gem_bindir=$($ruby -rrubygems -e "puts Gem.bindir")
     log "$gem_bindir/busser setup"
     "${gem_bindir}/busser" setup
 fi
