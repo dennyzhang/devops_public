@@ -9,7 +9,7 @@
 ## Description : Backup directory and tar it with timestamp
 ## --
 ## Created : <2015-04-21>
-## Updated: Time-stamp: <2016-04-25 11:16:04>
+## Updated: Time-stamp: <2016-04-26 22:41:49>
 ##-------------------------------------------------------------------
 
 ## Trap exit and dump status
@@ -28,24 +28,26 @@ function shell_exit() {
 }
 ################################################################
 function log() {
-    local msg=${1?}
-    echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n"
-    if [ -n "$BACKUP_LOG_FILE" ]; then
-        echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n" >> "$BACKUP_LOG_FILE"
+    local msg=$*
+    date_timestamp=$(date +['%Y-%m-%d %H:%M:%S'])
+    echo -ne "$date_timestamp $msg\n"
+
+    if [ -n "$LOG_FILE" ]; then
+        echo -ne "$date_timestamp $msg\n" >> "$LOG_FILE"
     fi
 }
 
 function tar_dir() {
     local dir=${1?}
     local tar_file=${2?}
-    working_dir=`dirname "$dir"`
+    working_dir=$(dirname "$dir")
     cd "$working_dir"
-    log "tar -zcf $tar_file `basename "$dir"`"
-    tar -zcf "$tar_file" `basename "$dir"`
+    log "tar -zcf $tar_file $(basename "$dir")"
+    tar -zcf "$tar_file" "$(basename "$dir")"
 }
 
 function current_time() {
-    echo `date '+%Y-%m-%d-%H%M%S'`
+    date '+%Y-%m-%d-%H%M%S'
 }
 
 function ensure_is_root() {
@@ -117,12 +119,12 @@ fi
 set_default_value
 
 if [ -n "$BACKUP_LOG_FILE" ]; then
-    log_dir=`dirname "$BACKUP_LOG_FILE"`
+    log_dir=$(dirname "$BACKUP_LOG_FILE")
     [ -d "$log_dir" ] || mkdir -p "$log_dir"
 fi
 
 # Format: +%Y-%m-%d-%H%M%S_$pid
-backup_id="`date '+%Y%m%d.%H%M%S'`"
+backup_id="$(date '+%Y%m%d.%H%M%S')"
 if [ -n "$BACKUP_SET_PREFIX" ]; then
     backup_id="$BACKUP_SET_PREFIX.$backup_id"
 fi
