@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-26 22:46:50>
+## Updated: Time-stamp: <2016-04-26 22:50:27>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -48,7 +48,7 @@ function exit_if_error() {
 
 function log() {
     local msg=$*
-    date_timestamp=`date +['%Y-%m-%d %H:%M:%S']`
+    date_timestamp=$(date +['%Y-%m-%d %H:%M:%S'])
     echo -ne "$date_timestamp $msg\n"
 
     if [ -n "$LOG_FILE" ]; then

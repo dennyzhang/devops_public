@@ -12,7 +12,7 @@
 ## Link: http://https://github.com/DennyZhang/check_proc_fd
 ##
 ## Created : <2014-12-17>
-## Updated: Time-stamp: <2016-04-25 11:26:13>
+## Updated: Time-stamp: <2016-04-26 22:49:14>
 ##-------------------------------------------------------------------
 if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
     [ "$3" = "-c" ] && [ "$4" -gt "0" ]; then
@@ -37,17 +37,17 @@ if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
     fi
 
     # Note: nagios need use sudo to run lsof
-    fdcount=`sudo lsof -p "$pid" | wc -l`
+    fdcount=$(sudo lsof -p "$pid" | wc -l)
 
     if [ "$fdcount" -ge "$4" ]; then
         echo "CRITICAL: file opened by pid($pid) is $fdcount. It's more than $4|fd=$fdcount"
-        $(exit 2)
+        exit 2
     elif [ "$fdcount" -ge "$2" ]; then
         echo "WARNING: file opened by pid($pid) is $fdcount. It's more than $2|fd=$fdcount"
-        $(exit 1)
+        exit 1
     else
         echo "OK: file opened by pid($pid) is $fdcount|fd=$fdcount"
-        $(exit 0)
+        exit 0
     fi
 
 else

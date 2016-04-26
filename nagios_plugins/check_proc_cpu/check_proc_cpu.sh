@@ -12,7 +12,7 @@
 ## Link: http://www.dennyzhang.com/nagois_monitor_process_cpu
 ##
 ## Created : <2015-02-25>
-## Updated: Time-stamp: <2016-04-26 22:47:51>
+## Updated: Time-stamp: <2016-04-26 22:48:51>
 ##-------------------------------------------------------------------
 if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
     [ "$3" = "-c" ] && [ "$4" -gt "0" ]; then
@@ -40,13 +40,13 @@ if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
 
     if [ $(echo "$cpuUsage>$4" | bc) -eq 1 ]; then
         echo "Critical CPU used by process($pid) is $cpuUsage % is more than $4 %!|CPU=$cpuUsage"
-        $(exit 2)
+        exit 2
     elif [ $(echo "$cpuUsage>$2" | bc) -eq 1 ]; then
         echo "Warning CPU used by process($pid) is $cpuUsage % is more than $2 %!|CPU=$cpuUsage"
-        $(exit 1)
+        exit 1
     else
         echo "OK CPU used by process($pid) is $cpuUsage %|CPU=$cpuUsage"
-        $(exit 0)
+        exit 0
     fi
 else
     echo "check_proc_cpu v1.0"
