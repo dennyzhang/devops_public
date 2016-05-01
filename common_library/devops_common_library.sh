@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-26 22:50:27>
+## Updated: Time-stamp: <2016-05-01 13:27:40>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -167,7 +167,7 @@ function check_network()
     connect_failed_website=""
     for website in ${website_list[*]}
     do
-        for ((i=1; i <= $max_retries_count; i++))
+        for ((i=1; i <=max_retries_count; i++))
         do
             # get http_code
             curl -I -s --connect-timeout $timeout -m $maxtime "$website" | tee website_tmp.txt
@@ -227,7 +227,7 @@ function install_docker() {
 function create_enough_loop_device() {
     file_count=${1:-50}
     # Docker start may fail, due to no available loopback devices
-    for((i=0; i< $file_count; i++)); do
+    for((i=0; i<file_count; i++)); do
         if [ ! -b /dev/loop$i ]; then
             echo "mknod -m0660 /dev/loop$i b 7 $i"
             mknod -m0660 /dev/loop$i b 7 $i
