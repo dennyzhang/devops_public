@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-05-01 14:48:02>
+## Updated: Time-stamp: <2016-05-02 07:43:57>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -195,6 +195,7 @@ function check_network()
 ############################ Section: docker ################################
 function guess_docker_daemon_ip() {
     local docker_daemon_ip=""
+    local lists
     lists="172.18.42.1 172.17.42.1 172.18.0.1 172.17.0.1 192.168.50.10"
     lists=($lists)
     for ip in ${lists[*]}; do
@@ -207,8 +208,9 @@ function guess_docker_daemon_ip() {
 }
 
 function install_docker() {
+    local os_release_name
     if ! which docker 1>/dev/null 2>/dev/null; then
-        local os_release_name=$(os_release)
+        os_release_name=$(os_release)
         if [ "$os_release_name" == "centos" ]; then
             log "yum install -y docker-io"
             yum install -y http://mirrors.yun-idc.com/epel/6/i386/epel-release-6-8.noarch.rpm
@@ -225,7 +227,7 @@ function install_docker() {
 }
 
 function create_enough_loop_device() {
-    file_count=${1:-50}
+    local file_count=${1:-50}
     # Docker start may fail, due to no available loopback devices
     for((i=0; i<file_count; i++)); do
         if [ ! -b /dev/loop$i ]; then
@@ -280,7 +282,7 @@ function os_release() {
 function ssh_apt_update() {
     set +e
     # Sample: ssh_apt_update "ssh -i $ssh_key_file -p $ssh_port -o StrictHostKeyChecking=no root@$ssh_server_ip"
-    ssh_command=${1?}
+    local ssh_command=${1?}
     echo "Run apt-get -y update"
     apt_get_output=$($ssh_command apt-get -y update)
     if echo "$apt_get_output" | "Hash Sum mismatch" 1>/dev/null 2>&1; then
@@ -294,7 +296,8 @@ function ssh_apt_update() {
 }
 
 function update_system() {
-    local os_release_name=$(os_release)
+    local os_release_name
+    os_release_name=$(os_release)
     if [ "$os_release_name" == "ubuntu" ]; then
         log "apt-get -y update"
         rm -rf /var/lib/apt/lists/*
