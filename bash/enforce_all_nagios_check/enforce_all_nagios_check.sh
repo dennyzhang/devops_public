@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-06-24>
-## Updated: Time-stamp: <2016-04-26 22:43:30>
+## Updated: Time-stamp: <2016-05-01 14:03:20>
 ##-------------------------------------------------------------------
 skip_check_pattern=${1:-""}
 ignore_check_warn=${2:-"0"}
@@ -25,7 +25,7 @@ if [ ! -d "$nagios_check_dir" ]; then
     exit 1
 fi
 
-cd "$nagios_check_dir"
+cd "$nagios_check_dir" || exit 1
 
 failed_checks=""
 skipped_checks=""
