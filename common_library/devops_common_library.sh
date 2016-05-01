@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-05-01 14:12:03>
+## Updated: Time-stamp: <2016-05-01 14:48:02>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -251,7 +251,10 @@ function is_container_running(){
 function generate_checksum() {
     local dst_dir=${1?}
     cd "$dst_dir"
-    ls -1 | grep -v checksum.txt | xargs cksum > checksum.txt
+    current_filename=$(basename "${0}")
+    tmp_file="/tmp/${current_filename}_$$"
+    ls -1 | grep -v checksum.txt | xargs cksum > "$tmp_file"
+    mv "$tmp_file" checksum.txt
 }
 
 function os_release() {
