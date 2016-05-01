@@ -17,7 +17,7 @@ echo "hosts_list: $hosts_list"
 
 hosts_arr=(${hosts_list//,/ })
 # update /etc/hosts
-for host in ${hosts_arr[@]}
+for host in ${hosts_arr[*]}
 do
     host_split=(${host//:/ })
     ip=${host_split[0]}
