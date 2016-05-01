@@ -12,7 +12,7 @@
 ## Link: http://www.dennyzhang.com/nagois_monitor_process_memory
 ##
 ## Created : <2014-10-25>
-## Updated: Time-stamp: <2016-04-26 22:49:55>
+## Updated: Time-stamp: <2016-05-02 07:54:25>
 ##-------------------------------------------------------------------
 if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
     [ "$3" = "-c" ] && [ "$4" -gt "0" ]; then
@@ -37,19 +37,19 @@ if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
     fi
 
     memVmSize=$(grep 'VmSize:' "/proc/${pid}/status" | awk -F' ' '{print $2}')
-    memVmSize=$(($memVmSize/1024))
+    memVmSize=$((memVmSize/1024))
 
     memVmRSS=$(grep 'VmRSS:' "/proc/${pid}/status" | awk -F' ' '{print $2}')
-    memVmRSS=$(($memVmRSS/1024))
+    memVmRSS=$((memVmRSS/1024))
 
     if [ "$memVmRSS" -ge "$4" ]; then
-        echo "Memory: CRITICAL VIRT: $memVmSize MB - RES: $memVmRSS MB used!|RES=$(($memVmRSS*1024*1024));;;;"
+        echo "Memory: CRITICAL VIRT: $memVmSize MB - RES: $memVmRSS MB used!|RES=$((memVmRSS*1024*1024));;;;"
         exit 2
     elif [ "$memVmRSS" -ge "$2" ]; then
-        echo "Memory: WARNING VIRT: $memVmSize MB - RES: $memVmRSS MB used!|RES=$(($memVmRSS*1024*1024));;;;"
+        echo "Memory: WARNING VIRT: $memVmSize MB - RES: $memVmRSS MB used!|RES=$((memVmRSS*1024*1024));;;;"
         exit 1
     else
-        echo "Memory: OK VIRT: $memVmSize MB - RES: $memVmRSS MB used!|RES=$(($memVmRSS*1024*1024));;;;"
+        echo "Memory: OK VIRT: $memVmSize MB - RES: $memVmRSS MB used!|RES=$((memVmRSS*1024*1024));;;;"
         exit 0
     fi
 
