@@ -12,7 +12,7 @@
 ## Link: http://www.dennyzhang.com/nagois_monitor_process_cpu
 ##
 ## Created : <2015-02-25>
-## Updated: Time-stamp: <2016-04-26 22:48:51>
+## Updated: Time-stamp: <2016-05-02 07:59:08>
 ##-------------------------------------------------------------------
 if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
     [ "$3" = "-c" ] && [ "$4" -gt "0" ]; then
@@ -23,7 +23,7 @@ if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
         pid=$(cat "$pidfile")
     elif [ "$pidPattern" = "--cmdpattern" ]; then
         cmdpattern=${6?"command line pattern to find out pid"}
-        pid=$(ps -ef | grep "$cmdpattern" | grep -v grep | grep -v check_proc_cpu.sh | head -n 1 | awk -F' ' '{print $2}')
+        pid=$(pgrep -a -f "$cmdpattern" | grep -v check_proc_cpu.sh | head -n 1 | awk -F' ' '{print $1}')
     elif [ "$pidPattern" = "--pid" ]; then
         pid=${6?"pid"}
     else

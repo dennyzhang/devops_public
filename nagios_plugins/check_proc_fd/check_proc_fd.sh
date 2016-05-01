@@ -12,7 +12,7 @@
 ## Link: http://https://github.com/DennyZhang/check_proc_fd
 ##
 ## Created : <2014-12-17>
-## Updated: Time-stamp: <2016-04-26 22:49:14>
+## Updated: Time-stamp: <2016-05-02 07:58:50>
 ##-------------------------------------------------------------------
 if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
     [ "$3" = "-c" ] && [ "$4" -gt "0" ]; then
@@ -23,7 +23,7 @@ if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
         pid=$(cat "$pidfile")
     elif [ "$pidPattern" = "--cmdpattern" ]; then
         cmdpattern=${6?"command line pattern to find out pid"}
-        pid=$(ps -ef | grep "$cmdpattern" | grep -v grep | grep -v check_proc_fd.sh | head -n 1 | awk -F' ' '{print $2}')
+        pid=$(pgrep -a -f "$cmdpattern" | grep -v check_proc_fd.sh | head -n 1 | awk -F' ' '{print $1}')
     elif [ "$pidPattern" = "--pid" ]; then
         pid=${6?"pid"}
     else
