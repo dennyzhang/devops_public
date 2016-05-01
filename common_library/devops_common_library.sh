@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-05-01 13:27:40>
+## Updated: Time-stamp: <2016-05-01 14:12:03>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -171,7 +171,7 @@ function check_network()
         do
             # get http_code
             curl -I -s --connect-timeout $timeout -m $maxtime "$website" | tee website_tmp.txt
-            ret=$(cat website_tmp.txt | grep -q "200 OK" && echo yes || echo no)
+            ret=$(grep "200 OK" website_tmp.txt && echo yes || echo no)
             if [ "X$ret" = "Xyes" ]; then
                 log "$website connect succeed"
                 break
