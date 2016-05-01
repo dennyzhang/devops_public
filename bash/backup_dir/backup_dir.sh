@@ -9,7 +9,7 @@
 ## Description : Backup directory and tar it with timestamp
 ## --
 ## Created : <2015-04-21>
-## Updated: Time-stamp: <2016-05-01 14:10:40>
+## Updated: Time-stamp: <2016-05-01 14:41:17>
 ##-------------------------------------------------------------------
 
 ## Trap exit and dump status
@@ -61,7 +61,7 @@ function ensure_is_root() {
 function backup_dir()
 {
     cd "$DST_DIR"
-    local backup_list=${$BACKUP_DIR//;/ /}
+    local backup_list=${$BACKUP_DIR//;/ }
     for item in ${backup_list[*]}; do
         if [ -f "$item" ] || [ -d "$item" ]; then
             dir_name=$(dirname "$item")
