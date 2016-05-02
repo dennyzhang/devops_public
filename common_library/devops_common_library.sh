@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-05-02 18:24:58>
+## Updated: Time-stamp: <2016-05-02 18:42:52>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -25,6 +25,17 @@ function fail_unless_os() {
     current_os=$(os_release)
     if [[ "$supported_os" != *"$current_os"* ]]; then
         echo "Error: supported OS are $supported_os, while current OS is $current_os" 1>&2
+        exit 1
+    fi
+}
+
+function fail_unless_nubmer() {
+    local var=${1?}
+    local message=${2:-""}
+
+    re='^[0-9]+$'
+    if ! [[ $var =~ $re ]] ; then
+        echo "Error: $var is not a valid number.${message}" 1>&2
         exit 1
     fi
 }
