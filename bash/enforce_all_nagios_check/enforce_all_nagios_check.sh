@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-06-24>
-## Updated: Time-stamp: <2016-05-02 11:02:56>
+## Updated: Time-stamp: <2016-05-02 11:11:11>
 ##-------------------------------------------------------------------
 skip_check_pattern=${1:-""}
 ignore_check_warn=${2:-"0"}
@@ -30,7 +30,7 @@ cd "$nagios_check_dir" || exit 1
 failed_checks=""
 skipped_checks=""
 IFS=$'\n'
-for f in ".*.cfg"; do
+for f in .*.cfg; do
     if grep '^ *host_name *' "$f" 2>/dev/null 1>/dev/null; then
         host_name=$(grep '^ *host_name *' "$f" | awk -F' ' '{print $2}' | head -n 1)
         for check in $(grep '^ *check_command' "$f" | awk -F' ' "{print $2}" | awk -F'!' '{print $2}'); do
