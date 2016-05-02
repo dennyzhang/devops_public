@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-05-02 08:12:22>
+## Updated: Time-stamp: <2016-05-02 15:07:31>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -255,7 +255,12 @@ function generate_checksum() {
     cd "$dst_dir"
     current_filename=$(basename "${0}")
     tmp_file="/tmp/${current_filename}_$$"
-    ls -1 | grep -v checksum.txt | xargs cksum > "$tmp_file"
+    > "$tmp_file"
+    for f in *; do
+        if [ "$f" != "checksum.txt" ]; then
+            cksum "$f" >> "$tmp_file"
+        fi
+    done
     mv "$tmp_file" checksum.txt
 }
 
