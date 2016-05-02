@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-05-02 15:07:31>
+## Updated: Time-stamp: <2016-05-02 18:24:58>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -24,7 +24,7 @@ function fail_unless_os() {
     local supported_os=${1?}
     current_os=$(os_release)
     if [[ "$supported_os" != *"$current_os"* ]]; then
-        echo "Error: supported OS are $supported_os, while current OS is $current_os"
+        echo "Error: supported OS are $supported_os, while current OS is $current_os" 1>&2
         exit 1
     fi
 }
@@ -35,7 +35,7 @@ function ensure_variable_isset() {
     var=${2:-''}
     # TODO support sudo, without source
     if [ -z "$var" ]; then
-        echo "Error: Certain variable($message) is not set"
+        echo "Error: Certain variable($message) is not set" 1>&2
         exit 1
     fi
 }
