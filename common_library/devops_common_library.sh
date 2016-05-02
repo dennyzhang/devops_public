@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-05-02 18:42:52>
+## Updated: Time-stamp: <2016-05-03 07:50:55>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -126,7 +126,7 @@ function git_update_code() {
     fi
 
     cd "$working_dir/$branch_name/$git_repo"
-    git checkout "origin/${branch_name}"
+    git checkout origin ${branch_name}
     git reset --hard
 }
 
