@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-05-03 09:23:19>
+## Updated: Time-stamp: <2016-05-03 14:00:34>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -111,8 +111,9 @@ function git_update_code() {
     local working_dir=${2?}
     local git_repo_url=${3?}
 
+    local git_repo=$(echo "${git_repo_url%.git}" | awk -F '/' '{print $2}')
+
     local code_dir="$working_dir/$branch_name/$git_repo"
-    git_repo=$(echo "${git_repo_url%.git}" | awk -F '/' '{print $2}')
     echo "Git update code for $git_repo_url to $code_dir"
     # checkout code, if absent
     if [ ! -d "$working_dir/$branch_name/$git_repo" ]; then
