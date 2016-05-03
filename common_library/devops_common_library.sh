@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-05-03 07:54:38>
+## Updated: Time-stamp: <2016-05-03 09:23:19>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -111,21 +111,22 @@ function git_update_code() {
     local working_dir=${2?}
     local git_repo_url=${3?}
 
+    local code_dir="$working_dir/$branch_name/$git_repo"
     git_repo=$(echo "${git_repo_url%.git}" | awk -F '/' '{print $2}')
-    echo "Git update code for '$git_repo_url' to $working_dir, branch_name: $branch_name"
+    echo "Git update code for $git_repo_url to $code_dir"
     # checkout code, if absent
     if [ ! -d "$working_dir/$branch_name/$git_repo" ]; then
         mkdir -p "$working_dir/$branch_name"
         cd "$working_dir/$branch_name"
         git clone --depth 1 "$git_repo_url" --branch "$branch_name" --single-branch
     else
-        cd "$working_dir/$branch_name/$git_repo"
+        cd "$code_dir"
         git config remote.origin.url "$git_repo_url"
         # add retry for network turbulence
         git pull origin "$branch_name" || (sleep 2 && git pull origin "$branch_name")
     fi
 
-    cd "$working_dir/$branch_name/$git_repo"
+    cd "$code_dir"
     git checkout "$branch_name"
     git reset --hard
 }
