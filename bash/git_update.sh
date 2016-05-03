@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-15>
-## Updated: Time-stamp: <2016-05-03 14:01:01>
+## Updated: Time-stamp: <2016-05-03 16:20:08>
 ##-------------------------------------------------------------------
 working_dir=${1?}
 git_repo_url=${2?}
@@ -21,7 +21,8 @@ function git_update_code() {
     local working_dir=${2?}
     local git_repo_url=${3?}
 
-    local git_repo=$(echo "${git_repo_url%.git}" | awk -F '/' '{print $2}')
+    local git_repo
+    git_repo=$(echo "${git_repo_url%.git}" | awk -F '/' '{print $2}')
 
     local code_dir="$working_dir/$branch_name/$git_repo"
     echo "Git update code for $git_repo_url to $code_dir"
