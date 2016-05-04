@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-05-04 09:22:17>
+## Updated: Time-stamp: <2016-05-04 20:24:05>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -49,6 +49,16 @@ function ensure_variable_isset() {
         echo "Error: Certain variable($message) is not set" 1>&2
         exit 1
     fi
+}
+
+function source_string() {
+    # Global variables needed to enable the current script
+    local env_parameters=${1?}
+    IFS=$'\n'
+    for env_variable in $env_parameters; do
+        eval "$env_variable"
+    done
+    unset IFS
 }
 
 function exit_if_error() {
