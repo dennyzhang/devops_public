@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-05-03 16:20:23>
+## Updated: Time-stamp: <2016-05-04 09:22:17>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -121,16 +121,23 @@ function git_update_code() {
         mkdir -p "$working_dir/$branch_name"
         cd "$working_dir/$branch_name"
         git clone --depth 1 "$git_repo_url" --branch "$branch_name" --single-branch
+        cd "$code_dir"
+        git tag -l
+        git config --global user.email "jenkins@devops.com"
+        git config --global user.name "Jenkins Auto"
     else
         cd "$code_dir"
+        git tag -l
         git config remote.origin.url "$git_repo_url"
+        git config --global user.email "jenkins@devops.com"
+        git config --global user.name "Jenkins Auto"
         # add retry for network turbulence
         git pull origin "$branch_name" || (sleep 2 && git pull origin "$branch_name")
     fi
 
     cd "$code_dir"
     git checkout "$branch_name"
-    git reset --hard
+    # git reset --hard
 }
 
 ############################ Section: network ################################
