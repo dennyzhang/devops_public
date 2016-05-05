@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-04-26 22:44:12>
+## Updated: Time-stamp: <2016-05-05 16:42:42>
 ##-------------------------------------------------------------------
 ################################################################
 # How To Use
@@ -58,8 +58,16 @@ function enable_chef_deployment() {
     inject_git_deploy_key "/root/.ssh/git_id_rsa" "$git_deploy_key"
     git_ssh_config "/root/.ssh/config" "$ssh_config_content"
     inject_ssh_authorized_keys "$ssh_email" "$ssh_public_key"
-
+    install_chef "$chef_version"
 }
+
+function install_chef() {
+    local chef_version=${1?}
+    if ! which chef-client 1>/dev/null 2>&1; then
+        (echo "version=$chef_version"; curl -L https://www.opscode.com/chef/install.sh) |  bash
+    fi
+}
+
 function install_packages() {
     local package=${1?}
     local binary_name=${2?}
@@ -114,5 +122,7 @@ function inject_ssh_authorized_keys() {
     fi
 }
 ####################################
+export chef_version="12.4.1"
 enable_chef_deployment "$git_update_url" "$ssh_email" "$ssh_public_key" "$git_deploy_key" "$ssh_config_content"
+echo "Action Done"
 ## File : enable_chef_depoyment.sh ends
