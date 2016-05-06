@@ -9,12 +9,12 @@
 ## Description :
 ## --
 ## Created : <2016-01-02>
-## Updated: Time-stamp: <2016-04-26 22:55:43>
+## Updated: Time-stamp: <2016-05-06 14:09:47>
 ##-------------------------------------------------------------------
-if ! which docker 2>/dev/null 1>/dev/null; then
+if ! which docker 1>/dev/null 2>&1; then
     echo "Skip, since docker is not installed"
 else
-    if ! sudo service docker status 2>/dev/null 1>/dev/null; then
+    if ! sudo service docker status 1>/dev/null 2>&1; then
         echo "Start docker daemon"
         sudo service docker start
     fi
