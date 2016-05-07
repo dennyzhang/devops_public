@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-05-04 20:24:05>
+## Updated: Time-stamp: <2016-05-07 09:45:37>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -132,12 +132,11 @@ function git_update_code() {
         cd "$working_dir/$branch_name"
         git clone --depth 1 "$git_repo_url" --branch "$branch_name" --single-branch
         cd "$code_dir"
-        git tag -l
         git config --global user.email "jenkins@devops.com"
         git config --global user.name "Jenkins Auto"
     else
         cd "$code_dir"
-        git tag -l
+        git ls-remote --tags
         git config remote.origin.url "$git_repo_url"
         git config --global user.email "jenkins@devops.com"
         git config --global user.name "Jenkins Auto"
