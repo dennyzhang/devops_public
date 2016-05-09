@@ -7,31 +7,33 @@
 ##     ./enforce_all_nagios_check.sh -s "check_.*_log|check_memory|check_tomcat_cpu"
 ##
 ## Created : <2015-06-24>
-## Updated: Time-stamp: <2016-05-09 22:14:28>
+## Updated: Time-stamp: <2016-05-09 22:26:16>
 ##-------------------------------------------------------------------
 
 function check_one_server(){
     local nagios_check_dir=${1}
     local skip_check_pattern=${2}
-    cd $nagios_check_dir
+    cd "$nagios_check_dir"
     
     local failed_checks=""
     local skipped_checks=""
     IFS=$'\n'
-    for f in `ls -1 *.cfg`; do
-        if grep '^ *host_name *' $f 2>/dev/null 1>/dev/null; then
-            host_name=$(grep '^ *host_name *' $f | awk -F' ' '{print $2}' | head -n 1)
-            for check in `grep '^ *check_command' $f | awk -F' ' '{print $2}' | awk -F'!' '{print $2}'`; do
+    for f in .*.cfg; do
+        if grep '^ *host_name *' "$f" 1>/dev/null 2>&1; then
+            host_name=$(grep '^ *host_name *' "$f" | awk -F' ' '{print $2}' | head -n 1)
+            while IFS= read -r line
+            do
+                check=$(echo "$line" | awk -F' ' "{print $2}" | awk -F'!' '{print $2}')
                 command="/usr/lib/nagios/plugins/check_nrpe -H $host_name -c $check"
                 if [ -n "$skip_check_pattern" ]; then
-                    if echo $check | grep -iE "$skip_check_pattern" 2>/dev/null 1>/dev/null; then
+                    if echo "$check" | grep -iE "$skip_check_pattern" 1>/dev/null 2>&1; then
                         echo "skip check: $command"
                         skipped_checks="${skipped_checks}${check};"
                         continue
                     fi
                 fi
-                echo $command
-                output=`eval $command`
+                echo "$command"
+                output=$(eval "$command")
                 errcode=$?
                 # check fail
                 if [ $errcode -ge 2 ]; then
@@ -40,7 +42,7 @@ function check_one_server(){
                 fi
                 
                 if [ $errcode -eq 1 ]; then
-                    if [ "$ignore_check_warn" = "1" ] && echo $output | grep WARN 2>&1 1>/dev/null; then
+                    if [ "$ignore_check_warn" = "1" ] && echo "$output" | grep WARN 1>/dev/null 2>&1; then
                         echo "skip failed warn check: $command"
                         skiped_checks="${skiped_checks}${check};"
                         continue
@@ -49,7 +51,7 @@ function check_one_server(){
                         echo "Error check: $check. output: $output"
                     fi
                 fi
-            done
+            done < <(grep '^ *check_command' < "$f")
         fi
     done
     unset IFS
@@ -68,7 +70,7 @@ function check_one_server(){
     fi
 }
 
-while [[ $# > 1 ]]
+while [[ $# -gt 1 ]]
 do
     opt="$1"
     case $opt in
@@ -114,7 +116,8 @@ if [ -z "${conf_check_dir}" ]; then
 fi
 
 if [ -z "${server_names}" ]; then
-    server_list=`ls -l /etc/nagios3/conf.d/ | grep '^d' | awk '{print $NF}'`
+    files=$(ls -l /etc/nagios3/conf.d/)
+    server_list=$(echo "$files" | grep '^d' | awk '{print $NF}')
 else
     server_list=(${server_names//,/ })    
 fi
@@ -124,7 +127,7 @@ nagios_check_result=0
 echo -ne "==============================================================================\n"
 echo -ne "                             start to nagios checks                           \n"
 echo -ne "==============================================================================\n"
-for server in ${server_list[@]}
+for server in ${server_list[*]}
 do
     nagios_check_dir="$conf_check_dir/$server"
     cd $nagios_check_dir
@@ -134,7 +137,7 @@ do
         continue
     fi
     my_result="failed"
-    check_one_server $nagios_check_dir $skip_check_pattern
+    check_one_server $nagios_check_dir "$skip_check_pattern"
 
     if [ $my_result != "success" ];then
         nagios_check_result=1
