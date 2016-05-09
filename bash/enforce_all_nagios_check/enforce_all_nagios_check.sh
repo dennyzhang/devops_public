@@ -7,7 +7,7 @@
 ##     ./enforce_all_nagios_check.sh -s "check_.*_log|check_memory|check_tomcat_cpu"
 ##
 ## Created : <2015-06-24>
-## Updated: Time-stamp: <2016-05-09 22:51:38>
+## Updated: Time-stamp: <2016-05-09 22:53:13>
 ##-------------------------------------------------------------------
 
 function check_one_server(){
@@ -130,7 +130,7 @@ echo -ne "======================================================================
 for server in ${server_list[*]}
 do
     nagios_check_dir="$conf_check_dir/$server"
-    cd "$nagios_check_dir" | exit 1
+    cd "$nagios_check_dir" || exit 1
     echo -ne "---------------------------$server-----------------------------\n"
     if [ ! -d "$nagios_check_dir" ]; then
         echo "ERROR: $nagios_check_dir doesn't exist"
