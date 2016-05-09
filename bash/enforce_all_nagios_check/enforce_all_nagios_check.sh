@@ -7,13 +7,13 @@
 ##     ./enforce_all_nagios_check.sh -s "check_.*_log|check_memory|check_tomcat_cpu"
 ##
 ## Created : <2015-06-24>
-## Updated: Time-stamp: <2016-05-09 22:26:16>
+## Updated: Time-stamp: <2016-05-09 22:51:38>
 ##-------------------------------------------------------------------
 
 function check_one_server(){
     local nagios_check_dir=${1}
     local skip_check_pattern=${2}
-    cd "$nagios_check_dir"
+    cd "$nagios_check_dir" || exit 1
     
     local failed_checks=""
     local skipped_checks=""
@@ -130,14 +130,14 @@ echo -ne "======================================================================
 for server in ${server_list[*]}
 do
     nagios_check_dir="$conf_check_dir/$server"
-    cd $nagios_check_dir
+    cd "$nagios_check_dir" | exit 1
     echo -ne "---------------------------$server-----------------------------\n"
-    if [ ! -d $nagios_check_dir ]; then
+    if [ ! -d "$nagios_check_dir" ]; then
         echo "ERROR: $nagios_check_dir doesn't exist"
         continue
     fi
     my_result="failed"
-    check_one_server $nagios_check_dir "$skip_check_pattern"
+    check_one_server "$nagios_check_dir" "$skip_check_pattern"
 
     if [ $my_result != "success" ];then
         nagios_check_result=1
