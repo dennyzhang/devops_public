@@ -1,11 +1,15 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
+## @copyright 2016 DennyZhang.com
+## Licensed under MIT
+##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##
 ## File : backup_dir.sh
 ## Author : Denny <denny@dennyzhang.com>
 ## Description : Backup directory and tar it with timestamp
 ## --
 ## Created : <2015-04-21>
-## Updated: Time-stamp: <2016-04-09 09:35:43>
+## Updated: Time-stamp: <2016-05-01 14:41:17>
 ##-------------------------------------------------------------------
 
 ## Trap exit and dump status
@@ -13,35 +17,37 @@ function shell_exit() {
     if [ $? -eq 0 ]; then
         log "Backup operation is done"
         log "########## Backup operation is done #############################"
-        echo "State: DONE Timestamp: $(current_time)" >> $STATUS_FILE
+        echo "State: DONE Timestamp: $(current_time)" >> "$STATUS_FILE"
     else
         log "ERROR: Backup operation fail"
         log "########## ERROR: Backup operation fail #########################"
-        echo "State: FAILED Timestamp: $(current_time)" >> $STATUS_FILE
+        echo "State: FAILED Timestamp: $(current_time)" >> "$STATUS_FILE"
         # TODO: send out email
         exit 1
     fi
 }
 ################################################################
 function log() {
-    local msg=${1?}
-    echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n"
-    if [ -n "$BACKUP_LOG_FILE" ]; then
-        echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n" >> $BACKUP_LOG_FILE
+    local msg=$*
+    date_timestamp=$(date +['%Y-%m-%d %H:%M:%S'])
+    echo -ne "$date_timestamp $msg\n"
+
+    if [ -n "$LOG_FILE" ]; then
+        echo -ne "$date_timestamp $msg\n" >> "$LOG_FILE"
     fi
 }
 
 function tar_dir() {
     local dir=${1?}
     local tar_file=${2?}
-    working_dir=`dirname $dir`
-    cd $working_dir
-    log "tar -zcf $tar_file `basename $dir`"
-    tar -zcf $tar_file `basename $dir`
+    working_dir=$(dirname "$dir")
+    cd "$working_dir"
+    log "tar -zcf $tar_file $(basename "$dir")"
+    tar -zcf "$tar_file" "$(basename "$dir")"
 }
 
 function current_time() {
-    echo `date '+%Y-%m-%d-%H%M%S'`
+    date '+%Y-%m-%d-%H%M%S'
 }
 
 function ensure_is_root() {
@@ -54,34 +60,34 @@ function ensure_is_root() {
 ################################################################
 function backup_dir()
 {
-    cd $DST_DIR
-    declare -a backup_list=$(echo $BACKUP_DIR | tr ';' ' ')
+    cd "$DST_DIR"
+    local backup_list=${$BACKUP_DIR//;/ }
     for item in ${backup_list[*]}; do
-        if [ -f $item ] || [ -d $item ]; then
-            dir_name=$(dirname $item)
+        if [ -f "$item" ] || [ -d "$item" ]; then
+            dir_name=$(dirname "$item")
             mkdir -p "$DST_DIR/$backup_id/$dir_name/"
             log "cp -r $item $DST_DIR/$backup_id/$dir_name/"
-            cp -r $item "$DST_DIR/$backup_id/$dir_name/"
+            cp -r "$item" "$DST_DIR/$backup_id/$dir_name/"
         fi
     done;
 }
 
 function archieve_backup() {
     set -e
-    cd $DST_DIR
-    tar_dir $backup_id $backup_id.tar.gz
+    cd "$DST_DIR"
+    tar_dir "$backup_id" "${backup_id}.tar.gz"
     log "rm -rf $backup_id"
-    rm -rf $backup_id
+    rm -rf "$backup_id"
 }
 
 function expire_old_backup() {
     set -e
-    cd $DST_DIR
-    if [ $RETENTION_DAYS -eq 0 ]; then
+    cd "$DST_DIR"
+    if [ "$RETENTION_DAYS" -eq 0 ]; then
         log "RETENTION_DAYS Parameter is 0, skip backup set retention"
     else
         log "find $DST_DIR -name \"*.gz\" -mtime +$RETENTION_DAYS -and -not -type d -delete"
-        find $DST_DIR -name "*.gz" -mtime +$RETENTION_DAYS -and -not -type d -delete
+        find "$DST_DIR" -name "*.gz" -mtime "+$RETENTION_DAYS" -and -not -type d -delete
     fi
 }
 
@@ -106,19 +112,19 @@ ensure_is_root
 trap shell_exit SIGHUP SIGINT SIGTERM 0
 
 # source file
-if [ -f $BACKUP_RC_FILE ]; then
-    . $BACKUP_RC_FILE
+if [ -f "$BACKUP_RC_FILE" ]; then
+    . "$BACKUP_RC_FILE"
 fi
 
 set_default_value
 
 if [ -n "$BACKUP_LOG_FILE" ]; then
-    log_dir=`dirname $BACKUP_LOG_FILE`
-    [ -d $log_dir ] || mkdir -p $log_dir
+    log_dir=$(dirname "$BACKUP_LOG_FILE")
+    [ -d "$log_dir" ] || mkdir -p "$log_dir"
 fi
 
 # Format: +%Y-%m-%d-%H%M%S_$pid
-backup_id="`date '+%Y%m%d.%H%M%S'`"
+backup_id="$(date '+%Y%m%d.%H%M%S')"
 if [ -n "$BACKUP_SET_PREFIX" ]; then
     backup_id="$BACKUP_SET_PREFIX.$backup_id"
 fi

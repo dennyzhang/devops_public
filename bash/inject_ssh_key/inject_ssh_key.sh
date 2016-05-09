@@ -1,11 +1,15 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
+## @copyright 2016 DennyZhang.com
+## Licensed under MIT
+##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##
 ## File : inject_ssh_key.sh
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2015-05-13>
-## Updated: Time-stamp: <2016-04-09 09:35:43>
+## Updated: Time-stamp: <2016-05-01 13:59:56>
 ##-------------------------------------------------------------------
 user_home_list=${1?"To who the ssh key shall be injected. Users are separated by comma"}
 ssh_email=${2?"email associated to this ssh key"}
@@ -17,23 +21,23 @@ function inject_ssh_key() {
     local ssh_email=${3?}
     local ssh_key=${4?}
 
-    if [ ! -d $home_dir/.ssh ] ; then
+    if [ ! -d "${home_dir}/.ssh" ] ; then
         echo "sudo mkdir -p $home_dir/.ssh"
-        mkdir -p $home_dir/.ssh
-        chown $username:$username $home_dir/.ssh
+        mkdir -p "${home_dir}/.ssh"
+        chown "${username}:${username}" "${home_dir}/.ssh"
     fi
 
-    if [ ! -f $home_dir/.ssh/authorized_keys ]; then
+    if [ ! -f "${home_dir}/.ssh/authorized_keys" ]; then
         echo "touch $home_dir/.ssh/authorized_keys"
-        touch $home_dir/.ssh/authorized_keys
-        chmod 644 $home_dir/.ssh/authorized_keys
-        chown $username:$username $home_dir/.ssh/authorized_keys
+        touch "${home_dir}/.ssh/authorized_keys"
+        chmod 644 "${home_dir}/.ssh/authorized_keys"
+        chown "${username}:${username}" "${home_dir}/.ssh/authorized_keys"
     fi
 
-    if ! grep $ssh_key $home_dir/.ssh/authorized_keys 1>/dev/null; then
+    if ! grep "$ssh_key" "${home_dir}/.ssh/authorized_keys" 1>/dev/null; then
         command="echo \"ssh-rsa $ssh_key $ssh_email\" >> $home_dir/.ssh/authorized_keys"
-        echo $command
-        eval $command
+        echo "$command"
+        eval "$command"
     else
         echo "Skip. ssh key is already in $home_dir/.ssh/authorized_keys"
     fi
@@ -46,11 +50,11 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 
-declare -a username_list=$(echo $user_home_list | tr ',' ' ')
+username_list=${user_home_list//,/ /}
 for item in ${username_list[*]}; do
-    user_home=($(echo $item | tr ':', ' '))
+    user_home=(${$item//:/ /})
     username=${user_home[0]}
     home_dir=${user_home[1]}
-    inject_ssh_key $username $home_dir $ssh_email $ssh_key
+    inject_ssh_key "$username" "$home_dir" "$ssh_email" "$ssh_key"
 done
 ## File : inject_ssh_key.sh ends

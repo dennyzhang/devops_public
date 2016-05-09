@@ -1,12 +1,15 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
+## Licensed under MIT
+##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##
 ## File : devops_common_library.sh
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-04-18 10:48:09>
+## Updated: Time-stamp: <2016-05-07 09:45:37>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -21,20 +24,41 @@ function fail_unless_os() {
     local supported_os=${1?}
     current_os=$(os_release)
     if [[ "$supported_os" != *"$current_os"* ]]; then
-        echo "Error: supported OS are $supported_os, while current OS is $current_os"
+        echo "Error: supported OS are $supported_os, while current OS is $current_os" 1>&2
+        exit 1
+    fi
+}
+
+function fail_unless_nubmer() {
+    local var=${1?}
+    local message=${2:-""}
+
+    re='^[0-9]+$'
+    if ! [[ $var =~ $re ]] ; then
+        echo "Error: $var is not a valid number.${message}" 1>&2
         exit 1
     fi
 }
 
 function ensure_variable_isset() {
     # Sample: ensure_variable_isset "chef_client_rb must be set" "$chef_client_rb"
-    message=${1?"parameter name should be given"}    
+    message=${1?"parameter name should be given"}
     var=${2:-''}
     # TODO support sudo, without source
     if [ -z "$var" ]; then
-        echo "Error: Certain variable($message) is not set"
+        echo "Error: Certain variable($message) is not set" 1>&2
         exit 1
     fi
+}
+
+function source_string() {
+    # Global variables needed to enable the current script
+    local env_parameters=${1?}
+    IFS=$'\n'
+    for env_variable in $env_parameters; do
+        eval "$env_variable"
+    done
+    unset IFS
 }
 
 function exit_if_error() {
@@ -45,12 +69,14 @@ function exit_if_error() {
 
 function log() {
     local msg=$*
-    echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n"
-    
+    date_timestamp=$(date +['%Y-%m-%d %H:%M:%S'])
+    echo -ne "$date_timestamp $msg\n"
+
     if [ -n "$LOG_FILE" ]; then
-        echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n" >> $LOG_FILE
+        echo -ne "$date_timestamp $msg\n" >> "$LOG_FILE"
     fi
 }
+
 ########################### Section: String Manipulation ########################
 function remove_hardline() {
     # handle \n\r of Windows OS
@@ -66,35 +92,27 @@ function string_strip_whitespace() {
     echo "$str"
 }
 
-function list_strip_comments() {
-    my_list=${1?}
-    my_list=$(echo "$my_list" | grep -v '^#')
-    echo "$my_list"
+function string_strip_comments() {
+    my_str=${1?}
+    my_str=$(echo "$my_str" | grep -v '^ *#')
+    echo "$my_str"
 }
 ############################ Section: git ################################
 function current_git_sha() {
     set -e
     local src_dir=${1?}
-    cd $src_dir
+    cd "$src_dir"
     sha=$(git log -n 1 | head -n 1 | grep commit | head -n 1 | awk -F' ' '{print $2}')
-    echo $sha
+    echo "$sha"
 }
 
 function git_log() {
     local code_dir=${1?}
     local tail_count=${2:-"10"}
-    cd $code_dir
+    cd "$code_dir"
     command="git log -n $tail_count --pretty=format:\"%h - %an, %ar : %s\""
     echo -e "\n\nShow latest git commits: $command"
-    eval $command
-}
-
-function current_git_sha() {
-    set -e
-    local src_dir=${1?}
-    cd $src_dir
-    sha=$(git log -n 1 | head -n 1 | grep commit | head -n 1 | awk -F' ' '{print $2}')
-    echo $sha
+    eval "$command"
 }
 
 function git_update_code() {
@@ -102,85 +120,93 @@ function git_update_code() {
     local branch_name=${1?}
     local working_dir=${2?}
     local git_repo_url=${3?}
-    local git_pull_outside=${4:-"no"}
 
-    git_repo=$(echo ${git_repo_url%.git} | awk -F '/' '{print $2}')
-    echo "Git update code for '$git_repo_url' to $working_dir, branch_name: $branch_name"
+    local git_repo
+    git_repo=$(echo "${git_repo_url%.git}" | awk -F '/' '{print $2}')
+
+    local code_dir="$working_dir/$branch_name/$git_repo"
+    echo "Git update code for $git_repo_url to $code_dir"
     # checkout code, if absent
-    if [ ! -d $working_dir/$branch_name/$git_repo ]; then
-        mkdir -p $working_dir/$branch_name
-        cd $working_dir/$branch_name
-        git clone --depth 1 $git_repo_url --branch $branch_name --single-branch
+    if [ ! -d "$working_dir/$branch_name/$git_repo" ]; then
+        mkdir -p "$working_dir/$branch_name"
+        cd "$working_dir/$branch_name"
+        git clone --depth 1 "$git_repo_url" --branch "$branch_name" --single-branch
+        cd "$code_dir"
+        git config --global user.email "jenkins@devops.com"
+        git config --global user.name "Jenkins Auto"
     else
-        cd $working_dir/$branch_name/$git_repo
-        git config remote.origin.url $git_repo_url
+        cd "$code_dir"
+        git ls-remote --tags
+        git config remote.origin.url "$git_repo_url"
+        git config --global user.email "jenkins@devops.com"
+        git config --global user.name "Jenkins Auto"
         # add retry for network turbulence
-        git pull origin $branch_name || (sleep 2 && git pull origin $branch_name)
+        git pull origin "$branch_name" || (sleep 2 && git pull origin "$branch_name")
     fi
 
-    cd $working_dir/$branch_name/$git_repo
-    git checkout $branch_name
-    git reset --hard
+    cd "$code_dir"
+    git checkout "$branch_name"
+    # git reset --hard
 }
 
 ############################ Section: network ################################
 function is_port_listening()
 {
     port=${1?}
-    lsof -i tcp:$port | grep LISTEN 1>/dev/null
+    lsof -i "tcp:${port}" | grep LISTEN 1>/dev/null
 }
 
 function check_ssh_available() {
     # Sample: if [ "x$(check_ssh_available $server_ip $server_port)" = "xyes" ] ...
     local server_ip=${1?}
     local server_port=${2?}
-    nc -w 1 $server_ip $server_port >/dev/null 2>&1 && echo yes || echo no
+    nc -w 1 "$server_ip" "$server_port" 1>/dev/null 2>&1 && echo yes || echo no
 }
 
 function check_url_200() {
     url=${1?}
-    if curl -I $url | grep "HTTP/1.* 200 OK" 2>/dev/null 1>/dev/null; then
+    if curl -I "$url" | grep "HTTP/1.* 200 OK" 2>/dev/null 1>/dev/null; then
         echo "yes"
     else
         echo "no"
     fi
 }
 
-function check_network() 
+function check_network()
 {
     # The maximum number of trying to connect website
     local max_retries_count=${1:-3}
-    
+
     # Check website whether can connect, multiple websites, separated by spaces
     local website_list=${2:-"https://bitbucket.org/"}
 
     # Connect timeout
     local timeout=7
-    
+
     # The maximum allowable time data transmission
     local maxtime=10
-    
+
     # If the website cannnt connect,will sleep several second
     local sleep_time=5
-    
+
     # If any one website cannt connect,the flag value is false, otherwise is true.
     local check_flag=true
-    
+
     log "max_retries_count=$max_retries_count, website_list=$website_list"
-    
+
     connect_failed_website=""
     for website in ${website_list[*]}
     do
-        for ((i=1; i <= $max_retries_count; i++))
+        for ((i=1; i <=max_retries_count; i++))
         do
             # get http_code
-            curl -I -s --connect-timeout $timeout -m $maxtime $website | tee website_tmp.txt
-            ret=`cat website_tmp.txt | grep -q "200 OK" && echo yes || echo no`
+            curl -I -s --connect-timeout $timeout -m $maxtime "$website" | tee website_tmp.txt
+            ret=$(grep "200 OK" website_tmp.txt && echo yes || echo no)
             if [ "X$ret" = "Xyes" ]; then
                 log "$website connect succeed"
                 break
             fi
-            if [ $i -eq $max_retries_count ];then
+            if [ "$i" = "$max_retries_count" ];then
                 log "$website connect failed"
                 log "The curl result:"
                 cat website_tmp.txt
@@ -199,20 +225,22 @@ function check_network()
 ############################ Section: docker ################################
 function guess_docker_daemon_ip() {
     local docker_daemon_ip=""
+    local lists
     lists="172.18.42.1 172.17.42.1 172.18.0.1 172.17.0.1 192.168.50.10"
     lists=($lists)
     for ip in ${lists[*]}; do
-        if ping -c3 $ip 2>/dev/null 1>/dev/null; then
+        if ping -c3 "$ip" 2>/dev/null 1>/dev/null; then
             docker_daemon_ip=$ip
             break
         fi
     done
-    echo $docker_daemon_ip
+    echo "$docker_daemon_ip"
 }
 
 function install_docker() {
+    local os_release_name
     if ! which docker 1>/dev/null 2>/dev/null; then
-        local os_release_name=$(os_release)
+        os_release_name=$(os_release)
         if [ "$os_release_name" == "centos" ]; then
             log "yum install -y docker-io"
             yum install -y http://mirrors.yun-idc.com/epel/6/i386/epel-release-6-8.noarch.rpm
@@ -229,9 +257,9 @@ function install_docker() {
 }
 
 function create_enough_loop_device() {
-    file_count=${1:-50}
+    local file_count=${1:-50}
     # Docker start may fail, due to no available loopback devices
-    for((i=0; i< $file_count; i++)); do
+    for((i=0; i<file_count; i++)); do
         if [ ! -b /dev/loop$i ]; then
             echo "mknod -m0660 /dev/loop$i b 7 $i"
             mknod -m0660 /dev/loop$i b 7 $i
@@ -241,8 +269,8 @@ function create_enough_loop_device() {
 
 function is_container_running(){
     local container_name=${1?}
-    if docker ps -a | grep $container_name 1>/dev/null 2>/dev/null; then
-        if docker ps | grep $container_name 1>/dev/null 2>/dev/null; then
+    if docker ps -a | grep "$container_name" 1>/dev/null 2>/dev/null; then
+        if docker ps | grep "$container_name" 1>/dev/null 2>/dev/null; then
             echo "running"
         else
             echo "dead"
@@ -254,8 +282,16 @@ function is_container_running(){
 ############################ Section: general ################################
 function generate_checksum() {
     local dst_dir=${1?}
-    cd $dst_dir
-    ls -1 | grep -v checksum.txt | xargs cksum > checksum.txt
+    cd "$dst_dir"
+    current_filename=$(basename "${0}")
+    tmp_file="/tmp/${current_filename}_$$"
+    > "$tmp_file"
+    for f in *; do
+        if [ "$f" != "checksum.txt" ]; then
+            cksum "$f" >> "$tmp_file"
+        fi
+    done
+    mv "$tmp_file" checksum.txt
 }
 
 function os_release() {
@@ -281,10 +317,10 @@ function os_release() {
 function ssh_apt_update() {
     set +e
     # Sample: ssh_apt_update "ssh -i $ssh_key_file -p $ssh_port -o StrictHostKeyChecking=no root@$ssh_server_ip"
-    ssh_command=${1?}
+    local ssh_command=${1?}
     echo "Run apt-get -y update"
     apt_get_output=$($ssh_command apt-get -y update)
-    if echo "$apt_get_output" | "Hash Sum mismatch" 2>&1 2>/dev/null; then
+    if echo "$apt_get_output" | "Hash Sum mismatch" 1>/dev/null 2>&1; then
         echo "apt-get update fail with complain of 'Hash Sum mismatch'"
         echo "rm -rf /var/lib/apt/lists/*"
         $ssh_command "rm -rf /var/lib/apt/lists/*"
@@ -295,7 +331,8 @@ function ssh_apt_update() {
 }
 
 function update_system() {
-    local os_release_name=$(os_release)
+    local os_release_name
+    os_release_name=$(os_release)
     if [ "$os_release_name" == "ubuntu" ]; then
         log "apt-get -y update"
         rm -rf /var/lib/apt/lists/*

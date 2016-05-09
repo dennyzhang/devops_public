@@ -1,14 +1,18 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
+## @copyright 2016 DennyZhang.com
+## Licensed under MIT
+##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##
 ## File: check_proc_mem.sh
-## Author : Denny <denny.zhang001@gmail.com>
+## Author : Denny <denny@dennyzhang.com>
 ## Description :
 ## --
 ##
 ## Link: http://www.dennyzhang.com/nagois_monitor_process_memory
 ##
 ## Created : <2014-10-25>
-## Updated: Time-stamp: <2015-05-22 20:01:41>
+## Updated: Time-stamp: <2016-05-02 07:58:23>
 ##-------------------------------------------------------------------
 if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
     [ "$3" = "-c" ] && [ "$4" -gt "0" ]; then
@@ -16,10 +20,10 @@ if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
 
     if [ "$pidPattern" = "--pidfile" ]; then
         pidfile=${6?"pidfile to get pid"}
-        pid=$(cat $pidfile)
+        pid=$(cat "$pidfile")
     elif [ "$pidPattern" = "--cmdpattern" ]; then
         cmdpattern=${6?"command line pattern to find out pid"}
-        pid=$(ps -ef | grep "$cmdpattern" | grep -v grep | grep -v check_proc_mem.sh | head -n 1 | awk -F' ' '{print $2}')
+        pid=$(pgrep -a -f "$cmdpattern" | grep -v check_proc_mem.sh | head -n 1 | awk -F' ' '{print $1}')
     elif [ "$pidPattern" = "--pid" ]; then
         pid=${6?"pid"}
     else
@@ -32,21 +36,21 @@ if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
         exit 2
     fi
 
-    memVmSize=`grep 'VmSize:' /proc/$pid/status | awk -F' ' '{print $2}'`
-    memVmSize=$(($memVmSize/1024))
+    memVmSize=$(grep 'VmSize:' "/proc/${pid}/status" | awk -F' ' '{print $2}')
+    memVmSize=$((memVmSize/1024))
 
-    memVmRSS=`grep 'VmRSS:' /proc/$pid/status | awk -F' ' '{print $2}'`
-    memVmRSS=$(($memVmRSS/1024))
+    memVmRSS=$(grep 'VmRSS:' "/proc/${pid}/status" | awk -F' ' '{print $2}')
+    memVmRSS=$((memVmRSS/1024))
 
     if [ "$memVmRSS" -ge "$4" ]; then
-        echo "Memory: CRITICAL VIRT: $memVmSize MB - RES: $memVmRSS MB used!|RES=$(($memVmRSS*1024*1024));;;;"
-        $(exit 2)
+        echo "Memory: CRITICAL VIRT: $memVmSize MB - RES: $memVmRSS MB used!|RES=$((memVmRSS*1024*1024));;;;"
+        exit 2
     elif [ "$memVmRSS" -ge "$2" ]; then
-        echo "Memory: WARNING VIRT: $memVmSize MB - RES: $memVmRSS MB used!|RES=$(($memVmRSS*1024*1024));;;;"
-        $(exit 1)
+        echo "Memory: WARNING VIRT: $memVmSize MB - RES: $memVmRSS MB used!|RES=$((memVmRSS*1024*1024));;;;"
+        exit 1
     else
-        echo "Memory: OK VIRT: $memVmSize MB - RES: $memVmRSS MB used!|RES=$(($memVmRSS*1024*1024));;;;"
-        $(exit 0)
+        echo "Memory: OK VIRT: $memVmSize MB - RES: $memVmRSS MB used!|RES=$((memVmRSS*1024*1024));;;;"
+        exit 0
     fi
 
 else
@@ -60,7 +64,7 @@ else
     echo "check_proc_mem.sh -w 1024 -c 2048 --pid 11325"
     echo "check_proc_mem.sh -w 1024 -c 2048 --cmdpattern \"tomcat7.*java.*Dcom\""
     echo ""
-    echo "Copyright (C) 2014 DennyZhang (denny.zhang001@gmail.com)"
+    echo "Copyright (C) 2014 DennyZhang (denny@dennyzhang.com)"
     exit
 fi
 ## File - check_proc_mem.sh ends

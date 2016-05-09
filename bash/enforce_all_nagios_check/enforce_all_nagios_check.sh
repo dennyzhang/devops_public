@@ -7,7 +7,7 @@
 ##     ./enforce_all_nagios_check.sh -s "check_.*_log|check_memory|check_tomcat_cpu"
 ##
 ## Created : <2015-06-24>
-## Updated: Time-stamp: <2016-04-18 17:47:51>
+## Updated: Time-stamp: <2016-05-09 22:14:28>
 ##-------------------------------------------------------------------
 
 function check_one_server(){

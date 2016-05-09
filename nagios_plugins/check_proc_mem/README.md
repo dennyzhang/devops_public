@@ -18,7 +18,7 @@ Below: If tomcat use more than 1024MB resident memory, send warning
 ./check_proc_mem.sh -w 1024 -c 2048 --pid 11325
 ./check_proc_mem.sh -w 1024 -c 2048 --cmdpattern "tomcat7.*java.*Dcom"
 
-Copyright (C) 2014 DennyZhang (denny.zhang001@gmail.com)
+Copyright (C) 2014 DennyZhang (denny@dennyzhang.com)
 ```
 
 Sample output:
