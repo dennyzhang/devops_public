@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-15>
-## Updated: Time-stamp: <2016-05-07 09:45:13>
+## Updated: Time-stamp: <2016-05-14 08:13:03>
 ##-------------------------------------------------------------------
 working_dir=${1?}
 git_repo_url=${2?}
@@ -32,14 +32,14 @@ function git_update_code() {
         cd "$working_dir/$branch_name"
         git clone --depth 1 "$git_repo_url" --branch "$branch_name" --single-branch
         cd "$code_dir"
-        git config --global user.email "jenkins@devops.com"
-        git config --global user.name "Jenkins Auto"
+        git config user.email "jenkins@devops.com"
+        git config user.name "Jenkins Auto"
     else
         cd "$code_dir"
         git ls-remote --tags
         git config remote.origin.url "$git_repo_url"
-        git config --global user.email "jenkins@devops.com"
-        git config --global user.name "Jenkins Auto"
+        git config user.email "jenkins@devops.com"
+        git config user.name "Jenkins Auto"
         # add retry for network turbulence
         git pull origin "$branch_name" || (sleep 2 && git pull origin "$branch_name")
     fi
