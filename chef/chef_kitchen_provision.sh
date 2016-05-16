@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-11-30>
-## Updated: Time-stamp: <2016-04-25 11:16:03>
+## Updated: Time-stamp: <2016-05-16 21:23:21>
 ##-------------------------------------------------------------------
 # pre-cache Chef Omnibus installation
 mkdir -p /tmp/install.sh.14
@@ -22,7 +22,7 @@ if [ ! -f /tmp/install.sh.14/chef_12.7.2-1_amd64.deb ]; then
 fi
 
 echo "Inject ssh key to kitchen user and root user"
-wget -O inject_ssh_key.sh  https://raw.githubusercontent.com/DennyZhang/inject_ssh_key/master/inject_ssh_key.sh
+wget -O inject_ssh_key.sh  https://raw.githubusercontent.com/DennyZhang/devops_public/master/bash/inject_ssh_key/inject_ssh_key.sh
 
 user_home_list='kitchen:/home/kitchen,root:/root'
 ssh_email='denny@dennyzhang.com'
