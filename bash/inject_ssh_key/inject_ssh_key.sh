@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-05-13>
-## Updated: Time-stamp: <2016-05-01 13:59:56>
+## Updated: Time-stamp: <2016-05-16 21:42:43>
 ##-------------------------------------------------------------------
 user_home_list=${1?"To who the ssh key shall be injected. Users are separated by comma"}
 ssh_email=${2?"email associated to this ssh key"}
@@ -50,9 +50,9 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 
-username_list=${user_home_list//,/ /}
+username_list=${user_home_list//,/ }
 for item in ${username_list[*]}; do
-    user_home=(${$item//:/ /})
+    user_home=(${item//:/ })
     username=${user_home[0]}
     home_dir=${user_home[1]}
     inject_ssh_key "$username" "$home_dir" "$ssh_email" "$ssh_key"
