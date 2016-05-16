@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-05-16 11:23:03>
+## Updated: Time-stamp: <2016-05-16 11:45:46>
 ##-------------------------------------------------------------------
 ################################################################
 # How To Use
@@ -54,6 +54,7 @@ function enable_chef_deployment() {
     mkdir -p /root/.ssh/
     log "enable chef deployment"
     install_packages "wget" "wget"
+    install_packages "curl" "curl"
     install_packages "git" "git"
     download_facility "$git_update_url" "/root/git_update.sh"
     inject_git_deploy_key "/root/.ssh/git_id_rsa" "$git_deploy_key"
