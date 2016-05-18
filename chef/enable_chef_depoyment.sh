@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-05-16 11:45:46>
+## Updated: Time-stamp: <2016-05-19 07:10:16>
 ##-------------------------------------------------------------------
 ################################################################
 # How To Use
@@ -45,12 +45,6 @@ function log() {
 
 ################################################################
 function enable_chef_deployment() {
-    local git_update_url=${1?}
-    local ssh_email=${2?}
-    local ssh_public_key=${3?}
-    local git_deploy_key=${4?}
-    local ssh_config_content=${5?}
-
     mkdir -p /root/.ssh/
     log "enable chef deployment"
     install_packages "wget" "wget"
@@ -58,7 +52,11 @@ function enable_chef_deployment() {
     install_packages "git" "git"
     download_facility "$git_update_url" "/root/git_update.sh"
     inject_git_deploy_key "/root/.ssh/git_id_rsa" "$git_deploy_key"
-    git_ssh_config "/root/.ssh/config" "$ssh_config_content"
+
+    if [ -n "$ssh_config_content" ]; then
+        git_ssh_config "/root/.ssh/config" "$ssh_config_content"
+    fi
+
     inject_ssh_authorized_keys "$ssh_email" "$ssh_public_key"
     install_chef "$chef_version"
 }
@@ -125,6 +123,6 @@ function inject_ssh_authorized_keys() {
 }
 ####################################
 export chef_version="12.4.1"
-enable_chef_deployment "$git_update_url" "$ssh_email" "$ssh_public_key" "$git_deploy_key" "$ssh_config_content"
+enable_chef_deployment
 echo "Action Done"
 ## File : enable_chef_depoyment.sh ends
