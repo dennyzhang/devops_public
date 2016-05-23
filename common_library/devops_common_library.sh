@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-05-14 08:13:12>
+## Updated: Time-stamp: <2016-05-23 14:37:56>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -42,8 +42,8 @@ function fail_unless_nubmer() {
 
 function ensure_variable_isset() {
     # Sample: ensure_variable_isset "chef_client_rb must be set" "$chef_client_rb"
-    message=${1?"parameter name should be given"}
-    var=${2:-''}
+    local message=${1?"parameter name should be given"}
+    local var=${2:-''}
     # TODO support sudo, without source
     if [ -z "$var" ]; then
         echo "Error: Certain variable($message) is not set" 1>&2
@@ -93,7 +93,7 @@ function string_strip_whitespace() {
 }
 
 function string_strip_comments() {
-    my_str=${1?}
+    local my_str=${1?}
     my_str=$(echo "$my_str" | grep -v '^ *#')
     echo "$my_str"
 }
@@ -152,7 +152,7 @@ function git_update_code() {
 ############################ Section: network ################################
 function is_port_listening()
 {
-    port=${1?}
+    local port=${1?}
     lsof -i "tcp:${port}" | grep LISTEN 1>/dev/null
 }
 
@@ -164,7 +164,7 @@ function check_ssh_available() {
 }
 
 function check_url_200() {
-    url=${1?}
+    local url=${1?}
     if curl -I "$url" | grep "HTTP/1.* 200 OK" 2>/dev/null 1>/dev/null; then
         echo "yes"
     else
