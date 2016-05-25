@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-05-25 17:33:14>
+## Updated: Time-stamp: <2016-05-25 17:35:21>
 ##-------------------------------------------------------------------
 function install_jenkins() {
     if ! (dpkg -s jenkins | grep "Status: install" 1>/dev/null 2>&1); then
@@ -29,6 +29,7 @@ function setup_jenkins_jobs() {
         item=(${job//,/ })
         job_name=${item[0]}
         job_url=${item[1]}
+        # TODO: check whether to update
         mkdir -p "/var/lib/jenkins/jobs/$job_name"
         echo "Download config.xml for Jenkins job $job_name"
         curl -o "/var/lib/jenkins/jobs/$job_name/config.xml" "$job_url"
@@ -53,5 +54,6 @@ grant_jenkins_privilege
 install_jenkins
 setup_jenkins_jobs
 
+# TODO: use real ip
 echo "Jenkins is up: http://\$server_ip:8080"
 ## File : setup_jenkins.sh ends

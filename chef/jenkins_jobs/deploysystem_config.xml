@@ -147,12 +147,7 @@ oEnotr0B/PgsB+NZKMHMuiAqtY9I49O5kIHr/kLIuDABu5exriSs
         <hudson.model.TextParameterDefinition>
           <name>env_parameters</name>
           <description></description>
-          <defaultValue>export KILL_RUNNING_CHEF_UPDATE=false
-export CODE_SH=&apos;/root/git_update.sh&apos;
-export code_dir=&apos;/root/chef&apos;
-export git_repo_url=git@github.com:TOTVS/mdmdevops.git
-
-export ssh_key_file=&quot;/var/lib/jenkins/.ssh/ci_id_rsa&quot;</defaultValue>
+          <defaultValue></defaultValue>
         </hudson.model.TextParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
@@ -167,6 +162,12 @@ export ssh_key_file=&quot;/var/lib/jenkins/.ssh/ci_id_rsa&quot;</defaultValue>
   <builders>
     <hudson.tasks.Shell>
       <command>#!/bin/bash
+export KILL_RUNNING_CHEF_UPDATE=false
+export CODE_SH=&apos;/root/git_update.sh&apos;
+export code_dir=&apos;/root/chef&apos;
+export git_repo_url=git@github.com:TOTVS/mdmdevops.git
+export ssh_key_file=&quot;/var/lib/jenkins/.ssh/ci_id_rsa&quot;
+
 curl -o /var/lib/jenkins/deploy_cluster.sh https://raw.githubusercontent.com/TOTVS/mdmpublic/master/common_bash/chef/deploy_cluster.sh
 bash -e /var/lib/jenkins/deploy_cluster.sh</command>
     </hudson.tasks.Shell>
