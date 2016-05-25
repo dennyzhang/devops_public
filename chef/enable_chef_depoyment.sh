@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-05-25 09:36:57>
+## Updated: Time-stamp: <2016-05-25 12:48:00>
 ##-------------------------------------------------------------------
 ################################################################
 # How To Use
@@ -142,7 +142,7 @@ fi
 ssh_public_key_file="/root/ssh_id_rsa.pub"
 
 if [ -z "$ssh_public_key" ] && [ -f "$ssh_public_key_file" ]; then
-    export ssh_public_key=$(cat "$ssh_public_key")
+    export ssh_public_key=$(cat "$ssh_public_key_file")
 fi
 
 # Use this key to checkout mdm devops code
