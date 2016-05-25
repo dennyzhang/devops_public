@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-05-25 12:50:57>
+## Updated: Time-stamp: <2016-05-25 14:41:16>
 ##-------------------------------------------------------------------
 ################################################################
 # How To Use
@@ -118,7 +118,7 @@ function inject_ssh_authorized_keys() {
 
     log "inject ssh authorized keys to $ssh_authorized_key_file"
     if ! grep "$ssh_email" $ssh_authorized_key_file 1>/dev/null 2>&1; then
-        echo "ssh-rsa $ssh_public_key $ssh_email" >> $ssh_authorized_key_file
+        echo "$ssh_public_key" >> $ssh_authorized_key_file
     fi
 }
 ####################################
