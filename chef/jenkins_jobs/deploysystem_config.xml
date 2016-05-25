@@ -77,7 +77,7 @@
 
         # tcp ports
         &quot;haproxy_ssl_port&quot;:&quot;443&quot;,
-        &quot;app_http_port&quot;:&quot;8081&quot;,
+        &quot;app_http_port&quot;:&quot;8080&quot;,
         &quot;app_https_port&quot;:&quot;8443&quot;
        },
  &quot;couchbase_mdm&quot;:

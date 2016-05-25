@@ -9,8 +9,17 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-05-25 17:43:35>
+## Updated: Time-stamp: <2016-05-25 19:13:52>
 ##-------------------------------------------------------------------
+function configure_jenkins_port() {
+    port=${1?}
+    if ! grep "HTTP_PORT=$port" /etc/default/jenkins 1>/dev/null 2>&1; then
+        echo "Reset Jekins port to $port"
+        sed -i "s/HTTP_PORT=.*/HTTP_PORT=$port/g" /etc/default/jenkins
+        service jenkins restart
+    fi
+}
+
 function install_jenkins() {
     if ! (dpkg -s jenkins | grep "Status: install" 1>/dev/null 2>&1); then
         echo "setup jenkins"
@@ -18,7 +27,6 @@ function install_jenkins() {
         sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
         apt-get update
         apt-get install -y jenkins
-
     fi
 }
 
@@ -49,12 +57,14 @@ function grant_jenkins_privilege() {
     fi
 }
 
+jenkins_port=18080
 
 grant_jenkins_privilege
 install_jenkins
+configure_jenkins_port $jenkins_port
 setup_jenkins_jobs
 
 # TODO: use real ip
-echo "Jenkins is up: http://\$server_ip:8080"
+echo "Jenkins is up: http://\$server_ip:$jenkins_port"
 echo "Action Done"
 ## File : setup_jenkins.sh ends
