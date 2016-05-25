@@ -1,0 +1,175 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>-1</daysToKeep>
+        <numToKeep>50</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.TextParameterDefinition>
+          <name>server_list</name>
+          <description></description>
+          <defaultValue># server_ip:ssh_port
+172.17.0.2:22
+172.17.0.3:22
+172.17.0.4:22</defaultValue>
+        </hudson.model.TextParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>whether_flushdatabaseonconnect</name>
+          <description></description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>app_branch_name</name>
+          <description></description>
+          <defaultValue>sprint-32</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>framework_branch_name</name>
+          <description></description>
+          <defaultValue>sprint-32</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>devops_branch_name</name>
+          <description></description>
+          <defaultValue>sprint-32</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>elasticsearch_clustername</name>
+          <description></description>
+          <defaultValue>kitchen-cluster-mdm</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>deploy_run_list</name>
+          <description></description>
+          <defaultValue>&quot;recipe[mdm-cluster::default]&quot;</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.TextParameterDefinition>
+          <name>chef_json</name>
+          <description></description>
+          <defaultValue># node1: haproxy, elasticsearch, elasticsearch-audit, couchbase
+# node2: haproxy, elasticsearch, elasticsearch-audit, couchbase, mdm, mdmbackup
+# node3: mdm, mdmbackup, nagios
+{
+ &quot;common_basic&quot;:
+        {
+        # service hosts: deploy service to which host
+        &quot;couchbase_hosts&quot;:[&quot;kitchen-cluster-node1&quot;, &quot;kitchen-cluster-node2&quot;],
+        &quot;elasticsearch_hosts&quot;:[&quot;kitchen-cluster-node1&quot;, &quot;kitchen-cluster-node2&quot;],
+        &quot;mdm_hosts&quot;:[&quot;kitchen-cluster-node2&quot;, &quot;kitchen-cluster-node3&quot;],
+        &quot;haproxy_hosts&quot;:[&quot;kitchen-cluster-node1&quot;,&quot;kitchen-cluster-node2&quot;],
+        &quot;nagios_server&quot;:&quot;kitchen-cluster-node3&quot;,
+
+        # specify branch name
+        &quot;app_branch_name&quot;:&quot;$app_branch_name&quot;,
+        &quot;framework_branch_name&quot;:&quot;$framework_branch_name&quot;,
+        &quot;devops_branch_name&quot;:&quot;$devops_branch_name&quot;,
+
+         &quot;package_url&quot;:&quot;http://104.236.159.226:18000&quot;,
+
+        # tcp ports
+        &quot;haproxy_ssl_port&quot;:&quot;443&quot;,
+        &quot;app_http_port&quot;:&quot;8080&quot;,
+        &quot;app_https_port&quot;:&quot;8443&quot;
+       },
+ &quot;couchbase_mdm&quot;:
+        {&quot;memory_quota_mb&quot;:&quot;14336&quot;},
+ &quot;elasticsearch_mdm&quot;:
+        {&quot;allocated_memory&quot;:&quot;14336&quot;,
+        &quot;audit_allocated_memory&quot;:&quot;1024&quot;,
+        &quot;enable_audit_elasticsearch&quot;:&quot;true&quot;,
+        &quot;elasticsearch_clustername&quot;:&quot;$elasticsearch_clustername&quot;,        
+        &quot;elasticsearch_audit_clustername&quot;:&quot;$elasticsearch_clustername-audit&quot;
+        },
+  &quot;app_mdm&quot;:
+        {&quot;maxSimultaneousThreads&quot;:&quot;8&quot;,
+        &quot;maxTotalThreads&quot;:&quot;64&quot;,
+        &quot;cb_bucket_retries&quot;:&quot;10&quot;,
+        &quot;cb_bucket_retryinterval&quot;:&quot;10000&quot;,
+        &quot;cb_bucket_timeout&quot;:&quot;100000&quot;,
+        &quot;enable_slack_sync&quot;:&quot;false&quot;,
+        &quot;slack_user&quot;:&quot;Production Server&quot;,
+        &quot;log_slack_token&quot;:&quot;xoxb-21659697588-UoM7CMPyjmlN19oGt6fZUeAj&quot;,
+        &quot;log_slack_channel&quot;:&quot;mdm-logs&quot;,
+        &quot;session_bucket_quota_in_mb&quot;:&quot;100&quot;,
+        &quot;staging_bucket_quota_in_mb&quot;:&quot;512&quot;,
+        &quot;master_bucket_quota_in_mb&quot;:&quot;640&quot;,
+        &quot;mgmt_timeout&quot;:&quot;900000&quot;,
+        &quot;max_timeout&quot;:&quot;960000&quot;,
+        &quot;mdm_java_opts&quot;:&quot;-Xms5120m -Xmx5120m&quot;,
+        &quot;whether_flushdatabaseonconnect&quot;:&quot;$whether_flushdatabaseonconnect&quot;,
+        &quot;enable_backup_redo&quot;:&quot;true&quot;,
+        &quot;backupConfig_redoLog&quot;:&quot;true&quot;, 
+        &quot;backupConfig_backupStagingData&quot;:&quot;true&quot;
+        }
+}</defaultValue>
+        </hudson.model.TextParameterDefinition>
+        <hudson.model.TextParameterDefinition>
+          <name>ssh_private_key</name>
+          <description></description>
+          <defaultValue>-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEAq8BA4ikMgZHfekHE46/oLdXkI/gJBoRzLAegMj84R3I8O9th
+Hv+nRk5S292hagSoTl2f52rxsPwwb/VIo5ktU6noFDkokz9pOfbMxVxfOE3JNmnh
+PWva9xvRltr4WlgKc2WtwH2jjgbekrTK+0eZp0FBQ/UgXpHotXfZPfIiP5K3iDfw
+eoytABfVp85/eSfrpwfuMDLg2Xn4ePrRLpXXmyTCxnFWwQr6UqNMyFwTcnwaxEyj
+lF5gQn8N97L4QaAYT7l1aSOu5rEp3egWpvOrdEPqQ+XUtfVv0Bvjpu0XO5XdEMse
+D/Wh5bvowMov0iO2PAo6Hq0S1YrPXpixT7LGpQIDAQABAoIBAF+MuYwYoiiDavyt
+EkhJWLYHRMDuALdrgFeCdpD9suWsm+4BAmsod3sZn+dJyb8dkDToyUkJqiR4aMog
+f6TkVt8wqzh1BCnHIVdqAknaNe8w9zwac4CkPFE1XMi8UWaRjF7etmdcfl1JXRHp
+GvPoxYbTOuf/u15hdkFex7E6v+r1Xu5TywOgYwJLj6s7AGw7avUVCx88kShxzdJS
+RhIY2nWSkft0c8/R7jbzGP8TYDJ6xVHCqU9VRwg9uG0hsK+Zpa28G/UdwQOmcs4R
+MqeQ70hSOLYybceV9RagOpNDX4/xbN1TGOPJZYj1G4NjdUFfNzh5jDbmVI+12+Tk
+GW3epYECgYEA39fPpnNrXSz767Ay6wUtqafuaz/tILcj2LjEqgZweuy1ydwy/FkH
+enISFbx9S48uXhYgktOIiHsLWIJQKK3hbeuCveZ2eNT+CaZFaDY0TTiSKlmHPSOo
+dAlh0RyPtvO7hW4aDhf2KGCshlkXtE36dj5ca7E/uVzXXh8dh4p1xm0CgYEAxGys
+hxcH4DjJ8kn991HTniRI8lLwc62XjCkGtrMXw8Q4fUvS5yQljZOo5DweXyTOdGJl
+u02N0JtL0pdh+82HTMldjBwRZ9OwxwrBNJJebL6eZDaSWpyU9kuliI9EG3nPaU9j
+3h/raYz2MDZxPDSellsy0JY+5lWa5fr6/g40PhkCgYEAk0Rb5Em5UCLhVw2kYkUU
+5rKKRFtZehWjatkc4jO8WtNTQowxqx4zslZMGarZ0BVSTypFofOztv8k1sVdUXYc
+gwHYEXIHbbXLsLOIpGhM/qUCXQRr2kiUcksd5MLitl4ieEWYtL8E/0mjF/yTgNdw
+ucyLZ3rEzwIK22yjM+JfW/0CgYAkGckXxv7Wkfljw3+ezfYz0X1qtB2nVRdOVlf6
+ii3q+Axd0uq/OqCARcw7rmTynaQoNdF2vEk9Nt2XpeUHT333eebsklgMmhaabnqV
++/TIzbv0tSbu6mpiXgLdd19QIXIia8nyEDHHI3Y35DmplA41mitbtNF4qfEfJaKt
+wNSPOQKBgE6611HJgpwsVh2DmMj+dS5aOqGl4Lvruv45Och9MapuTOWQvlmJX1/8
+IkZeeIXSnaALuXKZt1DIKoeTZmYFx1XLwzC6QjIwR/dh3T4ld92i47hP5mGaZAcw
+oEnotr0B/PgsB+NZKMHMuiAqtY9I49O5kIHr/kLIuDABu5exriSs
+-----END RSA PRIVATE KEY-----
+</defaultValue>
+        </hudson.model.TextParameterDefinition>
+        <hudson.model.TextParameterDefinition>
+          <name>env_parameters</name>
+          <description></description>
+          <defaultValue>export KILL_RUNNING_CHEF_UPDATE=false
+export CODE_SH=&apos;/root/git_update.sh&apos;
+export code_dir=&apos;/root/chef&apos;
+export git_repo_url=git@github.com:TOTVS/mdmdevops.git
+
+export ssh_key_file=&quot;/var/lib/jenkins/.ssh/ci_id_rsa&quot;</defaultValue>
+        </hudson.model.TextParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>#!/bin/bash
+bash -e /var/lib/jenkins/code/scripts/master/mdmpublic/common_bash/chef/deploy_cluster.sh</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>
