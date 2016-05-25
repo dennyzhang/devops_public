@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-05-25 17:35:21>
+## Updated: Time-stamp: <2016-05-25 17:43:35>
 ##-------------------------------------------------------------------
 function install_jenkins() {
     if ! (dpkg -s jenkins | grep "Status: install" 1>/dev/null 2>&1); then
@@ -56,4 +56,5 @@ setup_jenkins_jobs
 
 # TODO: use real ip
 echo "Jenkins is up: http://\$server_ip:8080"
+echo "Action Done"
 ## File : setup_jenkins.sh ends
