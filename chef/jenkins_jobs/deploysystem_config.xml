@@ -169,7 +169,7 @@ export git_repo_url=git@github.com:TOTVS/mdmdevops.git
 export ssh_key_file=&quot;/var/lib/jenkins/.ssh/ci_id_rsa&quot;
 
 curl -o /var/lib/jenkins/deploy_cluster.sh https://raw.githubusercontent.com/TOTVS/mdmpublic/master/common_bash/chef/deploy_cluster.sh
-bash -e /var/lib/jenkins/deploy_cluster.sh</command>
+bash -ex /var/lib/jenkins/deploy_cluster.sh</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers/>

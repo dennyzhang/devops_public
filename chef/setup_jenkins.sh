@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-05-25 19:13:52>
+## Updated: Time-stamp: <2016-05-25 21:01:29>
 ##-------------------------------------------------------------------
 function configure_jenkins_port() {
     port=${1?}
@@ -22,11 +22,23 @@ function configure_jenkins_port() {
 
 function install_jenkins() {
     if ! (dpkg -s jenkins | grep "Status: install" 1>/dev/null 2>&1); then
-        echo "setup jenkins"
-        wget -q -O - https://jenkins-ci.org/debian/jenkins-ci.org.key | apt-key add -
-        sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
-        apt-get update
-        apt-get install -y jenkins
+        # https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+on+Ubuntu
+        # Latest Jenkins2.0 deployment will fail in Ubuntu 14.04
+        # echo "setup jenkins"
+        # wget -q -O - https://jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
+        # sh -c 'echo deb http://pkg.jenkins-ci.org/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+        # apt-get -y update
+        # apt-get install -y jenkins
+
+        if ! which java 1>/dev/null 2>&1; then
+            echo "Install java"
+            apt-get install -y java-common
+        fi
+
+        apt-get install daemon
+        # TODO: host the file
+        curl -o /tmp/jenkins_1.658_all.deb http://mirror.xmission.com/jenkins/debian/jenkins_1.658_all.deb
+        dpkg -i /tmp/jenkins_1.658_all.deb
     fi
 }
 
@@ -57,11 +69,13 @@ function grant_jenkins_privilege() {
     fi
 }
 
-jenkins_port=18080
+# jenkins_port=18080
+jenkins_port=8080
 
 grant_jenkins_privilege
 install_jenkins
-configure_jenkins_port $jenkins_port
+# TODO: temporarily disable
+# configure_jenkins_port $jenkins_port
 setup_jenkins_jobs
 
 # TODO: use real ip
