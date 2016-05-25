@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-05-25 21:01:29>
+## Updated: Time-stamp: <2016-05-26 06:38:48>
 ##-------------------------------------------------------------------
 function configure_jenkins_port() {
     port=${1?}
@@ -32,12 +32,14 @@ function install_jenkins() {
 
         if ! which java 1>/dev/null 2>&1; then
             echo "Install java"
-            apt-get install -y java-common
+            apt-get install -y java-common openjdk-7-jre-headless default-jre-headless
         fi
 
-        apt-get install daemon
+        apt-get install -y daemon psmisc
         # TODO: host the file
-        curl -o /tmp/jenkins_1.658_all.deb http://mirror.xmission.com/jenkins/debian/jenkins_1.658_all.deb
+        if [ ! -f /tmp/jenkins_1.658_all.deb ]; then
+            curl -o /tmp/jenkins_1.658_all.deb http://mirror.xmission.com/jenkins/debian/jenkins_1.658_all.deb
+        fi
         dpkg -i /tmp/jenkins_1.658_all.deb
     fi
 }
@@ -69,13 +71,11 @@ function grant_jenkins_privilege() {
     fi
 }
 
-# jenkins_port=18080
-jenkins_port=8080
+jenkins_port=18080
 
 grant_jenkins_privilege
 install_jenkins
-# TODO: temporarily disable
-# configure_jenkins_port $jenkins_port
+configure_jenkins_port $jenkins_port
 setup_jenkins_jobs
 
 # TODO: use real ip
