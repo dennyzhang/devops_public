@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-05-25 16:57:13>
+## Updated: Time-stamp: <2016-05-25 17:20:36>
 ##-------------------------------------------------------------------
 function install_jenkins() {
     if ! (dpkg -s jenkins | grep "Status: install" 1>/dev/null 2>&1); then
@@ -18,6 +18,8 @@ function install_jenkins() {
         sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
         apt-get update
         apt-get install -y jenkins
+        # Grant privilege to jenkins user
+        echo '%jenkins ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/jenkins
     fi
 }
 
