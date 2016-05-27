@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-05-27 17:43:11>
+## Updated: Time-stamp: <2016-05-27 17:45:45>
 ##-------------------------------------------------------------------
 ################################################################################################
 . /etc/profile
@@ -74,6 +74,7 @@ ensure_variable_isset "chef_json must be set" "$chef_json"
 #           export branch_name="DOCS-227-general-security"
 #           export git_repo_url="git@github.com:DennyZhang/chef_community_cookbooks.git"
 #           export chef_json="{\"run_list\": [\"recipe[general_security]\"], \"general_security\": {\"ssh_disable_passwd_login\": \"true\", \"ssh_disable_root_login\": \"false\"}}"
+#           apt-get install -y curl
 #           curl -o /tmp/linux_apply_cookbook.sh https://raw.githubusercontent.com/DennyZhang/devops_public/master/chef/linux_apply_cookbook.sh
 #           bash -xe /tmp/linux_apply_cookbook.sh
 
