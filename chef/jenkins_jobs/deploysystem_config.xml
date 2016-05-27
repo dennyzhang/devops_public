@@ -45,7 +45,7 @@
         <hudson.model.StringParameterDefinition>
           <name>elasticsearch_clustername</name>
           <description></description>
-          <defaultValue>kitchen-cluster-mdm</defaultValue>
+          <defaultValue>my-es-cluster</defaultValue>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>deploy_run_list</name>
