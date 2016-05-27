@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-05-23 14:37:56>
+## Updated: Time-stamp: <2016-05-27 17:40:08>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -21,6 +21,7 @@ function fail_unless_root() {
 }
 
 function fail_unless_os() {
+    # Sample: fail_unless_os "ubuntu/redhat/centos/osx"
     local supported_os=${1?}
     current_os=$(os_release)
     if [[ "$supported_os" != *"$current_os"* ]]; then

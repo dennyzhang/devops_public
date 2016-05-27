@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-05-27 17:35:35>
+## Updated: Time-stamp: <2016-05-27 17:43:11>
 ##-------------------------------------------------------------------
 ################################################################################################
 . /etc/profile
@@ -62,14 +62,20 @@ EOF
 }
 
 ################################################################################################
-# TODO: check OS
-# TODO: check parameters
+fail_unless_root
+fail_unless_os "ubuntu"
+ensure_variable_isset "branch_name must be set" "$branch_name"
+ensure_variable_isset "git_repo_url must be set" "$git_repo_url"
+ensure_variable_isset "chef_json must be set" "$chef_json"
+
 # Sample:
 #       docker run -t -d --privileged -h mytest --name my-test -p 5122:22 denny/sshd:v1 /usr/sbin/sshd -D
 #       docker exec -it my-test bash
-#       export branch_name="DOCS-227-general-security"
-#       export git_repo_url="git@github.com:DennyZhang/chef_community_cookbooks.git"
-#       export chef_json="{\"run_list\": [\"recipe[general_security]\"], \"general_security\": {\"ssh_disable_passwd_login\": \"true\", \"ssh_disable_root_login\": \"false\"}}"
+#           export branch_name="DOCS-227-general-security"
+#           export git_repo_url="git@github.com:DennyZhang/chef_community_cookbooks.git"
+#           export chef_json="{\"run_list\": [\"recipe[general_security]\"], \"general_security\": {\"ssh_disable_passwd_login\": \"true\", \"ssh_disable_root_login\": \"false\"}}"
+#           curl -o /tmp/linux_apply_cookbook.sh https://raw.githubusercontent.com/DennyZhang/devops_public/master/chef/linux_apply_cookbook.sh
+#           bash -xe /tmp/linux_apply_cookbook.sh
 
 [ -n "$working_dir" ] || working_dir="/root/devops"
 
