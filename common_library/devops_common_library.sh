@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-05-27 17:40:08>
+## Updated: Time-stamp: <2016-05-30 17:34:31>
 ##-------------------------------------------------------------------
 ########################### Section: Parameters & Status ########################
 function fail_unless_root() {
@@ -79,6 +79,86 @@ function log() {
 }
 
 ########################### Section: String Manipulation ########################
+function is_ip() {
+    local string=${1?}
+    if [[ $string =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        echo "true"
+    else
+        echo "false"
+    fi
+}
+
+function is_tcp_port() {
+    local string=${1?}
+    if [[ $string =~ ^[0-9]+$ ]] ; then
+        if [ "$string" -gt 65535 ] || [ "$string" -lt 0 ]; then
+            echo "false"
+        else
+            echo "true"
+        fi
+    else
+        echo "false"        
+    fi
+}
+
+function check_string_schema() {
+    # check_string_schema "172.17.0.5" "IP"
+    # check_string_schema "2701" "TCP_PORT"
+    # check_string_schema "root" "STRING"
+
+    local string=${1?}
+    local type=${2?}
+
+    case "$type" in
+	IP) ret=$(is_ip "$string");;
+	TCP_PORT) ret=$(is_tcp_port "$string");;
+	STRING) ret="true";;
+	*) ret="true";;
+    esac
+    echo "$ret"
+}
+
+function check_list_fields() {
+    # Sample:
+    #    check_list_fields "STRING:IP:TCP_PORT:STRING" "root:172.17.0.5:22:/opt/devops/backup_wp_mysql.sh"
+    #    check_list_fields "STRING:IP:TCP_PORT:STRING" "root:172.17.0.5:22:/opt/devops/backup_wp_mysql.sh
+    #                                                   root:172.17.0.4:22:gitlab-rake gitlab:backup:create"
+    #    check_list_fields "IP:TCP_PORT" "172.17.0.a:999999"
+    local field_schema=${1?}
+    local string=${2?}
+
+    # get separator
+    separator=","
+    [[ "${field_schema}" == *\;* ]] && separator=";"
+    [[ "${field_schema}" == *:* ]] && separator=":"
+
+    IFS=$separator
+    separator_list=($field_schema)
+    
+    error_msg=""
+    IFS=$'\n'
+    for line in ${string[*]}; do
+        unset IFS
+
+        IFS=$separator
+        item=($line)
+        unset IFS
+
+        len=${#separator_list[@]}
+        for((i=0; i<len; i++)); do {
+            # echo "check_string_schema: ${item[i]}, ${separator_list[i]}"
+            if [ "$(check_string_schema "${item[i]}" "${separator_list[i]}")" = "false" ]; then
+                error_msg="${error_msg}\n${item[i]} is not valid ${separator_list[i]}"
+            fi
+        }; done
+    done
+
+    if [ "$error_msg" != "" ] ; then
+        echo -e "Error: Invalid parameters\n${error_msg}"
+        exit 1
+    fi
+}
+
 function remove_hardline() {
     # handle \n\r of Windows OS
     local str=$*
