@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-05-31 07:06:45>
+## Updated: Time-stamp: <2016-05-31 11:31:40>
 ##-------------------------------------------------------------------
 ################################################################
 # How To Use
@@ -51,13 +51,18 @@ function enable_chef_deployment() {
     install_packages "curl" "curl"
     install_packages "git" "git"
     download_facility "$git_update_url" "/root/git_update.sh"
-    inject_git_deploy_key "/root/.ssh/git_id_rsa" "$git_deploy_key"
+
+    if [ -n "$git_deploy_key" ]; then
+        inject_git_deploy_key "/root/.ssh/git_id_rsa" "$git_deploy_key"
+    fi
 
     if [ -n "$ssh_config_content" ]; then
         git_ssh_config "/root/.ssh/config" "$ssh_config_content"
     fi
 
-    inject_ssh_authorized_keys "$ssh_email" "$ssh_public_key"
+    if [ -n "$ssh_public_key" ]; then
+        inject_ssh_authorized_keys "$ssh_email" "$ssh_public_key"
+    fi
     install_chef "$chef_version"
 }
 
