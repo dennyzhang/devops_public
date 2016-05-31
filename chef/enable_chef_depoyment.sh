@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-05-31 11:31:40>
+## Updated: Time-stamp: <2016-05-31 11:34:42>
 ##-------------------------------------------------------------------
 ################################################################
 # How To Use
@@ -145,7 +145,7 @@ if [ -z "$ssh_config_content" ]; then
 fi
 
 ssh_public_key_file="/root/ssh_id_rsa.pub"
-git_deploy_key_file="/root/git_id_rsa"
+git_deploy_key_file="/root/git_deploy_key"
 
 if [ -z "$ssh_public_key" ] && [ -f "$ssh_public_key_file" ]; then
     export ssh_public_key
