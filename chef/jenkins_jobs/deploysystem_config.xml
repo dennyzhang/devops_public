@@ -73,7 +73,7 @@
         &quot;framework_branch_name&quot;:&quot;$framework_branch_name&quot;,
         &quot;devops_branch_name&quot;:&quot;$devops_branch_name&quot;,
 
-         &quot;package_url&quot;:&quot;http://104.236.159.226:18000&quot;,
+         &quot;package_url&quot;:&quot;http://repo.fluigdata.com:18000&quot;,
 
         # tcp ports
         &quot;haproxy_ssl_port&quot;:&quot;443&quot;,
