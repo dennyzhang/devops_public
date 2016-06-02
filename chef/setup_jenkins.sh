@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-05-26 06:38:48>
+## Updated: Time-stamp: <2016-06-02 15:11:01>
 ##-------------------------------------------------------------------
 function configure_jenkins_port() {
     port=${1?}
@@ -45,12 +45,13 @@ function install_jenkins() {
 }
 
 function setup_jenkins_jobs() {
-    jenkins_jobs="DeploySystem,https://raw.githubusercontent.com/TOTVS/mdmpublic/master/chef/jenkins_jobs/deploysystem_config.xml"
+    http_prefix="https://raw.githubusercontent.com/TOTVS/mdmpublic/master/chef/jenkins_jobs"
+    jenkins_jobs="DeploySystem,RunCommandOnServers,MonitorServerFileChanges,VerifySystem,CollectFiles,DiagnosticJenkinsJobSlow,BackupCriticalData"
     should_restart=false
-    for job in $jenkins_jobs; do
-        item=(${job//,/ })
-        job_name=${item[0]}
-        job_url=${item[1]}
+    IFS=','
+    for job_name in $jenkins_jobs; do
+        unset IFS
+        job_url="${http_prefix}/${job_name}/config.xml"
         # TODO: check whether to update
         mkdir -p "/var/lib/jenkins/jobs/$job_name"
         echo "Download config.xml for Jenkins job $job_name"
