@@ -106,6 +106,9 @@
         &quot;max_timeout&quot;:&quot;960000&quot;,
         &quot;mdm_java_opts&quot;:&quot;-Xms5120m -Xmx5120m&quot;,
         &quot;whether_flushdatabaseonconnect&quot;:&quot;$whether_flushdatabaseonconnect&quot;,
+        &quot;whether_populatefakedata&quot;:&quot;true&quot;,
+        &quot;whether_populaterealdata&quot;:&quot;true&quot;,
+        &quot;whether_populategenerateddata&quot;:&quot;false&quot;,
         &quot;enable_backup_redo&quot;:&quot;true&quot;,
         &quot;backupConfig_redoLog&quot;:&quot;true&quot;, 
         &quot;backupConfig_backupStagingData&quot;:&quot;true&quot;
