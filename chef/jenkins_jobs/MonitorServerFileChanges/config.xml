@@ -41,7 +41,7 @@ export start_inotifywait_when_stopped=true</defaultValue>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
   <triggers>
     <hudson.triggers.TimerTrigger>
-      <spec>H H/5 * * *</spec>
+      <spec>H H/3 * * *</spec>
     </hudson.triggers.TimerTrigger>
   </triggers>
   <concurrentBuild>false</concurrentBuild>
