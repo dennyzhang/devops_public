@@ -20,7 +20,7 @@
           <defaultValue># server_ip:ssh_port
 172.17.0.2:22
 172.17.0.3:22
-</defaultValue>
+172.17.0.4:22</defaultValue>
         </hudson.model.TextParameterDefinition>
         <hudson.model.BooleanParameterDefinition>
           <name>whether_flushdatabaseonconnect</name>
@@ -59,11 +59,11 @@
  &quot;common_basic&quot;:
         {
         # service hosts: deploy service to which host
-        &quot;couchbase_hosts&quot;:[&quot;159.203.198.129&quot;, &quot;45.55.1.132&quot;, &quot;104.236.179.76&quot;],
-        &quot;elasticsearch_hosts&quot;:[&quot;159.203.216.25&quot;, &quot;107.170.212.76&quot;, &quot;192.241.211.99&quot;, &quot;159.203.219.53&quot;, &quot;159.203.211.150&quot;, &quot;159.203.192.146&quot;],
-        &quot;mdm_hosts&quot;:[&quot;159.203.234.164&quot;, &quot;159.203.202.27&quot;, &quot;159.203.198.98&quot;],
-        &quot;haproxy_hosts&quot;:[&quot;159.203.198.171&quot;,&quot;159.203.202.250&quot;],
-        &quot;nagios_server&quot;:&quot;107.170.251.66&quot;,
+        &quot;couchbase_hosts&quot;:[&quot;kitchen-cluster-node1&quot;, &quot;kitchen-cluster-node2&quot;],
+        &quot;elasticsearch_hosts&quot;:[&quot;kitchen-cluster-node1&quot;, &quot;kitchen-cluster-node2&quot;],
+        &quot;mdm_hosts&quot;:[&quot;kitchen-cluster-node2&quot;, &quot;kitchen-cluster-node3&quot;],
+        &quot;haproxy_hosts&quot;:[&quot;kitchen-cluster-node1&quot;,&quot;kitchen-cluster-node2&quot;],
+        &quot;nagios_server&quot;:&quot;kitchen-cluster-node3&quot;,
 
         # specify branch name
         &quot;app_branch_name&quot;:&quot;$app_branch_name&quot;,
