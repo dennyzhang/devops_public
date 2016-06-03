@@ -12,14 +12,14 @@
 ##            have multiple repo to keep in sync.
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-06-02 17:47:11>
+## Updated: Time-stamp: <2016-06-03 09:37:05>
 ##-------------------------------------------------------------------
 function update_git() {
     dir=${1?}
-    cd $dir
+    cd "$dir"
     current_branch=$(git status | grep "On branch" | awk -F' ' '{print $3}')
     log "cd $dir && git pull origin $current_branch"
-    cd $dir && git pull origin $current_branch
+    cd "$dir" && git pull origin "$current_branch"
 }
 
 # Sample: 
