@@ -9,16 +9,12 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-04 11:36:17>
+## Updated: Time-stamp: <2016-06-04 21:46:59>
 ##-------------------------------------------------------------------
 function source_string() {
     # Global variables needed to enable the current script
     local env_parameters=${1?}
-    IFS=$'\n'
-    for env_variable in $env_parameters; do
-        eval "$env_variable"
-    done
-    unset IFS
+    eval "$env_variable"
 }
 
 function remove_hardline() {
