@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-04 16:46:16>
+## Updated: Time-stamp: <2016-06-04 17:26:00>
 ##-------------------------------------------------------------------
 . /etc/profile
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
@@ -20,7 +20,7 @@ fi
 
 library_list="
 1736618634 2235 docker_helper.sh
-1815676351 6692 general_helper.sh
+3902892326 6714 general_helper.sh
 3614625518 2119 git_helper.sh
 2665088169 2703 network_helper.sh
 2752552464 4895 paramater_helper.sh

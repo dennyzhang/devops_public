@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-04 15:17:43>
+## Updated: Time-stamp: <2016-06-04 17:25:36>
 ##-------------------------------------------------------------------
 function log() {
     local msg=$*
@@ -173,6 +173,7 @@ function parse_parameter_chef_json() {
         chef_json=${chef_json/#\{/}
         chef_json=${chef_json/%\}/}
     fi
+    echo "$chef_json"
 }
 
 function chef_deploy() {
