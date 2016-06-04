@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2016-05-10>
-## Updated: Time-stamp: <2016-05-24 14:08:13>
+## Updated: Time-stamp: <2016-06-04 09:38:25>
 ##-------------------------------------------------------------------
 ################################################################################################
 require 'socket'
@@ -19,6 +19,13 @@ require 'open3'
 
 # Required by serverspec
 set :backend, :exec
+
+download_common_library = 'curl -o /opt/common_spec_helper.rb ' \
+                          'https://raw.githubusercontent.com/TOTVS' \
+                          '/mdmpublic/master/serverspec/common_spec_helper.rb'
+system(download_common_library)
+
+require_relative '/opt/general_helper'
 #############################################################################
 # General functions
 def local_ip

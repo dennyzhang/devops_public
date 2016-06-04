@@ -1,1 +1,1 @@
-cksum *_helper.sh > devops_common_library.cksum
+cksum *.sh > devops_common_library.cksum
