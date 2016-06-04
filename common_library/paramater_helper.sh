@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-04 09:21:04>
+## Updated: Time-stamp: <2016-06-04 11:36:53>
 ##-------------------------------------------------------------------
 function fail_unless_root() {
     # Make sure only root can run our script
@@ -56,6 +56,7 @@ function exit_if_error() {
         exit 1
     fi
 }
+
 function is_ip() {
     local string=${1?}
     if [[ $string =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
@@ -134,6 +135,27 @@ function check_list_fields() {
         echo -e "Error: Invalid parameters\n${error_msg}"
         exit 1
     fi
+}
+
+function ip_ping_reachable() {
+    # Sample:
+    #   ip_ping_reachable true "172.17.0.2
+    #                           172.17.0.3
+    #                           172.17.0.4"
+    #   ip_ping_reachable false "$ip_list"
+    local exit_if_fail=${1?}
+    local ip_list=${2?}
+    for ip in $ip_list; do
+        echo "ping ip: ${ip}"
+        if ! ping -c3 "$ip" 2>/dev/null 1>/dev/null; then
+            if [ "$exit_if_fail" = "true" ]; then
+                echo "ERROR: Current machine can't ping $ip. Please check input parameters."
+                exit 1
+            else
+                echo "Warning: Current machine can't ping $ip. Please check input parameters."
+            fi
+        fi
+    done
 }
 ######################################################################
 ## File : paramater_helper.sh ends
