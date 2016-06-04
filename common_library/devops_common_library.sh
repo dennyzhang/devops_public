@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-04 21:47:29>
+## Updated: Time-stamp: <2016-06-04 22:06:08>
 ##-------------------------------------------------------------------
 . /etc/profile
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
@@ -24,7 +24,7 @@ library_list="
 3614625518 2119 git_helper.sh
 2665088169 2703 network_helper.sh
 2752552464 4895 paramater_helper.sh
-1715154686 1844 string_helper.sh
+3683900118 1943 string_helper.sh
 "
 
 library_list=$(echo "$library_list" | grep "_helper.sh")

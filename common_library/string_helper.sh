@@ -9,12 +9,15 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-04 21:46:59>
+## Updated: Time-stamp: <2016-06-04 22:05:41>
 ##-------------------------------------------------------------------
 function source_string() {
     # Global variables needed to enable the current script
     local env_parameters=${1?}
-    eval "$env_variable"
+    tmp_file=/tmp/$$_$((RANDOM % 100))
+    echo -e "$env_parameters" > "$tmp_file"
+    . "$tmp_file"
+    rm -rf "$tmp_file"
 }
 
 function remove_hardline() {
