@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-06-02 15:11:01>
+## Updated: Time-stamp: <2016-06-04 08:50:16>
 ##-------------------------------------------------------------------
 function configure_jenkins_port() {
     port=${1?}
@@ -45,7 +45,7 @@ function install_jenkins() {
 }
 
 function setup_jenkins_jobs() {
-    http_prefix="https://raw.githubusercontent.com/TOTVS/mdmpublic/master/chef/jenkins_jobs"
+    http_prefix="https://raw.githubusercontent.com/TOTVS/mdmpublic/master/chef/setup_jenkins/jenkins_jobs"
     jenkins_jobs="DeploySystem,RunCommandOnServers,MonitorServerFileChanges,VerifySystem,CollectFiles,DiagnosticJenkinsJobSlow,BackupCriticalData"
     should_restart=false
     IFS=','
