@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-04 09:41:33>
+## Updated: Time-stamp: <2016-06-04 11:43:58>
 ##-------------------------------------------------------------------
 . /etc/profile
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
@@ -19,16 +19,19 @@ if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
 fi
 
 library_list="
+2512904374 1582 devops_common_library.sh
 1736618634 2235 docker_helper.sh
 4185001742 2677 general_helper.sh
 3614625518 2119 git_helper.sh
 2665088169 2703 network_helper.sh
-81904668 3845 paramater_helper.sh
-2140396035 1237 string_helper.sh"
+2795362270 4548 paramater_helper.sh
+2238344795 1776 refresh_common_library.sh
+2053133080 1929 string_helper.sh"
 
+library_list=$(echo "$library_list" | grep "_helper.sh")
 # source modules of common library
 IFS=$'\n'
-for library in $(echo "$library_list" | grep "_helper.sh"); do
+for library in $library_list; do
     unset IFS
     my_list=($library)
     cksum=${my_list[0]}
