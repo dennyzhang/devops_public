@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-04 16:45:45>
+## Updated: Time-stamp: <2016-06-05 06:58:04>
 ##-------------------------------------------------------------------
 function fail_unless_root() {
     # Make sure only root can run our script
@@ -162,7 +162,7 @@ function enforce_ip_ping_check() {
     local exit_if_fail=${1?}
     local parameter_name=${2?}
     local parameter_value=${3?}
-    echo "ping ip address listed in $parameter_name parameters"
+    echo "ping ip address listed in $parameter_name parameter"
     ip_list=$(parse_ip_from_string "$parameter_value")
     if [ -n "$ip_list" ]; then
         ip_ping_reachable "$exit_if_ping_fail" "$ip_list"

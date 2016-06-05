@@ -23,8 +23,8 @@ library_list="
 3902892326 6714 general_helper.sh
 3614625518 2119 git_helper.sh
 2665088169 2703 network_helper.sh
-2752552464 4895 paramater_helper.sh
-3683900118 1943 string_helper.sh
+3287604707 4894 paramater_helper.sh
+1998442075 1994 string_helper.sh
 "
 
 library_list=$(echo "$library_list" | grep "_helper.sh")

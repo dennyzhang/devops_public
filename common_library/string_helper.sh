@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-04 22:05:41>
+## Updated: Time-stamp: <2016-06-05 08:53:47>
 ##-------------------------------------------------------------------
 function source_string() {
     # Global variables needed to enable the current script
@@ -27,7 +27,7 @@ function remove_hardline() {
 }
 
 function string_strip_whitespace() {
-    # handle \n\r of Windows OS
+    # remove leading and tailing whitespace
     local str=$*
     str=$(echo "${str}" |sed -e 's/^[ \t]*//g')
     str=$(echo "${str}" |sed -e 's/[ \t]*$//g')
@@ -35,6 +35,7 @@ function string_strip_whitespace() {
 }
 
 function string_strip_comments() {
+    # remove "  # ..." from the string
     local my_str=${1?}
     my_str=$(echo "$my_str" | grep -v '^ *#')
     echo "$my_str"
