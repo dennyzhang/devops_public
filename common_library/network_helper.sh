@@ -9,10 +9,9 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-04 09:21:54>
+## Updated: Time-stamp: <2016-06-05 10:08:18>
 ##-------------------------------------------------------------------
-function is_port_listening()
-{
+function is_port_listening() {
     local port=${1?}
     lsof -i "tcp:${port}" | grep LISTEN 1>/dev/null
 }
@@ -33,33 +32,20 @@ function check_url_200() {
     fi
 }
 
-function check_network()
-{
-    # The maximum number of trying to connect website
+function check_network() {
+    # TODO: improve code quality
+
     local max_retries_count=${1:-3}
-
-    # Check website whether can connect, multiple websites, separated by spaces
     local website_list=${2:-"https://bitbucket.org/"}
-
-    # Connect timeout
     local timeout=7
-
-    # The maximum allowable time data transmission
     local maxtime=10
-
-    # If the website cannnt connect,will sleep several second
     local sleep_time=5
-
-    # If any one website cannt connect,the flag value is false, otherwise is true.
     local check_flag=true
 
     log "max_retries_count=$max_retries_count, website_list=$website_list"
-
     connect_failed_website=""
-    for website in ${website_list[*]}
-    do
-        for ((i=1; i <=max_retries_count; i++))
-        do
+    for website in ${website_list[*]}; do
+        for ((i=1; i <=max_retries_count; i++)); do
             # get http_code
             curl -I -s --connect-timeout $timeout -m $maxtime "$website" | tee website_tmp.txt
             ret=$(grep "200 OK" website_tmp.txt && echo yes || echo no)

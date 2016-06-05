@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-04 09:19:35>
+## Updated: Time-stamp: <2016-06-05 10:08:27>
 ##-------------------------------------------------------------------
 function current_git_sha() {
     set -e

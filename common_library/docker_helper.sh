@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-04 09:22:51>
+## Updated: Time-stamp: <2016-06-05 09:40:44>
 ##-------------------------------------------------------------------
 function guess_docker_daemon_ip() {
     local docker_daemon_ip=""
@@ -45,6 +45,7 @@ function install_docker() {
 }
 
 function create_enough_loop_device() {
+    # When run docker in docker, docker daemon may fail to start, due to no enough loop device
     local file_count=${1:-50}
     # Docker start may fail, due to no available loopback devices
     for((i=0; i<file_count; i++)); do
