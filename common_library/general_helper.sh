@@ -9,9 +9,10 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-04 17:25:36>
+## Updated: Time-stamp: <2016-06-05 09:34:44>
 ##-------------------------------------------------------------------
 function log() {
+    # log message to both stdout and logfile on condition
     local msg=$*
     date_timestamp=$(date +['%Y-%m-%d %H:%M:%S'])
     echo -ne "$date_timestamp $msg\n"
@@ -21,7 +22,7 @@ function log() {
     fi
 }
 
-function generate_checksum() {
+function generate_dir_checksum() {
     local dst_dir=${1?}
     cd "$dst_dir"
     current_filename=$(basename "${0}")

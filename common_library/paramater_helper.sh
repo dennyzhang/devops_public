@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-05 06:58:04>
+## Updated: Time-stamp: <2016-06-05 09:33:31>
 ##-------------------------------------------------------------------
 function fail_unless_root() {
     # Make sure only root can run our script
@@ -44,15 +44,8 @@ function ensure_variable_isset() {
     # Sample: ensure_variable_isset "chef_client_rb must be set" "$chef_client_rb"
     local message=${1?"parameter name should be given"}
     local var=${2:-''}
-    # TODO support sudo, without source
     if [ -z "$var" ]; then
-        echo "Error: Certain variable($message) is not set" 1>&2
-        exit 1
-    fi
-}
-
-function exit_if_error() {
-    if [ $? -ne 0 ];then
+        echo "Error: $message" 1>&2
         exit 1
     fi
 }
@@ -80,9 +73,10 @@ function is_tcp_port() {
 }
 
 function check_string_schema() {
-    # check_string_schema "172.17.0.5" "IP"
-    # check_string_schema "2701" "TCP_PORT"
-    # check_string_schema "root" "STRING"
+    # Sample:
+    #     check_string_schema "172.17.0.5" "IP"
+    #     check_string_schema "2701" "TCP_PORT"
+    #     check_string_schema "root" "STRING"
 
     local string=${1?}
     local type=${2?}
@@ -159,13 +153,16 @@ function ip_ping_reachable() {
 }
 
 function enforce_ip_ping_check() {
+    # Sample:
+    #   enforce_ip_ping_check "true" "server_list" "$server_list"
+    #   enforce_ip_ping_check "true" "chef_json" "$chef_json"
     local exit_if_fail=${1?}
     local parameter_name=${2?}
     local parameter_value=${3?}
     echo "ping ip address listed in $parameter_name parameter"
     ip_list=$(parse_ip_from_string "$parameter_value")
     if [ -n "$ip_list" ]; then
-        ip_ping_reachable "$exit_if_ping_fail" "$ip_list"
+        ip_ping_reachable "$exit_if_fail" "$ip_list"
     fi
 }
 ######################################################################
