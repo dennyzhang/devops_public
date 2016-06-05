@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-05 09:38:48>
+## Updated: Time-stamp: <2016-06-05 18:45:52>
 ##-------------------------------------------------------------------
 function log() {
     # log message to both stdout and logfile on condition
@@ -138,7 +138,7 @@ function bindhosts() {
 #!/bin/bash -xe
 
 hosts_list=${1?}
-cp /etc/hosts /tmp/hosts
+cp /etc/hosts /opt/hosts
 
 hosts_arr=(${hosts_list//,/ })
 
@@ -147,11 +147,11 @@ do
     host_split=(${host//:/ })
     ip=${host_split[0]}
     domain=${host_split[1]}
-    grep ${domain} /tmp/hosts && sed -i "/${domain}/c\\${ip}    ${domain}" /tmp/hosts ||  echo "${ip}    ${domain}" >> /tmp/hosts
+    grep ${domain} /opt/hosts && sed -i "/${domain}/c\\${ip}    ${domain}" /opt/hosts ||  echo "${ip}    ${domain}" >> /opt/hosts
 done
 
-if [ "$(cat /tmp/hosts)" != "$(cat /etc/hosts)" ]; then
-    cp -f /tmp/hosts /etc/hosts
+if [ "$(cat /opt/hosts)" != "$(cat /etc/hosts)" ]; then
+    cp -f /opt/hosts /etc/hosts
 fi
 
 EOF
