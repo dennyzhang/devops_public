@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-05 09:34:44>
+## Updated: Time-stamp: <2016-06-05 09:38:48>
 ##-------------------------------------------------------------------
 function log() {
     # log message to both stdout and logfile on condition
@@ -36,6 +36,26 @@ function generate_dir_checksum() {
     mv "$tmp_file" checksum.txt
 }
 
+function inject_ssh_key() {
+    local ssh_private_key=${1:-""}
+    local ssh_key_file=${2:-""}
+    ssh_dir="/var/lib/jenkins/.ssh"
+
+    if [ -z "$ssh_private_key" ] && [ ! -f "$ssh_key_file" ]; then
+        echo "ERROR: wrong input: ssh_private_key parameter must be given"
+        exit 1
+    fi
+
+    if [ -n "$ssh_private_key" ]; then
+        mkdir -p "$ssh_dir"
+        if [ -f "$ssh_key_file" ]; then
+            chmod 777 "$ssh_key_file"
+        fi
+        echo "$ssh_private_key" > "$ssh_key_file"
+        chmod 400 "$ssh_key_file"
+    fi
+}
+
 function os_release() {
     set -e
     distributor_id=$(lsb_release -a 2>/dev/null | grep 'Distributor ID' | awk -F":\t" '{print $2}')
@@ -58,7 +78,8 @@ function os_release() {
 
 function ssh_apt_update() {
     set +e
-    # Sample: ssh_apt_update "ssh -i $ssh_key_file -p $ssh_port -o StrictHostKeyChecking=no root@$ssh_server_ip"
+    # Sample:
+    #  ssh_apt_update "ssh -i $ssh_key_file -p $ssh_port -o StrictHostKeyChecking=no root@$ssh_server_ip"
     local ssh_command=${1?}
     echo "Run apt-get -y update"
     apt_get_output=$($ssh_command apt-get -y update)
@@ -69,6 +90,7 @@ function ssh_apt_update() {
         echo "Re-run apt-get -y update"
         $ssh_command "apt-get -y update"
     fi
+    # TODO: unset -e without changing previous state
     set -e
 }
 
@@ -85,6 +107,7 @@ function update_system() {
         yum -y update
     fi
 }
+
 ######################################################################
 function bindhosts() {
     # TODO: improve code quality
@@ -144,37 +167,6 @@ EOF
         ssh_command="ssh $ssh_args -p $ssh_port root@$ssh_server_ip bash -xe /tmp/deploy_cluster_bindhosts.sh $hosts_list"
         $ssh_command
     done
-}
-
-function inject_ssh_key() {
-    local ssh_private_key=${1:-""}
-    local ssh_key_file=${2:-""}
-
-    if [ -z "$ssh_private_key" ] && [ ! -f "$ssh_key_file" ]; then
-        echo "ERROR: wrong input: ssh_private_key parameter must be given"
-        exit 1
-    fi
-
-    if [ -n "$ssh_private_key" ]; then
-        mkdir -p /var/lib/jenkins/.ssh/
-        if [ -f "$ssh_key_file" ]; then
-            chmod 777 "$ssh_key_file"
-        fi
-        echo "$ssh_private_key" > "$ssh_key_file"
-        chmod 400 "$ssh_key_file"
-    fi
-}
-
-function parse_parameter_chef_json() {
-    local chef_json=${1:-""}
-    # chef_json parameters
-    if [ -n "${chef_json}" ]; then
-        chef_json=$(string_strip_comments "$chef_json")
-        chef_json="$chef_json"
-        chef_json=${chef_json/#\{/}
-        chef_json=${chef_json/%\}/}
-    fi
-    echo "$chef_json"
 }
 
 function chef_deploy() {

@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-05 09:33:31>
+## Updated: Time-stamp: <2016-06-05 09:39:11>
 ##-------------------------------------------------------------------
 function fail_unless_root() {
     # Make sure only root can run our script
@@ -164,6 +164,18 @@ function enforce_ip_ping_check() {
     if [ -n "$ip_list" ]; then
         ip_ping_reachable "$exit_if_fail" "$ip_list"
     fi
+}
+
+function parse_json() {
+    # string manipulation for json
+    local json=${1:-""}
+    if [ -n "${json}" ]; then
+        json=$(string_strip_comments "$json")
+        json="$json"
+        json=${json/#\{/}
+        json=${json/%\}/}
+    fi
+    echo "$json"
 }
 ######################################################################
 ## File : paramater_helper.sh ends
