@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-05-10>
-## Updated: Time-stamp: <2016-06-04 10:24:41>
+## Updated: Time-stamp: <2016-06-05 11:32:45>
 ##-------------------------------------------------------------------
 ################################################################################
 require 'socket'
@@ -18,7 +18,8 @@ require 'open3'
 
 # Required by serverspec
 set :backend, :exec
-# General functions
+
+################################################################################
 def local_ip
   # get current ip, probbably of eth0
   # turn off reverse DNS resolution temporarily
@@ -30,6 +31,12 @@ def local_ip
   end
 ensure
   Socket.do_not_reverse_lookup = orig
+end
+
+def print_local_ip
+  # print current ip, which is useful for debugging issues of "kitchen verify"
+  node_ip = local_ip
+  print "==== local_ip: #{node_ip} ===="
 end
 
 def sleep_for(seconds)

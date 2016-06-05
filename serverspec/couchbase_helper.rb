@@ -9,9 +9,8 @@
 ## Description :
 ## --
 ## Created : <2016-05-10>
-## Updated: Time-stamp: <2016-06-04 10:24:12>
+## Updated: Time-stamp: <2016-06-05 11:30:39>
 ##-------------------------------------------------------------------
-################################################################################
 require 'socket'
 require 'serverspec'
 require 'open3'
@@ -19,6 +18,7 @@ require 'open3'
 # Required by serverspec
 set :backend, :exec
 
+################################################################################
 # couchbase
 def couchbase_general_check(tcp_port)
   # Basic verification logic for couchbase installation

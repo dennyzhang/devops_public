@@ -9,9 +9,8 @@
 ## Description :
 ## --
 ## Created : <2016-05-10>
-## Updated: Time-stamp: <2016-06-04 10:24:09>
+## Updated: Time-stamp: <2016-06-05 11:30:50>
 ##-------------------------------------------------------------------
-################################################################################
 require 'socket'
 require 'serverspec'
 require 'open3'
@@ -19,6 +18,7 @@ require 'open3'
 # Required by serverspec
 set :backend, :exec
 
+################################################################################
 def elasticsearch_general_check(es_port)
   # Basic verification logic for elasticsearch installation
   describe command('/usr/share/elasticsearch/bin/elasticsearch --version') do

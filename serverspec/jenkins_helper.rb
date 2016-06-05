@@ -9,9 +9,8 @@
 ## Description :
 ## --
 ## Created : <2016-05-10>
-## Updated: Time-stamp: <2016-06-04 10:24:04>
+## Updated: Time-stamp: <2016-06-05 11:30:56>
 ##-------------------------------------------------------------------
-################################################################################
 require 'socket'
 require 'serverspec'
 require 'open3'
@@ -19,7 +18,7 @@ require 'open3'
 # Required by serverspec
 set :backend, :exec
 
-# Jenkins
+################################################################################
 def wait_jenkins_up(jenkins_run_cmd)
   # After Jenkins deployment, it may take time for Jenkins to be up and running
   # TODO: make code more general
