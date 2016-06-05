@@ -20,7 +20,7 @@ fi
 
 library_list="
 687148894 2330 docker_helper.sh
-1561255529 6540 general_helper.sh
+1597625839 6540 general_helper.sh
 2551391090 2119 git_helper.sh
 1959477722 2369 network_helper.sh
 1189986927 5170 paramater_helper.sh
