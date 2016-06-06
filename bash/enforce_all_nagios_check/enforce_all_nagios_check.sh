@@ -1,13 +1,17 @@
 #!/bin/bash
 ##-------------------------------------------------------------------
+## @copyright 2016 DennyZhang.com
+## Licensed under MIT
+##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##
 ## File : enforce_all_nagios_check.sh
 ## Author : Denny <denny@dennyzhang.com>, Syrett <syrett_uu@dennyzhang.com>
 ## Description :
 ##     ./enforce_all_nagios_check.sh help
 ##     ./enforce_all_nagios_check.sh -s "check_.*_log|check_memory|check_tomcat_cpu"
-##
-## Created : <2015-06-24>
-## Updated: Time-stamp: <2016-05-09 22:53:13>
+## --
+## Created : <2016-06-04>
+## Updated: Time-stamp: <2016-06-06 11:57:26>
 ##-------------------------------------------------------------------
 
 function check_one_server(){
