@@ -13,7 +13,7 @@
 #          manage_all_services.sh status couchbase-server
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-06 23:11:57>
+## Updated: Time-stamp: <2016-06-06 23:13:30>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -56,7 +56,7 @@ function manage_service() {
 
 function shell_exit {
     if [ $? -ne 0 ]; then
-        echo "Error to run $0"
+        echo "Error: Action Failed"
         exit 1
     fi
 }
