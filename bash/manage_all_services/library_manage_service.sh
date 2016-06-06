@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-06 12:59:24>
+## Updated: Time-stamp: <2016-06-06 14:41:49>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -50,6 +50,13 @@ function manage_service() {
         fi
     done
     log "========= Action Ends ============"
+}
+
+function shell_exit {
+    if [ $? -ne 0 ]; then
+        echo "Error to run $0"
+        exit 1
+    fi
 }
 
 ## File: library_manage_service.sh ends

@@ -9,10 +9,11 @@
 ## Description :
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-06 12:59:34>
+## Updated: Time-stamp: <2016-06-06 14:42:14>
 ##-------------------------------------------------------------------
 # TODO: better location
 . library_manage_service.sh
+trap shell_exit SIGHUP SIGINT SIGTERM 0
 
 service_list=${1:-"all"}
 if [ "$service_list" = "all" ]; then
