@@ -13,7 +13,7 @@
 #          manage_all_services.sh status couchbase-server
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-06 22:40:01>
+## Updated: Time-stamp: <2016-06-06 22:42:50>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -46,8 +46,9 @@ function manage_service() {
     for service in $service_list; do
         unset IFS
         if [ -f "/etc/init.d/$service" ]; then
-            log "$action $service"
-            service "$service" "$action"
+            command="service $service $action"
+            log "$command"
+            eval "$command"
         fi
     done
     log "========= Action Ends ============"
