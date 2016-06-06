@@ -13,7 +13,7 @@
 #          manage_all_services.sh status couchbase-server
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-06 22:06:47>
+## Updated: Time-stamp: <2016-06-06 22:40:01>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -65,5 +65,5 @@ trap shell_exit SIGHUP SIGINT SIGTERM 0
 action=${1?}
 service_list=${2?}
 
-manage_service "status" "$service_list"
+manage_service "$action" "$service_list"
 ## File: manage_all_services.sh ends
