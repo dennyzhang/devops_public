@@ -9,32 +9,15 @@
 ## Description :
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-06 12:22:51>
+## Updated: Time-stamp: <2016-06-06 12:59:46>
 ##-------------------------------------------------------------------
-. /etc/profile
+# TODO: better location
+. library_manage_service.sh
 
-if [[ $EUID -ne 0 ]]; then
-    echo "Error: This script must be run as root." 1>&2
-    exit 1
+service_list=${1:-"all"}
+if [ "$service_list" = "all" ]; then
+    service_list="couchbase-server,elasticsearch,mdm"
 fi
 
-function clean_up {
-    if [ $? -ne 0 ]; then
-        echo "Error to run $0"
-        exit 1
-    fi
-}
-
-trap clean_up SIGHUP SIGINT SIGTERM 0
-echo "========= Stop services ============"
-
-service_list="couchbase-server,elasticsearch,mdm"
-
-IFS=$','
-for service in $service_list; do
-    unset IFS
-    if [ -f "/etc/init.d/$service" ]; then
-        service $service status
-    fi
-done
+manage_service "$service_list" "status"
 ## File: status_all.sh ends
