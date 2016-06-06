@@ -4,12 +4,16 @@
 ## Licensed under MIT
 ## https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
-## File : library_manage_service.sh
+## File : manage_all_services.sh
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
+#         Sample:
+#          manage_all_services.sh start couchbase-server,elasticsearch
+#          manage_all_services.sh stop elasticsearch
+#          manage_all_services.sh status couchbase-server
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-06 14:41:49>
+## Updated: Time-stamp: <2016-06-06 22:06:47>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -32,13 +36,10 @@ function fail_unless_root() {
 }
 
 function manage_service() {
-    service_list=${1:-"all"}
-    action=${2:-"status"}
+    action=${1?}
+    service_list=${2?}
 
     fail_unless_root
-    if [ "$service_list" = "all" ]; then
-        service_list="couchbase-server,elasticsearch,mdm"
-    fi
 
     log "========= $action services ============"
     IFS=$','
@@ -59,4 +60,10 @@ function shell_exit {
     fi
 }
 
-## File: library_manage_service.sh ends
+################################################################################
+trap shell_exit SIGHUP SIGINT SIGTERM 0
+action=${1?}
+service_list=${2?}
+
+manage_service "status" "$service_list"
+## File: manage_all_services.sh ends
