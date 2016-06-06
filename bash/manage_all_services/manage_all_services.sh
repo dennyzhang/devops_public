@@ -13,7 +13,7 @@
 #          manage_all_services.sh status couchbase-server
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-06 22:51:31>
+## Updated: Time-stamp: <2016-06-06 23:11:57>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -51,7 +51,7 @@ function manage_service() {
             eval "$command"
         fi
     done
-    log "========= Action Ends ============"
+    log "Action Ends"
 }
 
 function shell_exit {
