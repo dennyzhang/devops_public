@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-06 12:15:32>
+## Updated: Time-stamp: <2016-06-06 12:22:51>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -26,24 +26,15 @@ function clean_up {
 }
 
 trap clean_up SIGHUP SIGINT SIGTERM 0
+echo "========= Stop services ============"
 
-version=$mdm_version
-if [ -n "$version" ]; then
-    echo "=========== Check services. Version: $version ====================="
-else
-    echo "========= Check services ============"
-fi
+service_list="couchbase-server,elasticsearch,mdm"
 
-if [ -f /etc/init.d/couchbase-server ]; then
-    service couchbase-server status
-fi
-
-if [ -f /etc/init.d/elasticsearch ]; then
-    echo -ne " * "
-    service elasticsearch status
-fi
-
-if [ -f /etc/init.d/mdm ]; then
-    service mdm status
-fi
+IFS=$','
+for service in $service_list; do
+    unset IFS
+    if [ -f "/etc/init.d/$service" ]; then
+        service $service status
+    fi
+done
 ## File: status_all.sh ends
