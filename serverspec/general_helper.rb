@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-05-10>
-## Updated: Time-stamp: <2016-06-07 09:34:58>
+## Updated: Time-stamp: <2016-06-07 10:24:58>
 ##-------------------------------------------------------------------
 ################################################################################
 require 'socket'
@@ -67,7 +67,7 @@ end
 
 def verify_process_cmdline_by_pidfile(pidfile, pattern)
   describe command("cat /proc/$(cat #{pidfile})/cmdline") do
-    its(:stdout) { should contain 'pattern' }
+    its(:stdout) { should contain "#{pattern}" }
   end
 end
 #############################################################################
