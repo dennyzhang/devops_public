@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-05-10>
-## Updated: Time-stamp: <2016-06-05 11:32:45>
+## Updated: Time-stamp: <2016-06-07 09:34:58>
 ##-------------------------------------------------------------------
 ################################################################################
 require 'socket'
@@ -63,6 +63,12 @@ def list_get_random_item(list, skip_item = '')
     end
   end
   item
+end
+
+def verify_process_cmdline_by_pidfile(pidfile, pattern)
+  describe command("cat /proc/$(cat #{pidfile})/cmdline") do
+    its(:stdout) { should contain 'pattern' }
+  end
 end
 #############################################################################
 ## File : general_helper.rb ends
