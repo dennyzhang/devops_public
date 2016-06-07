@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-05-10>
-## Updated: Time-stamp: <2016-06-07 09:52:27>
+## Updated: Time-stamp: <2016-06-07 20:39:46>
 ##-------------------------------------------------------------------
 require 'socket'
 require 'serverspec'
@@ -19,10 +19,10 @@ require 'open3'
 set :backend, :exec
 
 ################################################################################
-def elasticsearch_general_check(es_port, cmd_pattern)
+def elasticsearch_general_check(es_port, cmd_pattern, es_version = '2.1.1')
   # Basic verification logic for elasticsearch installation
   describe command('/usr/share/elasticsearch/bin/elasticsearch --version') do
-    its(:stdout) { should contain 'Version: 2.1.1' }
+    its(:stdout) { should contain "Version: #{es_version}" }
   end
 
   describe service('elasticsearch') do
