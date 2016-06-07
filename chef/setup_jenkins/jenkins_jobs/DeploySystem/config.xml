@@ -80,8 +80,8 @@
  &quot;couchbase_mdm&quot;:
         {&quot;memory_quota_mb&quot;:&quot;16384&quot;},
  &quot;elasticsearch_mdm&quot;:
-        {&quot;allocated_memory&quot;:&quot;16384&quot;,
-        &quot;audit_allocated_memory&quot;:&quot;1024&quot;,
+        {&quot;allocated_memory_mb&quot;:&quot;16384&quot;,
+        &quot;audit_allocated_memory_mb&quot;:&quot;1024&quot;,
         &quot;enable_audit_elasticsearch&quot;:&quot;false&quot;,
         &quot;elasticsearch_clustername&quot;:&quot;$elasticsearch_clustername&quot;,        
         &quot;elasticsearch_audit_clustername&quot;:&quot;$elasticsearch_clustername-audit&quot;
