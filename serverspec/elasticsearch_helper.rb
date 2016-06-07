@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-05-10>
-## Updated: Time-stamp: <2016-06-05 11:30:50>
+## Updated: Time-stamp: <2016-06-07 09:52:27>
 ##-------------------------------------------------------------------
 require 'socket'
 require 'serverspec'
@@ -19,7 +19,7 @@ require 'open3'
 set :backend, :exec
 
 ################################################################################
-def elasticsearch_general_check(es_port)
+def elasticsearch_general_check(es_port, cmd_pattern)
   # Basic verification logic for elasticsearch installation
   describe command('/usr/share/elasticsearch/bin/elasticsearch --version') do
     its(:stdout) { should contain 'Version: 2.1.1' }
@@ -32,6 +32,10 @@ def elasticsearch_general_check(es_port)
   describe port(es_port) do
     it { should be_listening }
   end
+
+  es_pidfile = '/var/run/elasticsearch/elasticsearch.pid'
+  # TODO: dependes on general_helper.rb
+  verify_process_cmdline_by_pidfile(es_pidfile, cmd_pattern)
 end
 
 def verify_es_node_count(server_ip, tcp_port, expected_node_count)
