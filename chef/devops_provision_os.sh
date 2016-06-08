@@ -9,30 +9,8 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-06-08 13:55:21>
+## Updated: Time-stamp: <2016-06-08 14:01:37>
 ##-------------------------------------------------------------------
-################################################################
-# How To Use
-#        export git_update_url="https://raw.githubusercontent.com/TEST/test/master/git_update.sh"
-#        export ssh_email="auto.devops@test.com"
-#
-#        export ssh_public_key="AAAAB3NzaC1yc2EAAAADAQABAAABAQClL5PmH01x8eRPQ7FsodNT172ZIXiE2CT3RhBZpPpMFCdUyFTGBRfgbX/UE86MfycPHkzNnKemFNJOqFVdzK7eTIayxX9FYPOk+ONi2sbKkwAE4No+R0d4/ehoVzflbYXRWyxLqDKkqbJPDxY39xS2V7h4bSQWwrMyeYoGBn82AW5vSoonQMIrxe+bm6zWWtL6SzsYM/KNM1T+2pfU7Rq/YQPs2tf07rauyeT3bylhUf/CUqVPt2Xpf4qgmpGqp9Hyoy7FIfBHmCgXLRpia2KhpYr0j08s8cxBx1PEJiQ6EaWO2WlzyJIqgU2t9piDHEIUd6yCPmpshLtlOvno6KN5"
-#
-#        export ssh_config_content="Host github.com
-#          StrictHostKeyChecking no
-#          User git
-#          HostName github.com
-#          IdentityFile /root/.ssh/git_id_rsa"
-#
-#        export git_deploy_key="-----BEGIN RSA PRIVATE KEY-----
-#        MIIJKgIBAAKCAgEAq6Jv5VPd82Lu2WE3R4/lNeA5Txckf3FE3aKRVBhRWy1ds1V9
-#        ... ...
-#        GnR17IjnTN5QS4/i6WhUuCU7F4OnIwjQETRCQtDJVU+VT5CKiIsUR7/VeaBruCFB
-#        ZEtPc5dStJrtTrWRf1BOMlY/by7vaXII1Bkd+jSpLNqzfOpJdNWCaK+08bSOkA==
-#        -----END RSA PRIVATE KEY-----"
-#
-#        bash ./enable_chef_depoyment.sh
-################################################################
 . /etc/profile
 
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
@@ -68,10 +46,6 @@ EOF
 }
 
 ################################################################
-if [ -z "$git_update_url" ]; then
-   export git_update_url="https://raw.githubusercontent.com/TOTVS/mdmpublic/master/git_update.sh"
-fi
-
 if [ -z "$ssh_email" ]; then
     export ssh_email="auto.devops@totvs.com"
 fi
@@ -102,18 +76,24 @@ log "enable chef deployment"
 install_package_list "wget,curl,git"
 install_chef "12.4.1"
 
-download_facility "$git_update_url" "/root/git_update.sh"
+download_facility "/root/git_update.sh" \
+                  "https://github.com/DennyZhang/devops_public/raw/master/bash/git_update.sh"
 
+download_facility "/root/manage_all_services.sh" \
+                  "https://github.com/DennyZhang/devops_public/raw/master/bash/manage_all_services/manage_all_services.sh"
+
+# inject ssh key for ssh with keyfile
+if [ -n "$ssh_public_key" ]; then
+    inject_ssh_authorized_keys "$ssh_email" "$ssh_public_key"
+fi
+
+# support git clone for DevOps code
 if [ -n "$git_deploy_key" ]; then
     inject_git_deploy_key "/root/.ssh/git_id_rsa" "$git_deploy_key"
 fi
 
 if [ -n "$ssh_config_content" ]; then
     git_ssh_config "/root/.ssh/config" "$ssh_config_content"
-fi
-
-if [ -n "$ssh_public_key" ]; then
-    inject_ssh_authorized_keys "$ssh_email" "$ssh_public_key"
 fi
 
 echo "Action Done"

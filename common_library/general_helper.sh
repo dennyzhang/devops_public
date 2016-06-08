@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-08 13:55:15>
+## Updated: Time-stamp: <2016-06-08 14:00:08>
 ##-------------------------------------------------------------------
 function log() {
     # log message to both stdout and logfile on condition
@@ -249,16 +249,14 @@ function inject_ssh_authorized_keys() {
 }
 
 function download_facility() {
-    local url=${1?}
-    local dst_file=${2:?}
-    local file_mode=${3:-""}
+    local dst_file=${1:?}
+    local url=${2?}
+    local file_mode=${3:-"755"}
     if [ ! -f "$dst_file" ]; then
         command="wget -O $dst_file $url"
         log "$command"
         eval "$command"
-        if [ -n "$file_mode" ]; then
-            chmod "$file_mode" "$dst_file"
-        fi
+        chmod "$file_mode" "$dst_file"
     fi
 }
 ######################################################################
