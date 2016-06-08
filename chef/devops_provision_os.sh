@@ -4,12 +4,12 @@
 ## Licensed under MIT
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
-## File : enable_chef_depoyment.sh
+## File : devops_provision_os.sh
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-05-31 11:34:42>
+## Updated: Time-stamp: <2016-06-08 13:37:55>
 ##-------------------------------------------------------------------
 ################################################################
 # How To Use
@@ -159,4 +159,4 @@ fi
 
 enable_chef_deployment
 echo "Action Done"
-## File : enable_chef_depoyment.sh ends
+## File : devops_provision_os.sh ends
