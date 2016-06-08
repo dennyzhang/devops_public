@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-06-08 13:37:55>
+## Updated: Time-stamp: <2016-06-08 13:55:21>
 ##-------------------------------------------------------------------
 ################################################################
 # How To Use
@@ -33,65 +33,17 @@
 #
 #        bash ./enable_chef_depoyment.sh
 ################################################################
-function log() {
-    local msg=$*
-    date_timestamp=$(date +['%Y-%m-%d %H:%M:%S'])
-    echo -ne "$date_timestamp $msg\n"
+. /etc/profile
 
-    if [ -n "$LOG_FILE" ]; then
-        echo -ne "$date_timestamp $msg\n" >> "$LOG_FILE"
-    fi
-}
+if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
+    [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
+    wget -O /var/lib/devops/refresh_common_library.sh \
+         https://raw.githubusercontent.com/DennyZhang/devops_public/master/common_library/refresh_common_library.sh
+fi
 
-################################################################
-function enable_chef_deployment() {
-    mkdir -p /root/.ssh/
-    log "enable chef deployment"
-    install_packages "wget" "wget"
-    install_packages "curl" "curl"
-    install_packages "git" "git"
-    download_facility "$git_update_url" "/root/git_update.sh"
-
-    if [ -n "$git_deploy_key" ]; then
-        inject_git_deploy_key "/root/.ssh/git_id_rsa" "$git_deploy_key"
-    fi
-
-    if [ -n "$ssh_config_content" ]; then
-        git_ssh_config "/root/.ssh/config" "$ssh_config_content"
-    fi
-
-    if [ -n "$ssh_public_key" ]; then
-        inject_ssh_authorized_keys "$ssh_email" "$ssh_public_key"
-    fi
-    install_chef "$chef_version"
-}
-
-function install_chef() {
-    local chef_version=${1?}
-    if ! which chef-client 1>/dev/null 2>&1; then
-        (echo "version=$chef_version"; curl -L https://www.opscode.com/chef/install.sh) |  bash
-    fi
-}
-
-function install_packages() {
-    local package=${1?}
-    local binary_name=${2?}
-    if ! which "$binary_name" 1>/dev/null 2>&1; then
-        apt-get install -y "$package"
-    fi
-}
-
-function download_facility() {
-    local url=${1?}
-    local dst_file=${2:?}
-    if [ ! -f "$dst_file" ]; then
-        command="wget -O $dst_file $url"
-        log "$command"
-        eval "$command"
-        chmod 755 "$dst_file"
-    fi
-}
-
+bash /var/lib/devops/refresh_common_library.sh
+. /var/lib/devops/devops_common_library.sh
+################################################################################
 function inject_git_deploy_key() {
     local ssh_key=${1?}
     shift
@@ -115,19 +67,7 @@ $ssh_config_content
 EOF
 }
 
-function inject_ssh_authorized_keys() {
-    local ssh_email=${1?}
-    local ssh_public_key=${2?}
-
-    local ssh_authorized_key_file="/root/.ssh/authorized_keys"
-
-    log "inject ssh authorized keys to $ssh_authorized_key_file"
-    if ! grep "$ssh_email" $ssh_authorized_key_file 1>/dev/null 2>&1; then
-        echo "$ssh_public_key" >> $ssh_authorized_key_file
-    fi
-}
-####################################
-export chef_version="12.4.1"
+################################################################
 if [ -z "$git_update_url" ]; then
    export git_update_url="https://raw.githubusercontent.com/TOTVS/mdmpublic/master/git_update.sh"
 fi
@@ -157,6 +97,24 @@ if [ -z "$git_deploy_key" ] && [ -f "$git_deploy_key_file" ]; then
     git_deploy_key=$(cat "$git_deploy_key_file")
 fi
 
-enable_chef_deployment
+################################################################
+log "enable chef deployment"
+install_package_list "wget,curl,git"
+install_chef "12.4.1"
+
+download_facility "$git_update_url" "/root/git_update.sh"
+
+if [ -n "$git_deploy_key" ]; then
+    inject_git_deploy_key "/root/.ssh/git_id_rsa" "$git_deploy_key"
+fi
+
+if [ -n "$ssh_config_content" ]; then
+    git_ssh_config "/root/.ssh/config" "$ssh_config_content"
+fi
+
+if [ -n "$ssh_public_key" ]; then
+    inject_ssh_authorized_keys "$ssh_email" "$ssh_public_key"
+fi
+
 echo "Action Done"
 ## File : devops_provision_os.sh ends

@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-05 18:45:52>
+## Updated: Time-stamp: <2016-06-08 13:55:15>
 ##-------------------------------------------------------------------
 function log() {
     # log message to both stdout and logfile on condition
@@ -22,6 +22,28 @@ function log() {
     fi
 }
 
+function install_package() {
+    local package=${1?}
+    local binary_name=${2:-""}
+    [ -n "$binary_name" ] || binary_name="$package"
+
+    # TODO: support more OS
+    fail_unless_os "ubuntu"
+    if ! which "$binary_name" 1>/dev/null 2>&1; then
+        apt-get install -y "$package"
+    fi
+}
+
+function install_package_list() {
+    # install_package_list "wget,curl,git"
+    local package_list=${1?}
+
+    for package in ${package_list//,/}; do
+        install_package "$package"
+    done
+}
+
+################################################################################
 function generate_dir_checksum() {
     local dst_dir=${1?}
     cd "$dst_dir"
@@ -39,7 +61,7 @@ function generate_dir_checksum() {
 function inject_ssh_key() {
     local ssh_private_key=${1:-""}
     local ssh_key_file=${2:-""}
-    ssh_dir="/var/lib/jenkins/.ssh"
+    local ssh_dir=${3:-"/var/lib/jenkins/.ssh"}
 
     if [ -z "$ssh_private_key" ] && [ ! -f "$ssh_key_file" ]; then
         echo "ERROR: wrong input: ssh_private_key parameter must be given"
@@ -203,6 +225,41 @@ EOF
     ssh_command="ssh $common_ssh_options -p $ssh_port root@$ssh_server_ip $CHEF_BINARY_CMD --config /root/client.rb -j /root/client.json"
     $ssh_command
     log "Deploy $server end"
+}
+
+function install_chef() {
+    local chef_version=${1:-"12.4.1"}
+    if ! which chef-client 1>/dev/null 2>&1; then
+        (echo "version=$chef_version"; curl -L https://www.opscode.com/chef/install.sh) |  bash
+    fi
+}
+
+function inject_ssh_authorized_keys() {
+    local ssh_email=${1?}
+    local ssh_public_key=${2?}
+    local ssh_authorized_key_file=${3:-"/root/.ssh/authorized_keys"}
+
+    ssh_dir=$(dirname $ssh_authorized_key_file)
+    [ -d "$ssh_dir" ] || mkdir -p "$ssh_dir"
+
+    log "inject ssh authorized keys to $ssh_authorized_key_file"
+    if ! grep "$ssh_email" $ssh_authorized_key_file 1>/dev/null 2>&1; then
+        echo "$ssh_public_key" >> $ssh_authorized_key_file
+    fi
+}
+
+function download_facility() {
+    local url=${1?}
+    local dst_file=${2:?}
+    local file_mode=${3:-""}
+    if [ ! -f "$dst_file" ]; then
+        command="wget -O $dst_file $url"
+        log "$command"
+        eval "$command"
+        if [ -n "$file_mode" ]; then
+            chmod "$file_mode" "$dst_file"
+        fi
+    fi
 }
 ######################################################################
 ## File : general_helper.sh ends
