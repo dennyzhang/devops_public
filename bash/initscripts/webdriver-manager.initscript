@@ -1,0 +1,166 @@
+#!/usr/bin/env bash
+#
+# webdriver-manager
+#
+### BEGIN INIT INFO
+# Provides: webdriver-manager
+# Required-Start: $network $remote_fs $named
+# Required-Stop: $network $remote_fs $named
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Starts webdriver-manager
+# Description: Starts webdriver-manager using start-stop-daemon
+### END INIT INFO
+
+# Source networking configuration
+#
+if [ -f /etc/sysconfig/network ]; then source /etc/sysconfig/network; fi
+
+. /lib/lsb/init-functions
+
+# Exit if networking is not up
+#
+[ "$NETWORKING" = "no" ] && exit
+
+. /etc/profile
+#################################################################################
+# TODO
+SERVICE_NAME="webdriver-manager"
+CHECK_PID_RUNNING=$(ps ax | grep -e node_modules.*selenium.*protractor | grep -v grep | sed 's/^\s*\([0-9]*\)\s.*/\1/')
+MONITOR_TCP_PORT=4444
+export DISPLAY=":<%= node.protractor.xvfb_port %>"
+
+#################################################################################
+PIDFILE="/var/run/${SERVICE_NAME}.pid"
+# TODO
+#SERVICE_START_COMMAND="start-stop-daemon --start --quiet --make-pidfile --pidfile $PIDFILE --background -d /opt/webdriver-manager --startas /bin/bash -- -c \"exec /usr/bin/java -jar /opt/webdriver-manager/app-1.0.jar server /opt/webdriver-manager/config/webdriver-manager.yml >> /opt/webdriver-manager/logs/webdriver-manager_initscript.log 2>&1\""
+MAX_START_TIMEOUT=200
+MAX_STOP_TIMEOUT=30
+
+start() {
+    if [ -f $PIDFILE ]; then
+        # PIDFILE EXISTS -- Process RUNNING?
+        echo -e "PID file found in $PIDFILE"
+        pid="$(cat $PIDFILE)"
+
+        if [ -n "$CHECK_PID_RUNNING" ]; then
+            # EXIT IF Process ALREADY RUNNING
+            echo -e "\033[31;1mPID $pid still alive, $SERVICE_NAME already running...\033[0m"
+            return 0
+        fi
+    fi
+
+    echo -en " * \033[1mStarting $SERVICE_NAME...\033[0m"
+    touch $PIDFILE
+    selenium_jar=`ls /usr/lib/node_modules/protractor/selenium/selenium-server-standalone*.jar`
+    # Sample start: java -jar /usr/lib/node_modules/protractor/selenium/selenium-server-standalone-2.47.1.jar -Dwebdriver.chrome.driver=/usr/lib/node_modules/protractor/selenium/chromedriver
+    # TODO
+    if start-stop-daemon --start --quiet --make-pidfile --pidfile $PIDFILE --background --exec /usr/bin/java -- -jar $selenium_jar -Dwebdriver.chrome.driver=/usr/lib/node_modules/protractor/selenium/chromedriver; then
+        log_end_msg 0
+
+        if [ $? ]; then
+            # Wait for service up
+            timeout=0
+            while ! lsof -i tcp:$MONITOR_TCP_PORT | grep -i listen 2>/dev/null 1>2; do
+                echo -n '.'
+                (( timeout ++))
+                if [ $timeout -gt $MAX_START_TIMEOUT ]; then 
+                    echo -e " \e[31m[FAILURE]\e[0m"
+                    return 1; 
+                fi
+                sleep 1
+            done
+
+            echo -e " \e[32m[OK]\e[0m"
+        else
+            echo -e " \e[31m[FAILURE]\e[0m"
+        fi
+    else
+        log_end_msg 1
+    fi
+
+    log_end_msg $?
+}
+
+stop() {
+    if [[ -f $PIDFILE ]]; then
+        echo -n -e " * \033[1mStopping $SERVICE_NAME...\033[0m"
+
+        # REMOVE PIDFILE AND EXIT IF PROCESS NOT RUNNING
+        if [ -z "$CHECK_PID_RUNNING" ]; then
+            echo -e "\033[1mPID file found, but no matching process running?\033[0m"
+            echo "Removing PID file..."
+            rm $PIDFILE
+            exit 0
+        fi
+
+        # KILL PROCESS
+        pid=$(cat $PIDFILE)
+        kill $pid
+        r=$?
+
+        # Check for process
+        timeout=0
+        while [ -d /proc/$pid ]; do
+            echo -n '.'
+            (( timeout ++))
+            if [ $timeout -gt $MAX_STOP_TIMEOUT ]; then return; fi
+            sleep 1
+        done
+
+        if [ ! -d /proc/$pid ]; then
+            rm $PIDFILE
+        fi
+
+        echo;
+
+        return $r
+    else
+        echo -e "\033[1mNo PID file found -- $SERVICE_NAME not running?\033[0m"
+    fi
+}
+
+status() {
+    # GOT PIDFILE?
+    [ -f $PIDFILE ] && pid=$(cat $PIDFILE)
+
+    # RUNNING
+    if [[ $pid && -d "/proc/$pid" ]]; then
+        if lsof -i tcp:$MONITOR_TCP_PORT | grep -i listen 2>/dev/null 1>2; then
+            echo -e " * \033[1;37;46m${SERVICE_NAME} running with PID $pid\033[0m"
+            return 0
+        else
+            echo -e " * \033[1;37;46m${SERVICE_NAME} running with problem (PID $pid)\033[0m"
+            exit 1
+        fi
+    fi
+
+    # NOT RUNNING
+    if [[ ! $pid || ! -d "/proc/$pid" ]]; then
+        echo -e " * \033[1;33;40m${SERVICE_NAME} not running\033[0m"
+        return 3
+    fi
+
+    # STALE PID FOUND
+    if [[ ! -d "/proc/$pid" && -f $PIDFILE ]]; then
+        echo -e " * \033[1;31;40m[!] Stale PID found in $PIDFILE\033[0m"
+        return 1
+    fi
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status $2
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|status [-v]|}"
+        exit 1
+esac
+
+exit $?
