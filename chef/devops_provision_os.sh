@@ -9,10 +9,11 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-06-08 14:18:58>
+## Updated: Time-stamp: <2016-06-08 15:22:38>
 ##-------------------------------------------------------------------
 . /etc/profile
 
+# TODO: don't hardcode download link
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
     wget -O /var/lib/devops/refresh_common_library.sh \
@@ -41,6 +42,7 @@ log "enable chef deployment"
 install_package_list "wget,curl,git"
 install_chef $chef_version
 
+# TODO: don't hardcode download link
 download_facility "/root/git_update.sh" \
                   "https://github.com/DennyZhang/devops_public/raw/master/bash/git_update.sh"
 

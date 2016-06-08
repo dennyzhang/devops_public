@@ -9,9 +9,10 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-04 22:06:08>
+## Updated: Time-stamp: <2016-06-08 15:24:02>
 ##-------------------------------------------------------------------
 . /etc/profile
+# TODO: don't hardcode download link
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
     wget -O /var/lib/devops/refresh_common_library.sh \
@@ -36,6 +37,7 @@ for library in $library_list; do
     cksum=${my_list[0]}
     fname=${my_list[2]}
 
+    # TODO: don't hardcode download link
     bash /var/lib/devops/refresh_common_library.sh "$cksum" "/var/lib/devops/$fname" \
          "https://raw.githubusercontent.com/DennyZhang/devops_public/master/common_library/$fname"
 

@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-05-10>
-## Updated: Time-stamp: <2016-06-04 10:23:59>
+## Updated: Time-stamp: <2016-06-08 15:24:21>
 ##-------------------------------------------------------------------
 ################################################################################
 require 'socket'
@@ -19,6 +19,7 @@ require 'open3'
 # Required by serverspec
 set :backend, :exec
 
+# TODO: don't hardcode download link
 url_prefix = 'https://raw.githubusercontent.com/DennyZhang/devops_public/master/serverspec'
 
 # TODO: conditional download to avoid network turbulence

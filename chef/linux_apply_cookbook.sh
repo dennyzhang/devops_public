@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-06-08 14:39:52>
+## Updated: Time-stamp: <2016-06-08 15:22:57>
 ##-------------------------------------------------------------------
 ################################################################################################
 . /etc/profile
@@ -39,6 +39,7 @@ function basic_setup() {
     fi
 
     if [ ! -f /root/git_update.sh ]; then
+        # TODO: don't hardcode download link
         echo "Basic setup and installation for chef deployment"
         file_url="https://raw.githubusercontent.com/DennyZhang/devops_public/master/chef/devops_provision_os.sh"
         curl -o /tmp/devops_provision_os.sh "$file_url"
