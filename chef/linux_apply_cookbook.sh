@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-05-27 17:50:33>
+## Updated: Time-stamp: <2016-06-08 14:39:52>
 ##-------------------------------------------------------------------
 ################################################################################################
 . /etc/profile
@@ -40,8 +40,9 @@ function basic_setup() {
 
     if [ ! -f /root/git_update.sh ]; then
         echo "Basic setup and installation for chef deployment"
-        curl -o /tmp/enable_chef_deployment.sh https://raw.githubusercontent.com/DennyZhang/devops_public/master/chef/enable_chef_depoyment.sh
-        bash -e /tmp/enable_chef_deployment.sh
+        file_url="https://raw.githubusercontent.com/DennyZhang/devops_public/master/chef/devops_provision_os.sh"
+        curl -o /tmp/devops_provision_os.sh "$file_url"
+        bash -e /tmp/devops_provision_os.sh
     fi
 }
 
@@ -75,7 +76,7 @@ ensure_variable_isset "chef_json must be set" "$chef_json"
 
 [ -n "$working_dir" ] || working_dir="/root/devops"
 
-# TODO: remove file dependency on enable_chef_deployment.sh
+# TODO: combine current scripts with devops_provision_os.sh
 basic_setup
 git_update_code "$branch_name" "$working_dir" "$git_repo_url"
 chef_configuration "$branch_name" "$working_dir" "$git_repo_url" "$chef_json"
