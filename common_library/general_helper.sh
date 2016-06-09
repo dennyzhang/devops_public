@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-08 14:00:08>
+## Updated: Time-stamp: <2016-06-09 09:19:48>
 ##-------------------------------------------------------------------
 function log() {
     # log message to both stdout and logfile on condition
@@ -239,12 +239,12 @@ function inject_ssh_authorized_keys() {
     local ssh_public_key=${2?}
     local ssh_authorized_key_file=${3:-"/root/.ssh/authorized_keys"}
 
-    ssh_dir=$(dirname $ssh_authorized_key_file)
+    ssh_dir=$(dirname "$ssh_authorized_key_file")
     [ -d "$ssh_dir" ] || mkdir -p "$ssh_dir"
 
     log "inject ssh authorized keys to $ssh_authorized_key_file"
-    if ! grep "$ssh_email" $ssh_authorized_key_file 1>/dev/null 2>&1; then
-        echo "$ssh_public_key" >> $ssh_authorized_key_file
+    if ! grep "$ssh_email" "$ssh_authorized_key_file" 1>/dev/null 2>&1; then
+        echo "$ssh_public_key" >> "$ssh_authorized_key_file"
     fi
 }
 
