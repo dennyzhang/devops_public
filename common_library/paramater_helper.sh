@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-10 10:27:35>
+## Updated: Time-stamp: <2016-06-10 10:43:50>
 ##-------------------------------------------------------------------
 function fail_unless_root() {
     # Make sure only root can run our script
@@ -138,9 +138,9 @@ function ip_ssh_reachable() {
     #                        "Connection timed out during banner exchange", etc
     #
     # Sample:
-    #      ip_ssh_reachable true "172.17.0.2:22"
-    #      ip_ssh_reachable true "172.17.0.2:22:root"
-    #      ip_ssh_reachable true "172.17.0.2:22:root" "/var/lib/jenkins/.ssh/id_rsa"
+    #      ip_ssh_reachable "true" "172.17.0.2:22"
+    #      ip_ssh_reachable "true" "172.17.0.2:22:root"
+    #      ip_ssh_reachable "true" "172.17.0.2:22:root" "/var/lib/jenkins/.ssh/id_rsa"
     local exit_if_fail=${1?}
     local ssh_server=${2?}
     local ssh_keyfile=${3:-""}
@@ -164,7 +164,7 @@ function ip_ssh_reachable() {
     set -e
 
     if [ "$status" != "ok" ]; then
-        if $exit_if_fail; then
+        if [ "$exit_if_fail" = "true" ]; then
             echo -e "Error: Fail to ssh $ssh_server.\nError msg: $status"
             exit 1
         else
@@ -175,10 +175,10 @@ function ip_ssh_reachable() {
 
 function ip_list_ping_reachable() {
     # Sample:
-    #   ip_list_ping_reachable true "172.17.0.2
-    #                                172.17.0.3
-    #                                172.17.0.4"
-    #   ip_list_ping_reachable false "$ip_list"
+    #   ip_list_ping_reachable "true" "172.17.0.2
+    #                                  172.17.0.3
+    #                                  172.17.0.4"
+    #   ip_list_ping_reachable "false" "$ip_list"
     local exit_if_fail=${1?}
     local ip_list=${2?}
     for ip in $ip_list; do
@@ -192,6 +192,20 @@ function ip_list_ping_reachable() {
             fi
         fi
     done
+}
+
+function enforce_ssh_check() {
+    # Sample:
+    #   enforce_ssh_check "true" "$server_list" "/var/lib/jenkins/.ssh/id_rsa"
+    local exit_if_fail=${1?}
+    local server_list=${2:-""}
+    local ssh_keyfile=${3:-""}
+    if [ -n "$server_list" ]; then
+        echo "Check ssh availability in parameters"
+        for server in $server_list; do
+            ip_ssh_reachable "$exit_if_fail" "$server" "$ssh_keyfile"
+        done
+    fi
 }
 
 function enforce_ip_ping_check() {
