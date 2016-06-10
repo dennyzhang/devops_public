@@ -24,15 +24,13 @@ do
     domain=${host_split[1]}
 
     for node in $(kitchen list | grep -v '^Instance' | awk -F' ' '{print $1}'); do
-        # TODO: remove this line
-        kitchen exec "$node" -c "ls -lth /opt"
-        kitchen exec "$node" -c "cp -f /etc/hosts /opt/hosts"
-        if kitchen exec "$node" -c "grep ${domain} /opt/hosts"; then
-            command="sed -i \"/${domain}/c\\${ip}    ${domain}\" /opt/hosts"
+        kitchen exec "$node" -c "cp -f /etc/hosts /root/hosts"
+        if kitchen exec "$node" -c "grep ${domain} /root/hosts"; then
+            command="sed -i \"/${domain}/c\\${ip}    ${domain}\" /root/hosts"
         else
-            command="echo \"${ip}    ${domain}\" >> /opt/hosts"
+            command="echo \"${ip}    ${domain}\" >> /root/hosts"
         fi
         kitchen exec "$node" -c "$command"
-        kitchen exec "$node" -c "sudo cp -f /opt/hosts /etc/hosts"
+        kitchen exec "$node" -c "sudo cp -f /root/hosts /etc/hosts"
     done
 done
