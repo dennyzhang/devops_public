@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-10 10:20:47>
+## Updated: Time-stamp: <2016-06-10 10:27:35>
 ##-------------------------------------------------------------------
 function fail_unless_root() {
     # Make sure only root can run our script
@@ -158,7 +158,7 @@ function ip_ssh_reachable() {
     else
         ssh_connect="ssh -o BatchMode=yes -o ConnectTimeout=$ssh_timeout"
     fi
-    status=$($ssh_connect -p $server_port $ssh_username@$server_ip echo ok 2>&1)
+    status=$($ssh_connect -p "$server_port" "$ssh_username@$server_ip" echo ok 2>&1)
 
     # TODO: restore previous state, instead of set -e
     set -e
