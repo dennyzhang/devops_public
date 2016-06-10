@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-05 08:53:47>
+## Updated: Time-stamp: <2016-06-10 13:10:28>
 ##-------------------------------------------------------------------
 function source_string() {
     # Global variables needed to enable the current script
@@ -29,8 +29,10 @@ function remove_hardline() {
 function string_strip_whitespace() {
     # remove leading and tailing whitespace
     local str=$*
-    str=$(echo "${str}" |sed -e 's/^[ \t]*//g')
-    str=$(echo "${str}" |sed -e 's/[ \t]*$//g')
+    str=$(echo "${str}" | sed -e 's/^[ \t]*//g')
+    str=$(echo "${str}" | sed -e 's/[ \t]*$//g')
+    # remove empty lines
+    str=$(echo -e "${str}" | sed '/^$/d')
     echo "$str"
 }
 
