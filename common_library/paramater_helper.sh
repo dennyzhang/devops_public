@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-05 09:39:11>
+## Updated: Time-stamp: <2016-06-10 08:24:22>
 ##-------------------------------------------------------------------
 function fail_unless_root() {
     # Make sure only root can run our script
@@ -131,12 +131,32 @@ function check_list_fields() {
     fi
 }
 
-function ip_ping_reachable() {
+function ip_ssh_reachable() {
     # Sample:
-    #   ip_ping_reachable true "172.17.0.2
-    #                           172.17.0.3
-    #                           172.17.0.4"
-    #   ip_ping_reachable false "$ip_list"
+    #   ip_ssh_reachable true "172.17.0.2:22"
+    #   ip_ssh_reachable false "172.17.0.2:22:root"
+    #   ip_ssh_reachable false "172.17.0.2:22:root" "/var/lib/jenkins/.ssh/id_rsa"
+    local exit_if_fail=${1?}
+    local ssh_server=${2?}
+    local ssh_keyfile=${3:-"/root/.ssh/id_rsa"}
+
+    my_list=(${ssh_server//:/ })
+    server_ip=${my_list[0]}
+    server_port=${my_list[1]}
+    ssh_username=${my_list[2]}
+    [ -n "$ssh_port" ] || ssh_port="22"
+    [ -n "$ssh_username" ] || ssh_username="root"
+
+    # TODO: to be implemented
+    echo "yes"
+}
+
+function ip_list_ping_reachable() {
+    # Sample:
+    #   ip_list_ping_reachable true "172.17.0.2
+    #                                172.17.0.3
+    #                                172.17.0.4"
+    #   ip_list_ping_reachable false "$ip_list"
     local exit_if_fail=${1?}
     local ip_list=${2?}
     for ip in $ip_list; do
@@ -162,7 +182,7 @@ function enforce_ip_ping_check() {
     echo "ping ip address listed in $parameter_name parameter"
     ip_list=$(parse_ip_from_string "$parameter_value")
     if [ -n "$ip_list" ]; then
-        ip_ping_reachable "$exit_if_fail" "$ip_list"
+        ip_list_ping_reachable "$exit_if_fail" "$ip_list"
     fi
 }
 
