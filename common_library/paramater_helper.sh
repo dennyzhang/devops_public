@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-10 08:24:22>
+## Updated: Time-stamp: <2016-06-10 10:20:47>
 ##-------------------------------------------------------------------
 function fail_unless_root() {
     # Make sure only root can run our script
@@ -132,13 +132,18 @@ function check_list_fields() {
 }
 
 function ip_ssh_reachable() {
+    # Check whether we can ssh to given server.
+    #       Possible output: "ok", "Permission denied",
+    #                        "ssh: connect to host XXX.XXX.XXX.XXX port XXX: Operation timed out"
+    #                        "Connection timed out during banner exchange", etc
+    #
     # Sample:
-    #   ip_ssh_reachable true "172.17.0.2:22"
-    #   ip_ssh_reachable false "172.17.0.2:22:root"
-    #   ip_ssh_reachable false "172.17.0.2:22:root" "/var/lib/jenkins/.ssh/id_rsa"
+    #      ip_ssh_reachable true "172.17.0.2:22"
+    #      ip_ssh_reachable true "172.17.0.2:22:root"
+    #      ip_ssh_reachable true "172.17.0.2:22:root" "/var/lib/jenkins/.ssh/id_rsa"
     local exit_if_fail=${1?}
     local ssh_server=${2?}
-    local ssh_keyfile=${3:-"/root/.ssh/id_rsa"}
+    local ssh_keyfile=${3:-""}
 
     my_list=(${ssh_server//:/ })
     server_ip=${my_list[0]}
@@ -146,9 +151,26 @@ function ip_ssh_reachable() {
     ssh_username=${my_list[2]}
     [ -n "$ssh_port" ] || ssh_port="22"
     [ -n "$ssh_username" ] || ssh_username="root"
+    ssh_timeout=8
+    set +e
+    if [ -n "$ssh_keyfile" ]; then
+        ssh_connect="ssh -o BatchMode=yes -o ConnectTimeout=$ssh_timeout -i $ssh_keyfile"
+    else
+        ssh_connect="ssh -o BatchMode=yes -o ConnectTimeout=$ssh_timeout"
+    fi
+    status=$($ssh_connect -p $server_port $ssh_username@$server_ip echo ok 2>&1)
 
-    # TODO: to be implemented
-    echo "yes"
+    # TODO: restore previous state, instead of set -e
+    set -e
+
+    if [ "$status" != "ok" ]; then
+        if $exit_if_fail; then
+            echo -e "Error: Fail to ssh $ssh_server.\nError msg: $status"
+            exit 1
+        else
+            echo -e "Warning: Fail to ssh $ssh_server.\nError msg: $status"
+        fi
+    fi
 }
 
 function ip_list_ping_reachable() {

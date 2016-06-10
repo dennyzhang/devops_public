@@ -24,7 +24,7 @@ library_list="
 2083051160 8106 general_helper.sh
 2551391090 2119 git_helper.sh
 1959477722 2369 network_helper.sh
-1524234271 5791 paramater_helper.sh
+2971876100 6681 paramater_helper.sh
 1998442075 1994 string_helper.sh
 "
 
