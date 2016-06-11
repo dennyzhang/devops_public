@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-10 08:26:43>
+## Updated: Time-stamp: <2016-06-11 17:17:49>
 ##-------------------------------------------------------------------
 function log() {
     # log message to both stdout and logfile on condition
@@ -258,6 +258,25 @@ function download_facility() {
         eval "$command"
         chmod "$file_mode" "$dst_file"
     fi
+}
+
+function wait_for() {
+    # wait_for "service apache2 status" 3
+    # wait_for "lsof -i tcp:8080" 10
+    local check_command=${1?}
+    local timeout_seconds=${2?}
+
+    log "Wait for: $check_command"
+    for((i=0; i<timeout_seconds; i++)); do
+        if eval "$check_command"; then
+            log "Action pass"
+            exit 0
+        fi
+        sleep 1
+    done
+
+    log "Error: wait for more than $timeout_seconds"
+    exit 1
 }
 ######################################################################
 ## File : general_helper.sh ends
