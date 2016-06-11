@@ -7,10 +7,12 @@
 ## File : wait_for.sh
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
-#         Sample:
+##       Sample:
+##        wait_for.sh "service apache2 status" 3
+##        wait_for.sh "lsof -i tcp:8080" 10
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-10 19:45:36>
+## Updated: Time-stamp: <2016-06-11 17:13:43>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -25,16 +27,17 @@ function log() {
 }
 
 check_command=${1:-"true"}
-timeout_seconds=${2:-3}
+timeout_seconds=${2:-30}
 
 log "Wait for: $check_command"
 for((i=0; i<timeout_seconds; i++)); do
     if eval "$check_command"; then
+        log "Action pass"
         exit 0
     fi
     sleep 1
 done
 
-log "Warning: wait for more than $timeout_seconds"
+log "Error: wait for more than $timeout_seconds"
 exit 1
 ## File: wait_for.sh ends
