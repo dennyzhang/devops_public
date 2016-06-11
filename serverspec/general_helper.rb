@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-05-10>
-## Updated: Time-stamp: <2016-06-07 10:24:58>
+## Updated: Time-stamp: <2016-06-12 07:43:22>
 ##-------------------------------------------------------------------
 ################################################################################
 require 'socket'
@@ -44,6 +44,14 @@ def sleep_for(seconds)
   # Hence we may need to sleep and test
   describe command("sleep #{seconds}") do
     its(:exit_status) { should eq 0 }
+  end
+end
+
+def wait_for(seconds, condition)
+  # Wait with timeout mechanism until given condition is satisfied
+  describe command("bash /root/wait_for.sh '#{condition}' '#{seconds}'") do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should contain 'Action pass' }
   end
 end
 
