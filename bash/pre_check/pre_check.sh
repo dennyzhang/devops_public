@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 15:11:32>
+## Updated: Time-stamp: <2016-06-12 15:14:27>
 ##-------------------------------------------------------------------
 . /etc/profile
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
@@ -40,6 +40,7 @@ function install_serverspec() {
 
 function setup_serverspec() {
     working_dir=${1?}
+
     cd "$working_dir"
     if [ ! -f spec/spec_helper.rb ]; then
         echo "Setup Serverspec Test case"
@@ -90,6 +91,13 @@ trap shell_exit SIGHUP SIGINT SIGTERM 0
 
 fail_unless_os "ubuntu|redhat/centos/osx"
 
+if [ -z "$working_dir" ]; then
+    working_dir="/root/pre_check"
+fi
+mkdir -p $working_dir/spec/localhost
+cd $working_dir
+
+# sudo /usr/sbin/locale-gen --lang en_US.UTF-8
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 
@@ -98,11 +106,6 @@ setup_serverspec $working_dir
 
 cat > spec/localhost/sample_spec.rb <<EOF
 require 'spec_helper'
-
-# Check at least 3 GB free disk
-describe command("[ $(df -h / | tail -n1 |awk -F' ' '{print $4}' | awk -F'G' '{print $1}' | awk -F'.' '{print $1}') -gt 3 ]") do
-  its(:exit_status) { should eq 0 }
-end
 
 $test_spec
 EOF
