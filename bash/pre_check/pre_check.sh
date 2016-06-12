@@ -9,8 +9,8 @@
 ## Description :
 ## Sample:
 ## --
-## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 15:38:15>
+## Created : <2016-06-12>
+## Updated: Time-stamp: <2016-06-12 15:41:24>
 ##-------------------------------------------------------------------
 . /etc/profile
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
@@ -107,6 +107,10 @@ export LC_ALL="en_US.UTF-8"
 
 install_serverspec
 setup_serverspec $working_dir
+
+# TODO: read testcase from cfg file
+
+# TODO: built-in support: OS version, network check, memory and cpu check, free disk check
 
 cat > spec/localhost/sample_spec.rb <<EOF
 require 'spec_helper'
