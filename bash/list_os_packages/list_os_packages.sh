@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 18:01:39>
+## Updated: Time-stamp: <2016-06-12 18:05:05>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -21,28 +21,33 @@ function list_basic_info() {
 }
 
 function list_package_info() {
-    echo "OS installed packages"
-    dpkg -l
+    command="dpkg -l"
+    echo "OS installed packages: $command"
+    eval "$command"
 }
 
 function list_python_info() {
-    echo "List python packages"
-    pip list
+    command="pip list"
+    echo "List python packages: $command"
+    eval "$command"
 }
 
 function list_ruby_info() {
-    echo "List ruby packages"
-    gem list
+    command="gem list"
+    echo "List ruby packages: $command"
+    eval "$command"
 }
 
 function list_nodejs_info() {
-    echo "List npm packages"
-    npm list
+    command="npm list"
+    echo "List npm packages: $command"
+    eval "$command"
 }
 
 function list_java_info() {
-    echo "List Java packages"
-    # TODO
+    command="echo TODO"
+    echo "List Java packages: $command"
+    eval "$command"
 }
 
 ################################################################################
