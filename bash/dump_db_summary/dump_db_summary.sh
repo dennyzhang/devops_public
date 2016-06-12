@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 10:49:49>
+## Updated: Time-stamp: <2016-06-12 11:05:37>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -60,20 +60,24 @@ output_type=${4:-"json"}
 
 cd "$cfg_dir"
 for f in *.cfg; do
-    db_name=${f%%.cfg}
-    # Sample: $cfg_dir/mongodb.cfg -> dump_mongodb_summary mongodb.cfg
-    fun_name="dump_${db_name}_summary"
-    command="$fun_name $f $output_type $data_out_dir/${db_name}.${output_type}"
-    echo "Run function: $command"
-    $command
+    if [ -f "$f" ]; then
+        db_name=${f%%.cfg}
+        # Sample: $cfg_dir/mongodb.cfg -> dump_mongodb_summary mongodb.cfg
+        fun_name="dump_${db_name}_summary"
+        command="$fun_name $f $output_type $data_out_dir/${db_name}.${output_type}"
+        echo "Run function: $command"
+        $command
+    fi
 done
 
 if [ "$stdout_show_data_out" = "true" ]; then
     cd "$data_out_dir"
     for f in *.${output_type}; do
-        db_name=${f%%.*}
-        echo "Dump $db_name data summary: $data_out_dir/$f"
-        cat "$f"
+        if [ -f "$f" ]; then
+            db_name=${f%%.*}
+            echo "Dump $db_name data summary: $data_out_dir/$f"
+            cat "$f"
+        fi
     done
 fi
 ## File: dump_db_summary.sh ends
