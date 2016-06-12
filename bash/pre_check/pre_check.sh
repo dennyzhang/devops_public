@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 15:30:51>
+## Updated: Time-stamp: <2016-06-12 15:31:37>
 ##-------------------------------------------------------------------
 . /etc/profile
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
@@ -91,7 +91,8 @@ function shell_exit() {
 # TODO: install ruby2.0 or later
 trap shell_exit SIGHUP SIGINT SIGTERM 0
 
-fail_unless_os "ubuntu|redhat/centos/osx"
+# fail_unless_os "ubuntu|redhat/centos/osx"
+fail_unless_os "ubuntu"
 install_package_list "wget,curl,lsof"
 
 if [ -z "$working_dir" ]; then
