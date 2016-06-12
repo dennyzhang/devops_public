@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-06-08 15:22:38>
+## Updated: Time-stamp: <2016-06-12 13:37:24>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -44,10 +44,10 @@ install_chef $chef_version
 
 # TODO: don't hardcode download link
 download_facility "/root/git_update.sh" \
-                  "https://github.com/DennyZhang/devops_public/raw/master/bash/git_update.sh"
+                  "https://raw.githubusercontent.com/DennyZhang/devops_public/master/bash/git_update.sh"
 
 download_facility "/root/manage_all_services.sh" \
-                  "https://github.com/DennyZhang/devops_public/raw/master/bash/manage_all_services/manage_all_services.sh"
+                  "https://raw.githubusercontent.com/DennyZhang/devops_public/master/bash/manage_all_services/manage_all_services.sh"
 
 # inject ssh key for ssh with keyfile
 if [ -n "$ssh_public_key" ]; then
