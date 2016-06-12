@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 11:41:50>
+## Updated: Time-stamp: <2016-06-12 12:00:06>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -34,6 +34,7 @@ list = json.load(sys.stdin)
 list = map(lambda x: '%s: %s' % (x['name'], x['basicStats']), list)
 print json.dumps(list)" < "$output_data_file")
         echo "$output" | python -m json.tool > "$output_data_file"
+        # TODO: need to beautify json output
     fi
 }
 
