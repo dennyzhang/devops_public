@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 18:05:05>
+## Updated: Time-stamp: <2016-06-12 18:08:13>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -22,31 +22,31 @@ function list_basic_info() {
 
 function list_package_info() {
     command="dpkg -l"
-    echo "OS installed packages: $command"
+    echo -e "\n=================== Run Command: $command"
     eval "$command"
 }
 
 function list_python_info() {
     command="pip list"
-    echo "List python packages: $command"
+    echo -e "\n=================== Run Command: $command"
     eval "$command"
 }
 
 function list_ruby_info() {
     command="gem list"
-    echo "List ruby packages: $command"
+    echo -e "\n=================== Run Command: $command"
     eval "$command"
 }
 
 function list_nodejs_info() {
     command="npm list"
-    echo "List npm packages: $command"
+    echo -e "\n=================== Run Command: $command"
     eval "$command"
 }
 
 function list_java_info() {
     command="echo TODO"
-    echo "List Java packages: $command"
+    echo -e "\n=================== Run Command: $command"
     eval "$command"
 }
 
@@ -78,7 +78,7 @@ function list_all_info() {
 check_scenario=${1:-"basic"}
 
 command="list_${check_scenario}_info"
-echo "Run $command"
+echo "Run function: $command"
 
 # TODO: defensive coding for not supported scenario
 eval "$command"
