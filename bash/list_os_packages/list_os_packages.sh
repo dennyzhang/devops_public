@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 17:53:04>
+## Updated: Time-stamp: <2016-06-12 18:01:39>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -20,7 +20,7 @@ function list_basic_info() {
     # TODO: OS version, cpu, memory
 }
 
-function list_os_info() {
+function list_package_info() {
     echo "OS installed packages"
     dpkg -l
 }
@@ -46,14 +46,9 @@ function list_java_info() {
 }
 
 ################################################################################
-function list_basic_info() {
-    list_basic_info
-    list_os_info
-}
-
 function list_all_info() {
-    os_basic_info
-    list_os_packages
+    list_basic_info
+    list_package_info
     if which gem 2>/dev/null 1>&2; then
         list_ruby_info
     fi
