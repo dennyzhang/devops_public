@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-11 17:17:49>
+## Updated: Time-stamp: <2016-06-12 13:20:17>
 ##-------------------------------------------------------------------
 function log() {
     # log message to both stdout and logfile on condition
@@ -38,7 +38,7 @@ function install_package_list() {
     # install_package_list "wget,curl,git"
     local package_list=${1?}
 
-    for package in ${package_list//,/}; do
+    for package in ${package_list//,/ }; do
         install_package "$package"
     done
 }
