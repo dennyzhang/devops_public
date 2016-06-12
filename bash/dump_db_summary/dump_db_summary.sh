@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 10:25:44>
+## Updated: Time-stamp: <2016-06-12 10:27:39>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -28,7 +28,6 @@ function dump_couchbase_summary() {
         echo "Run command: $command"
         curl -u "${cb_username}:${cb_passwd}" "http://${server_ip}:${tcp_port}/pools/default/buckets" \
             | python -m json.tool > "$output_data_file"
-        echo "TODO"
     fi
 }
 
@@ -46,19 +45,6 @@ function dump_elasticsearch_summary() {
         echo "Run command: $command"
         curl "http://${server_ip}:${tcp_port}/_cat/shards?v" \
              > "$output_data_file"
-        echo "TODO"
-    fi
-}
-
-function dump_mongodb_summary() {
-    local cfg_file=${1?}
-    local output_type=${2?}
-    local output_data_file=${3?}
-
-    source "$cfg_file"
-    if [ "$output_type" = "json" ]; then
-        echo "TODO"
-        echo "output_data_file: $output_data_file"
     fi
 }
 
