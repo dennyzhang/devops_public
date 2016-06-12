@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 17:48:42>
+## Updated: Time-stamp: <2016-06-12 17:51:39>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -34,6 +34,11 @@ function list_ruby_info() {
     gem list
 }
 
+function list_nodejs_info() {
+    echo "List npm packages"
+    npm list
+}
+
 ################################################################################
 function list_basic_info() {
     list_basic_info
@@ -50,8 +55,16 @@ function list_all_info() {
     if which pip 2>/dev/null 1>&2; then
         list_python_info
     fi
+
+    if which npm 2>/dev/null 1>&2; then
+        list_nodejs_info
+    fi
 }
 ################################################################################
+# Sample:
+#   list_os_packages.sh basic
+#   list_os_packages.sh python
+#   list_os_packages.sh all
 check_scenario=${1:-"basic"}
 
 command="list_${check_scenario}_info"
