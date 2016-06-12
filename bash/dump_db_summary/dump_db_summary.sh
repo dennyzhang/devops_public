@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 11:39:56>
+## Updated: Time-stamp: <2016-06-12 11:41:50>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -24,8 +24,7 @@ function dump_couchbase_summary() {
     # Get parameters from $cfg_file:
     #    server_ip, tcp_port, cb_username, cb_password
     if [ "$output_type" = "json" ]; then
-        command="curl -u ${cb_username}:${cb_passwd} http://${server_ip}:${tcp_port}/pools/default/buckets"
-        echo "Run command: $command"
+        echo "Call http://${server_ip}:${tcp_port}/pools/default/buckets"
         curl -u "${cb_username}:${cb_passwd}" "http://${server_ip}:${tcp_port}/pools/default/buckets" \
             | python -m json.tool > "$output_data_file"
 
@@ -48,8 +47,7 @@ function dump_elasticsearch_summary() {
     #    server_ip, tcp_port
     if [ "$output_type" = "json" ]; then
         # TODO: Change to json
-        command="curl http://${server_ip}:${tcp_port}/_cat/shards?v"
-        echo "Run command: $command"
+        echo "Call http://${server_ip}:${tcp_port}/_cat/shards?v"
         curl "http://${server_ip}:${tcp_port}/_cat/shards?v" \
              > "$output_data_file"
     fi
