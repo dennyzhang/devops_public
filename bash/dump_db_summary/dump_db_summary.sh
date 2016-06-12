@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 10:32:42>
+## Updated: Time-stamp: <2016-06-12 10:41:08>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -55,6 +55,7 @@ data_out_dir=${3:-"/opt/devops/dump_db_summary/data_out"}
 # support string/json
 output_type=${4:-"json"}
 
+[ -d "$cfg_dir" ] || mkdir -p "$cfg_dir"
 [ -d "$data_out_dir" ] || mkdir -p "$data_out_dir"
 
 cd "$cfg_dir"
