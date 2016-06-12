@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-06-12 13:31:26>
+## Updated: Time-stamp: <2016-06-12 13:53:18>
 ##-------------------------------------------------------------------
 ################################################################################################
 . /etc/profile
@@ -52,11 +52,9 @@ function chef_configuration() {
     local working_dir=${2?}
     local git_repo_url=${3?}
     local chef_json=${4?}
-    local git_repo=${5:-""}
 
-    if [ -z "$git_repo" ]; then
-        git_repo=$(echo "${git_repo_url%.git}" | awk -F '/' '{print $2}')
-    fi
+    git_repo=${git_repo_url%.git}
+    git_repo=${git_repo##*\/}
 
     chef_client_rb="$working_dir/client.rb"
     chef_json_file="$working_dir/client.json"
