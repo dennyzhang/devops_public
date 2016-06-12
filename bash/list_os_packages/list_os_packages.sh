@@ -10,8 +10,53 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 15:55:16>
+## Updated: Time-stamp: <2016-06-12 17:48:42>
 ##-------------------------------------------------------------------
 . /etc/profile
 
+function list_basic_info() {
+    echo "Dump OS Basic Info"
+    uname -a
+}
+
+function list_os_info() {
+    echo "OS installed packages"
+    dpkg -l
+}
+
+function list_python_info() {
+    echo "List python packages"
+    pip list
+}
+
+function list_ruby_info() {
+    echo "List ruby packages"
+    gem list
+}
+
+################################################################################
+function list_basic_info() {
+    list_basic_info
+    list_os_info
+}
+
+function list_all_info() {
+    os_basic_info
+    list_os_packages
+    if which gem 2>/dev/null 1>&2; then
+        list_ruby_info
+    fi
+
+    if which pip 2>/dev/null 1>&2; then
+        list_python_info
+    fi
+}
+################################################################################
+check_scenario=${1:-"basic"}
+
+command="list_${check_scenario}_info"
+echo "Run $command"
+
+# TODO: defensive coding for not supported scenario
+eval "$command"
 ## File: list_os_packages.sh ends
