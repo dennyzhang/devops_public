@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-12 15:37:25>
+## Updated: Time-stamp: <2016-06-12 15:58:39>
 ##-------------------------------------------------------------------
 
 function install_package() {
@@ -74,7 +74,7 @@ function install_chef() {
 
 function install_ruby() {
     local ruby_version=${1:-"2.1.8"}
-    echo "TODO"
+    echo "TODO: ruby_version: ${ruby_version}"
 }
 ######################################################################
 ## File : package_helper.sh ends
