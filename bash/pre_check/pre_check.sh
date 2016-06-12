@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 15:31:37>
+## Updated: Time-stamp: <2016-06-12 15:32:50>
 ##-------------------------------------------------------------------
 . /etc/profile
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
@@ -114,6 +114,6 @@ require 'spec_helper'
 $test_spec
 EOF
 
-echo "Perform serverspec check"
+echo "Perform serverspec checks: $working_dir/spec/localhost/sample_spec.rb"
 rake spec -v
 ## File: pre_check.sh ends
