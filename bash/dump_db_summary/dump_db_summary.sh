@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 10:41:08>
+## Updated: Time-stamp: <2016-06-12 10:49:49>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -70,10 +70,10 @@ done
 
 if [ "$stdout_show_data_out" = "true" ]; then
     cd "$data_out_dir"
-    for f in *; do
+    for f in *.${output_type}; do
         db_name=${f%%.*}
         echo "Dump $db_name data summary: $data_out_dir/$f"
-        cat $f
+        cat "$f"
     done
 fi
 ## File: dump_db_summary.sh ends
