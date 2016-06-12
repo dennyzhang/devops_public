@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 11:05:37>
+## Updated: Time-stamp: <2016-06-12 11:38:22>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -28,6 +28,12 @@ function dump_couchbase_summary() {
         echo "Run command: $command"
         curl -u "${cb_username}:${cb_passwd}" "http://${server_ip}:${tcp_port}/pools/default/buckets" \
             | python -m json.tool > "$output_data_file"
+
+        # parse json to get the summary
+        python -c "import sys,json
+list = json.load(sys.stdin)
+list = map(lambda x: '%s: %s' % (x['name'], x['basicStats']), list)
+print json.dumps(list)" < "$output_data_file" | python -m json.tool > "$output_data_file"
     fi
 }
 
