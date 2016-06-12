@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 11:38:22>
+## Updated: Time-stamp: <2016-06-12 11:39:56>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -30,10 +30,11 @@ function dump_couchbase_summary() {
             | python -m json.tool > "$output_data_file"
 
         # parse json to get the summary
-        python -c "import sys,json
+        output=$(python -c "import sys,json
 list = json.load(sys.stdin)
 list = map(lambda x: '%s: %s' % (x['name'], x['basicStats']), list)
-print json.dumps(list)" < "$output_data_file" | python -m json.tool > "$output_data_file"
+print json.dumps(list)" < "$output_data_file")
+        echo "$output" | python -m json.tool > "$output_data_file"
     fi
 }
 
