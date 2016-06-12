@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 10:24:19>
+## Updated: Time-stamp: <2016-06-12 10:25:44>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -24,6 +24,8 @@ function dump_couchbase_summary() {
     # Get parameters from $cfg_file:
     #    server_ip, tcp_port, cb_username, cb_password
     if [ "$output_type" = "json" ]; then
+        command="curl -u ${cb_username}:${cb_passwd} http://${server_ip}:${tcp_port}/pools/default/buckets"
+        echo "Run command: $command"
         curl -u "${cb_username}:${cb_passwd}" "http://${server_ip}:${tcp_port}/pools/default/buckets" \
             | python -m json.tool > "$output_data_file"
         echo "TODO"
@@ -40,6 +42,8 @@ function dump_elasticsearch_summary() {
     #    server_ip, tcp_port
     if [ "$output_type" = "json" ]; then
         # TODO: Change to json
+        command="curl http://${server_ip}:${tcp_port}/_cat/shards?v"
+        echo "Run command: $command"
         curl "http://${server_ip}:${tcp_port}/_cat/shards?v" \
              > "$output_data_file"
         echo "TODO"
@@ -72,7 +76,7 @@ for f in *.cfg; do
     # Sample: $cfg_dir/mongodb.cfg -> dump_mongodb_summary mongodb.cfg
     fun_name="dump_${db_name}_summary"
     command="$fun_name $f $output_type $data_out_dir/${db_name}.${output_type}"
-    echo "$command"
+    echo "Run function: $command"
     $command
 done
 ## File: dump_db_summary.sh ends
