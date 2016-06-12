@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-08 15:24:02>
+## Updated: Time-stamp: <2016-06-12 15:36:08>
 ##-------------------------------------------------------------------
 . /etc/profile
 # TODO: don't hardcode download link
@@ -21,9 +21,10 @@ fi
 
 library_list="
 687148894 2330 docker_helper.sh
-1471329705 8541 general_helper.sh
-1880887423 2171 git_helper.sh
+2261784924 6805 general_helper.sh
+1264158380 2094 git_helper.sh
 1959477722 2369 network_helper.sh
+3775406700 2298 package_helper.sh
 1165283188 7295 paramater_helper.sh
 2372162680 2063 string_helper.sh
 "

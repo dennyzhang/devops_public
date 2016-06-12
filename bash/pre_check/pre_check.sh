@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 15:32:50>
+## Updated: Time-stamp: <2016-06-12 15:34:03>
 ##-------------------------------------------------------------------
 . /etc/profile
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
@@ -19,8 +19,8 @@ if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
          https://raw.githubusercontent.com/DennyZhang/devops_public/master/common_library/refresh_common_library.sh
 fi
 
-# TODO: update this later
-bash /var/lib/devops/refresh_common_library.sh "3377842358"
+# TODO: better way to update this bash common library
+bash /var/lib/devops/refresh_common_library.sh
 . /var/lib/devops/devops_common_library.sh
 
 ################################################################################
