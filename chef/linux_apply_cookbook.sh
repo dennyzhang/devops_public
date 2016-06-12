@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-06-12 13:22:27>
+## Updated: Time-stamp: <2016-06-12 13:27:47>
 ##-------------------------------------------------------------------
 ################################################################################################
 . /etc/profile
@@ -79,7 +79,7 @@ ensure_variable_isset "chef_json must be set" "$chef_json"
 
 # TODO: combine current scripts with devops_provision_os.sh
 basic_setup
-git_update_code "$branch_name" "$working_dir" "$git_repo_url"
+git_update_code "$branch_name" "$working_dir" "$git_repo_url" "$git_repo"
 chef_configuration "$branch_name" "$working_dir" "$git_repo_url" "$chef_json"
 
 echo "Run Chef update: chef-client --config $working_dir/client.rb -j $working_dir/client.json --local-mode"

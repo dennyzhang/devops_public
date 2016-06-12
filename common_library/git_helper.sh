@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-05 10:08:27>
+## Updated: Time-stamp: <2016-06-12 13:27:28>
 ##-------------------------------------------------------------------
 function current_git_sha() {
     set -e
@@ -33,9 +33,11 @@ function git_update_code() {
     local branch_name=${1?}
     local working_dir=${2?}
     local git_repo_url=${3?}
+    local git_repo=${4:-""}
 
-    local git_repo
-    git_repo=$(echo "${git_repo_url%.git}" | awk -F '/' '{print $2}')
+    if [ -z "$git_repo" ]; then
+        git_repo=$(echo "${git_repo_url%.git}" | awk -F '/' '{print $2}')
+    fi
 
     local code_dir="$working_dir/$branch_name/$git_repo"
     echo "Git update code for $git_repo_url to $code_dir"
