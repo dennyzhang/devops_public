@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 10:02:39>
+## Updated: Time-stamp: <2016-06-12 10:10:12>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -18,29 +18,38 @@
 # Plugin Function
 function dump_couchbase_summary() {
     local cfg_file=${1?}
+    local output_type=${2?}
     source "$cfg_file"
     # Get parameters from $cfg_file:
     #    server_ip, tcp_port, cb_username, cb_password
-    curl -u "${cb_username}:${cb_passwd}" "http://${server_ip}:${tcp_port}/pools/default"
-    echo "TODO"
+    if [ "$output_type" = "string" ]; then
+        curl -u "${cb_username}:${cb_passwd}" "http://${server_ip}:${tcp_port}/pools/default/buckets"
+        echo "TODO"
+    fi
 }
 
 function dump_elasticsearch_summary() {
     local cfg_file=${1?}
+    local output_type=${2?}
     source "$cfg_file"
     # Get parameters from $cfg_file:
     #    server_ip, tcp_port
-    curl "http://${server_ip}:${tcp_port}/_cat/shards?v"
-    echo "TODO"
+    if [ "$output_type" = "string" ]; then
+        curl "http://${server_ip}:${tcp_port}/_cat/shards?v"
+        echo "TODO"
+    fi
 }
 
 function dump_mongodb_summary() {
     local cfg_file=${1?}
+    local output_type=${2?}
     source "$cfg_file"
-    echo "TODO"
+    if [ "$output_type" = "string" ]; then
+        echo "TODO"
+    fi
 }
 ################################################################################
-cfg_dir=${1?}
+cfg_dir=${1:-"/opt/devops/etc/dump_db_summary/"}
 # support string/json
 output_type=${2:-"string"}
 
@@ -49,7 +58,8 @@ for f in *.cfg; do
     db_name=${f%%.cfg}
     # Sample: $cfg_dir/mongodb.cfg -> dump_mongodb_summary mongodb.cfg
     fun_name="dump_${db_name}_summary"
-    command="$fun_name $f"
+    command="$fun_name $f $output_type"
+    echo "$command"
     $command
 done
 ## File: dump_db_summary.sh ends
