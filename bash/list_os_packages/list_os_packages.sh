@@ -10,13 +10,14 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 17:51:39>
+## Updated: Time-stamp: <2016-06-12 17:53:04>
 ##-------------------------------------------------------------------
 . /etc/profile
 
 function list_basic_info() {
     echo "Dump OS Basic Info"
     uname -a
+    # TODO: OS version, cpu, memory
 }
 
 function list_os_info() {
@@ -39,6 +40,11 @@ function list_nodejs_info() {
     npm list
 }
 
+function list_java_info() {
+    echo "List Java packages"
+    # TODO
+}
+
 ################################################################################
 function list_basic_info() {
     list_basic_info
@@ -58,6 +64,10 @@ function list_all_info() {
 
     if which npm 2>/dev/null 1>&2; then
         list_nodejs_info
+    fi
+
+    if which java 2>/dev/null 1>&2; then
+        list_java_info
     fi
 }
 ################################################################################
