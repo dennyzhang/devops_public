@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 15:21:22>
+## Updated: Time-stamp: <2016-06-12 15:30:51>
 ##-------------------------------------------------------------------
 . /etc/profile
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
@@ -19,7 +19,8 @@ if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
          https://raw.githubusercontent.com/DennyZhang/devops_public/master/common_library/refresh_common_library.sh
 fi
 
-bash /var/lib/devops/refresh_common_library.sh
+# TODO: update this later
+bash /var/lib/devops/refresh_common_library.sh "3377842358"
 . /var/lib/devops/devops_common_library.sh
 
 ################################################################################
@@ -91,6 +92,7 @@ function shell_exit() {
 trap shell_exit SIGHUP SIGINT SIGTERM 0
 
 fail_unless_os "ubuntu|redhat/centos/osx"
+install_package_list "wget,curl,lsof"
 
 if [ -z "$working_dir" ]; then
     working_dir="/root/pre_check"
