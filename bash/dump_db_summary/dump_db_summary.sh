@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 10:10:12>
+## Updated: Time-stamp: <2016-06-12 10:14:31>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -22,8 +22,9 @@ function dump_couchbase_summary() {
     source "$cfg_file"
     # Get parameters from $cfg_file:
     #    server_ip, tcp_port, cb_username, cb_password
-    if [ "$output_type" = "string" ]; then
-        curl -u "${cb_username}:${cb_passwd}" "http://${server_ip}:${tcp_port}/pools/default/buckets"
+    if [ "$output_type" = "json" ]; then
+        command="curl -u ${cb_username}:${cb_passwd} http://${server_ip}:${tcp_port}/pools/default/buckets"
+        command="$command | python -m json.tool"
         echo "TODO"
     fi
 }
@@ -34,7 +35,7 @@ function dump_elasticsearch_summary() {
     source "$cfg_file"
     # Get parameters from $cfg_file:
     #    server_ip, tcp_port
-    if [ "$output_type" = "string" ]; then
+    if [ "$output_type" = "json" ]; then
         curl "http://${server_ip}:${tcp_port}/_cat/shards?v"
         echo "TODO"
     fi
@@ -44,14 +45,14 @@ function dump_mongodb_summary() {
     local cfg_file=${1?}
     local output_type=${2?}
     source "$cfg_file"
-    if [ "$output_type" = "string" ]; then
+    if [ "$output_type" = "json" ]; then
         echo "TODO"
     fi
 }
 ################################################################################
-cfg_dir=${1:-"/opt/devops/etc/dump_db_summary/"}
+cfg_dir=${1:-"/opt/devops/dump_db_summary/cfg_dir"}
 # support string/json
-output_type=${2:-"string"}
+output_type=${2:-"json"}
 
 cd "$cfg_dir"
 for f in *.cfg; do
