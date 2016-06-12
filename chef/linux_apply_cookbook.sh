@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-06-08 15:22:57>
+## Updated: Time-stamp: <2016-06-12 13:22:27>
 ##-------------------------------------------------------------------
 ################################################################################################
 . /etc/profile
@@ -19,7 +19,7 @@ if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
          https://raw.githubusercontent.com/DennyZhang/devops_public/master/common_library/refresh_common_library.sh
 fi
 # export AVOID_REFRESH_LIBRARY=true
-bash /var/lib/devops/refresh_common_library.sh "2549425636"
+bash /var/lib/devops/refresh_common_library.sh
 . /var/lib/devops/devops_common_library.sh
 ################################################################################################
 # Sample:
