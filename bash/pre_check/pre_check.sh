@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 15:14:27>
+## Updated: Time-stamp: <2016-06-12 15:21:22>
 ##-------------------------------------------------------------------
 . /etc/profile
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
@@ -87,6 +87,7 @@ function shell_exit() {
     exit $errcode
 }
 
+# TODO: install ruby2.0 or later
 trap shell_exit SIGHUP SIGINT SIGTERM 0
 
 fail_unless_os "ubuntu|redhat/centos/osx"
