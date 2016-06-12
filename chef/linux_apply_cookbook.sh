@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-06-12 13:27:47>
+## Updated: Time-stamp: <2016-06-12 13:31:26>
 ##-------------------------------------------------------------------
 ################################################################################################
 . /etc/profile
@@ -52,9 +52,11 @@ function chef_configuration() {
     local working_dir=${2?}
     local git_repo_url=${3?}
     local chef_json=${4?}
+    local git_repo=${5:-""}
 
-    local git_repo
-    git_repo=$(echo "${git_repo_url%.git}" | awk -F '/' '{print $2}')
+    if [ -z "$git_repo" ]; then
+        git_repo=$(echo "${git_repo_url%.git}" | awk -F '/' '{print $2}')
+    fi
 
     chef_client_rb="$working_dir/client.rb"
     chef_json_file="$working_dir/client.json"
@@ -80,7 +82,7 @@ ensure_variable_isset "chef_json must be set" "$chef_json"
 # TODO: combine current scripts with devops_provision_os.sh
 basic_setup
 git_update_code "$branch_name" "$working_dir" "$git_repo_url" "$git_repo"
-chef_configuration "$branch_name" "$working_dir" "$git_repo_url" "$chef_json"
+chef_configuration "$branch_name" "$working_dir" "$git_repo_url" "$chef_json" "$git_repo"
 
 echo "Run Chef update: chef-client --config $working_dir/client.rb -j $working_dir/client.json --local-mode"
 chef-client --config "$working_dir/client.rb" -j "$working_dir/client.json" --local-mode
