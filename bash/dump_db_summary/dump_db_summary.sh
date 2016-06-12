@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-12 10:27:39>
+## Updated: Time-stamp: <2016-06-12 10:32:42>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -49,10 +49,11 @@ function dump_elasticsearch_summary() {
 }
 
 ################################################################################
-cfg_dir=${1:-"/opt/devops/dump_db_summary/cfg_dir"}
-data_out_dir=${2:-"/opt/devops/dump_db_summary/data_out"}
+stdout_show_data_out=${1:-"false"}
+cfg_dir=${2:-"/opt/devops/dump_db_summary/cfg_dir"}
+data_out_dir=${3:-"/opt/devops/dump_db_summary/data_out"}
 # support string/json
-output_type=${3:-"json"}
+output_type=${4:-"json"}
 
 [ -d "$data_out_dir" ] || mkdir -p "$data_out_dir"
 
@@ -65,4 +66,13 @@ for f in *.cfg; do
     echo "Run function: $command"
     $command
 done
+
+if [ "$stdout_show_data_out" = "true" ]; then
+    cd "$data_out_dir"
+    for f in *; do
+        db_name=${f%%.*}
+        echo "Dump $db_name data summary: $data_out_dir/$f"
+        cat $f
+    done
+fi
 ## File: dump_db_summary.sh ends
