@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-13 18:11:20>
+## Updated: Time-stamp: <2016-06-13 18:22:21>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -30,6 +30,67 @@ function run_all_scenario() {
     done
 }
 
+function python_basic_info() {
+    # python basic info
+    if which python 2>/dev/null 1>&2; then
+        python_version=$(python --version 2>&1)
+    else
+        python_version="not found"
+    fi
+    if which pip 2>/dev/null 1>&2; then
+        pip_version=$(pip --version)
+        pip_package_count=$(pip list | wc -l)
+    else
+        pip_version="not found"
+        pip_package_count="not found"
+    fi
+
+    echo "Python Version: $python_version
+pip Version: $pip_version
+pip Package Count: $pip_package_count"
+}
+
+function ruby_basic_info() {
+    # ruby basic info
+    if which ruby 2>/dev/null 1>&2; then
+        ruby_version=$(ruby --version)
+    else
+        ruby_version="not found"
+    fi
+
+    if which gem 2>/dev/null 1>&2; then
+        gem_version=$(gem --version)
+        gem_package_count=$(gem list | wc -l)
+    else
+        gem_version="not found"
+        gem_package_count="not found"
+    fi
+
+    echo "Ruby Version: $ruby_version
+Gem Version: $gem_version
+Gem Package Count: $gem_package_count"
+}
+
+function nodejs_basic_info() {
+    # python basic info
+    if which node 2>/dev/null 1>&2; then
+        nodejs_version=$(node --version 2>&1)
+    else
+        nodejs_version="not found"
+    fi
+    if which npm 2>/dev/null 1>&2; then
+        npm_version=$(npm --version)
+        # TODO: implement logic
+        npm_package_count=$(npm list | wc -l)
+    else
+        npm_version="not found"
+        npm_package_count="not found"
+    fi
+
+    echo "NodeJs Version: $nodejs_version
+npm Version: $npm_version
+npm Package Count: $npm_package_count"
+}
 ################################################################################
 function list_os_info() {
     local output_dir=${1?}
@@ -41,16 +102,15 @@ function list_os_info() {
     os_version=$(cat /etc/issue)
     os_kernel=$(uname -r)
     package_count=$(dpkg -l | grep -c '^ii')
-    if which python 2>/dev/null 1>&2; then
-        python_version=$(python --version)
-    else
-        python_version="not found"
-    fi
+
+
     cat > "$output_file" <<EOF
 OS Version: $os_version
 Kernel Version: $os_kernel
 Installed Package Count: $package_count
-Python Version: $python_version
+$(python_basic_info)
+$(ruby_basic_info)
+$(nodejs_basic_info)
 EOF
 }
 
