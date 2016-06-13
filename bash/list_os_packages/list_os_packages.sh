@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-13 16:50:41>
+## Updated: Time-stamp: <2016-06-13 16:57:32>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -34,14 +34,21 @@ function run_all_scenario() {
 function list_os_info() {
     local output_dir=${1?}
     local check_type=${2?}
-    echo "Dump OS Basic Info"
-    uname -a
+    local output_file="${output_dir}/os.txt"
+    > "$output_file"
+
+    command="uname -a >> $output_file"
+    echo -e "\n=================== Run Command: $command"
+    eval "$command"
 }
 
 function list_package_info() {
     local output_dir=${1?}
     local check_type=${2?}
-    command="dpkg -l"
+    local output_file="${output_dir}/package.txt"
+    > "$output_file"
+
+    command="dpkg -l >> $output_file"
     echo -e "\n=================== Run Command: $command"
     eval "$command"
 }
@@ -49,8 +56,11 @@ function list_package_info() {
 function list_python_info() {
     local output_dir=${1?}
     local check_type=${2?}
+    local output_file="${output_dir}/python.txt"
+
     if which pip 2>/dev/null 1>&2; then
-        command="pip list"
+        > "$output_file"
+        command="pip list >> $output_file"
         echo -e "\n=================== Run Command: $command"
         eval "$command"
     else
@@ -61,8 +71,11 @@ function list_python_info() {
 function list_ruby_info() {
     local output_dir=${1?}
     local check_type=${2?}
+    local output_file="${output_dir}/ruby.txt"
+
     if which gem 2>/dev/null 1>&2; then
-        command="gem list"
+        > "$output_file"
+        command="gem list >> $output_file"
         echo -e "\n=================== Run Command: $command"
         eval "$command"
     else
@@ -73,8 +86,11 @@ function list_ruby_info() {
 function list_nodejs_info() {
     local output_dir=${1?}
     local check_type=${2?}
+    local output_file="${output_dir}/nodejs.txt"
+
     if which npm 2>/dev/null 1>&2; then
-        command="npm list"
+        > "$output_file"
+        command="npm list >> $output_file"
         echo -e "\n=================== Run Command: $command"
         eval "$command"
     else
@@ -85,8 +101,11 @@ function list_nodejs_info() {
 function list_java_info() {
     local output_dir=${1?}
     local check_type=${2?}
+    local output_file="${output_dir}/java.txt"
+
     if which java 2>/dev/null 1>&2; then
-        command="echo TODO"
+        > "$output_file"
+        command="echo TDOO >> $output_file"
         echo -e "\n=================== Run Command: $command"
         eval "$command"
     else
