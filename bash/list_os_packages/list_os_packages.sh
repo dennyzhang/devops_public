@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-13 16:57:32>
+## Updated: Time-stamp: <2016-06-13 17:01:09>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -116,8 +116,8 @@ function list_java_info() {
 ################################################################################
 # Sample:
 # list_os_packages.sh basic
-# list_os_packages.sh python
 # list_os_packages.sh all
+# list_os_packages.sh python
 check_scenario=${1:-"basic"}
 output_dir=${2:-"/root/version.d"}
 
@@ -141,5 +141,4 @@ case $check_scenario in
         fi
         ;;
 esac
-
 ## File: list_os_packages.sh ends
