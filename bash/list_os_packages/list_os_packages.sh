@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-13 18:22:21>
+## Updated: Time-stamp: <2016-06-13 18:28:12>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -81,7 +81,7 @@ function nodejs_basic_info() {
     if which npm 2>/dev/null 1>&2; then
         npm_version=$(npm --version)
         # TODO: implement logic
-        npm_package_count=$(npm list | wc -l)
+        npm_package_count=$(npm list | grep -c '\|')
     else
         npm_version="not found"
         npm_package_count="not found"
