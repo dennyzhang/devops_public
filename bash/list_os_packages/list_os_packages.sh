@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-13 17:01:09>
+## Updated: Time-stamp: <2016-06-13 17:25:20>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -38,7 +38,7 @@ function list_os_info() {
     > "$output_file"
 
     command="uname -a >> $output_file"
-    echo -e "\n=================== Run Command: $command"
+    echo -e "\nRun Command: $command"
     eval "$command"
 }
 
@@ -49,7 +49,7 @@ function list_package_info() {
     > "$output_file"
 
     command="dpkg -l >> $output_file"
-    echo -e "\n=================== Run Command: $command"
+    echo -e "\nRun Command: $command"
     eval "$command"
 }
 
@@ -61,7 +61,7 @@ function list_python_info() {
     if which pip 2>/dev/null 1>&2; then
         > "$output_file"
         command="pip list >> $output_file"
-        echo -e "\n=================== Run Command: $command"
+        echo -e "\nRun Command: $command"
         eval "$command"
     else
         echo "Warning list_python_info: nothing done, since no pip detected"
@@ -76,7 +76,7 @@ function list_ruby_info() {
     if which gem 2>/dev/null 1>&2; then
         > "$output_file"
         command="gem list >> $output_file"
-        echo -e "\n=================== Run Command: $command"
+        echo -e "\nRun Command: $command"
         eval "$command"
     else
         echo "Warning list_ruby_info: nothing done, since no gem detected"
@@ -91,7 +91,7 @@ function list_nodejs_info() {
     if which npm 2>/dev/null 1>&2; then
         > "$output_file"
         command="npm list >> $output_file"
-        echo -e "\n=================== Run Command: $command"
+        echo -e "\nRun Command: $command"
         eval "$command"
     else
         echo "Warning list_nodejs_info: nothing done, since no npm detected"
@@ -106,7 +106,7 @@ function list_java_info() {
     if which java 2>/dev/null 1>&2; then
         > "$output_file"
         command="echo TDOO >> $output_file"
-        echo -e "\n=================== Run Command: $command"
+        echo -e "\nRun Command: $command"
         eval "$command"
     else
         echo "Warning list_java_info: nothing done, since no java detected"
