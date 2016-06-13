@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-13 17:25:20>
+## Updated: Time-stamp: <2016-06-13 18:11:20>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -37,9 +37,21 @@ function list_os_info() {
     local output_file="${output_dir}/os.txt"
     > "$output_file"
 
-    command="uname -a >> $output_file"
-    echo -e "\nRun Command: $command"
-    eval "$command"
+    echo -e "\nGenerate basic OS info to $output_file"
+    os_version=$(cat /etc/issue)
+    os_kernel=$(uname -r)
+    package_count=$(dpkg -l | grep -c '^ii')
+    if which python 2>/dev/null 1>&2; then
+        python_version=$(python --version)
+    else
+        python_version="not found"
+    fi
+    cat > "$output_file" <<EOF
+OS Version: $os_version
+Kernel Version: $os_kernel
+Installed Package Count: $package_count
+Python Version: $python_version
+EOF
 }
 
 function list_package_info() {
