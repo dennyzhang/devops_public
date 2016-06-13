@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-13 18:28:12>
+## Updated: Time-stamp: <2016-06-13 20:31:37>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -80,7 +80,7 @@ function nodejs_basic_info() {
     fi
     if which npm 2>/dev/null 1>&2; then
         npm_version=$(npm --version)
-        # TODO: implement logic
+        # TODO: get npm packages list
         npm_package_count=$(npm list | grep -c '\|')
     else
         npm_version="not found"
@@ -103,7 +103,7 @@ function list_os_info() {
     os_kernel=$(uname -r)
     package_count=$(dpkg -l | grep -c '^ii')
 
-
+    # TODO: memory, cpu, disk size
     cat > "$output_file" <<EOF
 OS Version: $os_version
 Kernel Version: $os_kernel
