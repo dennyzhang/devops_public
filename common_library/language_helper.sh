@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-06-14>
-## Updated: Time-stamp: <2016-06-14 22:11:31>
+## Updated: Time-stamp: <2016-06-14 22:22:38>
 ##-------------------------------------------------------------------
 function python_basic_info() {
     # python basic info
@@ -20,7 +20,7 @@ function python_basic_info() {
     fi
     if which pip 2>/dev/null 1>&2; then
         pip_version=$(pip --version)
-        pip_package_count=$(pip list | wc -l)
+        pip_package_count=$(pip list | grep -c "(")
     else
         pip_version="not found"
         pip_package_count="not found"
@@ -41,7 +41,7 @@ function ruby_basic_info() {
 
     if which gem 2>/dev/null 1>&2; then
         gem_version=$(gem --version)
-        gem_package_count=$(gem list | wc -l)
+        gem_package_count=$(gem list | grep -c "(")
     else
         gem_version="not found"
         gem_package_count="not found"
