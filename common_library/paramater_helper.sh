@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-14 14:24:04>
+## Updated: Time-stamp: <2016-06-14 15:12:15>
 ##-------------------------------------------------------------------
 function fail_unless_root() {
     # Make sure only root can run our script
@@ -205,7 +205,6 @@ function enforce_ssh_check() {
     local server_list=${2:-""}
     local ssh_keyfile=${3:-""}
     if [ -n "$server_list" ]; then
-        echo "Check ssh availability in parameters"
         for server in $server_list; do
             ip_ssh_reachable "$exit_if_fail" "$server" "$ssh_keyfile"
         done
