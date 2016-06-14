@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-14 15:12:15>
+## Updated: Time-stamp: <2016-06-14 16:17:42>
 ##-------------------------------------------------------------------
 function fail_unless_root() {
     # Make sure only root can run our script
@@ -235,6 +235,32 @@ function parse_json() {
         json=${json/%\}/}
     fi
     echo "$json"
+}
+
+function verify_ssh_key_file() {
+    local ssh_key_file=${1?}
+    if [ -f "$ssh_key_file" ]; then
+        echo "Wrong ssh key file: paramater_helper.sh doesn't exists"
+        exit 1
+    fi
+}
+
+function verify_comon_jenkins_parameters() {
+    if [ -n "$ssh_key_file" ]; then
+        verify_ssh_key_file "$ssh_key_file"
+    fi
+
+    if [ -n "$server_list" ]; then
+        check_list_fields "IP:TCP_PORT" "$server_list"
+    fi
+
+    if [ -n "$ssh_key_file" ] && [ -n "$server_list" ] && [ -n "$EXIT_NODE_CONNECT_FAIL" ]; then
+        enforce_ssh_check "$EXIT_NODE_CONNECT_FAIL" "$server_list" "$ssh_key_file"
+    fi
+
+    if [ -n "$server_list" ] && [ -n "$EXIT_NODE_CONNECT_FAIL" ]; then
+        enforce_ip_ping_check "$EXIT_NODE_CONNECT_FAIL" "server_list" "$server_list"
+    fi
 }
 ######################################################################
 ## File : paramater_helper.sh ends
