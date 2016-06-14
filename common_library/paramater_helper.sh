@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-14 12:38:10>
+## Updated: Time-stamp: <2016-06-14 14:24:04>
 ##-------------------------------------------------------------------
 function fail_unless_root() {
     # Make sure only root can run our script
@@ -152,6 +152,8 @@ function ip_ssh_reachable() {
     ssh_username=${my_list[2]}
     [ -n "$ssh_port" ] || ssh_port="22"
     [ -n "$ssh_username" ] || ssh_username="root"
+
+    echo "Check ssh connectivity for $server_ip:$server_port"
     ssh_timeout=8
     set +e
     if [ -n "$ssh_keyfile" ]; then
