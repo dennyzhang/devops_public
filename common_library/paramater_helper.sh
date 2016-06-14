@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-10 13:21:39>
+## Updated: Time-stamp: <2016-06-14 09:34:28>
 ##-------------------------------------------------------------------
 function fail_unless_root() {
     # Make sure only root can run our script
@@ -154,9 +154,9 @@ function ip_ssh_reachable() {
     ssh_timeout=8
     set +e
     if [ -n "$ssh_keyfile" ]; then
-        ssh_connect="ssh -o BatchMode=yes -o ConnectTimeout=$ssh_timeout -i $ssh_keyfile"
+        ssh_connect="ssh -o BatchMode=yes -o ConnectTimeout=$ssh_timeout -o StrictHostKeyChecking=no -i $ssh_keyfile"
     else
-        ssh_connect="ssh -o BatchMode=yes -o ConnectTimeout=$ssh_timeout"
+        ssh_connect="ssh -o BatchMode=yes -o ConnectTimeout=$ssh_timeout -o StrictHostKeyChecking=no"
     fi
     status=$($ssh_connect -p "$server_port" "$ssh_username@$server_ip" echo ok 2>&1)
     # opt out message like: bash: warning: setlocale: LC_ALL: cannot change locale

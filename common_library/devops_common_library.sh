@@ -27,7 +27,7 @@ library_list="
 2609343131 2928 language_helper.sh
 1959477722 2369 network_helper.sh
 2500447864 2410 package_helper.sh
-1165283188 7295 paramater_helper.sh
+340474536 7351 paramater_helper.sh
 2238344795 1776 refresh_common_library.sh
 2372162680 2063 string_helper.sh
 "
