@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-06-14>
-## Updated: Time-stamp: <2016-06-14 08:42:46>
+## Updated: Time-stamp: <2016-06-14 08:49:04>
 ##-------------------------------------------------------------------
 function python_basic_info() {
     # python basic info
@@ -79,15 +79,14 @@ function java_basic_info() {
         java_version="not found"
     fi
     . /etc/profile
-    if [ -n "CLASSPATH" ]; then
+    if [ -n "$CLASSPATH" ]; then
         java_packages=$(list_java_packages "$CLASSPATH")
         java_package_count=$(echo "$java_packages" | wc -l)
     else
         java_package_count="CLASSPATH environment variable not set"
     fi
 
-    echo "JAVA Version:
-$java_version
+    echo "JAVA Version: $java_version
 JAVA Package Count: $java_package_count"
 }
 
