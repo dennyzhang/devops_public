@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-14 16:24:37>
+## Updated: Time-stamp: <2016-06-14 16:32:20>
 ##-------------------------------------------------------------------
 function fail_unless_root() {
     # Make sure only root can run our script
@@ -240,7 +240,7 @@ function parse_json() {
 function verify_ssh_key_file() {
     # verify ssh key file: it should exists and file mode should be fine
     local ssh_key_file=${1?}
-    if [ -f "$ssh_key_file" ]; then
+    if [ ! -f "$ssh_key_file" ]; then
         echo "Error: ssh keyfile. $ssh_key_file doesn't exists"
         exit 1
     fi
