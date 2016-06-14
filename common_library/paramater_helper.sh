@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-14 16:17:42>
+## Updated: Time-stamp: <2016-06-14 16:24:37>
 ##-------------------------------------------------------------------
 function fail_unless_root() {
     # Make sure only root can run our script
@@ -238,9 +238,16 @@ function parse_json() {
 }
 
 function verify_ssh_key_file() {
+    # verify ssh key file: it should exists and file mode should be fine
     local ssh_key_file=${1?}
     if [ -f "$ssh_key_file" ]; then
-        echo "Wrong ssh key file: paramater_helper.sh doesn't exists"
+        echo "Error: ssh keyfile. $ssh_key_file doesn't exists"
+        exit 1
+    fi
+
+    octal_mode=$(stat -c "%a %n" "$ssh_key_file" | awk -F' ' '{print $1}')
+    if [ "$octal_mode" != "400" ]; then
+        echo "Error: ssh keyfile. $ssh_key_file file mode is $octal_mode, instead of 400"
         exit 1
     fi
 }
@@ -254,12 +261,12 @@ function verify_comon_jenkins_parameters() {
         check_list_fields "IP:TCP_PORT" "$server_list"
     fi
 
-    if [ -n "$ssh_key_file" ] && [ -n "$server_list" ] && [ -n "$EXIT_NODE_CONNECT_FAIL" ]; then
-        enforce_ssh_check "$EXIT_NODE_CONNECT_FAIL" "$server_list" "$ssh_key_file"
-    fi
-
     if [ -n "$server_list" ] && [ -n "$EXIT_NODE_CONNECT_FAIL" ]; then
         enforce_ip_ping_check "$EXIT_NODE_CONNECT_FAIL" "server_list" "$server_list"
+    fi
+
+    if [ -n "$ssh_key_file" ] && [ -n "$server_list" ] && [ -n "$EXIT_NODE_CONNECT_FAIL" ]; then
+        enforce_ssh_check "$EXIT_NODE_CONNECT_FAIL" "$server_list" "$ssh_key_file"
     fi
 }
 ######################################################################
