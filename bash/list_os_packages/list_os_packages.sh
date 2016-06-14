@@ -13,7 +13,7 @@
 ## list_os_packages.sh python
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-14 08:10:03>
+## Updated: Time-stamp: <2016-06-14 08:34:14>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -94,6 +94,37 @@ function nodejs_basic_info() {
 npm Version: $npm_version
 npm Package Count: $npm_package_count"
 }
+
+function java_basic_info() {
+    if which java 2>/dev/null 1>&2; then
+        java_version=$(java -version 2>&1)
+    else
+        java_version="not found"
+    fi
+    . /etc/profile
+    if [ -n "CLASSPATH" ]; then
+        java_packages=$(list_java_packages "$CLASSPATH")
+        java_package_count=$(echo "$java_packages" | wc -l)
+    else
+        java_package_count="CLASSPATH environment variable not set"
+    fi
+
+    echo "JAVA Version:
+$java_version
+JAVA Package Count: $java_package_count"
+}
+
+function list_java_packages() {
+    local java_classpath=${1?}
+    local tmp_file="/tmp/list_os_packages_$$.txt"
+    > "$tmp_file"
+    for path in ${java_classpath//:/ }; do
+        ls -1 "${path}"/*.jar >> "$tmp_file"
+    done
+    cat "$tmp_file"
+    rm -rf "$tmp_file"
+}
+
 ################################################################################
 function list_os_info() {
     local output_dir=${1?}
@@ -104,24 +135,23 @@ function list_os_info() {
     echo -e "\nGenerate basic OS info to $output_file"
     command="cat /proc/version"
     echo "Run: $command"
-    os_version=$(eval $command)
+    os_version=$(eval "$command")
 
     command="dpkg -l | grep -c '^ii'"
     echo "Run: $command"
-    package_count=$(eval $command)
+    package_count=$(eval "$command")
 
     command="grep MemTotal /proc/meminfo | sed 's/ //g'"
     echo "Run: $command"
-    total_memory=$(eval $command)
+    total_memory=$(eval "$command")
 
     command="lsblk -P -o NAME,SIZE,MOUNTPOINT"
     echo "Run: $command"
-    disk_info=$(eval $command)
+    disk_info=$(eval "$command")
 
     command="lscpu"
     echo "Run: $command"
-    cpu_info=$(eval $command)
-    # TODO: memory, cpu, disk size
+    cpu_info=$(eval "$command")
     cat > "$output_file" <<EOF
 OS Version: $os_version
 $total_memory
@@ -131,6 +161,7 @@ Installed Package Count: $package_count
 $(python_basic_info)
 $(ruby_basic_info)
 $(nodejs_basic_info)
+$(java_basic_info)
 CPU Info:
 $cpu_info
 EOF
@@ -199,9 +230,11 @@ function list_java_info() {
 
     if which java 2>/dev/null 1>&2; then
         > "$output_file"
-        command="echo TDOO >> $output_file"
-        echo -e "\nRun Command: $command"
-        eval "$command"
+        echo -e "\nlist *.jar found in CLASSPATH"
+        if [ -n "$CLASSPATH" ]; then
+            java_packages=$(list_java_packages)
+            echo "$java_packages" >> "$output_file"
+        fi
     else
         echo "Warning list_java_info: nothing done, since no java detected"
     fi
