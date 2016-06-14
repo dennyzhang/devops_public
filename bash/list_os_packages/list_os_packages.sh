@@ -13,7 +13,7 @@
 ## list_os_packages.sh python
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-14 08:42:50>
+## Updated: Time-stamp: <2016-06-14 08:52:49>
 ##-------------------------------------------------------------------
 . /etc/profile
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
@@ -142,7 +142,7 @@ function list_java_info() {
         > "$output_file"
         echo -e "\nlist *.jar found in CLASSPATH"
         if [ -n "$CLASSPATH" ]; then
-            java_packages=$(list_java_packages)
+            java_packages=$(list_java_packages "$CLASSPATH")
             echo "$java_packages" >> "$output_file"
         fi
     else
