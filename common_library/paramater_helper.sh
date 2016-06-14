@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-14 09:34:28>
+## Updated: Time-stamp: <2016-06-14 12:38:10>
 ##-------------------------------------------------------------------
 function fail_unless_root() {
     # Make sure only root can run our script
@@ -124,6 +124,7 @@ function check_list_fields() {
             fi
         }; done
     done
+    unset IFS
 
     if [ "$error_msg" != "" ] ; then
         echo -e "Error: Invalid parameters\n${error_msg}"
