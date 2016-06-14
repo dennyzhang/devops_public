@@ -13,7 +13,7 @@
 ## list_os_packages.sh python
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-14 08:34:14>
+## Updated: Time-stamp: <2016-06-14 08:37:07>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -24,13 +24,15 @@ function fail_unless_root() {
         exit 1
     fi
 }
-function run_all_scenario() {
-    local output_dir=${1?}
-    local check_type=${2?}
-    local scenario_list=${3?}
-    for scenario in $scenario_list; do
-        "list_${scenario}_info" "$output_dir" "$check_type"
-    done
+
+function fail_unless_os() {
+    # Sample: fail_unless_os "ubuntu/redhat/centos/osx"
+    local supported_os=${1?}
+    current_os=$(os_release)
+    if [[ "$supported_os" != *"$current_os"* ]]; then
+        echo "Error: supported OS are $supported_os, while current OS is $current_os" 1>&2
+        exit 1
+    fi
 }
 
 function python_basic_info() {
@@ -123,6 +125,15 @@ function list_java_packages() {
     done
     cat "$tmp_file"
     rm -rf "$tmp_file"
+}
+
+function run_all_scenario() {
+    local output_dir=${1?}
+    local check_type=${2?}
+    local scenario_list=${3?}
+    for scenario in $scenario_list; do
+        "list_${scenario}_info" "$output_dir" "$check_type"
+    done
 }
 
 ################################################################################
@@ -245,6 +256,8 @@ check_scenario=${1:-"basic"}
 output_dir=${2:-"/root/version.d"}
 
 fail_unless_root
+fail_unless_os "ubuntu"
+
 [ -d "$output_dir" ] || mkdir -p "$output_dir"
 
 scenario_list="package python ruby nodejs java os"
