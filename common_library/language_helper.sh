@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-06-14>
-## Updated: Time-stamp: <2016-06-14 10:14:29>
+## Updated: Time-stamp: <2016-06-14 22:11:31>
 ##-------------------------------------------------------------------
 function python_basic_info() {
     # python basic info
@@ -95,7 +95,7 @@ function list_java_packages() {
     local tmp_file="/tmp/list_os_packages_$$.txt"
     > "$tmp_file"
     for path in ${java_classpath//:/ }; do
-        if [ -d "$path" ]; then
+        if [ -d "$path" ] &&  ls -1 "${path}"/*.jar 1>/dev/null 2>&1; then
             ls -1 "${path}"/*.jar >> "$tmp_file"
         fi
     done
