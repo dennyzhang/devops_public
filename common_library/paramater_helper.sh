@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-14 16:32:20>
+## Updated: Time-stamp: <2016-06-14 17:39:55>
 ##-------------------------------------------------------------------
 function fail_unless_root() {
     # Make sure only root can run our script
@@ -265,9 +265,10 @@ function verify_comon_jenkins_parameters() {
         enforce_ip_ping_check "$EXIT_NODE_CONNECT_FAIL" "server_list" "$server_list"
     fi
 
-    if [ -n "$ssh_key_file" ] && [ -n "$server_list" ] && [ -n "$EXIT_NODE_CONNECT_FAIL" ]; then
-        enforce_ssh_check "$EXIT_NODE_CONNECT_FAIL" "$server_list" "$ssh_key_file"
-    fi
+    # TODO: temporarily disable ssh check to avoid network penalty
+    # if [ -n "$ssh_key_file" ] && [ -n "$server_list" ] && [ -n "$EXIT_NODE_CONNECT_FAIL" ]; then
+    #     enforce_ssh_check "$EXIT_NODE_CONNECT_FAIL" "$server_list" "$ssh_key_file"
+    # fi
 }
 ######################################################################
 ## File : paramater_helper.sh ends
