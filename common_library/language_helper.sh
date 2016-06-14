@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-06-14>
-## Updated: Time-stamp: <2016-06-14 09:14:08>
+## Updated: Time-stamp: <2016-06-14 10:14:29>
 ##-------------------------------------------------------------------
 function python_basic_info() {
     # python basic info
@@ -99,7 +99,7 @@ function list_java_packages() {
             ls -1 "${path}"/*.jar >> "$tmp_file"
         fi
     done
-    cat "$tmp_file" | sort | uniq
+    sort "$tmp_file" | uniq
     rm -rf "$tmp_file"
 }
 ######################################################################
