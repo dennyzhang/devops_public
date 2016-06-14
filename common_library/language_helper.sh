@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-06-14>
-## Updated: Time-stamp: <2016-06-14 08:49:04>
+## Updated: Time-stamp: <2016-06-14 09:14:08>
 ##-------------------------------------------------------------------
 function python_basic_info() {
     # python basic info
@@ -95,9 +95,11 @@ function list_java_packages() {
     local tmp_file="/tmp/list_os_packages_$$.txt"
     > "$tmp_file"
     for path in ${java_classpath//:/ }; do
-        ls -1 "${path}"/*.jar >> "$tmp_file"
+        if [ -d "$path" ]; then
+            ls -1 "${path}"/*.jar >> "$tmp_file"
+        fi
     done
-    cat "$tmp_file"
+    cat "$tmp_file" | sort | uniq
     rm -rf "$tmp_file"
 }
 ######################################################################
