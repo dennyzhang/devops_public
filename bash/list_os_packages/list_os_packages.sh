@@ -13,118 +13,18 @@
 ## list_os_packages.sh python
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-14 08:40:12>
+## Updated: Time-stamp: <2016-06-14 08:42:50>
 ##-------------------------------------------------------------------
 . /etc/profile
+if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
+    [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
+    wget -O /var/lib/devops/refresh_common_library.sh \
+         https://raw.githubusercontent.com/DennyZhang/devops_public/master/common_library/refresh_common_library.sh
+fi
 
-function fail_unless_root() {
-    # Make sure only root can run our script
-    if [[ $EUID -ne 0 ]]; then
-        echo "Error: This script must be run as root." 1>&2
-        exit 1
-    fi
-}
-
-function fail_unless_os() {
-    # Sample: fail_unless_os "ubuntu/redhat/centos/osx"
-    local supported_os=${1?}
-    current_os=$(os_release)
-    if [[ "$supported_os" != *"$current_os"* ]]; then
-        echo "Error: supported OS are $supported_os, while current OS is $current_os" 1>&2
-        exit 1
-    fi
-}
-
-function python_basic_info() {
-    # python basic info
-    if which python 2>/dev/null 1>&2; then
-        python_version=$(python --version 2>&1)
-    else
-        python_version="not found"
-    fi
-    if which pip 2>/dev/null 1>&2; then
-        pip_version=$(pip --version)
-        pip_package_count=$(pip list | wc -l)
-    else
-        pip_version="not found"
-        pip_package_count="not found"
-    fi
-
-    echo "Python Version: $python_version
-pip Version: $pip_version
-pip Package Count: $pip_package_count"
-}
-
-function ruby_basic_info() {
-    # ruby basic info
-    if which ruby 2>/dev/null 1>&2; then
-        ruby_version=$(ruby --version)
-    else
-        ruby_version="not found"
-    fi
-
-    if which gem 2>/dev/null 1>&2; then
-        gem_version=$(gem --version)
-        gem_package_count=$(gem list | wc -l)
-    else
-        gem_version="not found"
-        gem_package_count="not found"
-    fi
-
-    echo "Ruby Version: $ruby_version
-Gem Version: $gem_version
-Gem Package Count: $gem_package_count"
-}
-
-function nodejs_basic_info() {
-    # python basic info
-    if which node 2>/dev/null 1>&2; then
-        nodejs_version=$(node --version 2>&1)
-    else
-        nodejs_version="not found"
-    fi
-    if which npm 2>/dev/null 1>&2; then
-        npm_version=$(npm --version)
-        npm_package_count=$(npm list | grep -o '@')
-    else
-        npm_version="not found"
-        npm_package_count="not found"
-    fi
-
-    echo "NodeJs Version: $nodejs_version
-npm Version: $npm_version
-npm Package Count: $npm_package_count"
-}
-
-function java_basic_info() {
-    if which java 2>/dev/null 1>&2; then
-        java_version=$(java -version 2>&1)
-    else
-        java_version="not found"
-    fi
-    . /etc/profile
-    if [ -n "CLASSPATH" ]; then
-        java_packages=$(list_java_packages "$CLASSPATH")
-        java_package_count=$(echo "$java_packages" | wc -l)
-    else
-        java_package_count="CLASSPATH environment variable not set"
-    fi
-
-    echo "JAVA Version:
-$java_version
-JAVA Package Count: $java_package_count"
-}
-
-function list_java_packages() {
-    local java_classpath=${1?}
-    local tmp_file="/tmp/list_os_packages_$$.txt"
-    > "$tmp_file"
-    for path in ${java_classpath//:/ }; do
-        ls -1 "${path}"/*.jar >> "$tmp_file"
-    done
-    cat "$tmp_file"
-    rm -rf "$tmp_file"
-}
+# TODO: better way to update this bash common library
+bash /var/lib/devops/refresh_common_library.sh
+. /var/lib/devops/devops_common_library.sh
 
 function run_all_scenario() {
     local output_dir=${1?}
