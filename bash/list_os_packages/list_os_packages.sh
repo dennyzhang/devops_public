@@ -8,9 +8,12 @@
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
 ## Sample:
+## list_os_packages.sh basic
+## list_os_packages.sh all
+## list_os_packages.sh python
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-13 20:31:37>
+## Updated: Time-stamp: <2016-06-14 08:10:03>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -99,18 +102,37 @@ function list_os_info() {
     > "$output_file"
 
     echo -e "\nGenerate basic OS info to $output_file"
-    os_version=$(cat /etc/issue)
-    os_kernel=$(uname -r)
-    package_count=$(dpkg -l | grep -c '^ii')
+    command="cat /proc/version"
+    echo "Run: $command"
+    os_version=$(eval $command)
 
+    command="dpkg -l | grep -c '^ii'"
+    echo "Run: $command"
+    package_count=$(eval $command)
+
+    command="grep MemTotal /proc/meminfo | sed 's/ //g'"
+    echo "Run: $command"
+    total_memory=$(eval $command)
+
+    command="lsblk -P -o NAME,SIZE,MOUNTPOINT"
+    echo "Run: $command"
+    disk_info=$(eval $command)
+
+    command="lscpu"
+    echo "Run: $command"
+    cpu_info=$(eval $command)
     # TODO: memory, cpu, disk size
     cat > "$output_file" <<EOF
 OS Version: $os_version
-Kernel Version: $os_kernel
+$total_memory
+Disk Info:
+$disk_info
 Installed Package Count: $package_count
 $(python_basic_info)
 $(ruby_basic_info)
 $(nodejs_basic_info)
+CPU Info:
+$cpu_info
 EOF
 }
 
@@ -186,10 +208,6 @@ function list_java_info() {
 }
 
 ################################################################################
-# Sample:
-# list_os_packages.sh basic
-# list_os_packages.sh all
-# list_os_packages.sh python
 check_scenario=${1:-"basic"}
 output_dir=${2:-"/root/version.d"}
 
