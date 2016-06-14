@@ -13,7 +13,7 @@
 ## list_os_packages.sh python
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-14 08:37:07>
+## Updated: Time-stamp: <2016-06-14 08:40:12>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -85,8 +85,7 @@ function nodejs_basic_info() {
     fi
     if which npm 2>/dev/null 1>&2; then
         npm_version=$(npm --version)
-        # TODO: get npm packages list
-        npm_package_count=$(npm list | grep -c '\|')
+        npm_package_count=$(npm list | grep -o '@')
     else
         npm_version="not found"
         npm_package_count="not found"
