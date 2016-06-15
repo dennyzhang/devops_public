@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-11 17:16:57>
+## Updated: Time-stamp: <2016-06-15 17:41:33>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -27,6 +27,7 @@ function log() {
 function wait_for() {
     # wait_for "service apache2 status" 3
     # wait_for "lsof -i tcp:8080" 10
+    # wait_for "nc -z -v -w 5 172.17.0.3 8443"
     local check_command=${1?}
     local timeout_seconds=${2?}
 
