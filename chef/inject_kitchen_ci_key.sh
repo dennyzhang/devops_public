@@ -9,11 +9,14 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-06-15 11:58:05>
+## Updated: Time-stamp: <2016-06-15 12:03:06>
 ##-------------------------------------------------------------------
 if [ -d .kitchen ]; then
     echo "Inject ssh key for Kitchen CI test: .kitchen/docker_id_rsa and .kitchen/docker_id_rsa.pub"
-    cat > .kitchen/docker_id_rsa <<EOF
+    if [ -f .kitchen/docker_id_rsa ]; then
+        echo "Skip inject .kitchen/docker_id_rsa, since it already exists"
+    else
+        cat > .kitchen/docker_id_rsa <<EOF
 -----BEGIN RSA PRIVATE KEY-----
 MIIEowIBAAKCAQEAwMKevWSAPFLM+RIEoeYAVyhhWQVGsD/Jw0oGVVulZf/jQ4Yo
 +RKOQXj2L1GsYP+Whca8UTjsixhPcYTQZOzz+PSM9aajvU/0DUiIrrr0P14ab2+D
@@ -42,12 +45,16 @@ IDD/IW+xRsS1TdY9fgBfgxfm7XXGBbwrbkWsuIyMVvXjBlrIMIzzPM0ag8XklrWt
 jfIrnQrjfUwCBDacxFLGvWpMh22aCxYWU5pCRlknQtULRiYpUdtH
 -----END RSA PRIVATE KEY-----
 EOF
+        chmod 400 .kitchen/docker_id_rsa
+    fi
 
-    chmod 400 .kitchen/docker_id_rsa
-
-    cat >.kitchen/docker_id_rsa.pub <<EOF
+    if [ -f .kitchen/docker_id_rsa.pub ]; then
+        echo "Skip inject .kitchen/docker_id_rsa.pub, since it already exists"
+    else
+        cat >.kitchen/docker_id_rsa.pub <<EOF
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAwp69ZIA8Usz5EgSh5gBXKGFZBUawP8nDSgZVW6Vl/+NDhij5Eo5BePYvUaxg/5aFxrxROOyLGE9xhNBk7PP49Iz1pqO9T/QNSIiuuvQ/Xhpvb4OQfD5xr6l4t/9gLf+OYGvaFHf/xzMnc9cKzZ+azLlDHbeewu1GMI/XNFWo4VWAsH+6xM8VIpdJSaR7alJn/W6dmyRBbk0uS3Yut63jVFk4zalAzXquU0BX1ne+DLB/LW8ZanN5PWECabSi4dXYLfxC2rDhDcQdXU3MwV5b7TtR5rFoNS8IGcyHoeq5tasAtAAaD2sEzyJbllAfFsNyxNQ+Yh8935HcWqx2/T0r kitchen.devops@dennyzhang.com
 EOF
+    fi
 else
     echo "Warning: inject kitchen ci key fails, since .kitchen directory not found"
 fi
