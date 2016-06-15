@@ -1,4 +1,16 @@
 #!/bin/bash -x
+##-------------------------------------------------------------------
+## @copyright 2016 DennyZhang.com
+## Licensed under MIT
+##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##
+## File : kitchen_hook_hack_hosts.sh
+## Author : DennyZhang.com <denny@dennyzhang.com>
+## Description : Note the OS user running the script may be root or kitchen!
+## --
+## Created : <2015-07-03>
+## Updated: Time-stamp: <2016-06-15 14:20:35>
+##-------------------------------------------------------------------
 set +e
 
 # get list of nodes
@@ -34,3 +46,4 @@ do
         kitchen exec "$node" -c "sudo cp -f /root/hosts /etc/hosts"
     done
 done
+## File : kitchen_hook_hack_hosts.sh ends
