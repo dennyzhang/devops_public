@@ -26,11 +26,11 @@ do
     for node in $(kitchen list | grep -v '^Instance' | awk -F' ' '{print $1}'); do
         kitchen exec "$node" -c "sudo cp -f /etc/hosts /root/hosts"
         if kitchen exec "$node" -c "sudo grep ${domain} /root/hosts"; then
-            command="sed -i \"/${domain}/c\\${ip}    ${domain}\" /root/hosts"
+            command="sudo sed -i \"/${domain}/c\\${ip}    ${domain}\" /root/hosts"
         else
-            command="echo \"${ip}    ${domain}\" >> /root/hosts"
+            command="echo \"${ip}    ${domain}\" | sudo tee -a /root/hosts"
         fi
-        kitchen exec "$node" -c "sudo $command"
+        kitchen exec "$node" -c "$command"
         kitchen exec "$node" -c "sudo cp -f /root/hosts /etc/hosts"
     done
 done
