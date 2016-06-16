@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-16 18:23:06>
+## Updated: Time-stamp: <2016-06-16 18:32:03>
 ##-------------------------------------------------------------------
 function install_package() {
     local package=${1?}
@@ -81,6 +81,18 @@ function ubuntu_parse_package_list() {
     local package_list=${1?}
     package_list=$(echo "$package_list" | grep "^ii " | awk -F' ' '{print $2": "$3}')
     echo "$package_list"
+}
+
+function get_default_package_list() {
+    local os_version=${1?}
+    case "$os_version" in
+        ubuntu-14.04)
+            echo "run docker_sandbox.sh"
+            ;;
+        *)
+            echo "Warning: Not supported OS: $os_versoin"
+            ;;
+    esac
 }
 ######################################################################
 ## File : package_helper.sh ends

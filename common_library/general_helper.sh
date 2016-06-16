@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-12 15:35:26>
+## Updated: Time-stamp: <2016-06-16 18:31:18>
 ##-------------------------------------------------------------------
 function log() {
     # log message to both stdout and logfile on condition
@@ -58,22 +58,34 @@ function inject_ssh_key() {
 }
 
 function os_release() {
+    # Sample: 
+    # os_release -> ubuntu
+    # os_release true -> ubuntu-14.04
+    local show_version=${1:-"false"}
     set -e
     distributor_id=$(lsb_release -a 2>/dev/null | grep 'Distributor ID' | awk -F":\t" '{print $2}')
     if [ "$distributor_id" == "RedHatEnterpriseServer" ]; then
-        echo "redhat"
+        os_type="redhat"
     elif [ "$distributor_id" == "Ubuntu" ]; then
-        echo "ubuntu"
+        os_type="ubuntu"
     else
         if grep CentOS /etc/issue 1>/dev/null 2>/dev/null; then
-            echo "centos"
+            os_type="centos"
         else
             if uname -a | grep '^Darwin' 1>/dev/null 2>/dev/null; then
-                echo "osx"
+                os_type="osx"
             else
-                echo "ERROR: Not supported OS"
+                echo"ERROR: Not supported OS"
+                exit 1
             fi
         fi
+    fi
+
+    if [ "$show_version" = "true" ]; then
+        release_version=$(lsb_release -a 2>/dev/null | grep 'Release' | awk -F":\t" '{print $2}')
+        echo "${os_type}-${release_version}"
+    else
+        echo "$os_type"
     fi
 }
 
