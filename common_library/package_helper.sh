@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-17 07:00:25>
+## Updated: Time-stamp: <2016-06-17 07:25:51>
 ##-------------------------------------------------------------------
 function install_package() {
     local package=${1?}
@@ -102,7 +102,7 @@ function get_default_package_list() {
             fi
             ;;
         *)
-            echo "ERROR: Not supported OS: $os_versoin"
+            echo "ERROR: Not supported OS: $os_version"
             exit 1
             ;;
     esac
