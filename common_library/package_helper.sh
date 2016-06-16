@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-16 18:48:03>
+## Updated: Time-stamp: <2016-06-16 21:04:45>
 ##-------------------------------------------------------------------
 function install_package() {
     local package=${1?}
@@ -95,7 +95,7 @@ function get_default_package_list() {
     case "$os_version" in
         ubuntu-14.04)
             package_link="${package_prefix}/${os_version}.txt"
-            if [ -f "$package_file" ]; then
+            if [ ! -f "$package_file" ]; then
                 command="wget -O $package_file $package_link"
                 eval $command
             fi
