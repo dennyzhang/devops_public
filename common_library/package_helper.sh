@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-16 18:32:03>
+## Updated: Time-stamp: <2016-06-16 18:48:03>
 ##-------------------------------------------------------------------
 function install_package() {
     local package=${1?}
@@ -84,13 +84,25 @@ function ubuntu_parse_package_list() {
 }
 
 function get_default_package_list() {
+    # Related Link: https://github.com/DennyZhang/devops_public/tree/2016-06-16/os_preinstalled_packages
     local os_version=${1?}
+    local package_file=${2:-""}
+    local tag_name=${3:-"2016-06-16"}
+
+    [ -n "$package_file" ] || package_file="/tmp/${os_version}.txt"
+    package_prefix="https://github.com/DennyZhang/devops_public/raw/${tag_name}/os_preinstalled_packages"
+
     case "$os_version" in
         ubuntu-14.04)
-            echo "run docker_sandbox.sh"
+            package_link="${package_prefix}/${os_version}.txt"
+            if [ -f "$package_file" ]; then
+                command="wget -O $package_file $package_link"
+                eval $command
+            fi
             ;;
         *)
-            echo "Warning: Not supported OS: $os_versoin"
+            echo "ERROR: Not supported OS: $os_versoin"
+            exit 1
             ;;
     esac
 }
