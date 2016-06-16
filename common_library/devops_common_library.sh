@@ -23,7 +23,7 @@ library_list="
 2505285043 1758 devops_common_library.sh
 687148894 2330 docker_helper.sh
 2261784924 6805 general_helper.sh
-1264158380 2094 git_helper.sh
+3725851651 2373 git_helper.sh
 1919127727 2977 language_helper.sh
 1959477722 2369 network_helper.sh
 2500447864 2410 package_helper.sh

@@ -2,14 +2,14 @@
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
 ## Licensed under MIT
-##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+## https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : git_helper.sh
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-12 13:53:27>
+## Updated: Time-stamp: <2016-06-16 15:43:42>
 ##-------------------------------------------------------------------
 function current_git_sha() {
     set -e
@@ -28,15 +28,23 @@ function git_log() {
     eval "$command"
 }
 
+function parse_git_repo() {
+    # Sample:
+    # git@github.com:DennyZhang/devops_public.git --> devops_public
+    # https://github.com/DennyZhang/devops_public.git --> devops_public
+    local git_repo_url=${1?}
+    git_repo=${git_repo_url%.git}
+    git_repo=${git_repo##*\/}
+    echo "$git_repo"
+}
+
 function git_update_code() {
     set -e
     local branch_name=${1?}
     local working_dir=${2?}
     local git_repo_url=${3?}
 
-    git_repo=${git_repo_url%.git}
-    git_repo=${git_repo##*\/}
-
+    git_repo=$(parse_git_repo "$git_repo_url")
     local code_dir="$working_dir/$branch_name/$git_repo"
     echo "Git update code for $git_repo_url to $code_dir"
     # checkout code, if absent
