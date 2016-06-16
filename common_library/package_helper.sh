@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-16 22:07:00>
+## Updated: Time-stamp: <2016-06-17 07:00:25>
 ##-------------------------------------------------------------------
 function install_package() {
     local package=${1?}
@@ -77,9 +77,8 @@ function install_ruby() {
 }
 
 function ubuntu_parse_package_list() {
-    # parse output of "dpkg -l", to get package name and package description
+    # parse output of "dpkg -l", to get package name and package version
     local package_list=${1?}
-    # TODO: don't get version, but description
     package_list=$(echo "$package_list" | grep "^ii " | awk -F' ' '{print $2": "$3}')
     echo "$package_list"
 }
@@ -90,8 +89,9 @@ function get_default_package_list() {
     local package_file=${2:-""}
     local tag_name=${3:-"2016-06-16"}
 
-    [ -n "$package_file" ] || package_file="/tmp/${os_version}.txt"
+    # TODO: don't hardcode download link
     package_prefix="https://github.com/DennyZhang/devops_public/raw/${tag_name}/os_preinstalled_packages"
+    [ -n "$package_file" ] || package_file="/tmp/${os_version}.txt"
 
     case "$os_version" in
         ubuntu-14.04)

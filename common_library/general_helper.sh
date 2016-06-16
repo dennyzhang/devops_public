@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-16 18:31:18>
+## Updated: Time-stamp: <2016-06-17 06:59:48>
 ##-------------------------------------------------------------------
 function log() {
     # log message to both stdout and logfile on condition
@@ -151,7 +151,7 @@ EOF
 }
 
 function chef_deploy() {
-    # TODO: Sample
+    # chef deploy cluster
     local server=${1?}
     local CHEF_BINARY_CMD=${2?}
     local deploy_run_list=${3?}
