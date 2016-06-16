@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-16 21:04:45>
+## Updated: Time-stamp: <2016-06-16 22:07:00>
 ##-------------------------------------------------------------------
 function install_package() {
     local package=${1?}
@@ -77,8 +77,9 @@ function install_ruby() {
 }
 
 function ubuntu_parse_package_list() {
-    # parse output of "dpkg -l", to get package name and package version
+    # parse output of "dpkg -l", to get package name and package description
     local package_list=${1?}
+    # TODO: don't get version, but description
     package_list=$(echo "$package_list" | grep "^ii " | awk -F' ' '{print $2": "$3}')
     echo "$package_list"
 }
@@ -97,7 +98,7 @@ function get_default_package_list() {
             package_link="${package_prefix}/${os_version}.txt"
             if [ ! -f "$package_file" ]; then
                 command="wget -O $package_file $package_link"
-                eval $command
+                eval "$command"
             fi
             ;;
         *)
