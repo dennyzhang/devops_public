@@ -9,9 +9,8 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-12 15:58:39>
+## Updated: Time-stamp: <2016-06-16 18:23:06>
 ##-------------------------------------------------------------------
-
 function install_package() {
     local package=${1?}
     local binary_name=${2:-""}
@@ -75,6 +74,13 @@ function install_chef() {
 function install_ruby() {
     local ruby_version=${1:-"2.1.8"}
     echo "TODO: ruby_version: ${ruby_version}"
+}
+
+function ubuntu_parse_package_list() {
+    # parse output of "dpkg -l", to get package name and package version
+    local package_list=${1?}
+    package_list=$(echo "$package_list" | grep "^ii " | awk -F' ' '{print $2": "$3}')
+    echo "$package_list"
 }
 ######################################################################
 ## File : package_helper.sh ends
