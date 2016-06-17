@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-17 06:59:48>
+## Updated: Time-stamp: <2016-06-17 09:36:03>
 ##-------------------------------------------------------------------
 function log() {
     # log message to both stdout and logfile on condition
