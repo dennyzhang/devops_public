@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash -e
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
 ## Licensed under MIT
@@ -9,7 +9,7 @@
 ## Description : Note the OS user running the script may be root or kitchen!
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2016-06-20 11:41:25>
+## Updated: Time-stamp: <2016-06-20 11:49:36>
 ##-------------------------------------------------------------------
 set +e
 
