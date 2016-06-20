@@ -105,6 +105,7 @@
         &quot;mgmt_timeout&quot;:&quot;900000&quot;,
         &quot;max_timeout&quot;:&quot;960000&quot;,
         &quot;mdm_java_opts&quot;:&quot;-Xms10240m -Xmx10240m&quot;,
+        &quot;mincomputationpoolsize&quot;:&quot;16&quot;,
         &quot;whether_flushdatabaseonconnect&quot;:&quot;$whether_flushdatabaseonconnect&quot;,
         &quot;whether_populatefakedata&quot;:&quot;false&quot;,
         &quot;whether_populaterealdata&quot;:&quot;false&quot;,
