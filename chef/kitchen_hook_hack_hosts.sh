@@ -9,7 +9,7 @@
 ## Description : Note the OS user running the script may be root or kitchen!
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2016-06-15 14:20:35>
+## Updated: Time-stamp: <2016-06-20 11:41:25>
 ##-------------------------------------------------------------------
 set +e
 
@@ -25,6 +25,7 @@ for node in $(kitchen list | grep -v '^Instance' | awk -F' ' '{print $1}'); do
     # TODO: verify ip and hostname are valid
     hosts_list="${hosts_list},${ip}:${hostname}"
 done
+
 echo "hosts_list: $hosts_list"
 
 hosts_arr=(${hosts_list//,/ })
@@ -37,12 +38,16 @@ do
 
     for node in $(kitchen list | grep -v '^Instance' | awk -F' ' '{print $1}'); do
         kitchen exec "$node" -c "sudo cp -f /etc/hosts /root/hosts"
-        if kitchen exec "$node" -c "sudo grep ${domain} /root/hosts"; then
+        if kitchen exec "$node" -c "sudo grep ${domain} /root/hosts" 1>/dev/null 2>&1; then
             command="sudo sed -i \"/${domain}/c\\${ip}    ${domain}\" /root/hosts"
         else
             command="echo \"${ip}    ${domain}\" | sudo tee -a /root/hosts"
         fi
+
+        echo "Run: $command"
         kitchen exec "$node" -c "$command"
+
+        echo "Run: sudo cp -f /root/hosts /etc/hosts"
         kitchen exec "$node" -c "sudo cp -f /root/hosts /etc/hosts"
     done
 done
