@@ -11,7 +11,7 @@
 #   bash -e /root/devops_provision_os.sh
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-06-21 10:33:20>
+## Updated: Time-stamp: <2016-06-21 10:36:50>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -62,7 +62,7 @@ if [ -n "$git_deploy_key" ]; then
     cat > "$git_key_file" <<EOF
 $git_deploy_key
 EOF
-    chmod 400 git_key_file
+    chmod 400 "$git_key_file"
     cat > "/root/.ssh/config" <<EOF
 Host github.com
   StrictHostKeyChecking no
