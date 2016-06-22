@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-10 13:10:28>
+## Updated: Time-stamp: <2016-06-22 11:42:53>
 ##-------------------------------------------------------------------
 function source_string() {
     # Global variables needed to enable the current script
@@ -32,7 +32,7 @@ function string_strip_whitespace() {
     str=$(echo "${str}" | sed -e 's/^[ \t]*//g')
     str=$(echo "${str}" | sed -e 's/[ \t]*$//g')
     # remove empty lines
-    str=$(echo -e "${str}" | sed '/^$/d')
+    str=$(echo "${str}" | sed '/^$/d')
     echo "$str"
 }
 
