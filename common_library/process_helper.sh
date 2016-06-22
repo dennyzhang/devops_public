@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-22 20:51:54>
+## Updated: Time-stamp: <2016-06-22 21:07:12>
 ##-------------------------------------------------------------------
 function remote_stop_process() {
     # Stop remote process by ssh
@@ -19,8 +19,7 @@ function remote_stop_process() {
     local stop_command=${3:-""}
     [ -n "$stop_command" ] || stop_command="killall $grep_pattern"
     if $ssh_connect "pgrep $process_grep_pattern" 1>/dev/null 2>&1; then
-        echo "Found live process of $process_grep_pattern."
-        echo "Kill the process: $stop_command"
+        echo "Found live process of $process_grep_pattern. Kill the process: $stop_command"
         $ssh_connect "$stop_command"
     fi
 }
@@ -31,8 +30,8 @@ function remote_start_process() {
     local ssh_connect=${1?}
     local process_grep_pattern=${2?}
     local start_command=${3?}
-    if $Ssh_connect "pgrep $process_grep_pattern" 1>/dev/null 2>&1; then
-        echo "Found live process of $process_grep_pattern. Skip starting process"
+    if $ssh_connect "pgrep $process_grep_pattern" 1>/dev/null 2>&1; then
+        echo "Skip starting process, since live process of $process_grep_pattern was found."
     else
         echo "Start process: $start_command"
         $ssh_connect "$start_command"
