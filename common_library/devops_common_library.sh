@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-14 08:49:26>
+## Updated: Time-stamp: <2016-06-22 20:52:14>
 ##-------------------------------------------------------------------
 . /etc/profile
 # TODO: don't hardcode download link
@@ -20,7 +20,7 @@ if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
 fi
 
 library_list="
-2505285043 1758 devops_common_library.sh
+1306610065 1841 devops_common_library.sh
 687148894 2330 docker_helper.sh
 3909948268 7189 general_helper.sh
 3725851651 2373 git_helper.sh
@@ -28,6 +28,7 @@ library_list="
 1959477722 2369 network_helper.sh
 4102396658 3515 package_helper.sh
 2212043494 8524 paramater_helper.sh
+3071848976 1633 process_helper.sh
 2238344795 1776 refresh_common_library.sh
 3741144876 2060 string_helper.sh
 "
