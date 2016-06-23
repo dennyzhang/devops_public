@@ -9,14 +9,15 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-22 20:52:14>
+## Updated: Time-stamp: <2016-06-24 07:31:45>
 ##-------------------------------------------------------------------
 . /etc/profile
+[ -n "$DOWNLOAD_PREFIX" ] || DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/master"
 # TODO: don't hardcode download link
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
     wget -O /var/lib/devops/refresh_common_library.sh \
-         https://raw.githubusercontent.com/DennyZhang/devops_public/master/common_library/refresh_common_library.sh
+         "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
 fi
 
 library_list="
@@ -44,7 +45,7 @@ for library in $library_list; do
 
     # TODO: don't hardcode download link
     bash /var/lib/devops/refresh_common_library.sh "$cksum" "/var/lib/devops/$fname" \
-         "https://raw.githubusercontent.com/DennyZhang/devops_public/master/common_library/$fname"
+         "$DOWNLOAD_PREFIX/common_library/$fname"
 
     # source the library
     . "/var/lib/devops/$fname"
