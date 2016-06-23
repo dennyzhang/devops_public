@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-05-10>
-## Updated: Time-stamp: <2016-06-12 07:41:51>
+## Updated: Time-stamp: <2016-06-23 15:13:34>
 ##-------------------------------------------------------------------
 ################################################################################
 require 'socket'
@@ -23,8 +23,7 @@ set :backend, :exec
 url_prefix = 'https://raw.githubusercontent.com/DennyZhang/devops_public/master/'
 
 # TODO: conditional download to avoid network turbulence
-%w(general_helper couchbase_helper elasticsearch_helper
-   jenkins_helper).each do |library|
+%w(general_helper db_helper jenkins_helper).each do |library|
   download_command = "curl -o /opt/#{library}.rb #{url_prefix}/serverspec/#{library}.rb"
   system(download_command)
   require_relative "/opt/#{library}"
