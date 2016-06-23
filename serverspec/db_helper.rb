@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-05-10>
-## Updated: Time-stamp: <2016-06-23 15:13:52>
+## Updated: Time-stamp: <2016-06-23 15:19:09>
 ##-------------------------------------------------------------------
 require 'socket'
 require 'serverspec'
@@ -19,8 +19,7 @@ require 'open3'
 set :backend, :exec
 
 ################################################################################
-# TODO: remove all default value for parameters: es_version and es_host
-def elasticsearch_general_check(es_port, cmd_pattern, es_version = '2.1.1', es_host = '')
+def elasticsearch_general_check(es_port, cmd_pattern, es_version, es_host)
   # Basic verification logic for elasticsearch installation
   describe command('/usr/share/elasticsearch/bin/elasticsearch --version') do
     its(:stdout) { should contain "Version: #{es_version}" }
@@ -58,7 +57,7 @@ def verify_es_cluster_health(server_ip, es_port)
 end
 ################################################################################
 # couchbase
-def couchbase_general_check(tcp_port)
+def couchbase_general_check(tcp_port, cb_version)
   # Basic verification logic for couchbase installation
   describe port(tcp_port) do
     it { should be_listening }
@@ -69,7 +68,7 @@ def couchbase_general_check(tcp_port)
   end
 
   describe command('grep version /opt/couchbase/etc/runtime.ini') do
-    its(:stdout) { should contain 'version = 4.1.0' }
+    its(:stdout) { should contain "version = #{cb_version}" }
   end
 end
 
@@ -88,7 +87,7 @@ end
 def verify_cb_node_in_cluster(server_ip, node_ip)
   # Confirm node_ip is in the couchbase cluster of server_ip
   # TODO: make code more general
-  describe command('/opt/mdm/bin/couchbase_cluster.sh node_in_cluster ' \
+  describe command('/opt/devops/bin/couchbase_cluster.sh node_in_cluster ' \
                    "#{server_ip} #{node_ip}") do
     its(:exit_status) { should eq 0 }
   end
