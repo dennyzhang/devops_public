@@ -2,7 +2,7 @@
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
 ## Licensed under MIT
-## https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-23/LICENSE
+## https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : local_git_pull.sh
 ## Author : Denny <denny@dennyzhang.com>
@@ -12,7 +12,7 @@
 ##            have multiple repo to keep in sync.
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-06-24 09:17:30>
+## Updated: Time-stamp: <2016-06-24 15:52:56>
 ##-------------------------------------------------------------------
 function update_git() {
     dir=${1?}

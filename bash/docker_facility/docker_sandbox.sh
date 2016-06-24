@@ -1,7 +1,7 @@
 #!/bin/bash -e
 ## @copyright 2016 DennyZhang.com
 ## Licensed under MIT
-##   https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-23/LICENSE
+##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ### BEGIN INIT INFO
 # Provides: docker_sandbox

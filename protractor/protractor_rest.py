@@ -3,14 +3,14 @@
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
 ## Licensed under MIT 
-##   https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-23/LICENSE
+##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : protractor_rest.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-05-29>
-## Updated: Time-stamp: <2016-06-24 09:04:09>
+## Updated: Time-stamp: <2016-06-24 15:53:26>
 ##-------------------------------------------------------------------
 # pip install flask
 # export FLASK_DEBUG=1

@@ -2,14 +2,14 @@
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
 ## Licensed under MIT
-## https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-23/LICENSE
+## https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : linux_apply_cookbook.sh
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-06-24 09:13:23>
+## Updated: Time-stamp: <2016-06-24 15:52:57>
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_PREFIX" ] || export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/master"
@@ -29,7 +29,7 @@ bash /var/lib/devops/refresh_common_library.sh "1523631277" "/var/lib/devops/dev
 #           export git_repo_url="git@github.com:DennyZhang/chef_community_cookbooks.git"
 #           export chef_json="{\"run_list\": [\"recipe[general_security]\"], \"general_security\": {\"ssh_disable_passwd_login\": \"true\", \"ssh_disable_root_login\": \"false\"}}"
 #           apt-get install -y curl
-#           curl -o /tmp/linux_apply_cookbook.sh https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-23/chef/linux_apply_cookbook.sh
+#           curl -o /tmp/linux_apply_cookbook.sh https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/chef/linux_apply_cookbook.sh
 #           bash -xe /tmp/linux_apply_cookbook.sh
 ################################################################################################
 function basic_setup() {

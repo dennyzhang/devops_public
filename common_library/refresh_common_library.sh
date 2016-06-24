@@ -2,7 +2,7 @@
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
 ## Licensed under MIT
-##   https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-23/LICENSE
+##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : refresh_common_library.sh
 ## Author : Denny <denny@dennyzhang.com>
@@ -10,7 +10,7 @@
 ## By default, this file keeps stable and untouched
 ## --
 ## Created : <2016-04-07>
-## Updated: Time-stamp: <2016-06-24 09:17:10>
+## Updated: Time-stamp: <2016-06-24 15:52:56>
 ##-------------------------------------------------------------------
 function refresh_common_library() {
     local library_file=${1?}
@@ -38,7 +38,7 @@ function refresh_common_library() {
 # When checksum is not given, we will force re-download
 file_checksum=${1:-"checksum for common bash library"}
 library_download_path=${2:-"/var/lib/devops/devops_common_library.sh"}
-library_url=${3:-"https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-23/common_library/devops_common_library.sh"}
+library_url=${3:-"https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/common_library/devops_common_library.sh"}
 
 refresh_common_library "$library_download_path" "$library_url" "$file_checksum"
 ## File : refresh_common_library.sh ends

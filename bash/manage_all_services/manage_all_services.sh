@@ -2,7 +2,7 @@
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
 ## Licensed under MIT
-## https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-23/LICENSE
+## https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : manage_all_services.sh
 ## Author : Denny <denny@dennyzhang.com>
@@ -13,7 +13,7 @@
 #          manage_all_services.sh status couchbase-server
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-24 09:03:41>
+## Updated: Time-stamp: <2016-06-24 15:52:58>
 ##-------------------------------------------------------------------
 . /etc/profile
 
