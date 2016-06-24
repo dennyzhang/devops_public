@@ -2,14 +2,14 @@
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
 ## Licensed under MIT
-##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##   https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-23/LICENSE
 ##
 ## File : common_library.rb
 ## Author : DennyZhang.com <denny@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-05-10>
-## Updated: Time-stamp: <2016-06-23 15:13:34>
+## Updated: Time-stamp: <2016-06-24 09:04:06>
 ##-------------------------------------------------------------------
 ################################################################################
 require 'socket'

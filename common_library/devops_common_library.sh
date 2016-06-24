@@ -2,14 +2,14 @@
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
 ## Licensed under MIT
-##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##   https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-23/LICENSE
 ##
 ## File : devops_common_library.sh
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-24 08:55:50>
+## Updated: Time-stamp: <2016-06-24 09:03:40>
 ##-------------------------------------------------------------------
 . /etc/profile
 [ -n "$DOWNLOAD_PREFIX" ] || export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/master"

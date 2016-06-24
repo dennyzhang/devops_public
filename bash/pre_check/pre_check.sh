@@ -2,7 +2,7 @@
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
 ## Licensed under MIT
-## https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+## https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-23/LICENSE
 ##
 ## File : pre_check.sh
 ## Author : Denny <denny@dennyzhang.com>
@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-12>
-## Updated: Time-stamp: <2016-06-12 15:41:24>
+## Updated: Time-stamp: <2016-06-24 09:03:41>
 ##-------------------------------------------------------------------
 . /etc/profile
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then

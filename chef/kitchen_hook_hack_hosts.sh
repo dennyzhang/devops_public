@@ -2,14 +2,14 @@
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
 ## Licensed under MIT
-##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##   https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-23/LICENSE
 ##
 ## File : kitchen_hook_hack_hosts.sh
 ## Author : DennyZhang.com <denny@dennyzhang.com>
 ## Description : Note the OS user running the script may be root or kitchen!
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2016-06-20 11:49:36>
+## Updated: Time-stamp: <2016-06-24 09:03:41>
 ##-------------------------------------------------------------------
 set +e
 

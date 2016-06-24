@@ -2,7 +2,7 @@
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
 ## Licensed under MIT
-##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##   https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-23/LICENSE
 ##
 ## File : devops_provision_os.sh
 ## Author : Denny <denny@dennyzhang.com>
@@ -11,7 +11,7 @@
 #   bash -e /root/devops_provision_os.sh
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-06-21 10:36:50>
+## Updated: Time-stamp: <2016-06-24 09:03:41>
 ##-------------------------------------------------------------------
 . /etc/profile
 

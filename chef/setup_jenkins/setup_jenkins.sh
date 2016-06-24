@@ -2,14 +2,14 @@
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
 ## Licensed under MIT
-## https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+## https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-23/LICENSE
 ##
 ## File : setup_jenkins.sh
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-06-08 15:23:20>
+## Updated: Time-stamp: <2016-06-24 09:03:40>
 ##-------------------------------------------------------------------
 function configure_jenkins_port() {
     port=${1?}

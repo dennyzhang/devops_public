@@ -2,7 +2,7 @@
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
 ## Licensed under MIT
-##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##   https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-23/LICENSE
 ##
 ## File : refresh_common_library.sh
 ## Author : Denny <denny@dennyzhang.com>
@@ -10,7 +10,7 @@
 ## By default, this file keeps stable and untouched
 ## --
 ## Created : <2016-04-07>
-## Updated: Time-stamp: <2016-04-25 11:25:29>
+## Updated: Time-stamp: <2016-06-24 09:03:39>
 ##-------------------------------------------------------------------
 function refresh_common_library() {
     local library_file=${1?}

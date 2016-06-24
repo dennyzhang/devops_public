@@ -2,7 +2,7 @@
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
 ## Licensed under MIT
-## https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+## https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-23/LICENSE
 ##
 ## File : disable_oom.sh
 ## Author : Denny <denny@dennyzhang.com>
@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-16 11:26:09>
+## Updated: Time-stamp: <2016-06-24 09:03:42>
 ##-------------------------------------------------------------------
 pid_file=${1?}
 

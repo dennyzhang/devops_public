@@ -2,7 +2,7 @@
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
 ## Licensed under MIT
-## https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+## https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-23/LICENSE
 ##
 ## File : free_cache.sh
 ## Author : Denny <denny@dennyzhang.com>
@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-16 11:22:36>
+## Updated: Time-stamp: <2016-06-24 09:03:42>
 ##-------------------------------------------------------------------
 # http://unix.stackexchange.com/questions/17936/setting-proc-sys-vm-drop-caches-to-clear-cache
 echo "Free cached memory, so that OS can have more free memory"
