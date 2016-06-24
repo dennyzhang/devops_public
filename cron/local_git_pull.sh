@@ -12,7 +12,7 @@
 ##            have multiple repo to keep in sync.
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-06-24 09:03:39>
+## Updated: Time-stamp: <2016-06-24 09:17:30>
 ##-------------------------------------------------------------------
 function update_git() {
     dir=${1?}
@@ -23,6 +23,6 @@ function update_git() {
 }
 
 # Sample: 
-# update_git /Users/mac/backup/devops_code/iam/active-sprint
-# update_git /Users/mac/backup/devops_code/iam/master
+# update_git /Users/mac/backup/devops_code/iam/dev
+# update_git /Users/mac/backup/devops_code/iam/sprint-32
 ## File : local_git_pull.sh ends

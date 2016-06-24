@@ -7,24 +7,23 @@
 ## File : devops_provision_os.sh
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
-#   curl -o /root/devops_provision_os.sh https://raw.githubusercontent.com/TOTVS/mdmpublic/master/chef/devops_provision_os.sh
+#   curl -o /root/devops_provision_os.sh https://raw.githubusercontent.com/.../.../chef/devops_provision_os.sh
 #   bash -e /root/devops_provision_os.sh
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-06-24 09:03:41>
-##-------------------------------------------------------------------
+## Updated: Time-stamp: <2016-06-24 09:11:53>
+################################################################################################
 . /etc/profile
-
-# TODO: don't hardcode download link
+[ -n "$DOWNLOAD_PREFIX" ] || export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/master"
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
-    wget -O /var/lib/devops/refresh_common_library.sh \
-         https://raw.githubusercontent.com/DennyZhang/devops_public/master/common_library/refresh_common_library.sh
+    wget -O /var/lib/devops/refresh_common_library.sh "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
 fi
-
-bash /var/lib/devops/refresh_common_library.sh
+bash /var/lib/devops/refresh_common_library.sh "1523631277" "/var/lib/devops/devops_common_library.sh" \
+     "${DOWNLOAD_PREFIX}/common_library/devops_common_library.sh"
 . /var/lib/devops/devops_common_library.sh
-################################################################################
+################################################################################################
+# TODO: better way to update this bash common library
 chef_version="12.4.1"
 ssh_email="auto.devops@totvs.com"
 ssh_public_key_file="/root/ssh_id_rsa.pub"
@@ -44,12 +43,8 @@ log "enable chef deployment"
 install_package_list "wget,curl,git"
 install_chef $chef_version
 
-# TODO: don't hardcode download link
-download_facility "/root/git_update.sh" \
-                  "https://raw.githubusercontent.com/DennyZhang/devops_public/master/bash/git_update.sh"
-
-download_facility "/root/manage_all_services.sh" \
-                  "https://raw.githubusercontent.com/DennyZhang/devops_public/master/bash/manage_all_services/manage_all_services.sh"
+download_facility "/root/git_update.sh" "${DOWNLOAD_PREFIX}/bash/git_update.sh"
+download_facility "/root/manage_all_services.sh" "${DOWNLOAD_PREFIX}/bash/manage_all_services/manage_all_services.sh"
 
 # inject ssh key for ssh with keyfile
 if [ -n "$ssh_public_key" ]; then

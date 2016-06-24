@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-11-30>
-## Updated: Time-stamp: <2016-06-24 09:03:41>
+## Updated: Time-stamp: <2016-06-24 09:08:32>
 ##-------------------------------------------------------------------
 # pre-cache Chef Omnibus installation
 mkdir -p /tmp/install.sh.14
@@ -23,7 +23,7 @@ fi
 
 echo "Inject ssh key to kitchen user and root user"
 [ -n "$DOWNLOAD_PREFIX" ] || export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/master"
-wget -O inject_ssh_key.sh  https://raw.githubusercontent.com/DennyZhang/devops_public/master/bash/inject_ssh_key/inject_ssh_key.sh
+wget -O inject_ssh_key.sh "${DOWNLOAD_PREFIX}/bash/inject_ssh_key/inject_ssh_key.sh"
 
 user_home_list='kitchen:/home/kitchen,root:/root'
 ssh_email='kitchen.devops@dennyzhang.com'
@@ -42,6 +42,6 @@ echo no_proxy="localhost,127.0.0.1,$local_ip" > /etc/profile.d/no_proxy.sh
 
 # bypass kitchen verify hang
 # TODO: don't hardcode download link
-wget -O /tmp/preinstall_kitchen_verify.sh https://raw.githubusercontent.com/DennyZhang/devops_public/master/chef/preinstall_kitchen_verify.sh
+wget -O /tmp/preinstall_kitchen_verify.sh "${DOWNLOAD_PREFIX}/chef/preinstall_kitchen_verify.sh"
 bash -e /tmp/preinstall_kitchen_verify.sh
 ## File : chef_kitchen_provision.sh ends

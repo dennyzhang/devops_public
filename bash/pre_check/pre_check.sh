@@ -10,20 +10,19 @@
 ## Sample:
 ## --
 ## Created : <2016-06-12>
-## Updated: Time-stamp: <2016-06-24 09:03:41>
-##-------------------------------------------------------------------
+## Updated: Time-stamp: <2016-06-24 09:07:53>
+################################################################################################
 . /etc/profile
+[ -n "$DOWNLOAD_PREFIX" ] || export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/master"
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
-    wget -O /var/lib/devops/refresh_common_library.sh \
-         https://raw.githubusercontent.com/DennyZhang/devops_public/master/common_library/refresh_common_library.sh
+    wget -O /var/lib/devops/refresh_common_library.sh "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
 fi
-
-# TODO: better way to update this bash common library
-bash /var/lib/devops/refresh_common_library.sh
+bash /var/lib/devops/refresh_common_library.sh "1523631277" "/var/lib/devops/devops_common_library.sh" \
+     "${DOWNLOAD_PREFIX}/common_library/devops_common_library.sh"
 . /var/lib/devops/devops_common_library.sh
-
-################################################################################
+################################################################################################
+# TODO: better way to update this bash common library
 function install_serverspec() {
     if ! sudo gem list | grep serverspec 2>/dev/null 1>/dev/null; then
         sudo gem install serverspec

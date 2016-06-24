@@ -9,18 +9,18 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-06-24 09:03:40>
-##-------------------------------------------------------------------
+## Updated: Time-stamp: <2016-06-24 09:13:23>
 ################################################################################################
 . /etc/profile
+[ -n "$DOWNLOAD_PREFIX" ] || export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/master"
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
-    wget -O /var/lib/devops/refresh_common_library.sh \
-         https://raw.githubusercontent.com/DennyZhang/devops_public/master/common_library/refresh_common_library.sh
+    wget -O /var/lib/devops/refresh_common_library.sh "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
 fi
-# export AVOID_REFRESH_LIBRARY=true
-bash /var/lib/devops/refresh_common_library.sh
+bash /var/lib/devops/refresh_common_library.sh "1523631277" "/var/lib/devops/devops_common_library.sh" \
+     "${DOWNLOAD_PREFIX}/common_library/devops_common_library.sh"
 . /var/lib/devops/devops_common_library.sh
+# TODO: better way to update this bash common library
 ################################################################################################
 # Sample:
 #       docker run -t -d --privileged -h mytest --name my-test -p 5122:22 denny/sshd:v1 /usr/sbin/sshd -D
@@ -29,7 +29,7 @@ bash /var/lib/devops/refresh_common_library.sh
 #           export git_repo_url="git@github.com:DennyZhang/chef_community_cookbooks.git"
 #           export chef_json="{\"run_list\": [\"recipe[general_security]\"], \"general_security\": {\"ssh_disable_passwd_login\": \"true\", \"ssh_disable_root_login\": \"false\"}}"
 #           apt-get install -y curl
-#           curl -o /tmp/linux_apply_cookbook.sh https://raw.githubusercontent.com/DennyZhang/devops_public/master/chef/linux_apply_cookbook.sh
+#           curl -o /tmp/linux_apply_cookbook.sh https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-23/chef/linux_apply_cookbook.sh
 #           bash -xe /tmp/linux_apply_cookbook.sh
 ################################################################################################
 function basic_setup() {
@@ -39,9 +39,8 @@ function basic_setup() {
     fi
 
     if [ ! -f /root/git_update.sh ]; then
-        # TODO: don't hardcode download link
         echo "Basic setup and installation for chef deployment"
-        file_url="https://raw.githubusercontent.com/DennyZhang/devops_public/master/chef/devops_provision_os.sh"
+        file_url="${DOWNLOAD_PREFIX}/chef/devops_provision_os.sh"
         curl -o /tmp/devops_provision_os.sh "$file_url"
         bash -e /tmp/devops_provision_os.sh
     fi
