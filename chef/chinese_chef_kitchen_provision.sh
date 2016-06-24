@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-11-30>
-## Updated: Time-stamp: <2016-06-08 15:22:08>
+## Updated: Time-stamp: <2016-06-24 08:58:11>
 ##-------------------------------------------------------------------
 # pre-cache Chef Omnibus installation
 # TODO: don't hardcode download link
@@ -17,6 +17,6 @@ wget -O /tmp/chef_kitchen_provision.sh https://raw.githubusercontent.com/DennyZh
 bash -e /tmp/chef_kitchen_provision.sh
 
 # TODO: don't hardcode download link
-wget -O /tmp/ubuntu1404_inject_163_apt_source.sh https://raw.githubusercontent.com/DennyZhang/devops_public/master/network/ubuntu1404_inject_163_apt_source.sh
+wget -O /tmp/ubuntu1404_inject_163_apt_source.sh https://raw.githubusercontent.com/DennyZhang/devops_public/master/bash/ubuntu1404_inject_163_apt_source.sh
 bash -e /tmp/ubuntu1404_inject_163_apt_source.sh
 ## File : chinese_chef_kitchen_provision.sh ends
