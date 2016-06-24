@@ -22,16 +22,16 @@ fi
 
 library_list="
 1306610065 1841 devops_common_library.sh
-687148894 2330 docker_helper.sh
-3909948268 7189 general_helper.sh
-3725851651 2373 git_helper.sh
-1919127727 2977 language_helper.sh
-1959477722 2369 network_helper.sh
-4102396658 3515 package_helper.sh
-2212043494 8524 paramater_helper.sh
-3217350404 1637 process_helper.sh
+67683387 2334 docker_helper.sh
+2131452044 7193 general_helper.sh
+1760955266 2377 git_helper.sh
+730726663 2981 language_helper.sh
+2637661170 2373 network_helper.sh
+3802607711 3519 package_helper.sh
+253250192 8528 paramater_helper.sh
+1086853814 1641 process_helper.sh
 2238344795 1776 refresh_common_library.sh
-3741144876 2060 string_helper.sh
+3327862861 2064 string_helper.sh
 "
 
 library_list=$(echo "$library_list" | grep "_helper.sh")
