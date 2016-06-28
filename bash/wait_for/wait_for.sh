@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-24 15:52:58>
+## Updated: Time-stamp: <2016-06-28 09:22:54>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -40,7 +40,7 @@ function wait_for() {
         sleep 1
     done
 
-    log "Error: wait for more than $timeout_seconds"
+    log "Error: wait for more than $timeout_seconds seconds"
     exit 1
 }
 

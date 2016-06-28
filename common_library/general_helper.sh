@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-24 15:52:57>
+## Updated: Time-stamp: <2016-06-28 09:23:00>
 ##-------------------------------------------------------------------
 function log() {
     # log message to both stdout and logfile on condition
@@ -227,7 +227,7 @@ function wait_for() {
         sleep 1
     done
 
-    log "Error: wait for more than $timeout_seconds"
+    log "Error: wait for more than $timeout_seconds seconds"
     exit 1
 }
 ######################################################################
