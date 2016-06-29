@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-24 15:52:57>
+## Updated: Time-stamp: <2016-06-30 07:29:31>
 ##-------------------------------------------------------------------
 function current_git_sha() {
     set -e
@@ -32,8 +32,10 @@ function parse_git_repo() {
     # Sample:
     # git@github.com:DennyZhang/devops_public.git --> devops_public
     # https://github.com/DennyZhang/devops_public.git --> devops_public
+    # https://github.com/DennyZhang/devops_public/ --> devops_public
     local git_repo_url=${1?}
-    git_repo=${git_repo_url%.git}
+    git_repo=${git_repo_url%.git} # remove tailing ".git"
+    git_repo=${git_repo%/} # remove tailing "/"
     git_repo=${git_repo##*\/}
     echo "$git_repo"
 }
