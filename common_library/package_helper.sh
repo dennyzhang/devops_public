@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-24 15:52:56>
+## Updated: Time-stamp: <2016-07-01 08:50:13>
 ##-------------------------------------------------------------------
 function install_package() {
     local package=${1?}
@@ -74,6 +74,14 @@ function install_chef() {
 function install_ruby() {
     local ruby_version=${1:-"2.1.8"}
     echo "TODO: ruby_version: ${ruby_version}"
+
+    # apt-get -yqq install python-software-properties && \
+    # apt-add-repository ppa:brightbox/ruby-ng && \
+    # apt-get -yqq update && \
+    # apt-get -yqq install ruby2.1 ruby2.1-dev && \
+    # rm -rf /usr/bin/ruby && \
+    # ln -s /usr/bin/ruby2.1 /usr/bin/ruby && \
+    # rm -rf /usr/local/bin/ruby /usr/local/bin/gem /usr/local/bin/bundle
 }
 
 function ubuntu_parse_package_list() {
