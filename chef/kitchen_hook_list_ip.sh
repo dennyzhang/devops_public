@@ -9,7 +9,7 @@
 ## Description : Note the OS user running the script may be root or kitchen!
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2016-07-04 15:08:36>
+## Updated: Time-stamp: <2016-07-04 16:59:52>
 ##-------------------------------------------------------------------
 set +e
 
@@ -26,5 +26,5 @@ for node in $(kitchen list | grep -v '^Instance' | awk -F' ' '{print $1}'); do
     hosts_list="${hosts_list}\n${ip}:${hostname}"
 done
 
-echo -e "Hosts In Current Env:\n$hosts_list"
+echo -e "Hosts In Current Env:$hosts_list"
 ## File : kitchen_hook_list_ip.sh ends
