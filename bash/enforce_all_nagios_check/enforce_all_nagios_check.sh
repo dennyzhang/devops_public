@@ -11,7 +11,7 @@
 ##     ./enforce_all_nagios_check.sh -s "check_.*_log|check_memory|check_tomcat_cpu"
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-07-06 13:43:10>
+## Updated: Time-stamp: <2016-07-06 20:35:12>
 ##-------------------------------------------------------------------
 
 function check_one_server(){
@@ -27,7 +27,7 @@ function check_one_server(){
             host_name=$(grep '^ *host_name *' "$f" | awk -F' ' '{print $2}' | head -n 1)
             while IFS= read -r line
             do
-                check=$(echo "$line" | awk -F' ' "{print $2}" | awk -F'!' '{print $2}')
+                check=$(echo "$line" | awk -F' ' '{print $2}' | awk -F'!' '{print $2}')
                 command="/usr/lib/nagios/plugins/check_nrpe -H $host_name -c $check"
                 if [ -n "$skip_check_pattern" ]; then
                     if echo "$check" | grep -iE "$skip_check_pattern" 1>/dev/null 2>&1; then
