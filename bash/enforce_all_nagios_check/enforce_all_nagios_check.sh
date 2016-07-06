@@ -11,7 +11,7 @@
 ##     ./enforce_all_nagios_check.sh -s "check_.*_log|check_memory|check_tomcat_cpu"
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-07-06 13:04:25>
+## Updated: Time-stamp: <2016-07-06 13:43:10>
 ##-------------------------------------------------------------------
 
 function check_one_server(){
@@ -129,7 +129,7 @@ fi
 nagios_check_result=0
 
 echo -ne "==============================================================================\n"
-echo -ne "                             Run Nagios Check"
+echo -ne "                             Run Nagios Check\n"
 echo -ne "==============================================================================\n"
 for server in ${server_list[*]}
 do
