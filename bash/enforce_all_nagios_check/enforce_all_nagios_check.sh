@@ -11,7 +11,7 @@
 ##     ./enforce_all_nagios_check.sh -s "check_.*_log|check_memory|check_tomcat_cpu"
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-24 15:52:58>
+## Updated: Time-stamp: <2016-07-06 13:04:25>
 ##-------------------------------------------------------------------
 
 function check_one_server(){
@@ -22,7 +22,7 @@ function check_one_server(){
     local failed_checks=""
     local skipped_checks=""
     IFS=$'\n'
-    for f in .*.cfg; do
+    for f in *.cfg; do
         if grep '^ *host_name *' "$f" 1>/dev/null 2>&1; then
             host_name=$(grep '^ *host_name *' "$f" | awk -F' ' '{print $2}' | head -n 1)
             while IFS= read -r line
@@ -129,7 +129,7 @@ fi
 nagios_check_result=0
 
 echo -ne "==============================================================================\n"
-echo -ne "                             start to nagios checks                           \n"
+echo -ne "                             Run Nagios Check"
 echo -ne "==============================================================================\n"
 for server in ${server_list[*]}
 do
