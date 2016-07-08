@@ -9,7 +9,7 @@
 ## Description : collect the files across servers, and transfer to specific destination
 ## --
 ## Created : <2016-05-29>
-## Updated: Time-stamp: <2016-06-24 17:36:46>
+## Updated: Time-stamp: <2016-07-08 11:29:48>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -22,7 +22,7 @@
 ##          export REMOVE_TMP_FILES=true
 ################################################################################################
 . /etc/profile
-[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v1"
+[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v2"
 export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/${DOWNLOAD_TAG_NAME}"
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
@@ -62,7 +62,7 @@ cat > "$tmp_file" <<EOF
 $protractor_testcase_js
 EOF
 
-# How to run protractor REST API server: https://github.com/DennyZhang/devops_public/tree/tag_v1/protractor
+# How to run protractor REST API server: https://github.com/DennyZhang/devops_public/tree/master/protractor
 echo "============ Run Protractor Test by API"
 echo "curl -F conf_js=@$tmp_conf_file -F protractor_js=@$tmp_file http://$protractor_rest_server/protractor_request"
 output=$(curl -F "conf_js=@$tmp_conf_file" -F "protractor_js=@$tmp_file" "http://${protractor_rest_server}/protractor_request")

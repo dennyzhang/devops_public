@@ -9,10 +9,11 @@
 ## Description :
 ## --
 ## Created : <2015-11-30>
-## Updated: Time-stamp: <2016-06-24 16:50:07>
+## Updated: Time-stamp: <2016-07-08 11:28:15>
 ##-------------------------------------------------------------------
 # pre-cache Chef Omnibus installation
-[ -n "$DOWNLOAD_PREFIX" ] || export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1"
+[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v2"
+export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/${DOWNLOAD_TAG_NAME}"
 wget -O /tmp/chef_kitchen_provision.sh "${DOWNLOAD_PREFIX}/chef/chef_kitchen_provision.sh"
 bash -e /tmp/chef_kitchen_provision.sh
 

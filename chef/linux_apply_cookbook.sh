@@ -9,10 +9,11 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-06-24 16:50:06>
+## Updated: Time-stamp: <2016-07-08 11:29:08>
 ################################################################################################
 . /etc/profile
-[ -n "$DOWNLOAD_PREFIX" ] || export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1"
+[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v2"
+export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/${DOWNLOAD_TAG_NAME}"
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
     wget -O /var/lib/devops/refresh_common_library.sh "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
@@ -29,7 +30,7 @@ bash /var/lib/devops/refresh_common_library.sh "1523631277" "/var/lib/devops/dev
 #           export git_repo_url="git@github.com:DennyZhang/chef_community_cookbooks.git"
 #           export chef_json="{\"run_list\": [\"recipe[general_security]\"], \"general_security\": {\"ssh_disable_passwd_login\": \"true\", \"ssh_disable_root_login\": \"false\"}}"
 #           apt-get install -y curl
-#           curl -o /tmp/linux_apply_cookbook.sh https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/chef/linux_apply_cookbook.sh
+#           curl -o /tmp/linux_apply_cookbook.sh https://raw.githubusercontent.com/DennyZhang/devops_public/master/chef/linux_apply_cookbook.sh
 #           bash -xe /tmp/linux_apply_cookbook.sh
 ################################################################################################
 function basic_setup() {
