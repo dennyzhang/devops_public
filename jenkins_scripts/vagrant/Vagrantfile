@@ -1,0 +1,31 @@
+# -*- mode: ruby -*-
+################################################################################
+# Configurable Parameters
+VM_MEMORY_MB = 6144 # 6GB
+VM_CPU_CORES = 3
+# When empty, disable folder share.
+FOLDER_SHARE = 'local_code_share'
+# PROVISION_PATH = "https://XXX.XXX.XXX/XXX/install_docker.sh"
+################################################################################
+
+Vagrant.configure(2) do |config|
+  config.vm.box = 'ubuntu/trusty64' # The OS is Ubuntu 14.04 64 bits
+  # config.vm.box = 'chef/centos-6.5' # CentOS
+  config.vm.hostname = 'test.devops.com'
+  config.vm.provider 'virtualbox' do |vb|
+    vb.name = 'devops-vagrant-test'
+    vb.customize ['modifyvm', :id, '--memory', VM_MEMORY_MB, \
+                  '--cpus', VM_CPU_CORES]
+  end
+
+  # host-only network
+  config.vm.network :private_network, ip: '192.168.50.10'
+
+  if FOLDER_SHARE != ''
+    config.vm.synced_folder FOLDER_SHARE, '/root/docker/' + FOLDER_SHARE, \
+                            owner: 'root', group: 'root', create: 'true', \
+                            mount_options: ['dmode=777', 'fmode=777']
+  end
+
+  # config.vm.provision 'shell', path: PROVISION_PATH
+end
