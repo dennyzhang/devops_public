@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-07-12 08:14:43>
+## Updated: Time-stamp: <2016-07-12 08:25:45>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -43,13 +43,23 @@ function dump_elasticsearch_summary() {
     local cfg_file=${1?}
     local output_file_prefix=${2?}
 
+    stdout_output_file="${output_file_prefix}.out"
     source "$cfg_file"
     # Get parameters from $cfg_file: server_ip, tcp_port
     echo "Call http://${server_ip}:${tcp_port}/_cat/shards?v"
     curl "http://${server_ip}:${tcp_port}/_cat/shards?v" \
-         > "${output_file_prefix}.out"
+         > "$stdout_output_file"
 
-    # TODO: key-pair
+    # output columns: index shard prirep state docs store ip node
+    IFS=$'\n'
+    for line in $(grep -v "^index " $stdout_output_file | grep "  p  "); do
+        unset IFS
+        item_name=$(echo $line | awk -F' ' '{print $1}')
+        docs=$(echo $line | awk -F' ' '{print $5}')
+        # store=$(echo $line | awk -F' ' '{print $6}')
+        # TODO: generate disk store data
+        insert_elk_entry "$item_name" "ESItemNum" "$docs" "${output_file_prefix}${logstash_postfix}"
+    done
 }
 
 function insert_elk_entry() {
@@ -68,6 +78,7 @@ stdout_show_data_out=${1:-"false"}
 cfg_dir=${2:-"/opt/devops/dump_db_summary/cfg_dir"}
 data_out_dir=${3:-"/opt/devops/dump_db_summary/data_out"}
 
+logstash_postfix="_logstash.txt"
 [ -d "$cfg_dir" ] || mkdir -p "$cfg_dir"
 [ -d "$data_out_dir" ] || mkdir -p "$data_out_dir"
 
