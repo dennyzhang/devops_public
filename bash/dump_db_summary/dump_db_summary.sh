@@ -94,7 +94,7 @@ function insert_elk_entry() {
 
     LANG=en_US
     datetime_utc=$(date -u +['%d/%h/%Y %H:%M:%S +0000'])
-    echo "[$datetime_utc] $item_name $property_name $property_value" >> "$data_file"
+    echo "$datetime_utc $item_name $property_name $property_value" >> "$data_file"
 }
 
 ################################################################################
@@ -112,7 +112,7 @@ for f in *.cfg; do
         fun_name="dump_${db_name}_summary"
         command="$fun_name $f $data_out_dir/${db_name}"
         echo "Run function: $command"
-        $command
+        dump_${db_name}_summary "$f" "$data_out_dir/${db_name}"
     fi
 done
 
