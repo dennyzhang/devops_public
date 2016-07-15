@@ -112,7 +112,7 @@ for f in *.cfg; do
         fun_name="dump_${db_name}_summary"
         command="$fun_name $f $data_out_dir/${db_name}"
         echo "Run function: $command"
-        dump_${db_name}_summary "$f" "$data_out_dir/${db_name}"
+        "dump_${db_name}_summary" "$f" "$data_out_dir/${db_name}"
     fi
 done
 
