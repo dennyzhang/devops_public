@@ -8,9 +8,18 @@
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
 ## Sample:
+##          /opt/devops/dump_db_summary/cfg_dir/couchbase.cfg -> dump_couchbase_summary
+##             export server_ip=192.168.0.3
+##             export tcp_port=8091
+##             export cb_username=Administrator
+##             export cb_passwd=MyDBPassword1
+##
+##          /opt/devops/dump_db_summary/cfg_dir/elasticsearch.cfg -> dump_elasticsearch_summary
+##             export server_ip=192.168.0.4
+##             export tcp_port=9200
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-07-15 14:15:16>
+## Updated: Time-stamp: <2016-07-15 14:26:11>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -87,7 +96,6 @@ cd "$cfg_dir"
 for f in *.cfg; do
     if [ -f "$f" ]; then
         db_name=${f%%.cfg}
-        # Sample: $cfg_dir/mongodb.cfg -> dump_mongodb_summary mongodb.cfg
         fun_name="dump_${db_name}_summary"
         command="$fun_name $f $data_out_dir/${db_name}"
         echo "Run function: $command"
