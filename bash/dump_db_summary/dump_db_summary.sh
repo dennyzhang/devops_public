@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-07-12 08:25:45>
+## Updated: Time-stamp: <2016-07-15 14:15:16>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -35,7 +35,7 @@ print json.dumps(list)" < "$tmp_data_file")
     rm -rf "$tmp_data_file"
     echo "$output" | python -m json.tool > "${output_file_prefix}.out"
 
-    # TODO: key-pair
+    # TODO: load key-pair from ${output_file_prefix}.out
     # sample output: echo "[11/Jul/2016:14:10:45 +0000] mdm-master CBItemNum 20" >> /var/log/data_report.log
 }
 
@@ -52,11 +52,12 @@ function dump_elasticsearch_summary() {
 
     # output columns: index shard prirep state docs store ip node
     IFS=$'\n'
-    for line in $(grep -v "^index " $stdout_output_file | grep "  p  "); do
+    grep -v "^index "  < "$stdout_output_file" | grep "  p  " | while IFS= read -r line
+    do
         unset IFS
-        item_name=$(echo $line | awk -F' ' '{print $1}')
-        docs=$(echo $line | awk -F' ' '{print $5}')
-        # store=$(echo $line | awk -F' ' '{print $6}')
+        item_name=$(echo "$line" | awk -F' ' '{print $1}')
+        docs=$(echo "$line" | awk -F' ' '{print $5}')
+        # store=$(echo "$line" | awk -F' ' '{print $6}')
         # TODO: generate disk store data
         insert_elk_entry "$item_name" "ESItemNum" "$docs" "${output_file_prefix}${logstash_postfix}"
     done
