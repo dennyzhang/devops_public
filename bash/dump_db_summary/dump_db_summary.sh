@@ -37,6 +37,7 @@ function dump_couchbase_summary() {
         | python -m json.tool > "$tmp_data_file"
 
     # parse json to get the summary
+    # output columns: bucket diskUsed memUsed diskFetches quotaPercentUsed opsPerSec dataUsed itemCount
     output=$(python -c "import sys,json
 list = json.load(sys.stdin)
 print 'bucket\tdiskUsed\tmemUsed\tdiskFetches\tquotaPercentUsed\topsPerSec\tdataUsed\titemCount'
