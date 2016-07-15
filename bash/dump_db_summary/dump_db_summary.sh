@@ -39,10 +39,11 @@ function dump_couchbase_summary() {
     # parse json to get the summary
     output=$(python -c "import sys,json
 list = json.load(sys.stdin)
-list = map(lambda x: '%s: %s' % (x['name'], x['basicStats']), list)
-print json.dumps(list)" < "$tmp_data_file")
+print 'bucket\tdiskUsed\tmemUsed\tdiskFetches\tquotaPercentUsed\topsPerSec\tdataUsed\titemCount'
+list = map(lambda x: '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s' % (str(x['name']), str(x['basicStats']['diskUsed']), str(x['basicStats']['memUsed']), str(x['basicStats']['diskFetches']), str(x['basicStats']['quotaPercentUsed']), str(x['basicStats']['opsPerSec']), str(x['basicStats']['dataUsed']), str(x['basicStats']['itemCount'])), list)
+print '\n'.join(list)" < "$tmp_data_file")
     rm -rf "$tmp_data_file"
-    echo "$output" | python -m json.tool > "${output_file_prefix}.out"
+    echo "$output" > "${output_file_prefix}.out"
 
     # TODO: load key-pair from ${output_file_prefix}.out
     # sample output: echo "[11/Jul/2016:14:10:45 +0000] mdm-master CBItemNum 20" >> /var/log/data_report.log
@@ -67,7 +68,6 @@ function dump_elasticsearch_summary() {
         item_name=$(echo "$line" | awk -F' ' '{print $1}')
         docs=$(echo "$line" | awk -F' ' '{print $5}')
         # store=$(echo "$line" | awk -F' ' '{print $6}')
-        # TODO: generate disk store data
         insert_elk_entry "$item_name" "ESItemNum" "$docs" "${output_file_prefix}${logstash_postfix}"
     done
 }
