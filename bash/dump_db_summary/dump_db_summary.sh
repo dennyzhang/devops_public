@@ -93,7 +93,7 @@ function insert_elk_entry() {
     local data_file=${4?}
 
     LANG=en_US
-    datetime_utc=$(date -u +['%d/%h/%Y %H:%M:%S +0000'])
+    datetime_utc=$(date -u +['%d/%h/%Y:%H:%M:%S +0000'])
     echo "$datetime_utc $item_name $property_name $property_value" >> "$data_file"
 }
 
