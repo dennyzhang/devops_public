@@ -28,7 +28,10 @@
 function dump_couchbase_summary() {
     local cfg_file=${1?}
     local output_file_prefix=${2?}
+
+    stdout_output_file="${output_file_prefix}.out"
     source "$cfg_file"
+
     tmp_data_file="/tmp/dump_couchbase_$$.log"
     # Get parameters from $cfg_file:
     #    server_ip, tcp_port, cb_username, cb_password
@@ -37,17 +40,24 @@ function dump_couchbase_summary() {
         | python -m json.tool > "$tmp_data_file"
 
     # parse json to get the summary
-    # output columns: bucket diskUsed memUsed diskFetches quotaPercentUsed opsPerSec dataUsed itemCount
     output=$(python -c "import sys,json
 list = json.load(sys.stdin)
 print 'bucket\tdiskUsed\tmemUsed\tdiskFetches\tquotaPercentUsed\topsPerSec\tdataUsed\titemCount'
 list = map(lambda x: '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s' % (str(x['name']), str(x['basicStats']['diskUsed']), str(x['basicStats']['memUsed']), str(x['basicStats']['diskFetches']), str(x['basicStats']['quotaPercentUsed']), str(x['basicStats']['opsPerSec']), str(x['basicStats']['dataUsed']), str(x['basicStats']['itemCount'])), list)
 print '\n'.join(list)" < "$tmp_data_file")
     rm -rf "$tmp_data_file"
-    echo "$output" > "${output_file_prefix}.out"
+    echo "$output" > "$stdout_output_file"
 
-    # TODO: load key-pair from ${output_file_prefix}.out
-    # sample output: echo "[11/Jul/2016:14:10:45 +0000] mdm-master CBItemNum 20" >> /var/log/data_report.log
+    # output columns: bucket diskUsed memUsed diskFetches quotaPercentUsed opsPerSec dataUsed itemCount
+    IFS=$'\n'
+    grep -v "^bucket "  < "$stdout_output_file" | while IFS= read -r line
+    do
+        unset IFS
+        item_name=$(echo "$line" | awk -F'\t' '{print $1}')
+        item_count=$(echo "$line" | awk -F'\t' '{print $8}')
+        # sample output: echo "[11/Jul/2016:14:10:45 +0000] mdm-master CBItemNum 20" >> /var/log/data_report.log
+        insert_elk_entry "$item_name" "CBItemNum" "$itemCount" "${output_file_prefix}${logstash_postfix}"
+    done
 }
 
 function dump_elasticsearch_summary() {
@@ -69,6 +79,7 @@ function dump_elasticsearch_summary() {
         item_name=$(echo "$line" | awk -F' ' '{print $1}')
         docs=$(echo "$line" | awk -F' ' '{print $5}')
         # store=$(echo "$line" | awk -F' ' '{print $6}')
+        # sample output: echo "[11/Jul/2016:14:10:45 +0000] master-index-8cd6e43115 ESItemNum 200" >> /var/log/data_report.log
         insert_elk_entry "$item_name" "ESItemNum" "$docs" "${output_file_prefix}${logstash_postfix}"
     done
 }
