@@ -29,6 +29,7 @@ function dump_couchbase_summary() {
     local cfg_file=${1?}
     local output_file_prefix=${2?}
 
+    logstash_postfix="_logstash.txt"
     stdout_output_file="${output_file_prefix}.out"
     source "$cfg_file"
 
@@ -50,13 +51,13 @@ print '\n'.join(list)" < "$tmp_data_file")
 
     # output columns: bucket diskUsed memUsed diskFetches quotaPercentUsed opsPerSec dataUsed itemCount
     IFS=$'\n'
-    grep -v "^bucket "  < "$stdout_output_file" | while IFS= read -r line
+    grep -v "^bucket"  < "$stdout_output_file" | while IFS= read -r line
     do
         unset IFS
-        item_name=$(echo "$line" | awk -F'\t' '{print $1}')
-        item_count=$(echo "$line" | awk -F'\t' '{print $8}')
+        item_name=$(echo "$line" | awk -F"\t" '{print $1}')
+        prop_value=$(echo "$line" | awk -F"\t" '{print $8}')
         # sample output: echo "[11/Jul/2016:14:10:45 +0000] mdm-master CBItemNum 20" >> /var/log/data_report.log
-        insert_elk_entry "$item_name" "CBItemNum" "$itemCount" "${output_file_prefix}${logstash_postfix}"
+        insert_elk_entry "$item_name" "CBItemNum" "$prop_value" "${output_file_prefix}${logstash_postfix}"
     done
 }
 
@@ -64,23 +65,24 @@ function dump_elasticsearch_summary() {
     local cfg_file=${1?}
     local output_file_prefix=${2?}
 
+    logstash_postfix="_logstash.txt"
     stdout_output_file="${output_file_prefix}.out"
     source "$cfg_file"
+
     # Get parameters from $cfg_file: server_ip, tcp_port
     echo "Call http://${server_ip}:${tcp_port}/_cat/shards?v"
-    curl "http://${server_ip}:${tcp_port}/_cat/shards?v" \
-         > "$stdout_output_file"
+    curl "http://${server_ip}:${tcp_port}/_cat/shards?v" > "$stdout_output_file"
 
     # output columns: index shard prirep state docs store ip node
     IFS=$'\n'
-    grep -v "^index "  < "$stdout_output_file" | grep "  p  " | while IFS= read -r line
+    grep -v "^index " < "$stdout_output_file" | grep "  p  " | while IFS= read -r line
     do
         unset IFS
         item_name=$(echo "$line" | awk -F' ' '{print $1}')
-        docs=$(echo "$line" | awk -F' ' '{print $5}')
+        prop_value=$(echo "$line" | awk -F' ' '{print $5}')
         # store=$(echo "$line" | awk -F' ' '{print $6}')
         # sample output: echo "[11/Jul/2016:14:10:45 +0000] master-index-8cd6e43115 ESItemNum 200" >> /var/log/data_report.log
-        insert_elk_entry "$item_name" "ESItemNum" "$docs" "${output_file_prefix}${logstash_postfix}"
+        insert_elk_entry "$item_name" "ESItemNum" "$prop_value" "${output_file_prefix}${logstash_postfix}"
     done
 }
 
@@ -100,7 +102,6 @@ stdout_show_data_out=${1:-"false"}
 cfg_dir=${2:-"/opt/devops/dump_db_summary/cfg_dir"}
 data_out_dir=${3:-"/opt/devops/dump_db_summary/data_out"}
 
-logstash_postfix="_logstash.txt"
 [ -d "$cfg_dir" ] || mkdir -p "$cfg_dir"
 [ -d "$data_out_dir" ] || mkdir -p "$data_out_dir"
 
