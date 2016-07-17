@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2016-07-08 11:27:13>
+## Updated: Time-stamp: <2016-07-17 08:19:24>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -183,8 +183,8 @@ for server in ${server_list}; do
     fi
 
     if [ -n "${CODE_SH}" ]; then
-        log "Update git code"
         ssh_command="ssh $common_ssh_options -p $ssh_port root@$ssh_server_ip $CODE_SH $code_dir $git_repo_url $devops_branch_name"
+        log "Update git code for $ssh_server_ip:$ssh_port"
         $ssh_command
     fi
 done
@@ -200,8 +200,8 @@ fi
 
 # deployment
 if [ -n "$deploy_run_list" ]; then
-    log "Star to Deploy cluster"
     for server in ${server_list}; do
+        log "Star to Deploy cluster: $server"
         chef_deploy "$server" "$CHEF_BINARY_CMD" "$deploy_run_list" "$chef_json" "$chef_client_rb"
     done
     log "Deploy End"
