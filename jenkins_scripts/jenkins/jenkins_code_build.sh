@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2016-07-19 07:20:30>
+## Updated: Time-stamp: <2016-07-19 07:54:19>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -160,7 +160,7 @@ env
 log "\n\n\n"
 
 log "================= Build code: cd $code_dir ================="
-sudo /usr/sbin/locale-gen --lang en_US.UTF-8
+# sudo /usr/sbin/locale-gen --lang en_US.UTF-8
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 
