@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2016-07-19 07:54:19>
+## Updated: Time-stamp: <2016-07-19 07:56:00>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -44,6 +44,7 @@ function git_log() {
     command="git log -n $tail_count --pretty=format:\"%h - %an, %ar : %s\""
     echo -e "\n\nShow latest git commits: $command"
     eval "$command"
+    echo "\n"
 }
 
 function copy_to_reposerver() {
