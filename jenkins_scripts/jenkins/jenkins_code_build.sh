@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2016-07-08 11:27:13>
+## Updated: Time-stamp: <2016-07-19 07:20:30>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -121,12 +121,11 @@ source_string "$env_parameters"
 
 log "env variables. CLEAN_START: $CLEAN_START, SKIP_COPY: $SKIP_COPY, FORCE_BUILD: $FORCE_BUILD, build_command: $build_command"
 if [ -n "$CLEAN_START" ] && $CLEAN_START; then
-    [ ! -d "$code_dir" ] || rm -rf "$code_dir"
+    [ ! -d "$code_dir" ] || sudo rm -rf "$code_dir"
 fi
 
 if [ ! -d "$working_dir" ]; then
-    sudo mkdir -p "$working_dir"
-    sudo chown -R jenkins:jenkins "$working_dir"
+    mkdir -p "$working_dir"
 fi
 
 if [ -d "$code_dir" ]; then
