@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-29>
-## Updated: Time-stamp: <2016-07-08 11:27:11>
+## Updated: Time-stamp: <2016-07-19 07:50:31>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -122,11 +122,6 @@ require 'spec_helper'
 
 # Check at least 3 GB free disk
 describe command("[ $(df -h / | tail -n1 |awk -F' ' '{print $4}' | awk -F'G' '{print $1}' | awk -F'.' '{print $1}') -gt 3 ]") do
-  its(:exit_status) { should eq 0 }
-end
-
-# Make sure used disk of rootfs is less than 75%
-describe command("[ $(df -h / | tail -n1 | awk -F' ' '{print $5}' | awk -F'%' '{print $1}') -lt 75 ]") do
   its(:exit_status) { should eq 0 }
 end
 
