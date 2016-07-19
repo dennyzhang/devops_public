@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-07-19 09:47:38>
+## Updated: Time-stamp: <2016-07-19 09:54:08>
 ##-------------------------------------------------------------------
 function fail_unless_root() {
     # Make sure only root can run our script
@@ -252,7 +252,7 @@ function verify_ssh_key_file() {
         octal_mode=$(stat -c "%a %n" "$ssh_key_file" | awk -F' ' '{print $1}')
     fi
 
-    if [ "${octal_mode}" != *400* ]; then
+    if [[ "${octal_mode}" != *400* ]]; then
         echo "Error: ssh keyfile. $ssh_key_file file mode is $octal_mode, instead of 400"
         exit 1
     fi
