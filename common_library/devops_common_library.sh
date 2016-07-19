@@ -25,14 +25,14 @@ library_list="
 1306610065 1841 devops_common_library.sh
 4106968546 2330 docker_helper.sh
 2162795702 7197 general_helper.sh
-585588786 2514 git_helper.sh
+3414464156 2811 git_helper.sh
 3267528388 2977 language_helper.sh
 1056265537 2369 network_helper.sh
 2008894083 3864 package_helper.sh
 1041593270 8675 paramater_helper.sh
 2232144565 1637 process_helper.sh
 2238344795 1776 refresh_common_library.sh
-657090140 3306 string_helper.sh
+220548547 2563 string_helper.sh
 "
 
 library_list=$(echo "$library_list" | grep "_helper.sh")

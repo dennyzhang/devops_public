@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-30 07:29:31>
+## Updated: Time-stamp: <2016-07-19 14:43:51>
 ##-------------------------------------------------------------------
 function current_git_sha() {
     set -e
@@ -29,15 +29,25 @@ function git_log() {
 }
 
 function parse_git_repo() {
-    # Sample:
-    # git@github.com:DennyZhang/devops_public.git --> devops_public
-    # https://github.com/DennyZhang/devops_public.git --> devops_public
-    # https://github.com/DennyZhang/devops_public/ --> devops_public
-    local git_repo_url=${1?}
-    git_repo=${git_repo_url%.git} # remove tailing ".git"
-    git_repo=${git_repo%/} # remove tailing "/"
-    git_repo=${git_repo##*\/}
-    echo "$git_repo"
+    # git@github.com:MYORG/mydevops.wiki.git -> wiki
+    # git@bitbucket.org:MYORG/mydevops.git/wiki -> wiki
+    # git@github.com:MYORG/mydevops.git -> mydevops
+    local git_url=${1?}
+    local repo_name=""
+
+    if [[ "$git_url" = *:*/*.*.git ]]; then
+        repo_name=$(echo "${git_url%.git}" | awk -F'/' '{print $2}')
+        repo_name=$(echo "$repo_name" | awk -F'.' '{print $2}')
+    else
+        if [[ "$git_url" = *:*/*.git/* ]]; then
+            repo_name=$(echo "${git_url}" | awk -F'/' '{print $3}')
+        else
+            if [[ "$git_url" = *:*/*.git ]]; then
+                repo_name=$(echo "${git_url%.git}" | awk -F'/' '{print $2}')
+            fi
+        fi
+    fi
+    echo "$repo_name"
 }
 
 function git_update_code() {

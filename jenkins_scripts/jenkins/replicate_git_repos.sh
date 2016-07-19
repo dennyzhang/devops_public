@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-13>
-## Updated: Time-stamp: <2016-07-19 14:35:04>
+## Updated: Time-stamp: <2016-07-19 14:44:31>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -109,8 +109,8 @@ function replicate_git_repo() {
 
     [ -d "$working_dir" ] || mkdir -p "$working_dir"
     intermediate_dir="$working_dir/$git_branch_dst/intermediate"
-    git_repo_src_name=$(get_gitreponame_by_url "$git_repo_src_url")
-    git_repo_dst_name=$(get_gitreponame_by_url "$git_repo_dst_url")
+    git_repo_src_name=$(parse_git_repo "$git_repo_src_url")
+    git_repo_dst_name=$(parse_git_repo "$git_repo_dst_url")
 
     git_update_code "$git_branch_src" "$working_dir" "$git_repo_src_url"
     git_update_dst_repo "$git_branch_dst" "$working_dir" "$git_repo_dst_url"
