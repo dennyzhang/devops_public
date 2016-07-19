@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-24 15:52:56>
+## Updated: Time-stamp: <2016-07-19 09:34:01>
 ##-------------------------------------------------------------------
 function source_string() {
     # Global variables needed to enable the current script
@@ -60,6 +60,16 @@ function parse_ip_from_string() {
     #      172.17.0.4
     local my_str=${1?}
     echo -e "$my_str" | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+' | sort | uniq
+}
+
+function caculate_date() {
+    local start_date=${1?}
+    local delta_seconds=${2?}
+    echo "$start_date" | python -c "import sys, datetime, time; date = sys.stdin.readline().strip(); t = time.mktime(time.strptime(date,\"%Y-%m-%d\")); print (datetime.datetime.fromtimestamp(t) - datetime.timedelta(seconds=$delta_seconds)).strftime(\"%Y-%m-%d\")"
+}
+
+function last_monday() {
+    python -c "import datetime; today = datetime.date.today(); print today - datetime.timedelta(days=today.weekday())"    
 }
 ######################################################################
 ## File : string_helper.sh ends

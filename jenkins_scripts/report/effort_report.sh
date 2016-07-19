@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-10-13>
-## Updated: Time-stamp: <2016-07-08 11:27:10>
+## Updated: Time-stamp: <2016-07-19 09:34:16>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -27,7 +27,7 @@ if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
     wget -O /var/lib/devops/refresh_common_library.sh "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
 fi
-bash /var/lib/devops/refresh_common_library.sh "1597538024" "/var/lib/devops/devops_common_library.sh" \
+bash /var/lib/devops/refresh_common_library.sh "2070081202" "/var/lib/devops/devops_common_library.sh" \
      "${DOWNLOAD_PREFIX}/common_library/devops_common_library.sh"
 . /var/lib/devops/devops_common_library.sh
 ################################################################################################
@@ -53,11 +53,11 @@ function get_effort_summary() {
 [ -n "$working_dir" ] || working_dir="/var/lib/jenkins/code/$JOB_NAME"
 
 if [ -z "$start_weekday" ]; then
-    start_weekday=$(date -d 'last Monday' '+%Y-%m-%d')
+    start_weekday=$(last_monday)
 fi
 
 start_pattern=$start_weekday
-end_pattern=$(date -d "$start_pattern -7 days" +'%Y-%m-%d')
+end_pattern=$(caculate_date "$start_pattern" "7*24*60*60") # 7days before
 
 # checkout code
 git_repo=$(parse_git_repo "$git_repo_url")
