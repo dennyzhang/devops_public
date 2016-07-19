@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-07-19 09:34:01>
+## Updated: Time-stamp: <2016-07-19 14:33:01>
 ##-------------------------------------------------------------------
 function source_string() {
     # Global variables needed to enable the current script
@@ -70,6 +70,28 @@ function caculate_date() {
 
 function last_monday() {
     python -c "import datetime; today = datetime.date.today(); print today - datetime.timedelta(days=today.weekday())"    
+}
+
+function get_gitreponame_by_url(){
+    # git@github.com:MYORG/mydevops.wiki.git -> wiki
+    # git@bitbucket.org:MYORG/mydevops.git/wiki -> wiki
+    # git@github.com:MYORG/mydevops.git -> mydevops
+    local git_url=${1?}
+    local repo_name=""
+
+    if [[ "$git_url" = *:*/*.*.git ]]; then
+        repo_name=$(echo "${git_url%.git}" | awk -F'/' '{print $2}')
+        repo_name=$(echo "$repo_name" | awk -F'.' '{print $2}')
+    else
+        if [[ "$git_url" = *:*/*.git/* ]]; then
+            repo_name=$(echo "${git_url}" | awk -F'/' '{print $3}')
+        else
+            if [[ "$git_url" = *:*/*.git ]]; then
+                repo_name=$(echo "${git_url%.git}" | awk -F'/' '{print $2}')
+            fi
+        fi
+    fi
+    echo "$repo_name"
 }
 ######################################################################
 ## File : string_helper.sh ends

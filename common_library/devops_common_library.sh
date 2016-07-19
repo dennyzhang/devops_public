@@ -32,7 +32,7 @@ library_list="
 1041593270 8675 paramater_helper.sh
 2232144565 1637 process_helper.sh
 2238344795 1776 refresh_common_library.sh
-3535799735 2562 string_helper.sh
+657090140 3306 string_helper.sh
 "
 
 library_list=$(echo "$library_list" | grep "_helper.sh")
