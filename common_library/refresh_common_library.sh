@@ -10,7 +10,7 @@
 ## By default, this file keeps stable and untouched
 ## --
 ## Created : <2016-04-07>
-## Updated: Time-stamp: <2016-07-08 11:29:26>
+## Updated: Time-stamp: <2016-07-19 09:37:40>
 ##-------------------------------------------------------------------
 function refresh_common_library() {
     local library_file=${1?}
@@ -27,7 +27,7 @@ function refresh_common_library() {
             else
                 checksum=$(cksum "$library_file" | awk -F' ' '{print $1}')
                 if [ "$library_file_checksum" != "$checksum" ]; then
-                    echo "refresh bash common library"
+                    # echo "refresh bash common library"
                     wget -O "$library_file" "$library_url"
                 fi
             fi
