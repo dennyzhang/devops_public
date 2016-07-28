@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-09-24>
-## Updated: Time-stamp: <2016-07-28 14:57:35>
+## Updated: Time-stamp: <2016-07-28 15:15:30>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -53,9 +53,9 @@ $SSH_DOCKER_DAEMON docker exec -t data-report "wget -O /tmp/db_summary_report.tx
 $SSH_DOCKER_DAEMON docker exec -t data-report "cat /tmp/db_summary_report.txt > /var/log/data_report.log"
 
 echo "Start services inside docker container"
-$SSH_DOCKER_DAEMON docker exec -t data-report "service logstash start"
 $SSH_DOCKER_DAEMON docker exec -t data-report "service elasticsearch start"
 $SSH_DOCKER_DAEMON docker exec -t data-report "service kibana4 start"
+$SSH_DOCKER_DAEMON docker exec -t data-report "service logstash start"
 
 echo "Check kibana dashboard"
 $SSH_DOCKER_DAEMON docker exec -t data-report "/usr/sbin/wait_for.sh 'lsof -i tcp:5601' 20"
