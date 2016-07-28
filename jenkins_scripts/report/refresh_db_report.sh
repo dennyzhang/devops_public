@@ -9,13 +9,13 @@
 ## Description :
 ## --
 ## Created : <2015-09-24>
-## Updated: Time-stamp: <2016-07-28 10:08:43>
+## Updated: Time-stamp: <2016-07-28 10:14:11>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
 ##       env_parameters:
 ##           export SSH_DOCKER_DAEMON="ssh root@172.17.0.1"
-##           export KIBANA_DASHBOARD_URL="http://104.131.129.100:5601"
+##           export KIBANA_DASHBOARD_URL="http://104.131.129.100:5601/#/dashboard/DataReport"
 ##           export DESTROY_CONTAINER=false
 ################################################################################################
 . /etc/profile
