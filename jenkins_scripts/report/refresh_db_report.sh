@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-09-24>
-## Updated: Time-stamp: <2016-07-28 15:27:04>
+## Updated: Time-stamp: <2016-07-28 15:28:51>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -56,7 +56,7 @@ echo "Check kibana dashboard"
 $SSH_DOCKER_DAEMON docker exec -t data-report "/usr/sbin/wait_for.sh 'lsof -i tcp:5601' 20"
 
 echo "Start logstash"
-$SSH_DOCKER_DAEMON docker exec -t data-report "service logstash start || service logstash start"
+$SSH_DOCKER_DAEMON docker exec -t data-report "service logstash start || sleep 3; service logstash start"
 $SSH_DOCKER_DAEMON docker exec -t data-report "/usr/sbin/wait_for.sh 'service logstash status' 20"
 
 echo "Download and inject data file"
