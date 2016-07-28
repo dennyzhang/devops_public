@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-09-24>
-## Updated: Time-stamp: <2016-07-28 14:18:42>
+## Updated: Time-stamp: <2016-07-28 14:46:18>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -58,7 +58,7 @@ $SSH_DOCKER_DAEMON docker exec -t data-report "service elasticsearch start"
 $SSH_DOCKER_DAEMON docker exec -t data-report "service kibana4 start"
 
 echo "Check kibana dashboard"
-$SSH_DOCKER_DAEMON docker exec -t data-report "/root/wait_for.sh 'lsof -i tcp:5601' 20"
+$SSH_DOCKER_DAEMON docker exec -t data-report "/usr/sbin/wait_for.sh 'lsof -i tcp:5601' 20"
 
 echo "Check DB Report: $KIBANA_DASHBOARD_URL"
 ## File : refresh_db_report.sh ends
