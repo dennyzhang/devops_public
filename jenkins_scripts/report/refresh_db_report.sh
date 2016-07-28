@@ -9,12 +9,13 @@
 ## Description :
 ## --
 ## Created : <2015-09-24>
-## Updated: Time-stamp: <2016-07-28 10:14:11>
+## Updated: Time-stamp: <2016-07-28 14:01:05>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
 ##       env_parameters:
 ##           export SSH_DOCKER_DAEMON="ssh root@172.17.0.1"
+##           export DATA_SOURCE_URL="http://XXX.XXX.XXX:18000/prodenv_db_summary_report/db_summary_report.txt"
 ##           export KIBANA_DASHBOARD_URL="http://104.131.129.100:5601/#/dashboard/DataReport"
 ##           export DESTROY_CONTAINER=false
 ################################################################################################
@@ -44,16 +45,17 @@ if $DESTROY_CONTAINER; then
     exit 0
 fi
 
-echo "start elk data report container and services inside"
+echo "start elk data report container"
 $SSH_DOCKER_DAEMON docker run -t -d --name data-report --privileged -p 5601:5601 denny/elk:datareport /usr/sbin/sshd -D
 
+echo "Download and inject data file"
+$SSH_DOCKER_DAEMON docker exec -t data-report "wget -O /tmp/db_summary_report.txt $DATA_SOURCE_URL"
+$SSH_DOCKER_DAEMON docker exec -t data-report "cat /tmp/db_summary_report.txt > /var/log/data_report.log"
+
+echo "Start services inside docker container"
 $SSH_DOCKER_DAEMON docker exec -t data-report "service logstash start"
 $SSH_DOCKER_DAEMON docker exec -t data-report "service elasticsearch start"
 $SSH_DOCKER_DAEMON docker exec -t data-report "service kibana4 start"
-
-echo "Download and inject data file"
-$SSH_DOCKER_DAEMON docker exec -t data-report "wget -O /tmp/db_summary_report.txt http://repo.fluigdata.com:18000/prodenv_db_summary_report/db_summary_report.txt"
-$SSH_DOCKER_DAEMON docker exec -t data-report "cat /tmp/db_summary_report.txt >> /var/log/data_report.log"
 
 echo "Check kibana dashboard"
 $SSH_DOCKER_DAEMON docker exec -t data-report "lsof -i tcp:5601"
