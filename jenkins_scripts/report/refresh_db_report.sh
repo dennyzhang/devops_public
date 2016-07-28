@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-09-24>
-## Updated: Time-stamp: <2016-07-28 15:15:30>
+## Updated: Time-stamp: <2016-07-28 15:18:47>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -48,10 +48,6 @@ fi
 echo "start elk data report container"
 $SSH_DOCKER_DAEMON docker run -t -d --name data-report --privileged -p 5601:5601 denny/elk:datareport /usr/sbin/sshd -D
 
-echo "Download and inject data file"
-$SSH_DOCKER_DAEMON docker exec -t data-report "wget -O /tmp/db_summary_report.txt $DATA_SOURCE_URL"
-$SSH_DOCKER_DAEMON docker exec -t data-report "cat /tmp/db_summary_report.txt > /var/log/data_report.log"
-
 echo "Start services inside docker container"
 $SSH_DOCKER_DAEMON docker exec -t data-report "service elasticsearch start"
 $SSH_DOCKER_DAEMON docker exec -t data-report "service kibana4 start"
@@ -60,6 +56,10 @@ $SSH_DOCKER_DAEMON docker exec -t data-report "service logstash start"
 echo "Check kibana dashboard"
 $SSH_DOCKER_DAEMON docker exec -t data-report "/usr/sbin/wait_for.sh 'lsof -i tcp:5601' 20"
 $SSH_DOCKER_DAEMON docker exec -t data-report "/usr/sbin/wait_for.sh 'service logstash status' 20"
+
+echo "Download and inject data file"
+$SSH_DOCKER_DAEMON docker exec -t data-report "wget -O /tmp/db_summary_report.txt $DATA_SOURCE_URL"
+$SSH_DOCKER_DAEMON docker exec -t data-report "cat /tmp/db_summary_report.txt > /var/log/data_report.log"
 
 echo "Check DB Report: $KIBANA_DASHBOARD_URL"
 ## File : refresh_db_report.sh ends
