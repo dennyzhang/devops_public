@@ -5,7 +5,7 @@
 ## Description :
 ## --
 ## Created : <2015-05-12>
-## Updated: Time-stamp: <2016-07-31 06:56:43>
+## Updated: Time-stamp: <2016-07-31 07:02:14>
 ##-------------------------------------------------------------------
 # action: backup or restore
 . /etc/profile
@@ -37,7 +37,8 @@ function backup_to_s3() {
         echo "$full_fname" >> "$metadata_file"
     else
         # backup directory
-        for f in $(ls -1 "$local_dir"); do
+        for f in $local_dir; do
+            [[ -e $f ]] || break
             full_fname="$local_dir/$f"
             if [ -d "$full_fname" ]; then
                 cd "$full_fname"
@@ -65,11 +66,12 @@ function restore_from_s3() {
     local bucket_name=${3?}
     local bucket_dir=${4?}
     local full_fname
-    for full_fname in $(cat "$metadata_file"); do
+    while IFS= read -r full_fname
+    do
         command="aws s3 cp s3://$bucket_name/${bucket_dir}${full_fname} ${local_dir}${full_fname}"
         echo "$command"
         "$command"
-    done
+    done < <(cat "$metadata_file")
 }
 
 [ -f "$metadata_file" ] || touch "$metadata_file"
