@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-03>
-## Updated: Time-stamp: <2016-07-08 11:27:11>
+## Updated: Time-stamp: <2016-07-29 10:17:11>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -135,7 +135,7 @@ function show_detail_changeset() {
     local target_dir=${3?}
 
     # TODO: defensive coding
-    previous_backup_dir=$($ssh_connect "ls -1t $target_dir  | head -n1")
+    previous_backup_dir=$($ssh_connect "ls -1t $target_dir | head -n1")
     msg="\n============== Show Detail ChangeSet ==============\n"
     IFS=$'\n'
     for t_file in ${file_list[*]}; do
