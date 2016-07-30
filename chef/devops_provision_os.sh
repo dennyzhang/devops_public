@@ -11,7 +11,7 @@
 #   bash -e /root/devops_provision_os.sh
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-07-29 11:54:31>
+## Updated: Time-stamp: <2016-07-30 15:05:03>
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v2"
@@ -35,7 +35,7 @@ if [ -f "$ssh_public_key_file" ]; then
     ssh_public_key=$(cat "$ssh_public_key_file")
 fi
 
-if[ -f "$git_deploy_key_file" ]; then
+if [ -f "$git_deploy_key_file" ]; then
     export git_deploy_key
     git_deploy_key=$(cat "$git_deploy_key_file")
 fi
