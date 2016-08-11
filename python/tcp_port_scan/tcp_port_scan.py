@@ -7,7 +7,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2016-08-11 23:14:08>
+## Updated: Time-stamp: <2016-08-11 23:24:13>
 ##-------------------------------------------------------------------
 import argparse
 import subprocess
@@ -52,7 +52,7 @@ def nmap_check(server_ip, ports):
     command = nmap_command % (nmap_opts)
     print "Run: %s" % (command)
     nmap_output = subprocess.check_output(command, shell=True)
-    return cleanup_nmap_output(nmap_outputoutput, server_ip)
+    return cleanup_nmap_output(nmap_output, server_ip)
 
 def cleanup_nmap_output(nmap_output, server_ip):
     return nmap_output
@@ -76,5 +76,5 @@ if __name__=='__main__':
     port_list_file = args.port_list_file
     white_list_file = args.white_list_file
 
-    print nmap_check("104.131.129.100", "")
+    print nmap_check("192.168.0.104", "")
 ## File : tcp_port_scan.py ends
