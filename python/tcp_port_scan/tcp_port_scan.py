@@ -7,7 +7,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2016-08-12 10:49:01>
+## Updated: Time-stamp: <2016-08-12 11:29:24>
 ##-------------------------------------------------------------------
 import argparse
 import subprocess
@@ -124,13 +124,13 @@ def tcp_port_scan(server_list, white_list, extra_port_list):
             insecure_port_dict[server_ip] = ports
 
     if detected_insecure_ports is True:
-        print output_prefix, "Error: Detected insecure TCP ports open"
+        print output_prefix, "Error: Detected Insecure TCP Ports Open"
         for server_ip in insecure_port_dict.keys():
             print "\nServer: %s" % (server_ip)
             print "\n".join(insecure_port_dict[server_ip])
         sys.exit(1)
     else:
-        print "OK: No insecure TCP ports open"
+        print "OK: No Insecure TCP Ports Open"
 
 ################################################################################
 if __name__=='__main__':
