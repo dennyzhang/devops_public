@@ -7,7 +7,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2016-08-12 08:59:30>
+## Updated: Time-stamp: <2016-08-12 09:03:13>
 ##-------------------------------------------------------------------
 import argparse
 import subprocess
@@ -56,7 +56,7 @@ def load_parameters_from_file(fname):
 # TODO: add common logging
 ################################################################################
 nmap_command = "sudo nmap -sS -PN %s" # ("-p T:XXX,XXX 192.168.0.16")
-
+output_prefix = "============="
 open_port_dict = {}
 insecure_port_dict = {}
 
@@ -64,10 +64,9 @@ def nmap_check(server_ip, ports):
     if ports == "":
         nmap_opts = server_ip
     else:
-        nmap_opts = "-p '%s' %s" % (ports, server_ip)
-
+        nmap_opts = "-p %s %s" % (ports, server_ip)
     command = nmap_command % (nmap_opts)
-    print "Run: %s" % (command)
+    print output_prefix, "Run: %s" % (command)
     nmap_output =subprocess.check_output(command, shell=True)
     print nmap_output
     return nmap_output
@@ -100,7 +99,7 @@ def tcp_port_scan(server_list, white_list, extra_ports):
         open_port_dict[server_ip] = nmap_port_list
 
     # TODO: change to multi-threading
-    # Check customized ports
+    print output_prefix, "Run extra checks for given ports: extra_ports"
     if extra_ports != "":
         for server_ip in server_list:
             nmap_output = nmap_check(server_ip, "T:%s" % (extra_ports))
@@ -112,13 +111,12 @@ def tcp_port_scan(server_list, white_list, extra_ports):
     detected_insecure_ports = False
     for server_ip in server_list:
         ports = audit_open_ports(open_port_dict[server_ip], white_list, server_ip)
-
         if len(ports) != 0:
             detected_insecure_ports = True
             insecure_port_dict[server_ip] = ports
 
     if detected_insecure_ports is True:
-        print "Error: Detected insecure TCP ports open"
+        print output_prefix, "Error: Detected insecure TCP ports open"
         for server_ip in insecure_port_dict.keys():
             print "\nServer: %s " % (server_ip)
             print "\n".join(insecure_port_dict[server_ip])
