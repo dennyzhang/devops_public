@@ -7,7 +7,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2016-08-12 10:24:04>
+## Updated: Time-stamp: <2016-08-12 10:49:01>
 ##-------------------------------------------------------------------
 import argparse
 import subprocess
@@ -47,7 +47,8 @@ def string_remove_patterns(string, opt_list):
     return "\n".join(l)
 
 def string_remove_extra_whitespace(string):
-    return ' '.join(string.split(' '))
+    import re
+    return re.sub(' +',' ', string).strip()
 
 def load_paralist_from_file(fname):
     # TODO: defensive coding when file doesn't exist
@@ -79,7 +80,7 @@ def nmap_check(server_ip, ports):
 
 def get_portlist_by_nmap_output(nmap_output, server_ip):
     opt_list = ["Starting Nmap ", "Nmap scan report for ", "Host is ", \
-                "Not shown: ", " STATE ", " closed ports", " closed unknown"\
+                "Not shown: ", " STATE ", " closed ports", " closed unknown", \
                 " filtered ", "Nmap done: ", " scanned ports on "]
     output = string_remove_extra_whitespace(nmap_output)
     output = string_remove_patterns(output, opt_list)
