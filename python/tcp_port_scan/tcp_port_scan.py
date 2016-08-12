@@ -7,7 +7,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2016-08-12 08:29:13>
+## Updated: Time-stamp: <2016-08-12 08:34:32>
 ##-------------------------------------------------------------------
 import argparse
 import subprocess
@@ -57,7 +57,7 @@ def nmap_check(server_ip, ports):
     if ports == "":
         nmap_opts = server_ip
     else:
-        nmap_opts = "-p %s %s" % (ports, server_ip)
+        nmap_opts = "-p '%s' %s" % (ports, server_ip)
 
     command = nmap_command % (nmap_opts)
     print "Run: %s" % (command)
@@ -83,7 +83,7 @@ def audit_open_ports(port_list, white_list, server_ip):
 
     return insecure_port_list
 
-def tcp_port_scan(server_list, port_list, white_list):
+def tcp_port_scan(server_list, white_list, extra_ports):
     # TODO: change to multi-threading
     for server_ip in server_list:
         nmap_output = nmap_check(server_ip, "")
@@ -92,11 +92,9 @@ def tcp_port_scan(server_list, port_list, white_list):
 
     # TODO: change to multi-threading
     # Check customized ports
-    l = list(map(lambda x: "T:%s" % (x), port_list))
-    ports = reduce((lambda x, y: "%s %s" % (x, y)), l)
-    if ports != "":
+    if extra_ports != "":
         for server_ip in server_list:
-            nmap_output = nmap_check(server_ip, ports)
+            nmap_output = nmap_check(server_ip, "T:%s" % (extra_ports))
             nmap_port_list = get_portlist_by_nmap_output(nmap_output, server_ip)
             open_port_dict[server_ip] = sorted(list(set(open_port_dict[server_ip]) \
                                                     | set(nmap_port_list)))
@@ -121,23 +119,22 @@ def tcp_port_scan(server_list, port_list, white_list):
 ################################################################################
 if __name__=='__main__':
     # Sample:
-    # python ./tcp_port_scan.py --server_list_file XXX --port_list_file XXXX --white_list_file XXX
+    # python ./tcp_port_scan.py --server_list_file /tmp/server_list --white_list_file /tmp/white_list --extra_port "48080,18080"
     parser = argparse.ArgumentParser()
     parser.add_argument('--server_list_file', required=True,
                         help="ip list to scan", type=str)
-    parser.add_argument('--port_list_file', required=True,
-                        help="customized tcp ports to scan", type=str)
     parser.add_argument('--white_list_file', required=True,
                         help="safe ports to allow open", type=str)
+    parser.add_argument('--extra_ports', required=True,
+                        help="customized tcp ports to scan", type=str)
     args = parser.parse_args()
     server_list_file = args.server_list_file
-    port_list_file = args.port_list_file
     white_list_file = args.white_list_file
+    extra_ports = args.extra_ports
 
-    port_list = ["48080", "18080"]
     white_list = ["*:22", "*:80"]
     server_list = ["104.131.129.100", "104.236.159.226"]
 
-    tcp_port_scan(server_list, port_list, white_list)
+    tcp_port_scan(server_list, white_list, extra_ports)
 
 ## File : tcp_port_scan.py ends
