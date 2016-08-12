@@ -7,7 +7,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2016-08-12 09:07:40>
+## Updated: Time-stamp: <2016-08-12 09:17:36>
 ##-------------------------------------------------------------------
 import argparse
 import subprocess
@@ -49,8 +49,14 @@ def string_remove_patterns(string, opt_list):
 def string_remove_extra_whitespace(string):
     return ' '.join(string.split())
 
-def load_parameters_from_file(fname):
+def load_paralist_from_file(fname):
+    # TODO: defensive coding when file doesn't exist
     l = []
+    with open(fname,'r') as f:
+        for line in f:
+            line = line.strip()
+            if not line.startswith("#") and line != "":
+                l.append(line)
     return l
 
 # TODO: add common logging
@@ -91,7 +97,7 @@ def audit_open_ports(port_list, white_list, server_ip):
 
     return insecure_port_list
 
-def tcp_port_scan(server_list, white_list, extra_ports):
+def tcp_port_scan(server_list, white_list, extra_port_list):
     # TODO: change to multi-threading
     for server_ip in server_list:
         nmap_output = nmap_check(server_ip, "")
@@ -99,8 +105,9 @@ def tcp_port_scan(server_list, white_list, extra_ports):
         open_port_dict[server_ip] = nmap_port_list
 
     # TODO: change to multi-threading
-    print output_prefix, "Run extra checks for given ports: extra_ports"
+    extra_ports = ",".join(extra_port_list)
     if extra_ports != "":
+        print output_prefix, "Run extra checks for given ports: extra_ports"
         for server_ip in server_list:
             nmap_output = nmap_check(server_ip, "T:%s" % (extra_ports))
             nmap_port_list = get_portlist_by_nmap_output(nmap_output, server_ip)
@@ -127,23 +134,19 @@ def tcp_port_scan(server_list, white_list, extra_ports):
 ################################################################################
 if __name__=='__main__':
     # Sample:
-    # python ./tcp_port_scan.py --server_list_file /tmp/server_list --white_list_file /tmp/white_list --extra_port "48080,18080"
+    # python ./tcp_port_scan.py --server_list_file /tmp/server_list --white_list_file /tmp/white_list --extra_port_list_file /tmp/extra_port_list
     parser = argparse.ArgumentParser()
     parser.add_argument('--server_list_file', required=True,
                         help="ip list to scan", type=str)
     parser.add_argument('--white_list_file', required=True,
                         help="safe ports to allow open", type=str)
-    parser.add_argument('--extra_ports', required=True,
+    parser.add_argument('--extra_port_list_file', required=True,
                         help="customized tcp ports to scan", type=str)
     args = parser.parse_args()
-    server_list_file = args.server_list_file
-    white_list_file = args.white_list_file
-    extra_ports = args.extra_ports
 
-    white_list = ["*:22", "*:80", "104.236.159.226:18080"]
-    server_list = ["104.131.129.100", "104.236.159.226"]
-    # server_list = ["104.131.129.100"]
+    white_list = load_paralist_from_file(args.white_list_file)
+    server_list = load_paralist_from_file(args.server_list_file)
+    extra_port_list = load_paralist_from_file(args.extra_port_list_file)
 
-    tcp_port_scan(server_list, white_list, extra_ports)
-
+    tcp_port_scan(server_list, white_list, extra_port_list)
 ## File : tcp_port_scan.py ends
