@@ -7,7 +7,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2016-08-12 08:47:40>
+## Updated: Time-stamp: <2016-08-12 08:59:30>
 ##-------------------------------------------------------------------
 import argparse
 import subprocess
@@ -15,7 +15,7 @@ import os, sys
 
 ################################################################################
 # TODO: move to common library
-def strip_comments(string):
+def strip_remove_comments(string):
     # remove empty lines and comments (# ...) from string
     l = []
     for line in string.split("\n"):
@@ -25,7 +25,7 @@ def strip_comments(string):
         l.append(line)
     return "\n".join(l)
 
-def strip_emptylines(string):
+def strip_remove_emptylines(string):
     l = []
     for line in string.split("\n"):
         line = line.strip()
@@ -34,7 +34,7 @@ def strip_emptylines(string):
         l.append(line)
     return "\n".join(l)
 
-def string_remove(string, opt_list):
+def string_remove_patterns(string, opt_list):
     l = []
     # remove entries from string
     for line in string.split("\n"):
@@ -46,7 +46,14 @@ def string_remove(string, opt_list):
             l.append(line)
     return "\n".join(l)
 
-# TODO: common logging
+def string_remove_extra_whitespace(string):
+    return ' '.join(string.split())
+
+def load_parameters_from_file(fname):
+    l = []
+    return l
+
+# TODO: add common logging
 ################################################################################
 nmap_command = "sudo nmap -sS -PN %s" # ("-p T:XXX,XXX 192.168.0.16")
 
@@ -69,8 +76,9 @@ def get_portlist_by_nmap_output(nmap_output, server_ip):
     opt_list = ["Starting Nmap ", "Nmap scan report for ", "Host is ", \
                 "Not shown: ", " STATE ", " closed ", \
                 " filtered unknown", "Nmap done: "]
-    output = string_remove(nmap_output, opt_list)
-    output = strip_emptylines(output)
+    output = string_remove_patterns(nmap_output, opt_list)
+    output = string_remove_extra_whitespace(output)
+    output = strip_remove_emptylines(output)
     return output.split("\n")
 
 def audit_open_ports(port_list, white_list, server_ip):
@@ -104,22 +112,15 @@ def tcp_port_scan(server_list, white_list, extra_ports):
     detected_insecure_ports = False
     for server_ip in server_list:
         ports = audit_open_ports(open_port_dict[server_ip], white_list, server_ip)
-        # TODO
-        print "========"
-        print server_ip, ports
+
         if len(ports) != 0:
             detected_insecure_ports = True
             insecure_port_dict[server_ip] = ports
 
-    # TODO
-    print "========"
-    print open_port_dict
-    print insecure_port_dict
-
     if detected_insecure_ports is True:
         print "Error: Detected insecure TCP ports open"
         for server_ip in insecure_port_dict.keys():
-            print "\nserver: %s " % (server_ip)
+            print "\nServer: %s " % (server_ip)
             print "\n".join(insecure_port_dict[server_ip])
         sys.exit(1)
     else:
@@ -143,6 +144,7 @@ if __name__=='__main__':
 
     white_list = ["*:22", "*:80"]
     server_list = ["104.131.129.100", "104.236.159.226"]
+    # server_list = ["104.131.129.100"]
 
     tcp_port_scan(server_list, white_list, extra_ports)
 
