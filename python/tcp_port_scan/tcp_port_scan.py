@@ -7,7 +7,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2016-08-12 08:34:32>
+## Updated: Time-stamp: <2016-08-12 08:47:40>
 ##-------------------------------------------------------------------
 import argparse
 import subprocess
@@ -67,7 +67,8 @@ def nmap_check(server_ip, ports):
 
 def get_portlist_by_nmap_output(nmap_output, server_ip):
     opt_list = ["Starting Nmap ", "Nmap scan report for ", "Host is ", \
-                "Not shown: ", "PORT      STATE SERVICE", "Nmap done: "]
+                "Not shown: ", " STATE ", " closed ", \
+                " filtered unknown", "Nmap done: "]
     output = string_remove(nmap_output, opt_list)
     output = strip_emptylines(output)
     return output.split("\n")
@@ -103,18 +104,26 @@ def tcp_port_scan(server_list, white_list, extra_ports):
     detected_insecure_ports = False
     for server_ip in server_list:
         ports = audit_open_ports(open_port_dict[server_ip], white_list, server_ip)
+        # TODO
+        print "========"
+        print server_ip, ports
         if len(ports) != 0:
             detected_insecure_ports = True
             insecure_port_dict[server_ip] = ports
 
-    if detected_insecure_ports is False:
+    # TODO
+    print "========"
+    print open_port_dict
+    print insecure_port_dict
+
+    if detected_insecure_ports is True:
         print "Error: Detected insecure TCP ports open"
         for server_ip in insecure_port_dict.keys():
-            print "server: server_ip"
-            print insecure_port_dict[server_ip]
+            print "\nserver: %s " % (server_ip)
+            print "\n".join(insecure_port_dict[server_ip])
         sys.exit(1)
     else:
-        print "No insecure TCP ports open"
+        print "OK: No insecure TCP ports open"
 
 ################################################################################
 if __name__=='__main__':
