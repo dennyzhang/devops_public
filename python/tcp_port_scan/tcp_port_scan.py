@@ -7,7 +7,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2016-08-13 17:21:57>
+## Updated: Time-stamp: <2016-08-13 17:22:37>
 ##-------------------------------------------------------------------
 import argparse
 import subprocess
@@ -85,7 +85,10 @@ def get_portlist_by_nmap_output(nmap_output):
     output = string_remove_extra_whitespace(nmap_output)
     output = string_remove_patterns(output, opt_list)
     output = strip_remove_emptylines(output)
-    return output.split("\n")
+    if output == "":
+        return []
+    else:
+        return output.split("\n")
 
 def audit_open_ports(port_list, white_list, server_ip):
     insecure_port_list = []
