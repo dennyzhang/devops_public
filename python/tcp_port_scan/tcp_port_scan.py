@@ -7,7 +7,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2016-08-13 16:32:09>
+## Updated: Time-stamp: <2016-08-13 17:21:57>
 ##-------------------------------------------------------------------
 import argparse
 import subprocess
@@ -78,7 +78,7 @@ def nmap_check(server_ip, ports):
     print nmap_output
     return nmap_output
 
-def get_portlist_by_nmap_output(nmap_output, server_ip):
+def get_portlist_by_nmap_output(nmap_output):
     opt_list = ["Starting Nmap ", "Nmap scan report for ", "Host is ", \
                 "Not shown: ", " STATE ", " closed ports", " closed unknown", \
                 " filtered ", "Nmap done: ", " scanned ports on ", "MAC Address: "]
@@ -102,7 +102,7 @@ def tcp_port_scan(server_list, white_list, extra_port_list):
     # TODO: change to multi-threading
     for server_ip in server_list:
         nmap_output = nmap_check(server_ip, "")
-        nmap_port_list = get_portlist_by_nmap_output(nmap_output, server_ip)
+        nmap_port_list = get_portlist_by_nmap_output(nmap_output)
         open_port_dict[server_ip] = nmap_port_list
 
     # TODO: change to multi-threading
@@ -111,7 +111,7 @@ def tcp_port_scan(server_list, white_list, extra_port_list):
         print "%s Run extra checks for given ports: %s" % (output_prefix, extra_ports)
         for server_ip in server_list:
             nmap_output = nmap_check(server_ip, "T:%s" % (extra_ports))
-            nmap_port_list = get_portlist_by_nmap_output(nmap_output, server_ip)
+            nmap_port_list = get_portlist_by_nmap_output(nmap_output)
             open_port_dict[server_ip] = sorted(list(set(open_port_dict[server_ip]) \
                                                     | set(nmap_port_list)))
 
