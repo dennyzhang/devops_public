@@ -7,7 +7,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2016-08-12 11:29:24>
+## Updated: Time-stamp: <2016-08-13 16:32:09>
 ##-------------------------------------------------------------------
 import argparse
 import subprocess
@@ -81,7 +81,7 @@ def nmap_check(server_ip, ports):
 def get_portlist_by_nmap_output(nmap_output, server_ip):
     opt_list = ["Starting Nmap ", "Nmap scan report for ", "Host is ", \
                 "Not shown: ", " STATE ", " closed ports", " closed unknown", \
-                " filtered ", "Nmap done: ", " scanned ports on "]
+                " filtered ", "Nmap done: ", " scanned ports on ", "MAC Address: "]
     output = string_remove_extra_whitespace(nmap_output)
     output = string_remove_patterns(output, opt_list)
     output = strip_remove_emptylines(output)
