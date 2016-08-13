@@ -10,7 +10,7 @@
 ##      Demo: http://jenkinscn.dennyzhang.com:18088/job/PythonCodeQualityCheck/
 ## --
 ## Created : <2016-04-25>
-## Updated: Time-stamp: <2016-08-13 20:31:07>
+## Updated: Time-stamp: <2016-08-13 21:12:35>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -53,7 +53,7 @@ function install_pip_packages() {
         echo "package: $package"
         if ! python -c "import $package" 1>/dev/null 2>&1; then
             echo "sudo pip install $package"
-            sudo pip install $package
+            sudo pip install "$package"
         fi
     done
 }
