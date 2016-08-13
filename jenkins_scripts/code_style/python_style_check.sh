@@ -10,7 +10,7 @@
 ##      Demo: http://jenkinscn.dennyzhang.com:18088/job/PythonCodeQualityCheck/
 ## --
 ## Created : <2016-04-25>
-## Updated: Time-stamp: <2016-07-08 11:27:13>
+## Updated: Time-stamp: <2016-08-13 20:31:07>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -19,6 +19,7 @@
 ##           git@gitlabcn.dennyzhang.com:devops/devops_scripts.git,dev
 ##      env_parameters:
 ##           export working_dir="/var/lib/jenkins/code/codestyle"
+##           export pip_packages_install="elasticsearch,flask"
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v2"
@@ -43,6 +44,18 @@ function install_pylint() {
             exit 1
         fi
     fi
+}
+
+function install_pip_packages() {
+    package_list=${1?}
+    package_list=${package_list//,/ }
+    for package in $package_list; do
+        echo "package: $package"
+        if ! python -c "import $package" 1>/dev/null 2>&1; then
+            echo "sudo pip install $package"
+            sudo pip install $package
+        fi
+    done
 }
 
 function pythoncheck_git_repo(){
@@ -99,6 +112,9 @@ source_string "$env_parameters"
 
 failed_git_repos=""
 install_pylint
+if [ -n "$pip_packages_install" ]; then
+    install_pip_packages "$pip_packages_install"
+fi
 
 git_list=$(string_strip_comments "$git_list")
 for git_repo_url in $git_list; do
