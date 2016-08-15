@@ -1,11 +1,11 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
 ## File : s3sync.sh
-## Author : Denny <denny.zhang001@gmail.com>
+## Author : Denny <denny@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2015-05-12>
-## Updated: Time-stamp: <2016-07-31 07:02:14>
+## Updated: Time-stamp: <2016-08-15 16:51:24>
 ##-------------------------------------------------------------------
 # action: backup or restore
 . /etc/profile
