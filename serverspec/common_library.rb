@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-05-10>
-## Updated: Time-stamp: <2016-08-16 07:20:56>
+## Updated: Time-stamp: <2016-07-08 11:31:08>
 ##-------------------------------------------------------------------
 ################################################################################
 require 'socket'
@@ -29,5 +29,8 @@ url_prefix = 'https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v2/
   require_relative "/opt/#{library}"
 end
 
+# TODO: better way to download depended bash scripts
+download_command = "curl -o /root/wait_for.sh #{url_prefix}/bash/wait_for/wait_for.sh"
+system(download_command)
 #############################################################################
 ## File : common_library.rb ends
