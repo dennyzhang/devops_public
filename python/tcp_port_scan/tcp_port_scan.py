@@ -7,7 +7,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2016-08-17 09:44:25>
+## Updated: Time-stamp: <2016-08-18 08:35:54>
 ##-------------------------------------------------------------------
 import argparse
 import subprocess
@@ -67,6 +67,7 @@ output_prefix = "============="
 open_port_dict = {}
 insecure_port_dict = {}
 
+# TODO: make sure nmap has been installed in current machine
 def nmap_check(server_ip, ports):
     if ports == "":
         nmap_opts = server_ip
