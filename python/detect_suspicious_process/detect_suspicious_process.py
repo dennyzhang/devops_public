@@ -9,7 +9,7 @@
 ##        python ./detect_suspicious_process.py --whitelist_file /tmp/whitelist.txt
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2016-08-20 13:23:02>
+## Updated: Time-stamp: <2016-08-20 13:32:55>
 ##-------------------------------------------------------------------
 import argparse
 import subprocess
@@ -18,7 +18,14 @@ import os, sys
 ################################################################################
 # TODO: move to common library
 def string_in_regex_list(string, regex_list):
-    # TODO
+    import re
+    for regex in regex_list:
+        regex = regex.strip()
+        if regex == "":
+            continue
+        if re.search(regex, string) is not None:
+            # print "regex: %s, string: %s" % (regex, string)
+            return True
     return False
 
 ################################################################################
@@ -65,7 +72,7 @@ def list_process(process_list, white_list):
         line = line.strip()
         if line == "":
             continue
-        if not string_in_regex_list(line, white_list):
+        if not string_in_regex_list(line, white_list.split("\n")):
             l.append(line)
     return l
 
