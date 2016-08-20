@@ -9,14 +9,20 @@
 ##        python ./detect_suspicious_process.py --whitelist_file /tmp/whitelist.txt
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2016-08-20 11:17:50>
+## Updated: Time-stamp: <2016-08-20 13:23:02>
 ##-------------------------------------------------------------------
 import argparse
 import subprocess
 import os, sys
 
 ################################################################################
-default_white_list = '''
+# TODO: move to common library
+def string_in_regex_list(string, regex_list):
+    # TODO
+    return False
+
+################################################################################
+DEFAULT_WHITE_LIST = '''
 /sbin/getty -.*
 dbus-daemon .*
  acpid -c /etc/acpi/events -s /var/run/acpid.socket$
@@ -31,20 +37,37 @@ dbus-daemon .*
  /usr/sbin/apache2 -k start$
 '''
 
+COMMAND_GET_NONKERNEL = '''
+sudo ps --ppid 2 -p 2 -p 1 --deselect \
+-o uid,pid,rss,%cpu,command \
+--sort -rss,-cpu
+'''
+
 def get_nonkernel_process():
-    command = "sudo ps --ppid 2 -p 2 -p 1 --deselect " + \
-              "-o uid,pid,rss,%cpu,command " + \
-              "--sort -rss,-cpu"
-    process_list = subprocess.check_output(command, shell=True)
+    process_list = subprocess.check_output(COMMAND_GET_NONKERNEL, shell=True)
     return process_list
 
 def load_whitelist(fname):
     white_list = ""
+    if fname is None:
+        print "No white list file is given. Use default value."
+        white_list = DEFAULT_WHITE_LIST
+    else:
+        print "load white list from %s" % (fname)
+        with open(fname) as f:
+            white_list = f.readlines()
     return white_list
 
 def list_process(process_list, white_list):
-    output =""
-    return output
+    import re
+    l = []
+    for line in process_list.split("\n"):
+        line = line.strip()
+        if line == "":
+            continue
+        if not string_in_regex_list(line, white_list):
+            l.append(line)
+    return l
 
 ################################################################################
 if __name__=='__main__':
@@ -52,9 +75,11 @@ if __name__=='__main__':
     parser.add_argument('--whitelist_file', required=False,
                         help="config file for whitelist", type=str)
     args = parser.parse_args()
-
-    nonkernel_process_list = get_nonkernel_process()
     white_list = load_whitelist(args.whitelist_file)
+    nonkernel_process_list = get_nonkernel_process()
     process_list = list_process(nonkernel_process_list, white_list)
-    print process_list
+
+    # Remove header
+    print "Identified processes count: %d." % (len(process_list) - 1)
+    print "\n".join(process_list)
 ## File : detect_suspicious_process.py ends
