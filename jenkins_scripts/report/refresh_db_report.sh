@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-09-24>
-## Updated: Time-stamp: <2016-07-28 15:32:50>
+## Updated: Time-stamp: <2016-08-29 08:51:24>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -66,8 +66,11 @@ echo "Download and inject data file"
 $SSH_DOCKER_DAEMON docker exec -t data-report "wget -O /tmp/db_summary_report.txt $DATA_SOURCE_URL"
 $SSH_DOCKER_DAEMON docker exec -t data-report "cat /tmp/db_summary_report.txt > /var/log/data_report.log"
 
+echo "Show latest original data"
+$SSH_DOCKER_DAEMON docker exec -t data-report "tail /tmp/db_summary_report.txt"
+
 echo "Show latest parsed data"
-$SSH_DOCKER_DAEMON docker exec -t data-report "tail -n 40 /var/log/logstash/logstash.stdout"
+$SSH_DOCKER_DAEMON docker exec -t data-report "tail /var/log/logstash/logstash.stdout"
 
 echo "Check DB Report: $KIBANA_DASHBOARD_URL"
 ## File : refresh_db_report.sh ends
