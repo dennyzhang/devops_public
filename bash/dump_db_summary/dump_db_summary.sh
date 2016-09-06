@@ -46,6 +46,7 @@ list = json.load(sys.stdin)
 print 'bucket\tdiskUsed\tmemUsed\tdiskFetches\tquotaPercentUsed\topsPerSec\tdataUsed\titemCount'
 list = map(lambda x: '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s' % (str(x['name']), str(x['basicStats']['diskUsed']), str(x['basicStats']['memUsed']), str(x['basicStats']['diskFetches']), str(x['basicStats']['quotaPercentUsed']), str(x['basicStats']['opsPerSec']), str(x['basicStats']['dataUsed']), str(x['basicStats']['itemCount'])), list)
 print '\n'.join(list)" < "$tmp_data_file")
+    # TODO: need to remove this file, even if exceptions happen
     rm -rf "$tmp_data_file"
     echo "$output" > "$stdout_output_file"
 
