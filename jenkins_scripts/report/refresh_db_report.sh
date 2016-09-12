@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-09-24>
-## Updated: Time-stamp: <2016-08-29 08:51:24>
+## Updated: Time-stamp: <2016-09-12 08:43:39>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -64,7 +64,7 @@ $SSH_DOCKER_DAEMON docker exec -t data-report "/usr/sbin/wait_for.sh 'service lo
 
 echo "Download and inject data file"
 $SSH_DOCKER_DAEMON docker exec -t data-report "wget -O /tmp/db_summary_report.txt $DATA_SOURCE_URL"
-$SSH_DOCKER_DAEMON docker exec -t data-report "cat /tmp/db_summary_report.txt > /var/log/data_report.log"
+$SSH_DOCKER_DAEMON docker exec -t data-report "cat /tmp/db_summary_report.txt > /var/log/elk_report.log"
 
 echo "Show latest original data"
 $SSH_DOCKER_DAEMON docker exec -t data-report "tail /tmp/db_summary_report.txt"
