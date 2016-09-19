@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-09-24>
-## Updated: Time-stamp: <2016-09-12 08:43:39>
+## Updated: Time-stamp: <2016-09-19 08:30:43>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -48,6 +48,7 @@ fi
 echo "start elk data report container"
 $SSH_DOCKER_DAEMON docker run -t -d --name data-report --privileged -p 5601:5601 denny/elk:datareport /usr/sbin/sshd -D
 
+$SSH_DOCKER_DAEMON docker exec -t data-report "wget -O /tmp/db_summary_report.txt $DATA_SOURCE_URL"
 echo "Start services inside docker container"
 $SSH_DOCKER_DAEMON docker exec -t data-report "service elasticsearch start"
 $SSH_DOCKER_DAEMON docker exec -t data-report "service kibana4 start"
@@ -63,7 +64,6 @@ $SSH_DOCKER_DAEMON docker exec -t data-report "service logstash start"
 $SSH_DOCKER_DAEMON docker exec -t data-report "/usr/sbin/wait_for.sh 'service logstash status' 20"
 
 echo "Download and inject data file"
-$SSH_DOCKER_DAEMON docker exec -t data-report "wget -O /tmp/db_summary_report.txt $DATA_SOURCE_URL"
 $SSH_DOCKER_DAEMON docker exec -t data-report "cat /tmp/db_summary_report.txt > /var/log/elk_report.log"
 
 echo "Show latest original data"
