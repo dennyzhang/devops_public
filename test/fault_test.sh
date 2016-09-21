@@ -1,3 +1,3 @@
 #!/bin/bash
-exit 1
-## File : fault_test.sh ends
+ssh root@104.131.129.100 "ls /tmp/abab"
+echo "should not print"
