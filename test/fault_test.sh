@@ -1,11 +1,10 @@
 #!/bin/bash
-#!/bin/bash -ex
 function shell_exit() {
     errcode=$?
     if [ $errcode -eq 0 ]; then
-        log "Action succeeds."
+        echo "Action succeeds."
     else
-        log "Action Fails."
+        echo "Action Fails."
     fi
     exit $errcode
 }
