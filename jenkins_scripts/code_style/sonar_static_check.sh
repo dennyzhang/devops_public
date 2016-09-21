@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2016-07-08 11:27:13>
+## Updated: Time-stamp: <2016-09-21 18:21:57>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -58,7 +58,8 @@ function sonar_runner_project() {
     if [ -z "$SONAR_SOURCES" ]; then
         if [ "$SONAR_LANGUAGE" = "java" ]; then
             main_list=$(find . -name main)
-            main_list=$(echo "$main_list" | tr ' ' ',')
+            main_list=$(echo "$main_list" | tr '\n' ',')
+            main_list=${main_list%,}
             export SONAR_SOURCES=$main_list
         else
             export SONAR_SOURCES="."
