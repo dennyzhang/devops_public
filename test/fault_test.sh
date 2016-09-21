@@ -1,3 +1,3 @@
 #!/bin/bash
-/usr/bin/false
+exit 1
 ## File : fault_test.sh ends
