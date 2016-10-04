@@ -10,7 +10,7 @@
 ## Description : A Python module to parse haproxy stats
 ## --
 ## Created : <2016-10-04>
-## Updated: Time-stamp: <2016-10-04 20:21:46>
+## Updated: Time-stamp: <2016-10-04 20:49:05>
 ##-------------------------------------------------------------------
 import parse_haproxy_stats
 import datetime
@@ -28,18 +28,16 @@ def haproxy_stats_metric(stat_output, timestamp):
         print "%s %s %s %s" % (timestamp, 'HTTPCode', field, haproxy_dict[field])
 
     for field in 'scur,smax'.split(','):
-        print "%s %s %s %s" % (timestamp, 'HTTPCode', field, haproxy_dict[field])
+        print "%s %s %s %s" % (timestamp, 'SessionThread', field, haproxy_dict[field])
 
 # python ./haproxy_stats_metric.py --haproxy_stats_cmd "echo 'show stat' | nc -U /var/run/haproxy/admin.sock | grep 'backend-https,BACKEND'"
 if __name__=='__main__':
     parser = argparse.ArgumentParser()
-    default_haproxy_stats_cmd \
-        = "echo 'show stat' | nc -U /var/run/haproxy/admin.sock | grep 'backend-https,BACKEND'"
-    parser.add_argument('--haproxy_stats_cmd', default=default_haproxy_stats_cmd, \
-                        required=True, help="Command to get haproxy stats", type=str)
-
+    parser.add_argument('--haproxy_stats_cmd', default = '', \
+                        required = True, help = "Command to get haproxy stats", type=str)
     l = parser.parse_args()
-    cmd = l.default_haproxy_stats_cmd
+
+    cmd = l.haproxy_stats_cmd
     status, output = commands.getstatusoutput(cmd)
     if(status == 0):
         stat_output = output.strip()
