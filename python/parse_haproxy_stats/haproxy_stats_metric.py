@@ -10,12 +10,13 @@
 ## Description : A Python module to parse haproxy stats
 ## --
 ## Created : <2016-10-04>
-## Updated: Time-stamp: <2016-10-04 18:52:11>
+## Updated: Time-stamp: <2016-10-04 20:15:33>
 ##-------------------------------------------------------------------
 import parse_haproxy_stats
+import datetime
 def get_timestamp():
-    # TODO
-    return "[25/Jul/2016:00:26:00 +0000]"
+    return "[%s +0000]" % \
+        (datetime.datetime.utcnow().strftime("%d/%b/%Y:%H:%M:%S"))
 
 def haproxy_stats_metric(stat_output, timestamp):
     haproxy_dict = parse_haproxy_stats.parse_haproxy_stats(stat_output)
