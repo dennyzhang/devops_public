@@ -10,7 +10,7 @@
 ## Description : A Python module to parse haproxy stats
 ## --
 ## Created : <2016-10-04>
-## Updated: Time-stamp: <2016-10-06 16:15:29>
+## Updated: Time-stamp: <2016-10-06 17:00:03>
 ##-------------------------------------------------------------------
 import parse_haproxy_stats
 import datetime
@@ -29,6 +29,9 @@ def haproxy_stats_metric(stat_output, timestamp):
 
     for field in 'scur,smax'.split(','):
         print "%s %s %s %s" % (timestamp, 'SessionThread', field, haproxy_dict[field])
+
+    for field in 'ctime,rtime,ttime'.split(','):
+        print "%s %s %s %s" % (timestamp, 'AvgTime', field, haproxy_dict[field])
 
 # python ./haproxy_stats_metric.py --haproxy_stats_cmd "echo 'show stat' | nc -U /var/run/haproxy/admin.sock | grep 'backend-https,BACKEND'"
 if __name__=='__main__':
