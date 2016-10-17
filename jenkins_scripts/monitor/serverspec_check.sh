@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-29>
-## Updated: Time-stamp: <2016-07-19 07:50:31>
+## Updated: Time-stamp: <2016-10-17 23:05:44>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -120,8 +120,8 @@ setup_serverspec "$working_dir"
 cat > spec/localhost/sample_spec.rb <<EOF
 require 'spec_helper'
 
-# Check at least 3 GB free disk
-describe command("[ $(df -h / | tail -n1 |awk -F' ' '{print $4}' | awk -F'G' '{print $1}' | awk -F'.' '{print $1}') -gt 3 ]") do
+# Check at least 2 GB free disk
+describe command("[ $(df -h / | tail -n1 |awk -F' ' '{print $4}' | awk -F'G' '{print $1}' | awk -F'.' '{print $1}') -gt 2 ]") do
   its(:exit_status) { should eq 0 }
 end
 
