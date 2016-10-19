@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-08-05>
-## Updated: Time-stamp: <2016-10-17 23:33:07>
+## Updated: Time-stamp: <2016-10-19 13:24:35>
 ################################################################################################
 ## Purpose: General function to deploy all-in-one env by chef
 ##
@@ -56,7 +56,7 @@ function shell_exit() {
     unset common_ssh_options
     if $STOP_CONTAINER; then
         if [ -n "$PRE_STOP_COMMAND" ]; then
-            ssh_pre_stop_command="ssh $common_ssh_options -p $SSH_SERVER_PORT root@$ssh_server_ip \"$PRE_STOP_COMMAND\""
+            ssh_pre_stop_command="ssh $common_ssh_options -p $ssh_port root@$ssh_server_ip \"$PRE_STOP_COMMAND\""
             log "$ssh_pre_stop_command"
             eval "$ssh_pre_stop_command"
         fi
@@ -119,7 +119,7 @@ if [ -n "$START_COMMAND" ]; then
     sleep 2
 
     if [ -n "$POST_START_COMMAND" ]; then
-        ssh_post_start_command="ssh $common_ssh_options -p $SSH_SERVER_PORT root@$ssh_server_ip \"$POST_START_COMMAND\""
+        ssh_post_start_command="ssh $common_ssh_options -p $ssh_port root@$ssh_server_ip \"$POST_START_COMMAND\""
         log "$ssh_post_start_command"
         eval "$ssh_post_start_command"
     fi
