@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-07-19 09:54:08>
+## Updated: Time-stamp: <2016-10-20 16:58:04>
 ##-------------------------------------------------------------------
 function fail_unless_root() {
     # Make sure only root can run our script
@@ -247,12 +247,12 @@ function verify_ssh_key_file() {
 
     os_type=$(os_release)
     if [ "$os_type" = "osx" ]; then
-        octal_mode=$(stat -f "%p" /var/lib/jenkins/.ssh/id_rsa)
+        octal_mode=$(stat -f "%p" "$ssh_key_file")
     else
         octal_mode=$(stat -c "%a %n" "$ssh_key_file" | awk -F' ' '{print $1}')
     fi
 
-    if [[ "${octal_mode}" != *400* ]]; then
+    if [[ "${octal_mode}" != *00 ]]; then
         echo "Error: ssh keyfile. $ssh_key_file file mode is $octal_mode, instead of 400"
         exit 1
     fi
