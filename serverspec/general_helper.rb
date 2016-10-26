@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-05-10>
-## Updated: Time-stamp: <2016-10-26 13:43:26>
+## Updated: Time-stamp: <2016-10-26 13:45:41>
 ##-------------------------------------------------------------------
 ################################################################################
 require 'socket'
@@ -64,11 +64,8 @@ def list_get_random_item(list, skip_item = '')
   item = list[r.rand(list.length)]
   if skip_item != ''
     loop do
-      if item == skip_item
-        item = list_get_random_item(list)
-      else
-        break
-      end
+      break if item != skip_item
+      item = list_get_random_item(list)
     end
   end
   item
