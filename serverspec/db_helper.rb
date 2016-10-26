@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-05-10>
-## Updated: Time-stamp: <2016-06-24 15:53:15>
+## Updated: Time-stamp: <2016-10-26 13:29:27>
 ##-------------------------------------------------------------------
 require 'socket'
 require 'serverspec'
@@ -39,7 +39,7 @@ def elasticsearch_general_check(es_port, cmd_pattern, es_version, es_host)
 
   return unless es_host != ''
   describe command("curl -XGET http://#{es_host}:#{es_port}") do
-    its(:stdout) { should contain "#{es_version}" }
+    its(:stdout) { should contain es_version.to_s }
   end
 end
 
@@ -52,10 +52,11 @@ end
 def verify_es_cluster_health(server_ip, es_port)
   describe command("curl -XGET http://#{server_ip}:#{es_port}" \
                    '/_cluster/health?pretty') do
-    its(:stdout) { should contain "\"status\" : \"green\"" }
+    its(:stdout) { should contain '"status" : "green"' }
   end
 end
 ################################################################################
+
 # couchbase
 def couchbase_general_check(tcp_port, cb_version)
   # Basic verification logic for couchbase installation
