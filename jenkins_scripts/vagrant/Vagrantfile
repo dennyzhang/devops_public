@@ -4,7 +4,7 @@
 VM_MEMORY_MB = 6144 # 6GB
 VM_CPU_CORES = 3
 # When empty, disable folder share.
-FOLDER_SHARE = 'local_code_share'
+folder_share = 'local_code_share'
 # PROVISION_PATH = "https://XXX.XXX.XXX/XXX/install_docker.sh"
 ################################################################################
 
@@ -21,7 +21,7 @@ Vagrant.configure(2) do |config|
   # host-only network
   config.vm.network :private_network, ip: '192.168.50.10'
 
-  if FOLDER_SHARE != ''
+  if folder_share != ''
     config.vm.synced_folder FOLDER_SHARE, '/root/docker/' + FOLDER_SHARE, \
                             owner: 'root', group: 'root', create: 'true', \
                             mount_options: ['dmode=777', 'fmode=777']

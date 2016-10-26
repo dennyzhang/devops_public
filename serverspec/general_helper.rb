@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-05-10>
-## Updated: Time-stamp: <2016-10-26 13:28:51>
+## Updated: Time-stamp: <2016-10-26 13:43:26>
 ##-------------------------------------------------------------------
 ################################################################################
 require 'socket'
@@ -23,7 +23,8 @@ set :backend, :exec
 def local_ip
   # get current ip, probbably of eth0
   # turn off reverse DNS resolution temporarily
-  orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true
+  orig = Socket.do_not_reverse_lookup
+  Socket.do_not_reverse_lookup = true
 
   UDPSocket.open do |s|
     s.connect '8.8.8.8', 1
