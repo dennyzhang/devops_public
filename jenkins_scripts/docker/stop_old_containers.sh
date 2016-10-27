@@ -10,7 +10,7 @@
 ## Description : Stop old long-run docker containers, to save OS resource
 ## --
 ## Created : <2015-12-03>
-## Updated: Time-stamp: <2016-10-27 17:41:56>
+## Updated: Time-stamp: <2016-10-27 17:43:10>
 ##-------------------------------------------------------------------
 ################################################################################################
 # * By Jenkins config
@@ -128,7 +128,7 @@ for ip_port in "${docker_ip_port[@]}"; do
     stop_container_list+=("\n${daemon_ip}:${daemon_port} stop container list:\n${stop_container[@]}")
 
     # Empty current ip:port white list
-    unset "white_list[@]"
+    unset 'white_list[@]'
 done
 
 if [ ${#stop_container[@]} -gt 0 ]; then
