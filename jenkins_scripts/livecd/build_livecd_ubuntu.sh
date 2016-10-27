@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-05>
-## Updated: Time-stamp: <2016-07-08 11:27:12>
+## Updated: Time-stamp: <2016-10-27 17:42:35>
 ##-------------------------------------------------------------------
 
 # How to build liveCD of ubuntu: http://customizeubuntu.com/ubuntu-livecd
@@ -168,7 +168,7 @@ mksquashfs edit extract-cd/casper/filesystem.squashfs
 log "Update md5sum"
 cd extract-cd
 rm md5sum.txt
-find -type f -print0 | xargs -0 md5sum | grep -v isolinux/boot.cat | tee md5sum.txt
+find . -type f -print0 | xargs -0 md5sum | grep -v isolinux/boot.cat | tee md5sum.txt
 
 log "Create ISO image"
 mkisofs -r -D -V "$volume_id" -cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -o "$dst_iso" .
