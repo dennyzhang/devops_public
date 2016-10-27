@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-05-28>
-## Updated: Time-stamp: <2016-07-08 11:27:10>
+## Updated: Time-stamp: <2016-10-27 17:22:25>
 ##-------------------------------------------------------------------
 ################################################################################################
 . /etc/profile
@@ -40,7 +40,8 @@ function docker_pull_image() {
     log "docker pull $image_name, this steps may take tens of minutes."
     set +e
     docker pull "$image_name"
-    if [ $? -eq 0 ]; then
+    errcode=$?
+    if [ $errcode -eq 0 ]; then
         log "Retry: docker pull $image_name, in case doggy internet issue."
         docker pull "$image_name"
     fi
