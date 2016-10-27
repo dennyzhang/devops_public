@@ -10,7 +10,7 @@
 ##      Demo: http://jenkinscn.dennyzhang.com:18088/job/BashCodeQualityCheck/
 ## --
 ## Created : <2016-04-25>
-## Updated: Time-stamp: <2016-07-08 11:27:13>
+## Updated: Time-stamp: <2016-10-27 17:24:51>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -129,7 +129,7 @@ source_string "$env_parameters"
 [ -n "$SHELLCHECK_IGNORE_FILE" ] || SHELLCHECK_IGNORE_FILE=".shellcheck_ignore"
 
 # http://github.com/koalaman/shellcheck/wiki/SC1091
-[ -n "$EXCLUDE_CODE_LIST" ] || EXCLUDE_CODE_LIST="SC1090,SC1091,SC2154,SC2001,SC2002"
+[ -n "$EXCLUDE_CODE_LIST" ] || EXCLUDE_CODE_LIST="SC1090,SC1091,SC2154,SC2001,SC2002,SC2181"
 
 failed_git_repos=""
 install_shellcheck
