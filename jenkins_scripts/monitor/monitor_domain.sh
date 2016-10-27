@@ -22,9 +22,9 @@ function check_domain() {
     if ! command -v jq >/dev/null 2>&1; then
         sudo apt-get install jq -y
     fi
-
+    errcode=$?
     # Versify command jq
-    if [ $? -ne 0 ]; then
+    if [ $errcode -ne 0 ]; then
         log "Error: command(jq) not exist"
         exit 1
     fi

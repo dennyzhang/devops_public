@@ -9,7 +9,7 @@
 ## Description : collect the files across servers, and transfer to specific destination
 ## --
 ## Created : <2016-04-14>
-## Updated: Time-stamp: <2016-07-08 11:27:13>
+## Updated: Time-stamp: <2016-10-27 17:17:51>
 ################################################################################################
 ## env variables:
 ##      server_list:
@@ -91,7 +91,8 @@ function collect_files_by_host() {
             # TODO: better way for temporarily disable "set -e"
             set +e            
             ssh_result=$($ssh_connect "$eval_command")
-            if [ $? -ne 0 ] || [ -z "$ssh_result" ]; then
+            errcode=$?
+            if [ $errcode -ne 0 ] || [ -z "$ssh_result" ]; then
                 echo "Warning: Fail to run $eval_command"
             else
                 collect_files_by_host "$server_ip" "$server_port" "$ssh_username" "$work_path" "$ssh_result"

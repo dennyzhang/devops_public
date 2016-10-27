@@ -9,7 +9,7 @@
 ## Description : collect the files across servers, and transfer to specific destination
 ## --
 ## Created : <2016-04-14>
-## Updated: Time-stamp: <2016-07-08 11:27:12>
+## Updated: Time-stamp: <2016-10-27 17:18:28>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -59,7 +59,8 @@ function tail_files() {
             # TODO: better way for temporarily disable "set -e"
             set +e            
             ssh_result=$($ssh_connect "$eval_command")
-            if [ $? -ne 0 ] || [ -z "$ssh_result" ]; then
+            errcode=$?
+            if [ $errcode -ne 0 ] || [ -z "$ssh_result" ]; then
                 echo "Warning: Fail to run $eval_command"
             else
                 tail_files "$ssh_server_ip" "$ssh_port" "$ssh_username" "$ssh_result"

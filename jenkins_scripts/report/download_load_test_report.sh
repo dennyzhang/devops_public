@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-09-24>
-## Updated: Time-stamp: <2016-07-08 11:27:11>
+## Updated: Time-stamp: <2016-10-27 17:18:36>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -94,7 +94,8 @@ if [ -n "$START_COMMAND" ]; then
 fi
 
 ssh -i $ssh_key_file -p "$ssh_port" -o StrictHostKeyChecking=no "root@$ssh_server_ip" test -f $report_remote_path
-if [ $? -ne 0 ];then
+errcode=$?
+if [ $errcode -ne 0 ];then
     log "The load test report file don't be found in the container."
     exit 1
 fi
