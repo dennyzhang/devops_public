@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-23>
-## Updated: Time-stamp: <2016-07-08 11:27:12>
+## Updated: Time-stamp: <2016-10-27 17:15:55>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -78,7 +78,8 @@ for f in $download_files; do
     f=$(basename "$f")
     if [ -f "$f" ]; then
         remote_checksum=$(grep "$f" "$checksum_file")
-        if [ $? -ne 0 ]; then
+        errcode=$?
+        if [ $errcode -ne 0 ]; then
             log "ERROR: Fail to find $f in $checksum_link"
             exit 1
         else
