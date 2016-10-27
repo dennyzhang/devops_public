@@ -9,11 +9,38 @@
 ## Description :
 ## --
 ## Created : <2016-04-15>
-## Updated: Time-stamp: <2016-06-24 15:52:58>
+## Updated: Time-stamp: <2016-10-27 16:45:29>
 ##-------------------------------------------------------------------
 working_dir=${1?}
 git_repo_url=${2?}
 branch_name=${3?}
+
+function parse_git_repo() {
+    # git@github.com:MYORG/mydevops.wiki.git -> mdmdevops.wiki
+    # git@bitbucket.org:MYORG/mydevops.git/wiki -> wiki
+    # git@github.com:MYORG/mydevops.git -> mydevops
+    local git_url=${1?}
+    local repo_name=""
+
+    if [[ "$git_url" = *:*/*.*.git ]]; then
+        if [[ "$git_url" = https:*.* ]]; then
+            # Sample: https://github.com/DennyZhang/devops_public.git
+            repo_name=$(echo "${git_url%.git}" | awk -F'/' '{print $5}')
+        else
+            # Sample: git@github.com:DennyZhang/devops_public.git
+            repo_name=$(echo "${git_url%.git}" | awk -F'/' '{print $2}')
+        fi
+    else
+        if [[ "$git_url" = *:*/*.git/* ]]; then
+            repo_name=$(echo "${git_url}" | awk -F'/' '{print $3}')
+        else
+            if [[ "$git_url" = *:*/*.git ]]; then
+                repo_name=$(echo "${git_url%.git}" | awk -F'/' '{print $2}')
+            fi
+        fi
+    fi
+    echo "$repo_name"
+}
 
 function git_update_code() {
     set -e
@@ -21,7 +48,7 @@ function git_update_code() {
     local working_dir=${2?}
     local git_repo_url=${3?}
 
-    git_repo=${git_repo_url%.git}
+    git_repo=$(parse_git_repo "$git_repo_url")
     git_repo=${git_repo##*\/}
 
     local code_dir="$working_dir/$branch_name/$git_repo"

@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-07-19 15:24:04>
+## Updated: Time-stamp: <2016-10-27 16:45:07>
 ##-------------------------------------------------------------------
 function current_git_sha() {
     set -e
@@ -36,7 +36,13 @@ function parse_git_repo() {
     local repo_name=""
 
     if [[ "$git_url" = *:*/*.*.git ]]; then
-        repo_name=$(echo "${git_url%.git}" | awk -F'/' '{print $2}')
+        if [[ "$git_url" = https:*.* ]]; then
+            # Sample: https://github.com/DennyZhang/devops_public.git
+            repo_name=$(echo "${git_url%.git}" | awk -F'/' '{print $5}')
+        else
+            # Sample: git@github.com:DennyZhang/devops_public.git
+            repo_name=$(echo "${git_url%.git}" | awk -F'/' '{print $2}')
+        fi
     else
         if [[ "$git_url" = *:*/*.git/* ]]; then
             repo_name=$(echo "${git_url}" | awk -F'/' '{print $3}')
