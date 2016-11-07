@@ -6,7 +6,7 @@
 ##        Note: To run the job, make sure target jenkins run has timestamper plugin properly enabled
 ## --
 ## Created : <2016-01-06>
-## Updated: Time-stamp: <2016-07-08 11:27:11>
+## Updated: Time-stamp: <2016-11-07 15:34:20>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -58,7 +58,7 @@ py_file="${dir_name}/diagnostic_jenkinsjob_slow.py"
 
 if [ ! -f "$py_file" ]; then
     wget -O "$py_file" \
-         "https://raw.githubusercontent.com/DennyZhang//devops_jenkins/${DOWNLOAD_TAG_NAME}/performance/diagnostic_jenkinsjob_slow/diagnostic_jenkinsjob_slow.py"
+         "https://raw.githubusercontent.com/DennyZhang/devops_public/${DOWNLOAD_TAG_NAME}/jenkins_scripts/performance/diagnostic_jenkinsjob_slow/diagnostic_jenkinsjob_slow.py"
 fi
 
 install_sqlite
