@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-13>
-## Updated: Time-stamp: <2016-11-07 14:59:45>
+## Updated: Time-stamp: <2016-11-07 15:06:36>
 ##-------------------------------------------------------------------
 ## env variables:
 ##       server_list: ip-1
@@ -49,7 +49,7 @@ source_string "$env_parameters"
 
 server_list=$(string_strip_comments "$server_list")
 server_list=$(string_strip_whitespace "$server_list")
-command=$(string_strip_comments "$command")
+command_list=$(string_strip_comments "$command_list")
 
 install_package "ansible" "ansible"
 
