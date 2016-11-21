@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-08-05>
-## Updated: Time-stamp: <2016-07-08 11:27:11>
+## Updated: Time-stamp: <2016-11-21 12:48:55>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -19,7 +19,6 @@
 ##      env_parameters:
 ##         export MARK_PREVIOUS_FIXED=false
 ##         export CLEAN_START=false
-##         export working_dir=/var/lib/jenkins/code/monitorfile
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v2"
