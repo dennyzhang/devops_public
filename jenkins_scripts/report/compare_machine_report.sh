@@ -5,7 +5,7 @@
 ## Description :
 ## --
 ## Created : <2016-06-12>
-## Updated: Time-stamp: <2016-07-08 11:27:11>
+## Updated: Time-stamp: <2016-11-24 14:43:59>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -33,7 +33,7 @@ bash /var/lib/devops/refresh_common_library.sh "397508245" "/var/lib/devops/devo
 ################################################################################################
 source_string "$env_parameters"
 [ -n "$CHECK_SCENARIO" ] || CHECK_SCENARIO="all"
-[ -n "$OUTPUT_DIR" ] || OUTPUT_DIR="/root/version.d"
+[ -n "$OUTPUT_DIR" ] || OUTPUT_DIR="/tmp/version.d"
 [ -n "$TRANSFER_DST_PATH" ] || TRANSFER_DST_PATH="/var/lib/jenkins/jobs/$JOB_NAME/workspace"
 [ -n "$JENKINS_BASEURL" ] || JENKINS_BASEURL=$JENKINS_URL
 [ -n "$ssh_key_file" ] || ssh_key_file="/var/lib/jenkins/.ssh/id_rsa"
@@ -62,7 +62,7 @@ SSH_CONNECT2="ssh -i $ssh_key_file -p $server_port2 -o StrictHostKeyChecking=no 
 ################################################################################################
 
 # TODO: better way to update below script
-bash_sh="/root/list_os_packages.sh"
+bash_sh="/tmp/list_os_packages.sh"
 $SSH_CONNECT1 wget -O "$bash_sh" "${DOWNLOAD_PREFIX}/bash/list_os_packages/list_os_packages.sh" \
               1>/dev/null 2>&1
 
