@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-13>
-## Updated: Time-stamp: <2016-12-01 17:48:22>
+## Updated: Time-stamp: <2016-12-01 18:00:33>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -92,6 +92,13 @@ done
 IFS=$'\n'
 for server in ${server_list}; do
     unset IFS
+    server_split=(${server//:/ })
+    ssh_server_ip=${server_split[0]}
+    ssh_port=${server_split[1]}
+    ssh_username=${server_split[2]}
+    [ -n "$ssh_username" ] || ssh_username="root"
+
+    ssh_connect="ssh -i $ssh_key_file -p $ssh_port -o StrictHostKeyChecking=no $ssh_username@$ssh_server_ip"
     ssh_command="$ssh_connect rm -rf $tmp_file"
     eval "$ssh_command"
 done
