@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-13>
-## Updated: Time-stamp: <2016-12-01 17:28:30>
+## Updated: Time-stamp: <2016-12-01 17:48:22>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -86,6 +86,12 @@ for server in ${server_list}; do
     if ! eval "$ssh_command"; then
         failed_servers="${failed_servers} ${ssh_server_ip}:${ssh_port}"
     fi
+done
+
+# cleanup flagfiles
+IFS=$'\n'
+for server in ${server_list}; do
+    unset IFS
     ssh_command="$ssh_connect rm -rf $tmp_file"
     eval "$ssh_command"
 done
