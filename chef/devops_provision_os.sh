@@ -11,7 +11,7 @@
 #   bash -e /root/devops_provision_os.sh
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-07-30 15:05:03>
+## Updated: Time-stamp: <2016-12-01 11:15:42>
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v2"
@@ -25,6 +25,7 @@ bash /var/lib/devops/refresh_common_library.sh "1523631277" "/var/lib/devops/dev
 . /var/lib/devops/devops_common_library.sh
 ################################################################################################
 # TODO: better way to update this bash common library
+ssh_port=2702
 chef_version="12.4.1"
 ssh_email="auto.devops@totvs.com"
 ssh_public_key_file="/root/ssh_id_rsa.pub"
@@ -68,5 +69,15 @@ Host github.com
 EOF
 fi
 
-echo "Action Done"
+if [ ! -f /etc/ssh/sshd_config ]; then
+    echo "Install openssh-server"
+    apt-get install -y openssh-server
+fi
+
+if [ "$ssh_port" != "22" ]; then
+    echo "Change sshd port to $ssh_port"
+    sed -i "s/Port 22/Port $ssh_port/g" /etc/ssh/sshd_config
+fi
+
+echo "Action Done. Note: sshd listen on $ssh_port."
 ## File : devops_provision_os.sh ends
