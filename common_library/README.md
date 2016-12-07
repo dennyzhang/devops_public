@@ -1,3 +1,4 @@
+# Update cksum
 cd .
 
 library_sh="devops_common_library.sh"
@@ -13,3 +14,7 @@ for f in *_helper.sh; do
 done
 
 cksum *.sh > cksum.txt
+
+# Copy cksum.txt to devops_common_library.sh
+
+# Get devops_common_library.sh cksum, then update existing scripts

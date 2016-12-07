@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-07-08 11:28:25>
+## Updated: Time-stamp: <2016-12-07 21:14:14>
 ##-------------------------------------------------------------------
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v2"
@@ -22,7 +22,7 @@ if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
 fi
 
 library_list="
-1306610065 1841 devops_common_library.sh
+1550237670 1949 devops_common_library.sh
 4106968546 2330 docker_helper.sh
 2162795702 7197 general_helper.sh
 4132387734 3040 git_helper.sh
@@ -31,7 +31,7 @@ library_list="
 2008894083 3864 package_helper.sh
 1769136427 8849 paramater_helper.sh
 2232144565 1637 process_helper.sh
-2238344795 1776 refresh_common_library.sh
+3078361702 1778 refresh_common_library.sh
 220548547 2563 string_helper.sh
 "
 
