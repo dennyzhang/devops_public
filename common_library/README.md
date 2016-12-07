@@ -15,6 +15,4 @@ done
 
 cksum *.sh > cksum.txt
 
-# Copy cksum.txt to devops_common_library.sh
-
 # Get devops_common_library.sh cksum, then update existing scripts
