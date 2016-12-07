@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-10-20 16:58:04>
+## Updated: Time-stamp: <2016-12-07 21:09:56>
 ##-------------------------------------------------------------------
 function fail_unless_root() {
     # Make sure only root can run our script
@@ -164,6 +164,9 @@ function ip_ssh_reachable() {
     status=$($ssh_connect -p "$server_port" "$ssh_username@$server_ip" echo ok 2>&1)
     # opt out message like: bash: warning: setlocale: LC_ALL: cannot change locale
     status=$(echo -e "$status" | grep -v "cannot change locale")
+    # opt out message like: Warning: Permanently added '\''[172.17.0.3]:6022'\'' (ECDSA) to the list of known hosts.
+    status=$(echo -e "$status" | grep -v "Warning: Permanently added")
+
     # TODO: restore previous state, instead of set -e
     set -e
 
