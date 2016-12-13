@@ -16,13 +16,16 @@
 ##          2. Change firewall rules in existing node, to allow incoming traffic
 ## --
 ## Created : <2016-12-13>
-## Updated: Time-stamp: <2016-12-13 22:50:24>
+## Updated: Time-stamp: <2016-12-13 22:56:42>
 ##-------------------------------------------------------------------
-server_ip_new_node = ""
-server_list_existing = ""
+import os, sys
 
 ################################################################################
 ## TODO: remove to common library
+def check_variable_is_set(val, msg):
+    if val is None:
+        sys.exit("%s" % (msg))
+
 def remove_comment_in_str(string):
     l = []
     for line in string.split("\n"):
@@ -32,44 +35,29 @@ def remove_comment_in_str(string):
         l.append(line)
     return "\n".join(l)
 
+# TODO: better way to manage unit test code
 def test_remove_comment_in_str():
     string= '''## server_ip:ssh_port
 ## couchbase
-159.203.198.129:2702
-45.55.1.132:2702
-104.236.179.76:2702
 159.203.247.196:2702
 
 ## Elasticsearch
 159.203.216.25:2702
 107.170.212.76:2702
-192.241.211.99:2702
-159.203.219.53:2702
-159.203.211.150:2702
-159.203.192.146:2702
-107.170.237.239:2702
-192.241.203.166:2702
-198.199.95.111:2702
-
-## APP
-159.203.234.164:2702
-159.203.202.27:2702
-159.203.198.98:2702
-162.243.155.164:2702
-
-## LoadBlanacer
-159.203.198.171:2702
-159.203.202.250:2702
-
-## Nagios
-159.203.204.145:2702
 '''
     print remove_comment_in_str(string)
+
 ################################################################################
-
-def test():
- print "hello, world"
-
+# How To Test:
+# 		export server_ip="127.0.0.1"
+# 		export server_list="127.0.0.1"
+# 		python ./ufw_add_node_to_cluster.py 
 if __name__ == '__main__':
- test()
+    server_ip_new_node = os.environ.get('server_ip')
+    check_variable_is_set(server_ip_new_node, "ERROR: server_ip is not configured")
+
+    server_list_existing = os.environ.get('server_list')
+    check_variable_is_set(server_list_existing, "ERROR: server_list is not configured")
+
+    server_list_existing = remove_comment_in_str(server_list_existing)
 ## File : ufw_add_node_to_cluster.py ends
