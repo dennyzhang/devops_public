@@ -8,15 +8,15 @@
 ## File : ufw_add_node_to_cluster.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
-##      Here we assume firewall should allow all traffic within the Intranet.
-##		Running a cluster of nodes in certain public cloud,
-##		like Linode, we don't have private subnet.
-##		Thus to add one node, we need:
-##			1. Properly configure firewall in the new node
-##			2. Change firewall rules in existing node, to allow incoming traffic
+## Here we assume firewall should allow all traffic within the Intranet.
+##      Running a cluster of nodes in certain public cloud,
+##      like Linode, we don't have private subnet.
+##      Thus to add one node, we need:
+##          1. Properly configure firewall in the new node
+##          2. Change firewall rules in existing node, to allow incoming traffic
 ## --
 ## Created : <2016-12-13>
-## Updated: Time-stamp: <2016-12-13 22:48:27>
+## Updated: Time-stamp: <2016-12-13 22:50:24>
 ##-------------------------------------------------------------------
 server_ip_new_node = ""
 server_list_existing = ""
@@ -31,9 +31,8 @@ def remove_comment_in_str(string):
             continue
         l.append(line)
     return "\n".join(l)
-################################################################################
 
-def test():
+def test_remove_comment_in_str():
     string= '''## server_ip:ssh_port
 ## couchbase
 159.203.198.129:2702
@@ -66,8 +65,11 @@ def test():
 159.203.204.145:2702
 '''
     print remove_comment_in_str(string)
-    print "hello, world"
+################################################################################
+
+def test():
+ print "hello, world"
 
 if __name__ == '__main__':
-    test()
+ test()
 ## File : ufw_add_node_to_cluster.py ends
