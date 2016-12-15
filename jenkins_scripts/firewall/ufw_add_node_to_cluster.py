@@ -16,7 +16,7 @@
 ##          2. Change firewall rules in existing node, to allow incoming traffic
 ## --
 ## Created : <2016-12-13>
-## Updated: Time-stamp: <2016-12-13 22:56:42>
+## Updated: Time-stamp: <2016-12-16 07:59:03>
 ##-------------------------------------------------------------------
 import os, sys
 
@@ -34,7 +34,25 @@ def remove_comment_in_str(string):
             continue
         l.append(line)
     return "\n".join(l)
+################################################################################
+def initialize_ufw_status(ssh_ip, ssh_username, ssh_key, ssh_port, allow_ports):
+    echo "TODO"
+    echo "Initialize ufw status"
+#       iptables-save > /home/denny/$(date +'%Y%m%d')_rules.v4
+#       iptables -F; iptables -X
+#       echo 'y' | ufw reset
+#       echo 'y' | ufw enable
+#       ufw default deny incoming
+#       ufw default deny forward
+#       ufw allow 2702/tcp
 
+def allow_src_ip(ssh_ip, ssh_username, ssh_key, ssh_port, src_ip):
+    # TODO
+    # ufw allow from 12.145.25.178
+    echo "TODO"
+
+################################################################################
+# Unit test case
 # TODO: better way to manage unit test code
 def test_remove_comment_in_str():
     string= '''## server_ip:ssh_port
@@ -51,7 +69,7 @@ def test_remove_comment_in_str():
 # How To Test:
 # 		export server_ip="127.0.0.1"
 # 		export server_list="127.0.0.1"
-# 		python ./ufw_add_node_to_cluster.py 
+# 		python ./ufw_add_node_to_cluster.py
 if __name__ == '__main__':
     server_ip_new_node = os.environ.get('server_ip')
     check_variable_is_set(server_ip_new_node, "ERROR: server_ip is not configured")
@@ -60,4 +78,19 @@ if __name__ == '__main__':
     check_variable_is_set(server_list_existing, "ERROR: server_list is not configured")
 
     server_list_existing = remove_comment_in_str(server_list_existing)
+
+    # TODO
+    ssh_ip = server_ip_new_node
+    ssh_username = "root"
+    ssh_key = "/var/lib/jenkins/.ssh"
+    ssh_port = "2702"
+    allow_ports = ["2702", "80", "443"]
+    echo "Update ufw rules in new server: %s" % (ssh_ip)
+    initialize_ufw_status(ssh_ip, ssh_username, ssh_key, ssh_port, allow_ports)
+    for src_ip_tmp in server_list_existing:
+        allow_src_ip(ssh_ip, ssh_username, ssh_key, ssh_port, src_ip_tmp)
+
+    for ssh_ip_tmp in server_list_existing:
+        echo "Update ufw rules in existing servers: %s" % (ssh_ip_tmp)
+        allow_src_ip(ssh_ip_tmp, ssh_username, ssh_key, ssh_port, ssh_ip)
 ## File : ufw_add_node_to_cluster.py ends
