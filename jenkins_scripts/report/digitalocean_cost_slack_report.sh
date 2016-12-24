@@ -5,7 +5,7 @@
 ## Description :
 ## --
 ## Created : <2016-12-24>
-## Updated: Time-stamp: <2016-12-24 19:57:10>
+## Updated: Time-stamp: <2016-12-24 20:10:58>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -30,7 +30,7 @@ bash /var/lib/devops/refresh_common_library.sh "1431551582" "/var/lib/devops/dev
 ################################################################################################
 function shell_exit() {
     errcode=$?
-    rm -rf $tmp_fname
+    rm -rf "$tmp_fname"
     exit $errcode
 }
 
@@ -56,5 +56,5 @@ curl -sXGET "https://api.digitalocean.com/v2/droplets?page=1&per_page=$MAX_DROPL
                   for d in data["droplets"]])'| column -t > $tmp_fname
 
 echo "Send Slack messages"
-curl -F file=@$tmp_fname -F initial_comment="Cost Breakdown For All Running Droplets" -F channels=#$SLACK_CHANNEL -F token=$SLACK_TOKEN https://slack.com/api/files.upload
+curl -F file=@$tmp_fname -F initial_comment="Cost Breakdown For All Running Droplets" -F channels="#$SLACK_CHANNEL" -F token="$SLACK_TOKEN" https://slack.com/api/files.upload
 ## File : digitalocean_cost_slack_report.sh ends
