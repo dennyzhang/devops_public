@@ -5,7 +5,7 @@
 ## Description :
 ## --
 ## Created : <2016-12-24>
-## Updated: Time-stamp: <2016-12-24 20:10:58>
+## Updated: Time-stamp: <2016-12-24 20:15:44>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -50,9 +50,9 @@ echo "List All Droplets Of DigitalOcean"
 curl -sXGET "https://api.digitalocean.com/v2/droplets?page=1&per_page=$MAX_DROPLETS_COUNT" \
        -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
        -H "Content-Type: application/json" |\
-       python -c 'import sys,json;data=json.loads(sys.stdin.read());\
-                  print "ID\tName\tIP\tPrice\n";\
-                  print "\n".join(["%s\t%s\t%s\t$%s"%(d["id"],d["name"],d["networks"]["v4"][0]["ip_address"],d["size"]["price_monthly"])\
+       python -c 'import sys,json;data=json.loads(sys.stdin.read());
+                  print "ID\tName\tIP\tPrice\n";
+                  print "\n".join(["%s\t%s\t%s\t$%s"%(d["id"],d["name"],d["networks"]["v4"][0]["ip_address"],d["size"]["price_monthly"])
                   for d in data["droplets"]])'| column -t > $tmp_fname
 
 echo "Send Slack messages"
