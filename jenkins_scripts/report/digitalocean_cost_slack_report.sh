@@ -5,7 +5,7 @@
 ## Description :
 ## --
 ## Created : <2016-12-24>
-## Updated: Time-stamp: <2016-12-24 19:41:37>
+## Updated: Time-stamp: <2016-12-24 19:57:10>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -43,6 +43,8 @@ ensure_variable_isset "Error: SLACK_TOKEN can't be empty" "$SLACK_TOKEN"
 ensure_variable_isset "Error: SLACK_CHANNEL can't be empty" "$SLACK_CHANNEL"
 
 tmp_fname="/tmp/Digitalocean_Cost_For_All_Droplets.txt"
+
+which column 1>/dev/null || apt-get install -y bsdmainutils 1>/dev/null
 
 echo "List All Droplets Of DigitalOcean"
 curl -sXGET "https://api.digitalocean.com/v2/droplets?page=1&per_page=$MAX_DROPLETS_COUNT" \
