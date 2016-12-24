@@ -16,7 +16,7 @@
 ##          2. Change firewall rules in existing node, to allow incoming traffic
 ## --
 ## Created : <2016-12-13>
-## Updated: Time-stamp: <2016-12-16 07:59:03>
+## Updated: Time-stamp: <2016-12-20 23:13:38>
 ##-------------------------------------------------------------------
 import os, sys
 
@@ -34,11 +34,12 @@ def remove_comment_in_str(string):
             continue
         l.append(line)
     return "\n".join(l)
+
 ################################################################################
 def initialize_ufw_status(ssh_ip, ssh_username, ssh_key, ssh_port, allow_ports):
     echo "TODO"
     echo "Initialize ufw status"
-#       iptables-save > /home/denny/$(date +'%Y%m%d')_rules.v4
+#       iptables-save > /root/$(date +'%Y%m%d_%H%M%S')_rules.v4
 #       iptables -F; iptables -X
 #       echo 'y' | ufw reset
 #       echo 'y' | ufw enable
@@ -87,9 +88,11 @@ if __name__ == '__main__':
     allow_ports = ["2702", "80", "443"]
     echo "Update ufw rules in new server: %s" % (ssh_ip)
     initialize_ufw_status(ssh_ip, ssh_username, ssh_key, ssh_port, allow_ports)
+    # TODO: performance improvement: change to a parallel way
     for src_ip_tmp in server_list_existing:
         allow_src_ip(ssh_ip, ssh_username, ssh_key, ssh_port, src_ip_tmp)
 
+    # TODO: performance improvement: change to a parallel way
     for ssh_ip_tmp in server_list_existing:
         echo "Update ufw rules in existing servers: %s" % (ssh_ip_tmp)
         allow_src_ip(ssh_ip_tmp, ssh_username, ssh_key, ssh_port, ssh_ip)
