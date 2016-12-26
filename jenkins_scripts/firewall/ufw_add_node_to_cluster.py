@@ -16,12 +16,12 @@
 ##          2. Change firewall rules in existing node, to allow incoming traffic
 ## --
 ## Created : <2016-12-13>
-## Updated: Time-stamp: <2016-12-20 23:13:38>
+## Updated: Time-stamp: <2016-12-26 12:02:24>
 ##-------------------------------------------------------------------
 import os, sys
 
 ################################################################################
-## TODO: remove to common library
+## TODO: move to common library
 def check_variable_is_set(val, msg):
     if val is None:
         sys.exit("%s" % (msg))
@@ -34,6 +34,9 @@ def remove_comment_in_str(string):
             continue
         l.append(line)
     return "\n".join(l)
+
+def generate_ansible_host(string, fname):
+    return
 
 ################################################################################
 def initialize_ufw_status(ssh_ip, ssh_username, ssh_key, ssh_port, allow_ports):
