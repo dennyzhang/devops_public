@@ -41,8 +41,9 @@ def remove_comment_in_str(string):
 
 ################################################################################
 def generate_ansible_host(string, fname):
-    # TODO
-    return
+    with open(fname,'wab') as f:
+        for row in string.split("\n"):
+            f.write(row)
 
 def initialize_ufw_status(ssh_ip, ssh_username, ssh_key, ssh_port, allow_ports):
     print "TODO"
@@ -64,20 +65,24 @@ def disallow_src_ip(ssh_ip, ssh_username, ssh_key, ssh_port, src_ip):
 # 		python ./ufw_add_or_remove.py add
 # 		python ./ufw_add_or_remove.py remove
 if __name__ == '__main__':
-    server_ip_new_node = os.environ.get('server_ip')
+    server_ip = os.environ.get('server_ip')
     check_variable_is_set(server_ip_new_node, "ERROR: server_ip is not configured")
 
     server_list_existing = os.environ.get('server_list')
     check_variable_is_set(server_list_existing, "ERROR: server_list is not configured")
 
-    # TODO:
+    # TODO: get action from user input
     action="remove"
-    server_list_existing = remove_comment_in_str(server_list_existing)
+    ansible_hosts_fname="/tmp/ansible_host"
 
-    # TODO
+    server_list_existing = remove_comment_in_str(server_list_existing)
+    generate_ansible_host(server_list_existing, ansible_hosts_fname)
+
+    # TODO: specify ssh private key file
+    ssh_key = "/var/lib/jenkins/.ssh"
+
     ssh_ip = server_ip_new_node
     ssh_username = "root"
-    ssh_key = "/var/lib/jenkins/.ssh"
     ssh_port = "2702"
     allow_ports = ["2702", "80", "443"]
 
