@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-12-31>
-## Updated: Time-stamp: <2016-12-31 10:38:01>
+## Updated: Time-stamp: <2016-12-31 11:16:24>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -158,7 +158,7 @@ else
             command="git diff $old_sha $new_sha $file | grep -iE '^- |^\+ '"
             output=$(eval "$command")
             for pattern in ${monitor_pattern_list[*]}; do
-                echo "echo $output | grep $pattern" # TODO
+                # echo "echo $output | grep $pattern" # TODO
                 if echo "$output" | grep "$pattern" 1>/dev/null 2>&1; then
                     echo -e "========== ERROR subscribed changes detected: $file"
                     subscribed_change_detected=true
