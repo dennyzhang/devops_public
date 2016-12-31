@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-08-05>
-## Updated: Time-stamp: <2016-07-08 11:27:11>
+## Updated: Time-stamp: <2016-12-31 10:36:06>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -59,7 +59,7 @@ function detect_changed_file() {
     echo -e "${file_list}\n"
     IFS=$'\n'
     for file in ${file_list[*]}; do
-      if echo -e "$files_to_monitor" | grep "$file" 1>/dev/null 2>1; then
+      if echo -e "$files_to_monitor" | grep "$file" 1>/dev/null 2>&1; then
          changed_file_list="$changed_file_list $file"
       fi
     done

@@ -8,8 +8,8 @@
 ## Author : DennyZhang.com <denny@dennyzhang.com>
 ## Description :
 ## --
-## Created : <2015-08-05>
-## Updated: Time-stamp: <2016-12-31 10:30:35>
+## Created : <2016-12-31>
+## Updated: Time-stamp: <2016-12-31 10:38:01>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -20,7 +20,7 @@
 ##          audit/src/main/resources/XXX.properties
 ##          gateway/protection/src/main/resources/config/XXX.json
 ##          gateway/protection/src/main/resources/config/routes/XXX.json
-##      monitor_pattern:
+##      monitor_pattern_list:
 ##          <version>
 ##      branch_name: dev
 ##      env_parameters:
@@ -61,7 +61,7 @@ function detect_changed_file() {
     echo -e "${file_list}\n"
     IFS=$'\n'
     for file in ${file_list[*]}; do
-      if echo -e "$files_to_monitor" | grep "$file" 1>/dev/null 2>1; then
+      if echo -e "$files_to_monitor" | grep "$file" 1>/dev/null 2>&1; then
          changed_file_list="$changed_file_list $file"
       fi
     done
@@ -111,6 +111,7 @@ git_repo=$(parse_git_repo "$git_repo_url")
 code_dir=$working_dir/$branch_name/$git_repo
 
 filelist_to_monitor=$(string_strip_comments "$filelist_to_monitor")
+monitor_pattern_list=$(string_strip_comments "$monitor_pattern_list")
 if [ -n "$MARK_PREVIOUS_FIXED" ] && $MARK_PREVIOUS_FIXED; then
     rm -rf "$flag_file"
 fi
@@ -144,6 +145,7 @@ changed_file_list=""
 cd "$code_dir"
 new_sha=$(current_git_sha "$code_dir")
 
+subscribed_change_detected=false
 if [ -z "$old_sha" ] || [ "$old_sha" = "$new_sha" ]; then
     echo -e "\n\n========== Latest git sha is $old_sha. No commits since last git pull\n\n"
 else
@@ -153,11 +155,19 @@ else
         echo -e "\n\n========== $(git_http_compare_link "$git_repo_url" "$old_sha" "$new_sha")\n"
         for file in $changed_file_list; do
             git config --global core.pager ""
-            command="git diff $old_sha $new_sha $file"
-            echo -e "========== ERROR file changed: $file. Run: $command"
-            eval "$command"
+            command="git diff $old_sha $new_sha $file | grep -iE '^- |^\+ '"
+            output=$(eval "$command")
+            for pattern in ${monitor_pattern_list[*]}; do
+                echo "echo $output | grep $pattern" # TODO
+                if echo "$output" | grep "$pattern" 1>/dev/null 2>&1; then
+                    echo -e "========== ERROR subscribed changes detected: $file"
+                    subscribed_change_detected=true
+                fi
+            done
         done
-        exit 1
+        if $subscribed_change_detected; then
+            exit 1
+        fi
     fi
 fi
 ## File : monitor_git_contentchanges.sh ends
