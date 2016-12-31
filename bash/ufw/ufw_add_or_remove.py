@@ -23,7 +23,8 @@
 ## Updated: Time-stamp: <2016-12-26 12:09:01>
 ##-------------------------------------------------------------------
 import os, sys
-
+import argparse
+import subprocess
 ################################################################################
 ## TODO: move to common library
 def check_variable_is_set(val, msg):
@@ -43,57 +44,131 @@ def remove_comment_in_str(string):
 def generate_ansible_host(string, fname):
     with open(fname,'wab') as f:
         for row in string.split("\n"):
-            f.write(row)
+            f.write("%s\n" % row)
 
-def initialize_ufw_status(ssh_ip, ssh_username, ssh_key, ssh_port, allow_ports):
-    print "TODO"
-    print "Initialize ufw status"
-    # ansible all -m script -a "/root/ufw_add_node_to_cluster.sh" -k
+def initialize_ufw_status(ssh_ip, ssh_username, ssh_key, ssh_port, \
+                          allow_ip_list, allow_port_list):
+    # Sample: ansible all -m script -a \
+        # "/root/ufw_add_node_to_cluster.sh 192.168.0.2,192.168.0.3 2702,80,443"
+
+    # TODO: use a temporary host file
+    tmp_host_fname = '/tmp/hosts_initialize'
+    generate_ansible_host("\n".join(allow_ip_list), tmp_host_fname)
+
+    command = "ansible all -i %s -m script -a '/root/ufw_add_node_to_cluster.sh' %s %s" % \
+              (tmp_host_fname, ",".join(allow_ip_list), ",".join(allow_port_list))
+    print "Initialize ufw status, command: %s" % (command) # TODO
+    # TODO: quit, if the command fails
+    p = subprocess.Popen(command, shell=True, stderr=subprocess.PIPE)
+    while True:
+        out = p.stderr.read(1)
+        if out == '' and p.poll() != None:
+            break
+        if out != '':
+            sys.stdout.write(out)
+            sys.stdout.flush()
+    # TODO: get status and remove file
 
 def allow_src_ip(ssh_ip, ssh_username, ssh_key, ssh_port, src_ip):
-    print "TODO"
-    # ansible all -m command -a "ufw allow from 12.145.25.178"
+    # ansible all -m command -a "ufw allow from 192.168.0.3"
+    # TODO: use a temporary host file
+    tmp_host_fname = '/tmp/hosts_allow_ip'
+    generate_ansible_host(src_ip, tmp_host_fname)
+
+    command = "ansible all -i %s -m command -a 'ufw allow from %s'" \
+              % (tmp_host_fname, src_ip)
+    print "allow_src_ip. ssh_ip: %s, command: %s" % (ssh_ip, command)
+    # TODO: quit, if the command fails
+    p = subprocess.Popen(command, shell=True, stderr=subprocess.PIPE)
+    while True:
+        out = p.stderr.read(1)
+        if out == '' and p.poll() != None:
+            break
+        if out != '':
+            sys.stdout.write(out)
+            sys.stdout.flush()
+    # TODO: get status and remove file
 
 def disallow_src_ip(ssh_ip, ssh_username, ssh_key, ssh_port, src_ip):
-    print "TODO"
-    # ansible all -m command -a "ufw delete allow from 12.145.25.178"
+    # ansible all -m command -a "ufw delete allow from 192.168.0.3"
+    command = "ansible all -m command -a 'ufw delete allow from %s'" % (src_ip)
+    print "disallow_src_ip. ssh_ip: %s, command: %s" % (ssh_ip, command)
+    # TODO: quit, if the command fails
+    p = subprocess.Popen(command, shell=True, stderr=subprocess.PIPE)
+    while True:
+        out = p.stderr.read(1)
+        if out == '' and p.poll() != None:
+            break
+        if out != '':
+            sys.stdout.write(out)
+            sys.stdout.flush()
+    # TODO: get status and remove file
 
 ################################################################################
 # How To Test:
 # 		export server_ip="192.168.0.5"
 # 		export server_list="192.168.0.2 192.168.0.3 192.168.0.4"
-# 		python ./ufw_add_or_remove.py add
-# 		python ./ufw_add_or_remove.py remove
+# 		python ./ufw_add_or_remove.py --action add
+# 		python ./ufw_add_or_remove.py --action remove
+
+# Install dependency packages
+# http://docs.ansible.com/ansible/intro_configuration.html
+# https://serversforhackers.com/running-ansible-programmatically
+#       apt-get install -y python-pip
+#       pip install ansible
+# ANSIBLE_CONFIG: ~/.ansible.cfg
+##################################################
+#       [defaults]
+#       log_path = /var/log/ansible.log
+#       callback_plugins = /path/to/our/ansible/plugins/callback_plugins:~/.ansible/plugins/callback_plugins/:/usr/share/ansible_plugins/callback_plugins
+#
+#       [ssh_connection]
+#       ssh_args = -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -o ControlMaster=auto -o ControlPersist=60s
+#       control_path = ~/.ansible/cp/ansible-ssh-%%h-%%p-%%r
+##################################################
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--action', default='',
+                        required=True, help="Supported action: add or remove", type=str)
+    l = parser.parse_args()
+    if l.action not in ['add', 'remove']:
+        print "Error: supported action is either add or remove"
+        sys.exit(1)
+
+    script_fname="/root/ufw_add_node_to_cluster.sh"
+    # TODO: specify ssh private key file
+    ssh_key = "/var/lib/jenkins/.ssh"
+    ssh_username = "root"
+    ssh_port = "2702"
+
     server_ip = os.environ.get('server_ip')
-    check_variable_is_set(server_ip_new_node, "ERROR: server_ip is not configured")
+    check_variable_is_set(server_ip, "ERROR: server_ip is not configured")
 
     server_list_existing = os.environ.get('server_list')
     check_variable_is_set(server_list_existing, "ERROR: server_list is not configured")
 
-    # TODO: get action from user input
-    action="remove"
-    ansible_hosts_fname="/tmp/ansible_host"
-
+    server_list_existing = server_list_existing.replace(" ", "\n")
     server_list_existing = remove_comment_in_str(server_list_existing)
-    generate_ansible_host(server_list_existing, ansible_hosts_fname)
 
-    # TODO: specify ssh private key file
-    ssh_key = "/var/lib/jenkins/.ssh"
+    ssh_ip = server_ip
 
-    ssh_ip = server_ip_new_node
-    ssh_username = "root"
-    ssh_port = "2702"
-    allow_ports = ["2702", "80", "443"]
+    # TODO: get action from user input
+    if l.action == "add":
+        allow_port_list = ["2702", "80", "443", "22"]
+        print "Update ufw rules in new server: %s" % (ssh_ip)
+        initialize_ufw_status(ssh_ip, ssh_username, ssh_key, ssh_port, \
+                              server_list_existing.split("\n"), allow_port_list)
 
-    print "Update ufw rules in new server: %s" % (ssh_ip)
-    initialize_ufw_status(ssh_ip, ssh_username, ssh_key, ssh_port, allow_ports)
-    # TODO: performance improvement: change to a parallel way
-    for src_ip_tmp in server_list_existing:
-        allow_src_ip(ssh_ip, ssh_username, ssh_key, ssh_port, src_ip_tmp)
+        for src_ip_tmp in server_list_existing.split("\n"):
+            allow_src_ip(ssh_ip, ssh_username, ssh_key, ssh_port, src_ip_tmp)
 
-    # TODO: performance improvement: change to a parallel way
-    for ssh_ip_tmp in server_list_existing:
-        print "Update ufw rules in existing servers: %s" % (ssh_ip_tmp)
-        allow_src_ip(ssh_ip_tmp, ssh_username, ssh_key, ssh_port, ssh_ip)
+        print "Update ufw rules in existing servers"
+        # TODO: use ansible python module to spped up the logic
+        for ssh_ip_tmp in server_list_existing.split("\n"):
+            allow_src_ip(ssh_ip_tmp, ssh_username, ssh_key, ssh_port, ssh_ip)
+
+    if l.action == "remove":
+        # TODO: use ansible python module to spped up the logic
+        for ssh_ip_tmp in server_list_existing.split("\n"):
+            disallow_src_ip(ssh_ip_tmp, ssh_username, ssh_key, ssh_port, ssh_ip)
 ## File : ufw_add_or_remove.py ends
