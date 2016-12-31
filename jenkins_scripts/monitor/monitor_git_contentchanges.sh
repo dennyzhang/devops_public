@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-12-31>
-## Updated: Time-stamp: <2016-12-31 11:35:16>
+## Updated: Time-stamp: <2016-12-31 11:52:48>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -159,7 +159,7 @@ else
             output=$(eval "$command")
             for pattern in ${monitor_pattern_list[*]}; do
                 if echo "$output" | grep "$pattern" 1>/dev/null 2>&1; then
-                    echo -e "========== ERROR subscribed changes detected: $file"
+                    echo -e "========== ERROR subscribed changes detected.\nChanged file($file)"
                     subscribed_change_detected=true
                 fi
             done
