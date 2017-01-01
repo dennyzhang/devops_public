@@ -5,7 +5,7 @@
 ## Description :
 ## --
 ## Created : <2016-12-24>
-## Updated: Time-stamp: <2017-01-01 08:38:31>
+## Updated: Time-stamp: <2017-01-01 08:49:57>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -14,6 +14,7 @@
 ## env variables:
 ##      env_parameters:
 ##          export CLOUD_TOKEN="YOUR_CLOUD_TOKEN"
+##          export CLOUD_TYPE="YOUR_CLOUD_TYPE"
 ##          export SLACK_TOKEN="YOUR_SLACK_TOKEN"
 ##          export SLACK_CHANNEL="YOUR_SLACK_CHANNEL"
 ################################################################################################
@@ -36,26 +37,38 @@ function shell_exit() {
 
 trap shell_exit SIGHUP SIGINT SIGTERM 0
 
+function list_vm_digitalocean() {
+    tmp_fname=${1?}
+    curl -sXGET "https://api.digitalocean.com/v2/droplets?page=1&per_page=$MAX_DROPLETS_COUNT" \
+         -H "Authorization: Bearer $CLOUD_TOKEN" \
+         -H "Content-Type: application/json" |\
+        python -c 'import sys,json;data=json.loads(sys.stdin.read());
+print "ID\tName\tIP\tPrice\n";
+print "\n".join(["%s\t%s\t%s\t$%s"%(d["id"],d["name"],d["networks"]["v4"][0]["ip_address"],d["size"]["price_monthly"])
+for d in data["droplets"]])'| column -t > $tmp_fname
+}
+
 source_string "$env_parameters"
 [ -n "$MAX_DROPLETS_COUNT" ] || MAX_DROPLETS_COUNT=500
+
+ensure_variable_isset "Error: CLOUD_TYPE can't be empty" "$CLOUD_TYPE"
 ensure_variable_isset "Error: CLOUD_TOKEN can't be empty" "$CLOUD_TOKEN"
 ensure_variable_isset "Error: SLACK_TOKEN can't be empty" "$SLACK_TOKEN"
 ensure_variable_isset "Error: SLACK_CHANNEL can't be empty" "$SLACK_CHANNEL"
 
-tmp_fname="/tmp/Digitalocean_Cost_For_All_Droplets.txt"
+tmp_fname="/tmp/${CLOUD_TYPE}_Cost_For_All_Droplets.txt"
 
 which column 1>/dev/null || apt-get install -y bsdmainutils 1>/dev/null
 
-echo "List All Droplets Of DigitalOcean"
-curl -sXGET "https://api.digitalocean.com/v2/droplets?page=1&per_page=$MAX_DROPLETS_COUNT" \
-       -H "Authorization: Bearer $CLOUD_TOKEN" \
-       -H "Content-Type: application/json" |\
-       python -c 'import sys,json;data=json.loads(sys.stdin.read());
-print "ID\tName\tIP\tPrice\n";
-print "\n".join(["%s\t%s\t%s\t$%s"%(d["id"],d["name"],d["networks"]["v4"][0]["ip_address"],d["size"]["price_monthly"])
-for d in data["droplets"]])'| column -t > $tmp_fname
-
+echo "List All Droplets Of ${CLOUD_TYPE}"
+case "$CLOUD_TYPE" in
+    DIGITALOCEAN) list_vm_digitalocean "$tmp_fname"
+                  ;;
+    LINODE) list_vm_linode "$tmp_fname"
+            ;;
+    *) echo "ERROR: unsupported cloud_type: $CLOUD_TYPE"
+esac
+     
 echo "Send Slack messages"
 curl -F file=@$tmp_fname -F initial_comment="Cost Breakdown For All Running Droplets" -F channels="#$SLACK_CHANNEL" -F token="$SLACK_TOKEN" https://slack.com/api/files.upload
-
 ## File : cloud_cost_slack_report.sh ends
