@@ -1,11 +1,11 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
-## File : digitalocean_cost_slack_report.sh
+## File : cloud_cost_slack_report.sh
 ## Author : DennyZhang.com <denny@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-12-24>
-## Updated: Time-stamp: <2016-12-24 20:18:44>
+## Updated: Time-stamp: <2017-01-01 08:38:31>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -13,7 +13,7 @@
 ##
 ## env variables:
 ##      env_parameters:
-##          export DIGITALOCEAN_TOKEN="YOUR_DIGITALOCEAN_TOKEN"
+##          export CLOUD_TOKEN="YOUR_CLOUD_TOKEN"
 ##          export SLACK_TOKEN="YOUR_SLACK_TOKEN"
 ##          export SLACK_CHANNEL="YOUR_SLACK_CHANNEL"
 ################################################################################################
@@ -38,7 +38,7 @@ trap shell_exit SIGHUP SIGINT SIGTERM 0
 
 source_string "$env_parameters"
 [ -n "$MAX_DROPLETS_COUNT" ] || MAX_DROPLETS_COUNT=500
-ensure_variable_isset "Error: DIGITALOCEAN_TOKEN can't be empty" "$DIGITALOCEAN_TOKEN"
+ensure_variable_isset "Error: CLOUD_TOKEN can't be empty" "$CLOUD_TOKEN"
 ensure_variable_isset "Error: SLACK_TOKEN can't be empty" "$SLACK_TOKEN"
 ensure_variable_isset "Error: SLACK_CHANNEL can't be empty" "$SLACK_CHANNEL"
 
@@ -48,7 +48,7 @@ which column 1>/dev/null || apt-get install -y bsdmainutils 1>/dev/null
 
 echo "List All Droplets Of DigitalOcean"
 curl -sXGET "https://api.digitalocean.com/v2/droplets?page=1&per_page=$MAX_DROPLETS_COUNT" \
-       -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
+       -H "Authorization: Bearer $CLOUD_TOKEN" \
        -H "Content-Type: application/json" |\
        python -c 'import sys,json;data=json.loads(sys.stdin.read());
 print "ID\tName\tIP\tPrice\n";
@@ -57,4 +57,5 @@ for d in data["droplets"]])'| column -t > $tmp_fname
 
 echo "Send Slack messages"
 curl -F file=@$tmp_fname -F initial_comment="Cost Breakdown For All Running Droplets" -F channels="#$SLACK_CHANNEL" -F token="$SLACK_TOKEN" https://slack.com/api/files.upload
-## File : digitalocean_cost_slack_report.sh ends
+
+## File : cloud_cost_slack_report.sh ends
