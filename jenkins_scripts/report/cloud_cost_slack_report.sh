@@ -5,7 +5,7 @@
 ## Description :
 ## --
 ## Created : <2016-12-24>
-## Updated: Time-stamp: <2017-01-01 08:49:57>
+## Updated: Time-stamp: <2017-01-01 09:07:41>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -13,7 +13,7 @@
 ##
 ## env variables:
 ##      env_parameters:
-##          export CLOUD_TOKEN="YOUR_CLOUD_TOKEN"
+##          export CLOUD_TOKEN="YOUR_CLOUD_TOKEN" # supported: DIGITALOCEAN, LINODE
 ##          export CLOUD_TYPE="YOUR_CLOUD_TYPE"
 ##          export SLACK_TOKEN="YOUR_SLACK_TOKEN"
 ##          export SLACK_CHANNEL="YOUR_SLACK_CHANNEL"
@@ -45,12 +45,22 @@ function list_vm_digitalocean() {
         python -c 'import sys,json;data=json.loads(sys.stdin.read());
 print "ID\tName\tIP\tPrice\n";
 print "\n".join(["%s\t%s\t%s\t$%s"%(d["id"],d["name"],d["networks"]["v4"][0]["ip_address"],d["size"]["price_monthly"])
-for d in data["droplets"]])'| column -t > $tmp_fname
+for d in data["droplets"]])'| column -t > "$tmp_fname"
+}
+
+function list_vm_linode() {
+    tmp_fname=${1?}
+curl -X GET "https://api.linode.com/?api_key=$CLOUD_TOKEN&api_action=linode.list" | \
+python -c 'import sys,json;data=json.loads(sys.stdin.read());
+print "LINODEID\tLABEL\tPLANID\n";
+print "\n".join(["%s\t%s\t%s"%(d["LINODEID"],d["LABEL"],d["PLANID"])
+for d in data["DATA"]])'| column -t > "$tmp_fname"
 }
 
 source_string "$env_parameters"
 [ -n "$MAX_DROPLETS_COUNT" ] || MAX_DROPLETS_COUNT=500
 
+# INPUT PARAMETERS CHECK
 ensure_variable_isset "Error: CLOUD_TYPE can't be empty" "$CLOUD_TYPE"
 ensure_variable_isset "Error: CLOUD_TOKEN can't be empty" "$CLOUD_TOKEN"
 ensure_variable_isset "Error: SLACK_TOKEN can't be empty" "$SLACK_TOKEN"
@@ -70,5 +80,5 @@ case "$CLOUD_TYPE" in
 esac
      
 echo "Send Slack messages"
-curl -F file=@$tmp_fname -F initial_comment="Cost Breakdown For All Running Droplets" -F channels="#$SLACK_CHANNEL" -F token="$SLACK_TOKEN" https://slack.com/api/files.upload
+curl -F "file=@$tmp_fname" -F initial_comment="Cost Breakdown For All Running Droplets" -F channels="#$SLACK_CHANNEL" -F token="$SLACK_TOKEN" "https://slack.com/api/files.upload"
 ## File : cloud_cost_slack_report.sh ends
