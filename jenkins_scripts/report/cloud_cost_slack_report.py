@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-01-01>
-## Updated: Time-stamp: <2017-01-02 14:11:17>
+## Updated: Time-stamp: <2017-01-02 14:16:39>
 ##-------------------------------------------------------------------
 import os, sys, json
 import requests
@@ -77,9 +77,9 @@ def digitalocean_list_vm(cloud_token):
         print "Error to call rest api. response: %s" % (r.text)
         sys.exit(1)
     response_json = r.json()
+    vm_list = []
     vm_list.append("{0:16} {1:20} {2:20} {3:10}".\
                     format('ID', 'Name', 'IP', 'Price'))
-    vm_list = []
     for d in response_json['droplets']:
         vm_list.append("{0:16} {1:20} {2:20} {3:10}".\
                        format(str(d["id"]),d["name"], d["networks"]["v4"][0]["ip_address"], \
