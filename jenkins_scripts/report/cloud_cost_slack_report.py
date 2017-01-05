@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-01-01>
-## Updated: Time-stamp: <2017-01-04 23:19:24>
+## Updated: Time-stamp: <2017-01-05 00:55:26>
 ##-------------------------------------------------------------------
 import os, sys, json
 import requests
@@ -65,7 +65,7 @@ def linode_list_vm(cloud_token):
     # sort by label
     tmp_list = sorted(tmp_list, key=lambda x: x[1])
     # generate output
-    vm_list.append("Estimated total weekly cost: %s" % (str(total_price)))
+    vm_list.append("Estimated total monthly cost: %s" % (str(total_price)))
     vm_list.append("{0:16} {1:25} {2:20} {3:10}".\
                    format('LINODEID', 'LABEL', 'IPADDRESS', 'Price'))
 
@@ -96,7 +96,7 @@ def digitalocean_list_vm(cloud_token):
     # sort by hostname
     tmp_list = sorted(tmp_list, key=lambda x: x[1])
     # generate output
-    vm_list.append("Estimated total weekly cost: %s" % (str(total_price)))
+    vm_list.append("Estimated total monthly cost: %s" % (str(total_price)))
     vm_list.append("{0:16} {1:20} {2:20} {3:10}".\
                    format('ID', 'Name', 'IP', 'Price'))
 
