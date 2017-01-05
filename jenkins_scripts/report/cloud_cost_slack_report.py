@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-01-01>
-## Updated: Time-stamp: <2017-01-02 14:16:39>
+## Updated: Time-stamp: <2017-01-04 23:19:24>
 ##-------------------------------------------------------------------
 import os, sys, json
 import requests
@@ -56,13 +56,22 @@ def linode_list_vm(cloud_token):
         sys.exit(1)
     response_json = r.json()
     vm_list = []
-    vm_list.append("{0:16} {1:25} {2:20} {3:10}".\
-                    format('LINODEID', 'LABEL', 'IPADDRESS', 'Price'))
+    tmp_list = []
+    total_price = 0
     for d in response_json['DATA']:
-        vm_list.append("{0:16} {1:25} {2:20} {3:10}".\
-                       format(str(d["LINODEID"]), d["LABEL"], \
-                              ip_map[str(d["LINODEID"])], str(price_map[str(d["PLANID"])])))
+        total_price += float(price_map[str(d["PLANID"])])
+        tmp_list.append([str(d["LINODEID"]), d["LABEL"], \
+                              ip_map[str(d["LINODEID"])], str(price_map[str(d["PLANID"])])])
+    # sort by label
+    tmp_list = sorted(tmp_list, key=lambda x: x[1])
+    # generate output
+    vm_list.append("Estimated total weekly cost: %s" % (str(total_price)))
+    vm_list.append("{0:16} {1:25} {2:20} {3:10}".\
+                   format('LINODEID', 'LABEL', 'IPADDRESS', 'Price'))
 
+    for d in tmp_list:
+        vm_list.append("{0:16} {1:25} {2:20} {3:10}".\
+                       format(d[0], d[1], d[2], d[3]))
     return vm_list
 ################################################################################
 
@@ -78,12 +87,22 @@ def digitalocean_list_vm(cloud_token):
         sys.exit(1)
     response_json = r.json()
     vm_list = []
-    vm_list.append("{0:16} {1:20} {2:20} {3:10}".\
-                    format('ID', 'Name', 'IP', 'Price'))
+    tmp_list = []
+    total_price = 0
     for d in response_json['droplets']:
+        total_price += float(d["size"]["price_monthly"])
+        tmp_list.append([str(d["id"]), d["name"], d["networks"]["v4"][0]["ip_address"], \
+                         str(d["size"]["price_monthly"])])
+    # sort by hostname
+    tmp_list = sorted(tmp_list, key=lambda x: x[1])
+    # generate output
+    vm_list.append("Estimated total weekly cost: %s" % (str(total_price)))
+    vm_list.append("{0:16} {1:20} {2:20} {3:10}".\
+                   format('ID', 'Name', 'IP', 'Price'))
+
+    for d in tmp_list:
         vm_list.append("{0:16} {1:20} {2:20} {3:10}".\
-                       format(str(d["id"]),d["name"], d["networks"]["v4"][0]["ip_address"], \
-                              str(d["size"]["price_monthly"])))
+                       format(d[0], d[1], d[2], d[3]))
     return vm_list
 
 def generate_slack_message(vm_list, cloud_type, \
