@@ -6,7 +6,7 @@
 ## --
 ##
 ## Created : <2015-02-25>
-## Updated: Time-stamp: <2017-01-11 23:07:09>
+## Updated: Time-stamp: <2017-01-12 08:01:32>
 ##-------------------------------------------------------------------
 if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
     [ "$3" = "-c" ] && [ "$4" -gt "0" ]; then
@@ -30,7 +30,7 @@ if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
         exit 2
     fi
 
-    thread_count=$(sudo ls /proc/$pid/task | wc -l)
+    thread_count=$(sudo ls "/proc/$pid/task" | wc -l)
 
     if [ "$thread_count" -ge "$4" ]; then
         echo "CRITICAL: thread count of pid($pid) is $thread_count. It's more than $4|threadcount=$thread_count"
