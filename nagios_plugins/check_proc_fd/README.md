@@ -4,7 +4,7 @@ check_proc_fd
 - Link: http://www.dennyzhang.com/nagois_monitor_process_fd/
 - Code: https://github.com/DennyZhang/check_proc_fd
 
-Zabbix plugin to check proc fd: Monitor fd opened by a given process
+Nagios plugin to check proc fd: Monitor fd opened by a given process
 
 ```
 /sshx:denny@dennyzhang.com: #$ ./check_proc_fd.sh --help

@@ -4,7 +4,7 @@ check_proc_mem
 - Link: http://www.dennyzhang.com/nagois_monitor_process_memory/
 - Code: https://github.com/DennyZhang/check_proc_mem
 
-Zabbix plugin to check proc memory: Monitor resident memory for a given process
+Nagios plugin to check proc memory: Monitor resident memory for a given process
 
 ```
 /sshx:denny@dennyzhang.com: #$ ./check_proc_mem.sh --help

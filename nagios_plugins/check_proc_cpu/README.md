@@ -4,7 +4,7 @@ check_proc_cpu
 - Link: http://www.dennyzhang.com/nagois_monitor_process_cpu/
 - Code: https://github.com/DennyZhang/check_proc_cpu
 
-Zabbix plugin to check proc cpu usage.
+Nagios plugin to check proc cpu usage.
 
 ```
 /sshx:denny@dennyzhang.com: #$ ./check_proc_cpu.sh --help
