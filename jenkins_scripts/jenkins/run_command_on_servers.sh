@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-13>
-## Updated: Time-stamp: <2016-12-02 15:50:56>
+## Updated: Time-stamp: <2017-01-16 12:00:41>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -44,6 +44,15 @@ function shell_exit() {
     fi
     exit $errcode
 }
+
+function get_hostname_by_ssh() {
+    local ssh_connect=${1?}
+    ssh_command="$ssh_connect hostname"
+    hostname=$(eval "$ssh_command")
+    # TODO: improve error handling
+    echo "$hostname" | grep -v "Warning"
+}
+
 ################################################################################################
 trap shell_exit SIGHUP SIGINT SIGTERM 0
 source_string "$env_parameters"
@@ -80,9 +89,10 @@ for server in ${server_list}; do
     ssh_command="scp -P $ssh_port -i $ssh_key_file -o StrictHostKeyChecking=no $tmp_file $ssh_username@$ssh_server_ip:/$tmp_file"
     $ssh_command
 
+    hostname=$(get_hostname_by_ssh "$ssh_connect")
     ssh_connect="ssh -i $ssh_key_file -p $ssh_port -o StrictHostKeyChecking=no $ssh_username@$ssh_server_ip"
     ssh_command="$ssh_connect \"bash -ex $tmp_file\""
-    echo -e "\n=============== Run Command on $ssh_server_ip:$ssh_port"
+    echo -e "\n=============== Run Command on $ssh_server_ip:$ssh_port ($hostname)"
     if ! eval "$ssh_command"; then
         failed_servers="${failed_servers} ${ssh_server_ip}:${ssh_port}"
     fi
