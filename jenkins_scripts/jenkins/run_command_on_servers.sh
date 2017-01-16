@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-13>
-## Updated: Time-stamp: <2017-01-16 12:05:11>
+## Updated: Time-stamp: <2017-01-16 12:10:42>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -92,7 +92,7 @@ for server in ${server_list}; do
     hostname=$(get_hostname_by_ssh "$ssh_connect")
     ssh_connect="ssh -i $ssh_key_file -p $ssh_port -o StrictHostKeyChecking=no $ssh_username@$ssh_server_ip"
     ssh_command="$ssh_connect \"bash -ex $tmp_file\""
-    echo -e "\n=============== Run Command on $hostname: $ssh_server_ip:$ssh_port"
+    echo -e "\n=============== Run Command on $hostname($ssh_server_ip:$ssh_port)"
     if ! eval "$ssh_command"; then
         failed_servers="${failed_servers} ${ssh_server_ip}:${ssh_port}"
     fi
