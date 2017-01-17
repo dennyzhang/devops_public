@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-06-28 09:23:00>
+## Updated: Time-stamp: <2017-01-17 15:53:55>
 ##-------------------------------------------------------------------
 function log() {
     # log message to both stdout and logfile on condition
@@ -182,6 +182,7 @@ EOF
     # TODO: use chef-zero, instead of chef-solo
     # ssh_command="ssh $common_ssh_options -p $ssh_port root@$ssh_server_ip $CHEF_BINARY_CMD --config /root/client.rb -j /root/client.json --local-mode"
     ssh_command="ssh $common_ssh_options -p $ssh_port root@$ssh_server_ip $CHEF_BINARY_CMD --config /root/client.rb -j /root/client.json"
+    log "$ssh_command"
     $ssh_command
     log "Deploy $server end"
 }
