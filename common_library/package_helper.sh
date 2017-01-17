@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-07-01 08:50:13>
+## Updated: Time-stamp: <2017-01-17 15:22:53>
 ##-------------------------------------------------------------------
 function install_package() {
     local package=${1?}
@@ -67,7 +67,7 @@ function update_system() {
 function install_chef() {
     local chef_version=${1:-"12.4.1"}
     if ! which chef-client 1>/dev/null 2>&1; then
-        (echo "version=$chef_version"; curl -L https://www.opscode.com/chef/install.sh) |  bash
+        (export "version=$chef_version"; curl -L https://www.opscode.com/chef/install.sh) |  bash
     fi
 }
 
