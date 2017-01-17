@@ -11,7 +11,7 @@
 #   bash -e /root/devops_provision_os.sh
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-12-01 11:15:42>
+## Updated: Time-stamp: <2017-01-17 17:50:46>
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v2"
@@ -25,7 +25,7 @@ bash /var/lib/devops/refresh_common_library.sh "1523631277" "/var/lib/devops/dev
 . /var/lib/devops/devops_common_library.sh
 ################################################################################################
 # TODO: better way to update this bash common library
-ssh_port=2702
+ssh_port=${1:-"2702"}
 chef_version="12.4.1"
 ssh_email="auto.devops@totvs.com"
 ssh_public_key_file="/root/ssh_id_rsa.pub"
@@ -41,12 +41,30 @@ if [ -f "$git_deploy_key_file" ]; then
     git_deploy_key=$(cat "$git_deploy_key_file")
 fi
 ################################################################################
+function disable_ipv6() {
+    # TODO: persist the change
+    sysctl -w net.ipv6.conf.all.disable_ipv6=1
+    sysctl -w net.ipv6.conf.default.disable_ipv6=1
+}
+
+function change_vm_swappiness() {
+    sysctl vm.swappiness=0
+}
+
+log "disable ipv6, due to known issue with Linode Provider"
+disable_ipv6
+
+# TODO: remove this, once the same logic has been integrated to chef
+log "Change vm.swappiness=0, only use swap when all RAM is used"
+change_vm_swappiness
+
 log "enable chef deployment"
-install_package_list "wget,curl,git"
+install_package_list "wget,curl,git,tmux"
 install_chef $chef_version
 
 download_facility "/root/git_update.sh" "${DOWNLOAD_PREFIX}/bash/git_update.sh"
 download_facility "/root/manage_all_services.sh" "${DOWNLOAD_PREFIX}/bash/manage_all_services/manage_all_services.sh"
+download_facility "/root/ufw_add_node_to_cluster.sh" "${DOWNLOAD_PREFIX}/bash/ufw/ufw_add_node_to_cluster.sh"
 
 # inject ssh key for ssh with keyfile
 if [ -n "$ssh_public_key" ]; then
@@ -69,15 +87,22 @@ Host github.com
 EOF
 fi
 
-if [ ! -f /etc/ssh/sshd_config ]; then
-    echo "Install openssh-server"
-    apt-get install -y openssh-server
+if ! which tmux 2>/dev/null 1>&2; then
+    apt-get install -y tmux
 fi
 
 if [ "$ssh_port" != "22" ]; then
     echo "Change sshd port to $ssh_port"
     sed -i "s/Port 22/Port $ssh_port/g" /etc/ssh/sshd_config
+    echo "Restart sshd to take effect"
+    nohup service ssh restart &
 fi
 
+# TODO: enforce this in chef, instead of bash
+echo "Create elasticsearch data path"
+mkdir -p /usr/share/elasticsearch
+chmod 777 /usr/share/elasticsearch
+
+# TODO: make sure ruby and rubygems are properly installed
 echo "Action Done. Note: sshd listen on $ssh_port."
 ## File : devops_provision_os.sh ends
