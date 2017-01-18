@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-08-05>
-## Updated: Time-stamp: <2016-12-31 10:36:06>
+## Updated: Time-stamp: <2017-01-18 10:06:41>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -27,7 +27,7 @@
 ##         export working_dir=/var/lib/jenkins/code/monitorfile
 ################################################################################################
 . /etc/profile
-[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v2"
+[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v3"
 export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/${DOWNLOAD_TAG_NAME}"
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)

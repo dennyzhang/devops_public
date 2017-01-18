@@ -6,7 +6,7 @@
 ##        Note: To run the job, make sure target jenkins run has timestamper plugin properly enabled
 ## --
 ## Created : <2016-01-06>
-## Updated: Time-stamp: <2016-11-07 15:34:20>
+## Updated: Time-stamp: <2017-01-18 10:06:41>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -20,7 +20,7 @@
 ##           export SQLITE_FILE="/tmp/console.sqlite"
 ################################################################################################
 . /etc/profile
-[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v2"
+[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v3"
 export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/${DOWNLOAD_TAG_NAME}"
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
