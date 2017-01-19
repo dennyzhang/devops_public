@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2017-01-19 12:29:11>
+## Updated: Time-stamp: <2017-01-19 12:33:11>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -208,6 +208,7 @@ if [ -n "$deploy_run_list" ]; then
     done
 
     if [ -n "$after_deployment_command" ]; then
+        log "Running hook command: $after_deployment_command"
         eval "$after_deployment_command"
     fi
 
