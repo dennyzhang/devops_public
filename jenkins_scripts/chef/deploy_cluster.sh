@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2017-01-18 10:06:44>
+## Updated: Time-stamp: <2017-01-19 12:29:11>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -39,6 +39,8 @@
 ##                     {"hosts": ["devops-cluster-backend-1","devops-cluster-backend-2", "devops-cluster-frontend-1","devops-cluster-frontend-2"]}}
 ##      }
 ##
+##       # command after running deployment in one node
+##       after_deployment_command: sleep 10
 ##       check_command: enforce_all_nagios_check.sh -s "check_.*_log|check_.*_cpu"
 ##       devops_branch_name: dev
 ##       ssh_private_key: XXX
@@ -204,6 +206,11 @@ if [ -n "$deploy_run_list" ]; then
         log "Star to Deploy cluster: $server"
         chef_deploy "$server" "$CHEF_BINARY_CMD" "$deploy_run_list" "$chef_json" "$chef_client_rb"
     done
+
+    if [ -n "$after_deployment_command" ]; then
+        eval "$after_deployment_command"
+    fi
+
     log "Deploy End"
 fi
 
