@@ -4,6 +4,10 @@ Nagios Monitor thread count of a given program
 
 check_proc_threadcount v1.0
 
+- Link: http://www.dennyzhang.com/nagois_monitor_process_memory/
+- Code: https://github.com/DennyZhang/devops_public/tree/tag_v3/nagios_plugins/check_proc_threadcount
+
+```
 Usage:
 check_proc_threadcount.sh -w <warn_count> -c <criti_count> <pid_pattern> <pattern_argument>
 
@@ -13,3 +17,4 @@ check_proc_threadcount.sh -w 1024 -c 2048 --pid 11325
 check_proc_threadcount.sh -w 1024 -c 2048 --cmdpattern "tomcat7.*java.*MaxPermSize"
 
 Copyright (C) 2017 DennyZhang (denny@dennyzhang.com)
+```
