@@ -6,7 +6,7 @@
 ## Description :
 ## --
 ## Created : <2017-01-25>
-## Updated: Time-stamp: <2017-01-26 15:06:22>
+## Updated: Time-stamp: <2017-01-27 14:05:12>
 ##-------------------------------------------------------------------
 import sys, os
 import argparse
@@ -95,8 +95,9 @@ def analyze_jstack_logfile(jstack_logfile, apikey, min_runnable_percentage):
 ##
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--action', default='', \
-                        required=False, help="what action to perform", type=str)
+    parser.add_argument('--action', default='', required=False, \
+                        help="what action to perform. analyze_gc_logfile or analyze_jstack_logfile", \
+                        type=str)
     parser.add_argument('--logfile', default='', required=False, \
                         help="Critical log file to parse", type=str)
     parser.add_argument('--apikey', default='', required=False, \
