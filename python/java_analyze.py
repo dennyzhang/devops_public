@@ -2,11 +2,10 @@
 #!/usr/bin/python
 ##-------------------------------------------------------------------
 ## File : java_analyze.py
-## Author : Bruno <bruno.cunha@totvs.com>, Denny <denny.zhang@totvs.com>
 ## Description :
 ## --
 ## Created : <2017-01-25>
-## Updated: Time-stamp: <2017-01-27 14:06:54>
+## Updated: Time-stamp: <2017-01-27 14:15:56>
 ##-------------------------------------------------------------------
 import sys, os
 import argparse
@@ -103,7 +102,7 @@ if __name__ == '__main__':
     parser.add_argument('--apikey', default='', required=False, \
                         help="API key to call gceasy.io and fastthread.io", \
                         type=str)
-    parser.add_argument('--min_runnable_percentage', default=0.40, required=False, \
+    parser.add_argument('--minrunnable', default=0.40, required=False, \
                         help="If too many threads are not in RUNNABLE state, we raise alerts", \
                         type=float)
 
@@ -139,7 +138,7 @@ if __name__ == '__main__':
         else:
             print "OK: no problem found when parsing gc log(%s)." % (logfile)
     elif action == "analyze_jstack_logfile":
-        if analyze_jstack_logfile(logfile, apikey, l.min_runnable_percentage) is False:
+        if analyze_jstack_logfile(logfile, apikey, l.minrunnable) is False:
             print "ERROR: problems are detected in jstack log(%s)." % (logfile)
             sys.exit(1)
         else:
