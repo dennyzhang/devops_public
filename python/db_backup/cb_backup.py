@@ -5,7 +5,7 @@
 ## Description : Couchbase Daily Backup
 ## --
 ## Created : <2016-08-01>
-## Updated: Time-stamp: <2016-08-12 16:56:32>
+## Updated: Time-stamp: <2017-02-09 22:36:07>
 ##-------------------------------------------------------------------
 # TODO: move to common library
 import argparse
@@ -60,8 +60,8 @@ password = args.password
 backup_dir = args.backup_dir
 
 weekday_method = {
-    "Sunday": "full",
-    "Monday": "diff",
+    "Sunday": "diff",
+    "Monday": "full",
     "Tuesday": "diff",
     "Wednesday": "accu", # accumulate
     "Thursday": "diff",
