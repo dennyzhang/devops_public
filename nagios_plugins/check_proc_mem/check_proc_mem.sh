@@ -15,14 +15,14 @@
 ## Updated: Time-stamp: <2016-12-06 21:45:58>
 ##-------------------------------------------------------------------
 
-while getopts w:c:p:c:vi: name
+while getopts w:c:p:e:vi: name
 do
     case $name in
     w)  warning="$OPTARG";;
     c)  critical="$OPTARG";;
     p)  pidfile="$OPTARG";;
-    c)  cmdpattern="$OPTARG";;
-    i)  procpid="$OPTARG"
+    e)  cmdpattern="$OPTARG";;
+    i)  procpid="$OPTARG";;
     v)  verbose=true;;
     ?)  printf " USAGE: check_proc_mem.sh -w WARNING_VALUE -c CRITICAL_VALUE {-p pidfile | -c cmdpattern | -i pid} \n \
 " $0
@@ -33,10 +33,13 @@ done
 if ! [ -z "$warning" -o -z "$critical" -o -z "$pidfile" -a -z "$cmdpattern" -a -z "$procpid" ];then
     if [ -n "$pidfile" ]; then
         pid=$(cat "$pidfile")
+        [ $verbose ] && echo $pid
     elif [ -n "$cmdpattern" ]; then
         pid=$(pgrep -a -f "$cmdpattern" | grep -v check_proc_mem.sh | head -n 1 | awk -F' ' '{print $1}')
+        [ $verbose ] && echo $pid
     elif [ -n "$procpid" ]; then
         pid=${procpid}
+        [ $verbose ] && echo $pid
     else
         echo "ERROR input for pidpattern"
         exit 2
@@ -65,15 +68,15 @@ if ! [ -z "$warning" -o -z "$critical" -o -z "$pidfile" -a -z "$cmdpattern" -a -
     fi
 
 else
-    echo "check_proc_mem v1.0"
+    echo "check_proc_mem v1.1"
     echo ""
     echo "Usage:"
-    echo "check_proc_mem.sh -w <warn_MB> -c <criti_MB> <pid_pattern> <pattern_argument>"
+    echo "check_proc_mem.sh -w <warn_MB> -c <criti_MB> -p <pid_file>  or -e  <cmdpattern> or -i <pid>"
     echo ""
     echo "Below: If tomcat use more than 1024MB resident memory, send warning"
-    echo "check_proc_mem.sh -w 1024 -c 2048 --pidfile /var/run/tomcat7.pid"
-    echo "check_proc_mem.sh -w 1024 -c 2048 --pid 11325"
-    echo "check_proc_mem.sh -w 1024 -c 2048 --cmdpattern \"tomcat7.*java.*Dcom\""
+    echo "check_proc_mem.sh -w 1024 -c 2048 -p /var/run/tomcat7.pid"
+    echo "check_proc_mem.sh -w 1024 -c 2048 -i 11325"
+    echo "check_proc_mem.sh -w 1024 -c 2048 -e \"tomcat7.*java.*Dcom\""
     echo ""
     echo "Copyright (C) 2014 DennyZhang (denny@dennyzhang.com)"
     exit
