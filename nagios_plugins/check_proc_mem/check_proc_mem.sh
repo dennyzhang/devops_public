@@ -14,18 +14,29 @@
 ## Created : <2014-10-25>
 ## Updated: Time-stamp: <2016-12-06 21:45:58>
 ##-------------------------------------------------------------------
-if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
-    [ "$3" = "-c" ] && [ "$4" -gt "0" ]; then
-    pidPattern=${5?"specify how to get pid"}
 
-    if [ "$pidPattern" = "--pidfile" ]; then
-        pidfile=${6?"pidfile to get pid"}
+while getopts w:c:p:c:vi: name
+do
+    case $name in
+    w)  warning="$OPTARG";;
+    c)  critical="$OPTARG";;
+    p)  pidfile="$OPTARG";;
+    c)  cmdpattern="$OPTARG";;
+    i)  procpid="$OPTARG"
+    v)  verbose=true;;
+    ?)  printf " USAGE: check_proc_mem.sh -w WARNING_VALUE -c CRITICAL_VALUE {-p pidfile | -c cmdpattern | -i pid} \n \
+" $0
+            exit 1;;
+    esac
+done
+
+if ! [ -z "$warning" -o -z "$critical" -o -z "$pidfile" -a -z "$cmdpattern" -a -z "$procpid" ];then
+    if [ -n "$pidfile" ]; then
         pid=$(cat "$pidfile")
-    elif [ "$pidPattern" = "--cmdpattern" ]; then
-        cmdpattern=${6?"command line pattern to find out pid"}
+    elif [ -n "$cmdpattern" ]; then
         pid=$(pgrep -a -f "$cmdpattern" | grep -v check_proc_mem.sh | head -n 1 | awk -F' ' '{print $1}')
-    elif [ "$pidPattern" = "--pid" ]; then
-        pid=${6?"pid"}
+    elif [ -n "$procpid" ]; then
+        pid=${procpid}
     else
         echo "ERROR input for pidpattern"
         exit 2
@@ -42,10 +53,10 @@ if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
     memVmRSS=$(grep 'VmRSS:' "/proc/${pid}/status" | awk -F' ' '{print $2}')
     memVmRSS=$((memVmRSS/1024))
 
-    if [ "$memVmRSS" -ge "$4" ]; then
+    if [ "$memVmRSS" -ge "$critical" ]; then
         echo "Memory: CRITICAL RES: $memVmRSS MB - VIRT: $memVmSize MB used!|RES=$((memVmRSS*1024*1024));;;;"
         exit 2
-    elif [ "$memVmRSS" -ge "$2" ]; then
+    elif [ "$memVmRSS" -ge "$warning" ]; then
         echo "Memory: WARNING RES: $memVmRSS MB - VIRT: $memVmSize MB used!|RES=$((memVmRSS*1024*1024));;;;"
         exit 1
     else
