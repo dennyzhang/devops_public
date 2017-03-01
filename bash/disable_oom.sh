@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-24 15:52:59>
+## Updated: Time-stamp: <2017-02-28 17:59:33>
 ##-------------------------------------------------------------------
 pid_file=${1?}
 
@@ -37,5 +37,5 @@ fi
 
 # http://backdrift.org/oom-killer-how-to-create-oom-exclusions-in-linux
 log "disable oom for $pid"
-echo -17 > "/proc/$pid/oom_adj"
+echo -17 > "/proc/$pid/oom_score_adj"
 ## File : disable_oom.sh ends
