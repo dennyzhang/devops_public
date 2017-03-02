@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-02-24 17:15:27>
+## Updated: Time-stamp: <2017-03-02 17:27:54>
 ##-------------------------------------------------------------------
 def get_es_shard_list(es_host, es_port):
     # TODO
@@ -26,5 +26,5 @@ def check_node_no_same_shard(es_host, es_port):
     print "hello, world"
     
 if __name__ == '__main__':
-    test()
+    print "TODO"
 ## File : check_elasticsearch_replica.py ends
