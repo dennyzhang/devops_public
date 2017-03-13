@@ -11,8 +11,9 @@
 ##    Check all ES indices have more than $min_replica_count replicas
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-03-13 15:36:11>
+## Updated: Time-stamp: <2017-03-13 15:43:16>
 ##-------------------------------------------------------------------
+import argparse
 import requests
 
 def get_es_index_list(es_host, es_port):
@@ -78,10 +79,24 @@ def confirm_es_replica_count(es_host, es_port, es_index_list, min_replica_count)
     return failed_index_list
 
 if __name__ == '__main__':
-    # TODO: get parameters from users
-    min_replica_count = 1
-    es_host = "172.17.0.8"
-    es_port = "9200"
+    # get parameters from users
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--es_host', required=False, \
+                        help="server ip or hostname for elasticsearch instance. Default value is ip of eth0", type=str)
+    parser.add_argument('--es_port', default='9200', required=False, \
+                        help="server port for elasticsearch instance", type=str)
+    parser.add_argument('--min_replica_count', default='1', required=False, \
+                        help="minimal replica each elasticsearch index should have", type=str)
+    l = parser.parse_args()
+
+    es_port = l.es_port
+    min_replica_count = l.min_replica_count
+    es_host = l.es_host
+    # get ip of eth0, if es_host is not given
+    if es_host is None:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        es_host = s.getsockname()[0]
 
     print "get es index list"
     es_index_list = get_es_index_list(es_host, es_port)
