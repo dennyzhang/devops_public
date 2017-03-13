@@ -11,7 +11,7 @@
 ##    Check all ES indices have more than $min_replica_count replicas
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-03-13 17:20:41>
+## Updated: Time-stamp: <2017-03-13 17:22:30>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -79,10 +79,10 @@ def confirm_es_replica_count(es_host, es_port, es_index_list, \
     failed_index_list = []
     for index_name in es_index_list:
         if es_pattern_regexp != "":
-            if m = re.search(es_pattern_regexp, index_name):
-                # Skip ES index which doesn't match the pattern
-                if m is None:
-                    continue
+            m = re.search(es_pattern_regexp, index_name)
+            # Skip ES index which doesn't match the pattern
+            if m is None:
+                continue
         number_of_replicas = get_es_replica_count(es_host, es_port, index_name)
         if number_of_replicas < min_replica_count:
             print "ERROR: index(%s) only has %d replicas, less than %d." \
