@@ -11,13 +11,14 @@
 ##    Check all ES indices have more than $min_replica_count replicas
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-03-13 16:27:00>
+## Updated: Time-stamp: <2017-03-13 16:48:41>
 ##-------------------------------------------------------------------
 import argparse
 import requests
 import sys
 import socket
 
+NAGIOS_OK_ERROR=0
 NAGIOS_EXIT_ERROR=2
 
 def get_es_index_list(es_host, es_port):
@@ -97,6 +98,10 @@ if __name__ == '__main__':
     min_replica_count = int(l.min_replica_count)
     es_host = l.es_host
 
+    if min_replica_count == 0:
+        print "OK: skip the check, since the given min_replica_count is 0"
+        sys.exit(NAGIOS_OK_ERROR)
+        
     # get ip of eth0, if es_host is not given
     if es_host is None:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -113,4 +118,5 @@ if __name__ == '__main__':
         sys.exit(NAGIOS_EXIT_ERROR)
     else:
         print "OK: all ES indices have no less than %d replicas" % (min_replica_count)
+        sys.exit(NAGIOS_OK_ERROR)
 ## File : check_elasticsearch_replica.py ends
