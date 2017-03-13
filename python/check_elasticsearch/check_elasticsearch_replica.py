@@ -11,7 +11,7 @@
 ##    Check all ES indices have more than $min_replica_count replicas
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-03-13 15:33:00>
+## Updated: Time-stamp: <2017-03-13 15:36:11>
 ##-------------------------------------------------------------------
 import requests
 
@@ -58,23 +58,21 @@ Sample output:
     '''
     # TODO: error handling, if curl requests fails
     for line in r.content.split("\n"):
-        if "\"number_of_replicas\": " in line:
+        if "\"number_of_replicas\" : " in line:
             value = line.split(":")[1]
             value = value.replace(" ", "").replace("\"", "").replace(",", "")
             number_of_replicas = int(value)
     if number_of_replicas == -1:
-        raise Exception("Error: fail to get index replica for %s" % (index_name))
+        raise Exception("Error: fail to get index replica for %s." % (index_name))
     return number_of_replicas
     
 def confirm_es_replica_count(es_host, es_port, es_index_list, min_replica_count):
     # Check all ES indices have more than $min_replica_count replicas
-    # TODO
-    print "hello, world"
     failed_index_list = []
     for index_name in es_index_list:
         number_of_replicas = get_es_replica_count(es_host, es_port, index_name)
         if number_of_replicas < min_replica_count:
-            print "ERROR: index(%s) only has %d replicas, less than %d" \
+            print "ERROR: index(%s) only has %d replicas, less than %d." \
                 % (index_name, number_of_replicas, min_replica_count)
             failed_index_list.append(index_name)
     return failed_index_list
@@ -88,7 +86,7 @@ if __name__ == '__main__':
     print "get es index list"
     es_index_list = get_es_index_list(es_host, es_port)
 
-    print "confirm all indices has no less than %d replica" % (min_replica_count)
+    print "confirm all indices has no less than %d replicas. \n Problematic Indices:" % (min_replica_count)
     failed_index_list = confirm_es_replica_count(es_host, es_port, es_index_list, min_replica_count)
 
     if len(failed_index_list) != 0:
