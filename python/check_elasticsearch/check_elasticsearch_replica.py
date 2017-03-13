@@ -11,12 +11,13 @@
 ##    Check all ES indices have more than $min_replica_count replicas
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-03-13 16:48:41>
+## Updated: Time-stamp: <2017-03-13 17:20:41>
 ##-------------------------------------------------------------------
 import argparse
 import requests
 import sys
 import socket
+import re
 
 NAGIOS_OK_ERROR=0
 NAGIOS_EXIT_ERROR=2
@@ -72,10 +73,16 @@ Sample output:
         raise Exception("Error: fail to get index replica for %s." % (index_name))
     return number_of_replicas
     
-def confirm_es_replica_count(es_host, es_port, es_index_list, min_replica_count):
+def confirm_es_replica_count(es_host, es_port, es_index_list, \
+                             min_replica_count, es_pattern_regexp):
     # Check all ES indices have more than $min_replica_count replicas
     failed_index_list = []
     for index_name in es_index_list:
+        if es_pattern_regexp != "":
+            if m = re.search(es_pattern_regexp, index_name):
+                # Skip ES index which doesn't match the pattern
+                if m is None:
+                    continue
         number_of_replicas = get_es_replica_count(es_host, es_port, index_name)
         if number_of_replicas < min_replica_count:
             print "ERROR: index(%s) only has %d replicas, less than %d." \
@@ -90,12 +97,15 @@ if __name__ == '__main__':
                         help="server ip or hostname for elasticsearch instance. Default value is ip of eth0", type=str)
     parser.add_argument('--es_port', default='9200', required=False, \
                         help="server port for elasticsearch instance", type=str)
+    parser.add_argument('--es_pattern_regexp', required=False, default='', \
+                        help="ES index name pattern. Only ES indices with matched pattern will be examined", type=str)
     parser.add_argument('--min_replica_count', default=1, required=False, \
                         help="minimal replica each elasticsearch index should have", type=str)
     l = parser.parse_args()
 
     es_port = l.es_port
     min_replica_count = int(l.min_replica_count)
+    es_pattern_regexp = l.es_pattern_regexp
     es_host = l.es_host
 
     if min_replica_count == 0:
@@ -110,7 +120,8 @@ if __name__ == '__main__':
 
     es_index_list = get_es_index_list(es_host, es_port)
 
-    failed_index_list = confirm_es_replica_count(es_host, es_port, es_index_list, min_replica_count)
+    failed_index_list = confirm_es_replica_count(es_host, es_port, es_index_list, \
+                                                 min_replica_count, es_pattern_regexp)
 
     if len(failed_index_list) != 0:
         print "ERROR: Below indices don't have enough replica\n.%s" % \
