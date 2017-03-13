@@ -11,10 +11,11 @@
 ##    Check all ES indices have more than $min_replica_count replicas
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-03-13 15:43:16>
+## Updated: Time-stamp: <2017-03-13 15:44:55>
 ##-------------------------------------------------------------------
 import argparse
 import requests
+import sys
 
 def get_es_index_list(es_host, es_port):
     index_list = []
@@ -107,5 +108,5 @@ if __name__ == '__main__':
     if len(failed_index_list) != 0:
         print "ERROR: Below indices don't have enough replica. %s" % \
             (",".join(failed_index_list))
-    # TODO: enable nagios compatible
+        sys.exit(2)
 ## File : check_elasticsearch_replica.py ends
