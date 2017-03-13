@@ -11,7 +11,7 @@
 ##    Check all ES indices have more than $min_replica_count replicas
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-03-13 16:19:38>
+## Updated: Time-stamp: <2017-03-13 16:22:46>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -103,14 +103,14 @@ if __name__ == '__main__':
         s.connect(("8.8.8.8", 80))
         es_host = s.getsockname()[0]
 
-    print "get es index list"
     es_index_list = get_es_index_list(es_host, es_port)
 
-    print "confirm all indices has no less than %d replicas. \n Problematic Indices:" % (min_replica_count)
     failed_index_list = confirm_es_replica_count(es_host, es_port, es_index_list, min_replica_count)
 
     if len(failed_index_list) != 0:
-        print "ERROR: Below indices don't have enough replica. %s" % \
+        print "ERROR: Below indices don't have enough replica. \n Problematic Indices: %s" % \
             (",".join(failed_index_list))
         sys.exit(NAGIOS_EXIT_ERROR)
+    else:
+        print "OK: all ES indices have no less than %d replicas" % (min_replica_count)
 ## File : check_elasticsearch_replica.py ends
