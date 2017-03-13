@@ -11,7 +11,7 @@
 ##    Check all ES indices have more than $min_replica_count replicas
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-03-13 15:47:21>
+## Updated: Time-stamp: <2017-03-13 16:19:38>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     l = parser.parse_args()
 
     es_port = l.es_port
-    min_replica_count = l.min_replica_count
+    min_replica_count = int(l.min_replica_count)
     es_host = l.es_host
 
     # get ip of eth0, if es_host is not given
