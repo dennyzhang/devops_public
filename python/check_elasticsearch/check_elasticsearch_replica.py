@@ -11,7 +11,7 @@
 ##    Check all ES indices have more than $min_replica_count replicas
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-03-13 16:22:46>
+## Updated: Time-stamp: <2017-03-13 16:27:00>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -108,7 +108,7 @@ if __name__ == '__main__':
     failed_index_list = confirm_es_replica_count(es_host, es_port, es_index_list, min_replica_count)
 
     if len(failed_index_list) != 0:
-        print "ERROR: Below indices don't have enough replica. \n Problematic Indices: %s" % \
+        print "ERROR: Below indices don't have enough replica\n.%s" % \
             (",".join(failed_index_list))
         sys.exit(NAGIOS_EXIT_ERROR)
     else:
