@@ -12,7 +12,7 @@
 ##    Make sure no same shard(primary, replica) are in the same node, to avoid SPOF
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-03-14 11:29:54>
+## Updated: Time-stamp: <2017-03-14 11:33:16>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -70,9 +70,9 @@ Sample output:
             value = value.replace(" ", "").replace("\"", "").replace(",", "")
             number_of_shards = int(value)
     if number_of_shards == -1:
-        raise Exception("Error: fail to get index shard for %s." % (index_name))
+        raise Exception("Error: fail to get shard count of elasticsearch index(%s)." % (index_name))
     return number_of_shards
-    
+
 def confirm_es_shard_count(es_host, es_port, es_index_list, \
                              min_shard_count, es_pattern_regexp):
     # Check all ES indices have more than $min_shard_count shards
@@ -99,7 +99,7 @@ if __name__ == '__main__':
                         help="server port for elasticsearch instance", type=str)
     parser.add_argument('--es_pattern_regexp', required=False, default='', \
                         help="ES index name pattern. Only ES indices with matched pattern will be examined", type=str)
-    parser.add_argument('--min_shard_count', default=1, required=False, \
+    parser.add_argument('--min_shard_count', default=3, required=False, \
                         help="minimal shard each elasticsearch index should have", type=str)
     l = parser.parse_args()
 
@@ -111,7 +111,7 @@ if __name__ == '__main__':
     if min_shard_count == 0:
         print "OK: skip the check, since the given min_shard_count is 0"
         sys.exit(NAGIOS_OK_ERROR)
-        
+
     # get ip of eth0, if es_host is not given
     if es_host is None:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -128,6 +128,7 @@ if __name__ == '__main__':
             (",".join(failed_index_list))
         sys.exit(NAGIOS_EXIT_ERROR)
     else:
+        # TODO: make sure no same shard in one node, to avoid SPOF
         print "OK: all ES indices have no less than %d shards" % (min_shard_count)
         sys.exit(NAGIOS_OK_ERROR)
 ## File : check_elasticsearch_shard.py ends
