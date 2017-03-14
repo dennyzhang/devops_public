@@ -10,7 +10,7 @@
 ## Description : Detect whether OOM(Out Of Memory) has happened in the previous several hours
 ## --
 ## Created : <2017-02-28>
-## Updated: Time-stamp: <2017-03-14 15:22:53>
+## Updated: Time-stamp: <2017-03-14 15:25:13>
 ##-------------------------------------------------------------------
 # Check: http://www.dennyzhang.com/monitor_oom/
 import argparse
@@ -39,15 +39,14 @@ root@bematech-es-1:~# dmesg -T | grep -i oom
 [Sat Mar 11 00:19:44 2017] [ pid ]   uid  tgid total_vm      rss nr_ptes nr_pmds swapents oom_score_adj name
     '''
     command = 'dmesg -T | grep -i oom'
-    print command
     p = subprocess.Popen(command, shell=True, stderr=subprocess.PIPE)
     while True:
         out = p.stderr.read(1)
         if out == '' and p.poll() != None:
             break
         if out != '':
-            sys.stdout.write(out)
-            sys.stdout.flush()
+            # sys.stdout.write(out)
+            # sys.stdout.flush()
             oom_list.append(out)
     return oom_list
 
@@ -55,7 +54,7 @@ def filter_entry_by_datetime(oom_list, hours_to_check):
     ret_list = []
     seconds_per_hour = 3600
     current_seconds = int(round(time.time()))
-    for entry in oom_list.spli("\n"):
+    for entry in oom_list:
         entry_seconds = get_time_seconds_from_dmsg(entry)
         if current_seconds <= entry_seconds + hours_to_check * seconds_per_hour:
             ret_list.append(entry)
