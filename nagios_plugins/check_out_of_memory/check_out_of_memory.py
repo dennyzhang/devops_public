@@ -10,25 +10,71 @@
 ## Description : Detect whether OOM(Out Of Memory) has happened in the previous several hours
 ## --
 ## Created : <2017-02-28>
-## Updated: Time-stamp: <2017-03-14 14:00:21>
+## Updated: Time-stamp: <2017-03-14 15:11:52>
 ##-------------------------------------------------------------------
 # Check: http://www.dennyzhang.com/monitor_oom/
 import argparse
+import platform
 import sys
+import subprocess
 
 NAGIOS_OK_ERROR=0
 NAGIOS_EXIT_ERROR=2
 
+def get_date_from_dmsg(dmsg_entry):
+    # From: [Sat Mar 11 00:19:44 2017] java invoked oom-killer: gfp_mask=0x26000c0, order=2, oom_score_adj=-17
+    # To: Sat Mar 11 00:19:44 2017
+    l = dmsg_entry.split("] ")
+    date = l[0][1:]
+    return date
+
 def get_oom_entry():
     oom_list = []
+    # Sample output
+    '''
+root@bematech-es-1:~# dmesg -T | grep -i oom
+[Sat Mar 11 00:19:44 2017] java invoked oom-killer: gfp_mask=0x26000c0, order=2, oom_score_adj=-17
+[Sat Mar 11 00:19:44 2017]  [<ffffffff81188b35>] oom_kill_process+0x205/0x3d0
+[Sat Mar 11 00:19:44 2017] [ pid ]   uid  tgid total_vm      rss nr_ptes nr_pmds swapents oom_score_adj name
+    '''
+    command = 'dmesg -T | grep -i oom'
+    print command
+    p = subprocess.Popen(command, shell=True, stderr=subprocess.PIPE)
+    while True:
+    out = p.stderr.read(1)
+    if out == '' and p.poll() != None:
+        break
+    if out != '':
+        sys.stdout.write(out)
+        sys.stdout.flush()
+        oom_list.append(out)
     return oom_list
 
-def filter_entry_by_datetime(oom_list, datetime, offset_hours):
+def filter_entry_by_datetime(oom_list, datetime, hours_to_check):
     ret_list = []
     return ret_list
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--es_host', required=False, \
-                        help="server ip or hostname for elasticsearch instance. Default value is ip of eth0", type=str)
+    parser.add_argument('--hours_to_check', required=False, default=4, type=int \
+                        help="Only check oom entries happen within previous several hours")
+    l = parser.parse_args()
+    hours_to_check = l.hours_to_check
+
+    # Check OS release
+    if platform.linux_distribution()[0] != 'Ubuntu':
+        print "ERROR: current only support Ubuntu OS."
+        sys.exit(NAGIOS_EXIT_ERROR)
+
+    oom_list = get_oom_entry()
+    current_datetime = '' # TODO
+    matched_oom_list = filter_entry_by_datetime(oom_list, current_datetime, hours_to_check)
+    if len(matched_oom_list) == 0:
+        print "OK: No OOM has happened in previous %d hours." % (hours_to_check)
+    else:
+        print "ERROR: OOM has happened in previous %d hours.\n%s" % \
+            (hours_to_check, "\n".join(matched_oom_list))
+        sys.exit(NAGIOS_EXIT_ERROR)
+
+    sys.exit(NAGIOS_OK_ERROR)
 ## File : check_out_of_memory.py ends
