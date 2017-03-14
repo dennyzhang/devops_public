@@ -10,23 +10,24 @@
 ## Description : Detect whether OOM(Out Of Memory) has happened in the previous several hours
 ## --
 ## Created : <2017-02-28>
-## Updated: Time-stamp: <2017-03-14 15:11:52>
+## Updated: Time-stamp: <2017-03-14 15:20:25>
 ##-------------------------------------------------------------------
 # Check: http://www.dennyzhang.com/monitor_oom/
 import argparse
 import platform
 import sys
 import subprocess
+import time
 
 NAGIOS_OK_ERROR=0
 NAGIOS_EXIT_ERROR=2
 
-def get_date_from_dmsg(dmsg_entry):
+def get_time_seconds_from_dmsg(dmsg_entry):
     # From: [Sat Mar 11 00:19:44 2017] java invoked oom-killer: gfp_mask=0x26000c0, order=2, oom_score_adj=-17
-    # To: Sat Mar 11 00:19:44 2017
+    # To: 1489191584
     l = dmsg_entry.split("] ")
     date = l[0][1:]
-    return date
+    return int(time.mktime(time.strptime(date,'%a %b %d %H:%M:%S %Y')))
 
 def get_oom_entry():
     oom_list = []
@@ -50,8 +51,14 @@ root@bematech-es-1:~# dmesg -T | grep -i oom
         oom_list.append(out)
     return oom_list
 
-def filter_entry_by_datetime(oom_list, datetime, hours_to_check):
+def filter_entry_by_datetime(oom_list, current_seconds, hours_to_check):
     ret_list = []
+    seconds_per_hour = 3600
+    current_seconds = int(round(time.time()))
+    for entry in oom_list.spli("\n"):
+        entry_seconds = get_time_seconds_from_dmsg(entry)
+        if current_seconds < = entry_seconds + hours_to_check * seconds_per_hour:
+            ret_list.append(entry)
     return ret_list
 
 if __name__ == '__main__':
@@ -67,8 +74,7 @@ if __name__ == '__main__':
         sys.exit(NAGIOS_EXIT_ERROR)
 
     oom_list = get_oom_entry()
-    current_datetime = '' # TODO
-    matched_oom_list = filter_entry_by_datetime(oom_list, current_datetime, hours_to_check)
+    matched_oom_list = filter_entry_by_datetime(oom_list, hours_to_check)
     if len(matched_oom_list) == 0:
         print "OK: No OOM has happened in previous %d hours." % (hours_to_check)
     else:
