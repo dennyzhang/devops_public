@@ -10,13 +10,13 @@
 ## Description : Detect whether OOM(Out Of Memory) has happened in the previous several hours
 ## --
 ## Created : <2017-02-28>
-## Updated: Time-stamp: <2017-03-14 15:25:13>
+## Updated: Time-stamp: <2017-03-14 15:31:35>
 ##-------------------------------------------------------------------
 # Check: http://www.dennyzhang.com/monitor_oom/
 import argparse
 import platform
 import sys
-import subprocess
+import commands
 import time
 
 NAGIOS_OK_ERROR=0
@@ -30,7 +30,6 @@ def get_time_seconds_from_dmsg(dmsg_entry):
     return int(time.mktime(time.strptime(date,'%a %b %d %H:%M:%S %Y')))
 
 def get_oom_entry():
-    oom_list = []
     # Sample output
     '''
 root@bematech-es-1:~# dmesg -T | grep -i oom
@@ -39,16 +38,8 @@ root@bematech-es-1:~# dmesg -T | grep -i oom
 [Sat Mar 11 00:19:44 2017] [ pid ]   uid  tgid total_vm      rss nr_ptes nr_pmds swapents oom_score_adj name
     '''
     command = 'dmesg -T | grep -i oom'
-    p = subprocess.Popen(command, shell=True, stderr=subprocess.PIPE)
-    while True:
-        out = p.stderr.read(1)
-        if out == '' and p.poll() != None:
-            break
-        if out != '':
-            # sys.stdout.write(out)
-            # sys.stdout.flush()
-            oom_list.append(out)
-    return oom_list
+    _status, output = commands.getstatusoutput(command)
+    return output.split("\n")
 
 def filter_entry_by_datetime(oom_list, hours_to_check):
     ret_list = []
@@ -56,13 +47,14 @@ def filter_entry_by_datetime(oom_list, hours_to_check):
     current_seconds = int(round(time.time()))
     for entry in oom_list:
         entry_seconds = get_time_seconds_from_dmsg(entry)
+        # print "current_seconds: %d, entry_seconds: %d" % (current_seconds, entry_seconds)
         if current_seconds <= entry_seconds + hours_to_check * seconds_per_hour:
             ret_list.append(entry)
     return ret_list
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--hours_to_check', required=False, default=4, type=int, \
+    parser.add_argument('--hours_to_check', required=False, default=10, type=int, \
                         help="Only check oom entries happen within previous several hours")
     l = parser.parse_args()
     hours_to_check = l.hours_to_check
