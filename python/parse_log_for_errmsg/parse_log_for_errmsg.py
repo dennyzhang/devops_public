@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-03-23>
-## Updated: Time-stamp: <2017-03-23 15:38:13>
+## Updated: Time-stamp: <2017-03-23 15:46:54>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -27,14 +27,18 @@ def filter_log_by_errmsg(log_folder, err_pattern_list, \
     err_msg_list = []
 
     # TODO: Performance tunning: For files bigger than GB, the script won't work
-    for f in glob.glob("%s/*%s" % (log_folder, logfile_postfix)):
-        if os.stat(f).st_size > MAX_FILE_SIZE:
-            print "ERROR: Unsupported large files. %f is larger than %s." % (f, MAX_FILE_SIZE)
+    for fname in glob.glob("%s/*%s" % (log_folder, logfile_postfix)):
+        if os.stat(fname).st_size > MAX_FILE_SIZE:
+            print "ERROR: Unsupported large files. %s is larger than %s." % (fname, MAX_FILE_SIZE)
             sys.exit(NAGIOS_EXIT_ERROR)
-        for line in f:
-            for err_pattern in err_pattern_list:
+        with open(fname) as f:
+            content = f.readlines()
+        for err_pattern in err_pattern_list:
+            # print "Parse %s for %s." % (f, err_pattern)
+            for line in content:
                 if err_pattern in line:
                     err_msg_list.append(line)
+    # print "err_msg_list: %s" % (','.join(err_msg_list))
     return err_msg_list
 
 def filter_errmsg_by_whitelist(err_msg_list, whitelist_pattern_list):
@@ -68,7 +72,7 @@ if __name__ == '__main__':
     err_msg_list = filter_log_by_errmsg(log_folder, err_pattern_list)
     if len(whitelist_pattern_list) != 0:
         err_msg_list = filter_errmsg_by_whitelist(err_msg_list, whitelist_pattern_list)
-    if err_msg_list != "":
+    if len(err_msg_list) != 0:
         print "ERROR: unexpected errors/exceptions are found under %s. errmsg: %s" % \
             (log_folder, "\n".join(err_msg_list))
         sys.exit(NAGIOS_EXIT_ERROR)
