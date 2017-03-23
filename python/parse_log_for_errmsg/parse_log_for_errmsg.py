@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-03-23>
-## Updated: Time-stamp: <2017-03-23 14:16:41>
+## Updated: Time-stamp: <2017-03-23 14:36:56>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -25,7 +25,10 @@ def filter_errmsg_by_whitelist(errmsgs, whitelist_patterns, separator = "|"):
     ret_msg = ""
     return ret_msg
 
-# Sample: ./parse_log_for_errmsg.py /opt/mymdm/logs "error|exception" "route53|Maybe document|Not found template"
+# Sample: ./parse_log_for_errmsg.py \
+#                --log_folder /opt/mymdm/logs
+#                --err_patterns "error|exception" \
+#                --whitelist_patterns "route53|Maybe document|Not found template"
 if __name__ == '__main__':
     # get parameters from users
     parser = argparse.ArgumentParser()
@@ -42,7 +45,7 @@ if __name__ == '__main__':
 
     err_msgs = filter_log_by_errmsg(log_folder, err_patterns)
     if whitelist_patterns != "":
-        err_msgs = filter_errmsg_by_whitelist(errmsgs, whitelist_patterns)
+        err_msgs = filter_errmsg_by_whitelist(err_patterns, whitelist_patterns)
     if err_msgs != "":
         print "ERROR: unexpected errors/exceptions are found under %s. errmsg: %s" % (log_folder, err_msgs)
         sys.exit(NAGIOS_EXIT_ERROR)
