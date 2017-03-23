@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-03-23>
-## Updated: Time-stamp: <2017-03-23 16:05:17>
+## Updated: Time-stamp: <2017-03-23 16:06:26>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -44,10 +44,13 @@ def filter_log_by_errmsg(log_folder, err_pattern_list, \
 def filter_errmsg_by_whitelist(err_msg_list, whitelist_pattern_list):
     ret_msg_list = []
     for line in err_msg_list:
+        has_matched = False
         for whitelist_pattern in whitelist_pattern_list:
             if whitelist_pattern in line:
+                has_matched = True
                 break
-        ret_msg_list.append(line)
+        if has_matched is False:
+            ret_msg_list.append(line)
     return ret_msg_list
 
 # Sample: ./parse_log_for_errmsg.py \
