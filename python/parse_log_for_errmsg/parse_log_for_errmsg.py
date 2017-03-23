@@ -10,20 +10,41 @@
 ## Description :
 ## --
 ## Created : <2017-03-23>
-## Updated: Time-stamp: <2017-03-23 14:36:56>
+## Updated: Time-stamp: <2017-03-23 15:38:13>
 ##-------------------------------------------------------------------
 import argparse
 import sys
+import glob
+import os
+
 NAGIOS_OK_ERROR=0
 NAGIOS_EXIT_ERROR=2
+MAX_FILE_SIZE = 1024 * 1024 * 1024 # 1GB
+SEPARATOR = "|"
 
-def filter_log_by_errmsg(log_folder, err_patterns, logfile_postfix = ".log"):
-    err_msgs = ""
-    return err_msgs
+def filter_log_by_errmsg(log_folder, err_pattern_list, \
+                         logfile_postfix = ".log"):
+    err_msg_list = []
 
-def filter_errmsg_by_whitelist(errmsgs, whitelist_patterns, separator = "|"):
-    ret_msg = ""
-    return ret_msg
+    # TODO: Performance tunning: For files bigger than GB, the script won't work
+    for f in glob.glob("%s/*%s" % (log_folder, logfile_postfix)):
+        if os.stat(f).st_size > MAX_FILE_SIZE:
+            print "ERROR: Unsupported large files. %f is larger than %s." % (f, MAX_FILE_SIZE)
+            sys.exit(NAGIOS_EXIT_ERROR)
+        for line in f:
+            for err_pattern in err_pattern_list:
+                if err_pattern in line:
+                    err_msg_list.append(line)
+    return err_msg_list
+
+def filter_errmsg_by_whitelist(err_msg_list, whitelist_pattern_list):
+    ret_msg_list = []
+    for line in err_msg_list:
+        for whitelist_pattern in whitelist_pattern_list:
+            if whitelist_pattern in line:
+                continue
+            ret_msg_list.append(line)
+    return ret_msg_list
 
 # Sample: ./parse_log_for_errmsg.py \
 #                --log_folder /opt/mymdm/logs
@@ -39,15 +60,17 @@ if __name__ == '__main__':
     parser.add_argument('--whitelist_patterns', default='', required=False, \
                         help="What white patterns are expected to be safe")
     l = parser.parse_args()
-    log_folder = l.log_folder
-    err_patterns = l.err_patterns
-    whitelist_patterns = l.whitelist_patterns
 
-    err_msgs = filter_log_by_errmsg(log_folder, err_patterns)
-    if whitelist_patterns != "":
-        err_msgs = filter_errmsg_by_whitelist(err_patterns, whitelist_patterns)
-    if err_msgs != "":
-        print "ERROR: unexpected errors/exceptions are found under %s. errmsg: %s" % (log_folder, err_msgs)
+    log_folder = l.log_folder
+    err_pattern_list = l.err_patterns.split(SEPARATOR)
+    whitelist_pattern_list = l.whitelist_patterns.split(SEPARATOR)
+
+    err_msg_list = filter_log_by_errmsg(log_folder, err_pattern_list)
+    if len(whitelist_pattern_list) != 0:
+        err_msg_list = filter_errmsg_by_whitelist(err_msg_list, whitelist_pattern_list)
+    if err_msg_list != "":
+        print "ERROR: unexpected errors/exceptions are found under %s. errmsg: %s" % \
+            (log_folder, "\n".join(err_msg_list))
         sys.exit(NAGIOS_EXIT_ERROR)
     else:
         print "OK: no unexpected errors/exceptions are found under %s." % (log_folder)
