@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-03-23>
-## Updated: Time-stamp: <2017-03-23 15:46:54>
+## Updated: Time-stamp: <2017-03-23 16:05:17>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -23,18 +23,18 @@ MAX_FILE_SIZE = 1024 * 1024 * 1024 # 1GB
 SEPARATOR = "|"
 
 def filter_log_by_errmsg(log_folder, err_pattern_list, \
-                         logfile_postfix = ".log"):
+                         logfile_pattern = "*.log"):
     err_msg_list = []
 
     # TODO: Performance tunning: For files bigger than GB, the script won't work
-    for fname in glob.glob("%s/*%s" % (log_folder, logfile_postfix)):
+    for fname in glob.glob("%s/%s" % (log_folder, logfile_pattern)):
         if os.stat(fname).st_size > MAX_FILE_SIZE:
             print "ERROR: Unsupported large files. %s is larger than %s." % (fname, MAX_FILE_SIZE)
             sys.exit(NAGIOS_EXIT_ERROR)
         with open(fname) as f:
             content = f.readlines()
         for err_pattern in err_pattern_list:
-            # print "Parse %s for %s." % (f, err_pattern)
+            # print "Parse %s for %s." % (fname, err_pattern)
             for line in content:
                 if err_pattern in line:
                     err_msg_list.append(line)
@@ -46,8 +46,8 @@ def filter_errmsg_by_whitelist(err_msg_list, whitelist_pattern_list):
     for line in err_msg_list:
         for whitelist_pattern in whitelist_pattern_list:
             if whitelist_pattern in line:
-                continue
-            ret_msg_list.append(line)
+                break
+        ret_msg_list.append(line)
     return ret_msg_list
 
 # Sample: ./parse_log_for_errmsg.py \
@@ -63,14 +63,22 @@ if __name__ == '__main__':
                         help="Interested error patterns. If multiple, we should use | to separate them")
     parser.add_argument('--whitelist_patterns', default='', required=False, \
                         help="What white patterns are expected to be safe")
-    l = parser.parse_args()
+    parser.add_argument('--logfile_pattern', default='*.log', required=False, \
+                        help="What white patterns are expected to be safe")
 
+    l = parser.parse_args()
     log_folder = l.log_folder
     err_pattern_list = l.err_patterns.split(SEPARATOR)
-    whitelist_pattern_list = l.whitelist_patterns.split(SEPARATOR)
+    if l.whitelist_patterns == "":
+        whitelist_pattern_list = []
+    else:
+        whitelist_pattern_list = l.whitelist_patterns.split(SEPARATOR)
 
-    err_msg_list = filter_log_by_errmsg(log_folder, err_pattern_list)
+    err_msg_list = filter_log_by_errmsg(log_folder, err_pattern_list, l.logfile_pattern)
+    # print "err_msg_list: %s" % (','.join(err_msg_list))
+
     if len(whitelist_pattern_list) != 0:
+        # print "here! whitelist_pattern_list: %s. len: %d" % (",".join(whitelist_pattern_list), len(whitelist_pattern_list))
         err_msg_list = filter_errmsg_by_whitelist(err_msg_list, whitelist_pattern_list)
     if len(err_msg_list) != 0:
         print "ERROR: unexpected errors/exceptions are found under %s. errmsg: %s" % \
