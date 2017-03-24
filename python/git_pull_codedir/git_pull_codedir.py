@@ -10,12 +10,12 @@
 ## Description :
 ## --
 ## Created : <2017-03-24>
-## Updated: Time-stamp: <2017-03-24 15:41:15>
+## Updated: Time-stamp: <2017-03-24 15:47:33>
 ##-------------------------------------------------------------------
 import os, sys
 import sys
 import logging
-# Notice: Need to use pip install git first
+# Notice: Need to run: pip install GitPython
 import git
 
 logger = logging.getLogger("git_pull_codedir")
@@ -28,14 +28,18 @@ logger.addHandler(stream_handler)
 #logger.setLevel(logging.ERROR)
 
 def git_pull(code_dir):
+    log.info("Run git pull in %s" %(code_dir))
     if ! os.path.exists(code_dir):
         logger.error("Code directory(%s): doesn't exist" % (code_dir))
         sys.exit(1)
     os.chdir(working_dir)
-    print "hello, world"
+    g = git.cmd.Git(git_dir)
+    g.pull()
 
-# Sample python perform_git_pull.py --code_dir "/data/code_dir/repo1,/data/code_dir/repo2"
+# Sample python perform_git_pull.py --code_dirs "/data/code_dir/repo1,/data/code_dir/repo2"
 if __name__ == '__main__':
     # --log_file="/var/log/perform_git_pull.log"
-    test()
+    separator = ","
+    for code_dir code_dirs.split(separator):
+        git_pull(code_dir)    
 ## File : git_pull_codedir.py ends
