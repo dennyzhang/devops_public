@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-03-24>
-## Updated: Time-stamp: <2017-03-24 15:50:24>
+## Updated: Time-stamp: <2017-03-24 15:51:04>
 ##-------------------------------------------------------------------
 import os, sys
 import sys
@@ -26,7 +26,7 @@ file_handler.setFormatter(formatter)
 stream_handler = logging.StreamHandler(sys.stderr)
 logger.addHandler(file_handler)
 logger.addHandler(stream_handler)
-#logger.setLevel(logging.ERROR)
+logger.setLevel(logging.INFO)
 
 def git_pull(code_dir):
     logger.info("Run git pull in %s" %(code_dir))
