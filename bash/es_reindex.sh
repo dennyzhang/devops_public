@@ -4,7 +4,7 @@
 ## Description :
 ## --
 ## Created : <2017-03-27>
-## Updated: Time-stamp: <2017-03-27 14:11:16>
+## Updated: Time-stamp: <2017-03-27 14:12:40>
 ##-------------------------------------------------------------------
 old_index_name=${1?}
 
@@ -18,9 +18,12 @@ replica_count=${4:-1}
 es_ip=${5:-""}
 es_port=${6:-"9200"}
 
+# if $es_ip is not given, use ip of eth0 as default
 if [ -z "$es_ip" ]; then
     es_ip=$(/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
 fi
+
+# TODO: ES alias may not be like this
 alias_index_name=$(echo "$old_index_name" | sed 's/-index//g')
 
 ##-------------------------------------------------------------------
