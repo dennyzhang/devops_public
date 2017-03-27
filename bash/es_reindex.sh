@@ -4,12 +4,12 @@
 ## Description :
 ## --
 ## Created : <2017-03-27>
-## Updated: Time-stamp: <2017-03-27 15:25:31>
+## Updated: Time-stamp: <2017-03-27 15:35:41>
 ##-------------------------------------------------------------------
 old_index_name=${1?}
 shard_count=${2:-"10"}
-new_index_name=${3:-""}
-alias_index_name=${4:-""}
+alias_index_name=${3:-""}
+new_index_name=${4:-""}
 replica_count=${5:-"2"}
 es_ip=${6:-""}
 es_port=${7:-"9200"}
