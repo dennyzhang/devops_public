@@ -4,32 +4,35 @@
 ## Description :
 ## --
 ## Created : <2017-03-27>
-## Updated: Time-stamp: <2017-03-27 14:18:50>
+## Updated: Time-stamp: <2017-03-27 14:44:45>
 ##-------------------------------------------------------------------
 old_index_name=${1?}
-
 new_index_name=${2:-""}
+alias_index_name=${3:-""}
+shard_count=${4:-"5"}
+replica_count=${5:-"1"}
+es_ip=${6:-""}
+es_port=${7:-"9200"}
+
+# Configure default value, if not given
+if [ -z "$alias_index_name" ]; then
+    # Note ES alias may not be like this
+    alias_index_name=$(echo "$old_index_name" | sed 's/-index//g')
+fi
 
 if [ -z "$new_index_name" ]; then
     new_index_name="${old_index_name}-new"
 fi
-shard_count=${3:-5}
-replica_count=${4:-1}
-es_ip=${5:-""}
-es_port=${6:-"9200"}
 
 # if $es_ip is not given, use ip of eth0 as default
 if [ -z "$es_ip" ]; then
     es_ip=$(/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
 fi
 
-# TODO: ES alias may not be like this
-alias_index_name=$(echo "$old_index_name" | sed 's/-index//g')
-
 ##-------------------------------------------------------------------
 # Sample test:
 # export old_index_name="staging-index-46078234297e400a1648d9c427dc8c4b"
-# export new_index_name="staging-index-46078234297e400a1648d9c427dc8c4b-1"
+# export new_index_name="${old_index_name}-new"
 # export alias_index_name=$(echo "$old_index_name" | sed 's/-index//g')
 # export shard_count=5
 # export replica_count=0
@@ -95,5 +98,8 @@ curl -XPOST "http://${es_ip}:${es_port}/${old_index_name}/_close"
 
 # Delete index
 # curl -XDELETE "http://${es_ip}:${es_port}/${old_index_name}?pretty"
+
+echo "List all indices"
+time curl -XGET "http://${es_ip}:${es_port}/_cat/indices?v"
 
 ## File : es_reindex.sh ends
