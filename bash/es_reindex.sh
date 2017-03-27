@@ -4,16 +4,21 @@
 ## Description :
 ## --
 ## Created : <2017-03-27>
-## Updated: Time-stamp: <2017-03-27 12:58:43>
+## Updated: Time-stamp: <2017-03-27 13:47:50>
 ##-------------------------------------------------------------------
 old_index_name=${1?}
 new_index_name=${2?}
 
 shard_count=${3:-5}
-replica_count=${4:-2}
+replica_count=${4:-1}
 
-es_ip="localhost"
+es_ip=${5:-""}
+if [ -z "$es_ip" ]; then
+    es_ip=$(/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
+fi
+alias_index_name=$(echo "$old_index_name" | sed 's/-index//g')
 
+##-------------------------------------------------------------------
 echo "old_index_name: $old_index_name, new_index_name: $new_index_name"
 
 echo "List all indices"
@@ -50,7 +55,6 @@ time curl -XPOST "http://${es_ip}:9200/_reindex?pretty" -d "
 echo "Get all re-index tasks"
 time curl -XGET "http://${es_ip}:9200/_tasks?detailed=true&actions=*reindex&pretty"
 
-alias_index_name=$(echo "$old_index_name" | sed 's/-index//g')
 echo "Add index to existing alias and remove old index from that alias. alias: $alias_index_name"
 time curl -XPOST "http://${es_ip}:9200/_aliases" -d "
 {
@@ -65,6 +69,9 @@ time curl -XPOST "http://${es_ip}:9200/_aliases" -d "
     }}
     ]
 }"
+
+# List alias
+curl -XPGET "http://${es_ip}:9200/_aliases?pretty"
 
 # Close index
 curl -XPOST "http://${es_ip}:9200/${old_index_name}/_close"
