@@ -4,7 +4,7 @@
 ## Description :
 ## --
 ## Created : <2017-03-27>
-## Updated: Time-stamp: <2017-03-27 14:12:40>
+## Updated: Time-stamp: <2017-03-27 14:18:50>
 ##-------------------------------------------------------------------
 old_index_name=${1?}
 
@@ -27,6 +27,15 @@ fi
 alias_index_name=$(echo "$old_index_name" | sed 's/-index//g')
 
 ##-------------------------------------------------------------------
+# Sample test:
+# export old_index_name="staging-index-46078234297e400a1648d9c427dc8c4b"
+# export new_index_name="staging-index-46078234297e400a1648d9c427dc8c4b-1"
+# export alias_index_name=$(echo "$old_index_name" | sed 's/-index//g')
+# export shard_count=5
+# export replica_count=0
+# export es_ip=$(/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
+# export es_port=9200
+
 echo "old_index_name: $old_index_name, new_index_name: $new_index_name"
 
 echo "List all indices"
