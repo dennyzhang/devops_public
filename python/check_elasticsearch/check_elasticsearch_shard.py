@@ -12,7 +12,7 @@
 ##    Make sure no same shard(primary, replica) are in the same node, to avoid SPOF
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-03-14 12:04:55>
+## Updated: Time-stamp: <2017-03-27 14:29:11>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -38,8 +38,8 @@ green  open   master-index-13a1f8adbec032ed68f3d035449ef48d    1   0          1 
 '''
     # TODO: error handling, if curl requests fails
     for line in r.content.split("\n"):
-        # remove the header
-        if " index " in line or line == '':
+        # remove the header, and skip closed ES indices
+        if line == '' or " index " in line  or " close " in line:
             continue
         else:
             # get the column of index name
