@@ -4,7 +4,7 @@
 ## Description :
 ## --
 ## Created : <2017-03-27>
-## Updated: Time-stamp: <2017-03-27 15:35:41>
+## Updated: Time-stamp: <2017-03-27 15:42:18>
 ##-------------------------------------------------------------------
 old_index_name=${1?}
 shard_count=${2:-"10"}
@@ -27,6 +27,13 @@ fi
 # if $es_ip is not given, use ip of eth0 as default
 if [ -z "$es_ip" ]; then
     es_ip=$(/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
+fi
+
+##-------------------------------------------------------------------
+# Precheck
+if [ "$alias_index_name" = "$old_index_name" ]; then
+    echo "ERROR: wrong parameter. old_index_name and alias_index_name can't be the same"
+    exit 1
 fi
 
 ##-------------------------------------------------------------------
