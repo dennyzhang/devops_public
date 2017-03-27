@@ -4,7 +4,7 @@
 ## Description :
 ## --
 ## Created : <2017-03-27>
-## Updated: Time-stamp: <2017-03-27 13:47:50>
+## Updated: Time-stamp: <2017-03-27 14:00:01>
 ##-------------------------------------------------------------------
 old_index_name=${1?}
 new_index_name=${2?}
@@ -71,7 +71,7 @@ time curl -XPOST "http://${es_ip}:9200/_aliases" -d "
 }"
 
 # List alias
-curl -XPGET "http://${es_ip}:9200/_aliases?pretty"
+curl -XPGET "http://${es_ip}:9200/_aliases?pretty" | grep -C 10 $(echo $old_index_name | sed "s/.*-index-//g")
 
 # Close index
 curl -XPOST "http://${es_ip}:9200/${old_index_name}/_close"
