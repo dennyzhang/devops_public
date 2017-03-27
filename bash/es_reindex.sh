@@ -4,7 +4,7 @@
 ## Description :
 ## --
 ## Created : <2017-03-27>
-## Updated: Time-stamp: <2017-03-27 15:42:18>
+## Updated: Time-stamp: <2017-03-27 15:42:37>
 ##-------------------------------------------------------------------
 old_index_name=${1?}
 shard_count=${2:-"10"}
@@ -14,6 +14,7 @@ replica_count=${5:-"2"}
 es_ip=${6:-""}
 es_port=${7:-"9200"}
 
+##-------------------------------------------------------------------
 # Configure default value, if not given
 if [ -z "$alias_index_name" ]; then
     # Note ES alias may not be like this
