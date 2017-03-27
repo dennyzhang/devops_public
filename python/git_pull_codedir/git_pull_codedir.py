@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-03-24>
-## Updated: Time-stamp: <2017-03-24 15:51:04>
+## Updated: Time-stamp: <2017-03-27 18:10:44>
 ##-------------------------------------------------------------------
 import os, sys
 import sys
@@ -37,7 +37,7 @@ def git_pull(code_dir):
     g = git.cmd.Git(code_dir)
     g.pull()
 
-# Sample python perform_git_pull.py --code_dirs "/data/code_dir/repo1,/data/code_dir/repo2"
+# Sample python git_pull_codedir.py --code_dirs "/data/code_dir/repo1,/data/code_dir/repo2"
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--code_dirs', required=True, \
