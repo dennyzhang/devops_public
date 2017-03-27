@@ -4,11 +4,15 @@
 ## Description :
 ## --
 ## Created : <2017-03-27>
-## Updated: Time-stamp: <2017-03-27 14:00:01>
+## Updated: Time-stamp: <2017-03-27 14:01:36>
 ##-------------------------------------------------------------------
 old_index_name=${1?}
-new_index_name=${2?}
 
+new_index_name=${2:-""}
+
+if [ -z "$new_index_name" ]; then
+    new_index_name="${old_index_name}-new"
+fi
 shard_count=${3:-5}
 replica_count=${4:-1}
 
@@ -71,7 +75,7 @@ time curl -XPOST "http://${es_ip}:9200/_aliases" -d "
 }"
 
 # List alias
-curl -XPGET "http://${es_ip}:9200/_aliases?pretty" | grep -C 10 $(echo $old_index_name | sed "s/.*-index-//g")
+curl -XPGET "http://${es_ip}:9200/_aliases?pretty" | grep -C 10 $(echo "$old_index_name" | sed "s/.*-index-//g")
 
 # Close index
 curl -XPOST "http://${es_ip}:9200/${old_index_name}/_close"
