@@ -4,7 +4,7 @@
 ## Description :
 ## --
 ## Created : <2017-03-27>
-## Updated: Time-stamp: <2017-03-27 15:42:37>
+## Updated: Time-stamp: <2017-03-28 11:15:11>
 ##-------------------------------------------------------------------
 old_index_name=${1?}
 shard_count=${2:-"10"}
@@ -101,8 +101,8 @@ time curl -XPOST "http://${es_ip}:${es_port}/_aliases" -d "
 # List alias
 curl -XPGET "http://${es_ip}:${es_port}/_aliases?pretty" | grep -C 10 "$(echo "$old_index_name" | sed "s/.*-index-//g")"
 
-# Close index
-curl -XPOST "http://${es_ip}:${es_port}/${old_index_name}/_close"
+# Close index: only after no requests access old index, we can close it
+# curl -XPOST "http://${es_ip}:${es_port}/${old_index_name}/_close"
 
 # Delete index
 # curl -XDELETE "http://${es_ip}:${es_port}/${old_index_name}?pretty"
