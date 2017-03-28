@@ -11,7 +11,7 @@
 ##    Check all ES indices have more than $min_replica_count replicas
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-03-27 19:26:29>
+## Updated: Time-stamp: <2017-03-27 19:42:24>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -39,6 +39,7 @@ green  open   master-index-13a1f8adbec032ed68f3d035449ef48d    1   0          1 
     for line in r.content.split("\n"):
         # remove the header, and skip closed ES indices
         if line == '' or " index " in line  or " close " in line:
+            continue
         else:
             # get the column of index name
             line = ' '.join(line.split())
