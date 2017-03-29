@@ -4,7 +4,7 @@
 ## Description :
 ## --
 ## Created : <2017-03-27>
-## Updated: Time-stamp: <2017-03-29 12:19:35>
+## Updated: Time-stamp: <2017-03-29 13:06:05>
 ##-------------------------------------------------------------------
 old_index_name=${1?}
 shard_count=${2:-"10"}
@@ -85,37 +85,39 @@ time curl -XPOST "http://${es_ip}:${es_port}/_reindex?pretty" -d "
     }
 }" | tee -a "$log_file"
 
+# TODO: confirm status, before proceed
+
 # We can start a new terminal and check reindex status
 echo "$(date +['%Y-%m-%d %H:%M:%S']) Get all re-index tasks" >> "$log_file"
-time curl -XGET "http://${es_ip}:${es_port}/_tasks?detailed=true&actions=*reindex&pretty"
+time curl -XGET "http://${es_ip}:${es_port}/_tasks?detailed=true&actions=*reindex&pretty" | tee -a "$log_file"
 
 # TODO: don't add alias
 
-# echo "$(date +['%Y-%m-%d %H:%M:%S']) Add index to existing alias and remove old index from that alias. alias: $alias_index_name" >> "$log_file"
-# time curl -XPOST "http://${es_ip}:${es_port}/_aliases" -d "
-# {
-#     \"actions\": [
-#     { \"remove\": {
-#     \"alias\": \"${alias_index_name}\",
-#     \"index\": \"${old_index_name}\"
-#     }},
-#     { \"add\": {
-#     \"alias\": \"${alias_index_name}\",
-#     \"index\": \"${new_index_name}\"
-#     }}
-#     ]
-# }"
+echo "$(date +['%Y-%m-%d %H:%M:%S']) Add index to existing alias and remove old index from that alias. alias: $alias_index_name" >> "$log_file"
+time curl -XPOST "http://${es_ip}:${es_port}/_aliases" -d "
+{
+    \"actions\": [
+    { \"remove\": {
+    \"alias\": \"${alias_index_name}\",
+    \"index\": \"${old_index_name}\"
+    }},
+    { \"add\": {
+    \"alias\": \"${alias_index_name}\",
+    \"index\": \"${new_index_name}\"
+    }}
+    ]
+}" | tee -a "$log_file"
 
 # echo "$(date +['%Y-%m-%d %H:%M:%S']) List all alias" >> "$log_file"
-# curl -XGET "http://${es_ip}:${es_port}/_aliases?pretty" | grep -C 10 "$(echo "$old_index_name" | sed "s/.*-index-//g")"
+# curl -XGET "http://${es_ip}:${es_port}/_aliases?pretty" \
+#       | grep -C 10 "$(echo "$old_index_name" | sed "s/.*-index-//g")" | tee -a "$log_file"
 
 # Close index: only after no requests access old index, we can close it
-# curl -XPOST "http://${es_ip}:${es_port}/${old_index_name}/_close"
+# curl -XPOST "http://${es_ip}:${es_port}/${old_index_name}/_close" | tee -a "$log_file"
 
 # Delete index
-# curl -XDELETE "http://${es_ip}:${es_port}/${old_index_name}?pretty"
+# curl -XDELETE "http://${es_ip}:${es_port}/${old_index_name}?pretty" | tee -a "$log_file"
 
 echo "$(date +['%Y-%m-%d %H:%M:%S']) List all indices" >> "$log_file"
-time curl -XGET "http://${es_ip}:${es_port}/_cat/indices?v"
-
+time curl -XGET "http://${es_ip}:${es_port}/_cat/indices?v" | tee -a "$log_file"
 ## File : es_reindex.sh ends
