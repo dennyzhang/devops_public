@@ -1,10 +1,12 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
 ## File : es_reindex.sh
-## Description :
+## Description : Re-index existing giant index to create more shards.
+##               Then create alias to handle the requests properly
+##               Check more: https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html
 ## --
 ## Created : <2017-03-27>
-## Updated: Time-stamp: <2017-03-29 13:06:05>
+## Updated: Time-stamp: <2017-03-29 13:14:26>
 ##-------------------------------------------------------------------
 old_index_name=${1?}
 shard_count=${2:-"10"}
@@ -55,6 +57,8 @@ echo "$(date +['%Y-%m-%d %H:%M:%S']) old_index_name: $old_index_name, new_index_
 
 echo "$(date +['%Y-%m-%d %H:%M:%S']) List all indices" >> "$log_file"
 time curl -XGET "http://${es_ip}:${es_port}/_cat/indices?v" | tee -a "$log_file"
+
+# TODO: verify whether ES index exists
 
 echo "$(date +['%Y-%m-%d %H:%M:%S']) create new index with proper shards and replicas" >> "$log_file"
 time curl -XPUT "http://${es_ip}:${es_port}/${new_index_name}?pretty" -d "
