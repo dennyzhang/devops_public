@@ -4,7 +4,7 @@
 ## Description :
 ## --
 ## Created : <2017-03-27>
-## Updated: Time-stamp: <2017-03-29 11:02:40>
+## Updated: Time-stamp: <2017-03-29 12:19:35>
 ##-------------------------------------------------------------------
 old_index_name=${1?}
 shard_count=${2:-"10"}
@@ -69,6 +69,8 @@ time curl -XPUT "http://${es_ip}:${es_port}/${new_index_name}?pretty" -d "
 
 echo "$(date +['%Y-%m-%d %H:%M:%S']) Get the setting of the new index" >> "$log_file"
 time curl -XGET "http://${es_ip}:${es_port}/${new_index_name}/_settings?pretty" | tee -a "$log_file"
+
+# TODO: make sure all shards(primary/replica) for this new index are good.
 
 echo "$(date +['%Y-%m-%d %H:%M:%S']) Reindex index. Attention: this will take a very long time, if the index is big" >> "$log_file"
 time curl -XPOST "http://${es_ip}:${es_port}/_reindex?pretty" -d "
