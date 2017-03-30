@@ -8,7 +8,7 @@
 ##   Sample: bash es_reindex.sh staging-index-e4010da4110ba377d100f050cb4440db 3
 ## --
 ## Created : <2017-03-27>
-## Updated: Time-stamp: <2017-03-29 19:38:17>
+## Updated: Time-stamp: <2017-03-29 19:50:27>
 ##-------------------------------------------------------------------
 old_index_name=${1?}
 shard_count=${2:-"10"}
@@ -152,12 +152,12 @@ else
     exit 1
 fi
 
+# Close index: only after no requests access old index, we can close it
+curl -XPOST "http://${es_ip}:${es_port}/${old_index_name}/_close" | tee -a "$log_file"
+
 # echo "$(date +['%Y-%m-%d %H:%M:%S']) List all alias" | tee -a "$log_file"
 # curl -XGET "http://${es_ip}:${es_port}/_aliases?pretty" \
 # | grep -C 10 "$(echo "$old_index_name" | sed "s/.*-index-//g")" | tee -a "$log_file"
-
-# Close index: only after no requests access old index, we can close it
-# curl -XPOST "http://${es_ip}:${es_port}/${old_index_name}/_close" | tee -a "$log_file"
 
 # Delete index
 # curl -XDELETE "http://${es_ip}:${es_port}/${old_index_name}?pretty" | tee -a "$log_file"
