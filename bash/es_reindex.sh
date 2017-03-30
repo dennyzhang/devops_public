@@ -5,10 +5,10 @@
 ##               Then create alias to handle the requests properly
 ##               Check more: https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html
 ##
-##   Sample: bash es_reindex.sh staging-index-e4010da4110ba377d100f050cb4440db 3
+##   Sample: TOLERANT_NEW_INDEX_EXISTS=true bash es_reindex.sh staging-index-e4010da4110ba377d100f050cb4440db 3
 ## --
 ## Created : <2017-03-27>
-## Updated: Time-stamp: <2017-03-29 20:11:21>
+## Updated: Time-stamp: <2017-03-30 08:59:36>
 ##-------------------------------------------------------------------
 old_index_name=${1?}
 shard_count=${2:-"10"}
@@ -17,6 +17,10 @@ new_index_name=${4:-""}
 replica_count=${5:-"2"}
 es_ip=${6:-""}
 es_port=${7:-"9200"}
+
+if [ -z "$TOLERANT_NEW_INDEX_EXISTS" ]; then
+    TOLERANT_NEW_INDEX_EXISTS="false"
+fi
 
 log_file="/var/log/es_reindex_sh.log"
 ##-------------------------------------------------------------------
@@ -68,8 +72,12 @@ time curl -XGET "http://${es_ip}:${es_port}/_cat/indices?v" | tee -a "$log_file"
 if curl -XGET "http://${es_ip}:${es_port}/${new_index_name}?pretty" | grep "\"status\" : 404"; then
     echo "$(date +['%Y-%m-%d %H:%M:%S']) index doesn't exist, which is good." | tee -a "$log_file"
 else
-    echo "$(date +['%Y-%m-%d %H:%M:%S']) ERROR: index(${new_index_name}) already exists" | tee -a "$log_file"
-    exit 1
+    if [ "$TOLERANT_NEW_INDEX_EXISTS" = "true" ]; then
+        echo "$(date +['%Y-%m-%d %H:%M:%S']) Warning: index(${new_index_name}) already exists" | tee -a "$log_file"
+    else        
+        echo "$(date +['%Y-%m-%d %H:%M:%S']) ERROR: index(${new_index_name}) already exists" | tee -a "$log_file"
+        exit 1
+    fi
 fi
 
 echo "$(date +['%Y-%m-%d %H:%M:%S']) create new index with proper shards and replicas" | tee -a "$log_file"
