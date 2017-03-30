@@ -6,7 +6,7 @@
 ##               Check more: https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html
 ## --
 ## Created : <2017-03-27>
-## Updated: Time-stamp: <2017-03-29 19:09:22>
+## Updated: Time-stamp: <2017-03-29 19:19:29>
 ##-------------------------------------------------------------------
 old_index_name=${1?}
 shard_count=${2:-"10"}
@@ -62,8 +62,7 @@ echo "$(date +['%Y-%m-%d %H:%M:%S']) old_index_name: $old_index_name, new_index_
 echo "$(date +['%Y-%m-%d %H:%M:%S']) List all indices" | tee -a "$log_file"
 time curl -XGET "http://${es_ip}:${es_port}/_cat/indices?v" | tee -a "$log_file"
 
-# TODO: verify whether ES index exists
-
+# verify whether ES index exists
 if curl -XGET "http://${es_ip}:${es_port}/${new_index_name}?pretty" | grep "\"status\" : 404"; then
     echo "$(date +['%Y-%m-%d %H:%M:%S']) index doesn't exist, which is good." | tee -a "$log_file"
 else
@@ -92,8 +91,15 @@ fi
 echo "$(date +['%Y-%m-%d %H:%M:%S']) Get the setting of the new index" | tee -a "$log_file"
 time curl -XGET "http://${es_ip}:${es_port}/${new_index_name}/_settings?pretty" | tee -a "$log_file"
 
-# TODO: make sure all shards(primary/replica) for this new index are good.
-
+# TODO: better way to make sure all shards(primary/replica) for this new index are good.
+sleep 60
+if [ "$(curl $es_ip:$es_port/_cat/shards?v | grep "${new_index_name}" | grep -v STARTED | wc -l)" = "0" ]; then
+    echo "$(date +['%Y-%m-%d %H:%M:%S']) index(${new_index_name}) is up and running" | tee -a "$log_file"
+else
+    echo "$(date +['%Y-%m-%d %H:%M:%S']) ERROR: index(${new_index_name}) is not up and running" | tee -a "$log_file"
+    exit 1
+fi
+   
 echo "$(date +['%Y-%m-%d %H:%M:%S']) Reindex index. Attention: this will take a very long time, if the index is big" | tee -a "$log_file"
 time curl -XPOST "http://${es_ip}:${es_port}/_reindex?pretty" -d "
     {
@@ -107,13 +113,20 @@ time curl -XPOST "http://${es_ip}:${es_port}/_reindex?pretty" -d "
     }
 }" | tee -a "$log_file"
 
-# TODO: confirm status, before proceed
+# confirm status, before proceed
+if tail -n 5 "$log_file" | grep "\"failures\" : \[ \]"; then
+    echo "$(date +['%Y-%m-%d %H:%M:%S']) keep going with the following process" | tee -a "$log_file"
+else
+    echo "$(date +['%Y-%m-%d %H:%M:%S']) ERROR to run previous curl command" | tee -a "$log_file"
+    exit 1
+fi
 
 # We can start a new terminal and check reindex status
 echo "$(date +['%Y-%m-%d %H:%M:%S']) Get all re-index tasks" | tee -a "$log_file"
 time curl -XGET "http://${es_ip}:${es_port}/_tasks?detailed=true&actions=*reindex&pretty" | tee -a "$log_file"
 
-# TODO: don't add alias
+# Check status
+time curl -XGET "http://${es_ip}:${es_port}/_cat/indices?v" | tee -a "$log_file"
 
 echo "$(date +['%Y-%m-%d %H:%M:%S']) Add index to existing alias and remove old index from that alias. alias: $alias_index_name" | tee -a "$log_file"
 time curl -XPOST "http://${es_ip}:${es_port}/_aliases" -d "
@@ -129,6 +142,13 @@ time curl -XPOST "http://${es_ip}:${es_port}/_aliases" -d "
     }}
     ]
 }" | tee -a "$log_file"
+
+if tail -n 5 "$log_file" | grep "\"acknowledged\" : true"; then
+    echo "$(date +['%Y-%m-%d %H:%M:%S']) keep going with the following process" | tee -a "$log_file"
+else
+    echo "$(date +['%Y-%m-%d %H:%M:%S']) ERROR to create alias" | tee -a "$log_file"
+    exit 1
+fi
 
 # echo "$(date +['%Y-%m-%d %H:%M:%S']) List all alias" | tee -a "$log_file"
 # curl -XGET "http://${es_ip}:${es_port}/_aliases?pretty" \
