@@ -8,7 +8,7 @@
 ##   Sample: bash es_reindex.sh staging-index-e4010da4110ba377d100f050cb4440db 3
 ## --
 ## Created : <2017-03-27>
-## Updated: Time-stamp: <2017-03-29 19:50:27>
+## Updated: Time-stamp: <2017-03-29 20:11:21>
 ##-------------------------------------------------------------------
 old_index_name=${1?}
 shard_count=${2:-"10"}
@@ -95,7 +95,7 @@ time curl -XGET "http://${es_ip}:${es_port}/${new_index_name}/_settings?pretty" 
 
 # TODO: better way to make sure all shards(primary/replica) for this new index are good.
 sleep 60
-if [ "$(curl $es_ip:$es_port/_cat/shards?v | grep "${new_index_name}" | grep -v STARTED | wc -l)" = "0" ]; then
+if [ "$(curl "$es_ip:$es_port/_cat/shards?v" | grep "${new_index_name}" | grep -c -v STARTED)" = "0" ]; then
     echo "$(date +['%Y-%m-%d %H:%M:%S']) index(${new_index_name}) is up and running" | tee -a "$log_file"
 else
     echo "$(date +['%Y-%m-%d %H:%M:%S']) ERROR: index(${new_index_name}) is not up and running" | tee -a "$log_file"
