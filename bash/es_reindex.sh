@@ -4,9 +4,11 @@
 ## Description : Re-index existing giant index to create more shards.
 ##               Then create alias to handle the requests properly
 ##               Check more: https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html
+##
+##   Sample: bash es_reindex.sh staging-index-e4010da4110ba377d100f050cb4440db 3
 ## --
 ## Created : <2017-03-27>
-## Updated: Time-stamp: <2017-03-29 19:19:29>
+## Updated: Time-stamp: <2017-03-29 19:21:19>
 ##-------------------------------------------------------------------
 old_index_name=${1?}
 shard_count=${2:-"10"}
