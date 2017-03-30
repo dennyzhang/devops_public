@@ -8,7 +8,7 @@
 ##   Sample: bash es_reindex.sh staging-index-e4010da4110ba377d100f050cb4440db 3
 ## --
 ## Created : <2017-03-27>
-## Updated: Time-stamp: <2017-03-29 19:21:19>
+## Updated: Time-stamp: <2017-03-29 19:38:17>
 ##-------------------------------------------------------------------
 old_index_name=${1?}
 shard_count=${2:-"10"}
@@ -145,7 +145,7 @@ time curl -XPOST "http://${es_ip}:${es_port}/_aliases" -d "
     ]
 }" | tee -a "$log_file"
 
-if tail -n 5 "$log_file" | grep "\"acknowledged\" : true"; then
+if tail -n 5 "$log_file" | grep "\"acknowledged\":true"; then
     echo "$(date +['%Y-%m-%d %H:%M:%S']) keep going with the following process" | tee -a "$log_file"
 else
     echo "$(date +['%Y-%m-%d %H:%M:%S']) ERROR to create alias" | tee -a "$log_file"
