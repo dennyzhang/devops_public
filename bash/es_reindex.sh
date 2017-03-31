@@ -8,7 +8,7 @@
 ##   Sample: TOLERANT_NEW_INDEX_EXISTS=true bash es_reindex.sh staging-index-e4010da4110ba377d100f050cb4440db 3
 ## --
 ## Created : <2017-03-27>
-## Updated: Time-stamp: <2017-03-30 08:59:36>
+## Updated: Time-stamp: <2017-03-30 20:26:33>
 ##-------------------------------------------------------------------
 old_index_name=${1?}
 shard_count=${2:-"10"}
@@ -20,6 +20,12 @@ es_port=${7:-"9200"}
 
 if [ -z "$TOLERANT_NEW_INDEX_EXISTS" ]; then
     TOLERANT_NEW_INDEX_EXISTS="false"
+fi
+
+if [ -z "$REINDEX_BATCH_SIZE" ]; then
+    # By default _reindex uses scroll batches of 100. Here we change it to 500
+    # https://www.elastic.co/guide/en/elasticsearch/reference/2.3/docs-reindex.html
+    REINDEX_BATCH_SIZE="500"
 fi
 
 log_file="/var/log/es_reindex_sh.log"
@@ -48,7 +54,6 @@ fi
 
 # TODO: quit when alias and index doesn't match
 
-# TODO: quit when curl fails
 ##-------------------------------------------------------------------
 # Sample test:
 # export old_index_name="staging-index-46078234297e400a1648d9c427dc8c4b"
@@ -71,31 +76,32 @@ time curl -XGET "http://${es_ip}:${es_port}/_cat/indices?v" | tee -a "$log_file"
 # verify whether ES index exists
 if curl -XGET "http://${es_ip}:${es_port}/${new_index_name}?pretty" | grep "\"status\" : 404"; then
     echo "$(date +['%Y-%m-%d %H:%M:%S']) index doesn't exist, which is good." | tee -a "$log_file"
+
+    tmp_dir="/tmp/${old_index_name}"
+    [ -d "$tmp_dir" ] || mkdir -p "$tmp_dir"
+
+    echo "$(date +['%Y-%m-%d %H:%M:%S']) Get setting and mappings of old index to ${tmp_dir}/create.json" | tee -a "$log_file"
+    curl "http://${es_ip}:${es_port}/${old_index_name}/_settings" | jq ".[] | .settings.index.number_of_shards=\"${shard_count}\" | .settings.index.number_of_replicas=\"${replica_count}\"" > "${tmp_dir}/settings.json"
+
+    curl "http://${es_ip}:${es_port}/${old_index_name}/_mapping" | jq '.[]' > "${tmp_dir}/mapping.json"
+    cat "${tmp_dir}/mapping.json" "${tmp_dir}/settings.json" | jq --slurp '.[0] * .[1]' > "${tmp_dir}/create.json"
+
+    echo "$(date +['%Y-%m-%d %H:%M:%S']) create new index with settings and mappings" | tee -a "$log_file"
+    time curl -XPOST "http://${es_ip}:${es_port}/${new_index_name}" -d "${tmp_dir}/create.json" | tee -a "$log_file"
+
+    if tail -n 5 "$log_file" | grep "\"acknowledged\" : true"; then
+        echo "$(date +['%Y-%m-%d %H:%M:%S']) keep going with the following process" | tee -a "$log_file"
+    else
+        echo "$(date +['%Y-%m-%d %H:%M:%S']) ERROR to run previous curl command" | tee -a "$log_file"
+        exit 1
+    fi
 else
     if [ "$TOLERANT_NEW_INDEX_EXISTS" = "true" ]; then
         echo "$(date +['%Y-%m-%d %H:%M:%S']) Warning: index(${new_index_name}) already exists" | tee -a "$log_file"
-    else        
+    else
         echo "$(date +['%Y-%m-%d %H:%M:%S']) ERROR: index(${new_index_name}) already exists" | tee -a "$log_file"
         exit 1
     fi
-fi
-
-echo "$(date +['%Y-%m-%d %H:%M:%S']) create new index with proper shards and replicas" | tee -a "$log_file"
-time curl -XPUT "http://${es_ip}:${es_port}/${new_index_name}?pretty" -d "
-    {
-       \"settings\" : {
-       \"index\" : {
-       \"number_of_shards\" : ${shard_count},
-       \"number_of_replicas\" : ${replica_count}
-       }
-   }
-}" | tee -a "$log_file"
-
-if tail -n 5 "$log_file" | grep "\"acknowledged\" : true"; then
-    echo "$(date +['%Y-%m-%d %H:%M:%S']) keep going with the following process" | tee -a "$log_file"
-else
-    echo "$(date +['%Y-%m-%d %H:%M:%S']) ERROR to run previous curl command" | tee -a "$log_file"
-    exit 1
 fi
 
 echo "$(date +['%Y-%m-%d %H:%M:%S']) Get the setting of the new index" | tee -a "$log_file"
@@ -115,7 +121,8 @@ time curl -XPOST "http://${es_ip}:${es_port}/_reindex?pretty" -d "
     {
     \"conflicts\": \"proceed\",
     \"source\": {
-    \"index\": \"${old_index_name}\"
+    \"index\": \"${old_index_name}\",
+    \"size\": \"${REINDEX_BATCH_SIZE}\"
     },
     \"dest\": {
     \"index\": \"${new_index_name}\",
@@ -163,9 +170,9 @@ fi
 # Close index: only after no requests access old index, we can close it
 curl -XPOST "http://${es_ip}:${es_port}/${old_index_name}/_close" | tee -a "$log_file"
 
-# echo "$(date +['%Y-%m-%d %H:%M:%S']) List all alias" | tee -a "$log_file"
-# curl -XGET "http://${es_ip}:${es_port}/_aliases?pretty" \
-# | grep -C 10 "$(echo "$old_index_name" | sed "s/.*-index-//g")" | tee -a "$log_file"
+echo "$(date +['%Y-%m-%d %H:%M:%S']) List all alias" | tee -a "$log_file"
+curl -XGET "http://${es_ip}:${es_port}/_aliases?pretty" \
+    | grep -C 10 "$(echo "$old_index_name" | sed "s/.*-index-//g")" | tee -a "$log_file"
 
 # Delete index
 # curl -XDELETE "http://${es_ip}:${es_port}/${old_index_name}?pretty" | tee -a "$log_file"
