@@ -8,7 +8,7 @@
 ##   Sample: TOLERANT_NEW_INDEX_EXISTS=true bash es_reindex.sh staging-index-e4010da4110ba377d100f050cb4440db 3
 ## --
 ## Created : <2017-03-27>
-## Updated: Time-stamp: <2017-03-30 20:26:33>
+## Updated: Time-stamp: <2017-03-31 11:58:54>
 ##-------------------------------------------------------------------
 old_index_name=${1?}
 shard_count=${2:-"10"}
@@ -87,7 +87,7 @@ if curl -XGET "http://${es_ip}:${es_port}/${new_index_name}?pretty" | grep "\"st
     cat "${tmp_dir}/mapping.json" "${tmp_dir}/settings.json" | jq --slurp '.[0] * .[1]' > "${tmp_dir}/create.json"
 
     echo "$(date +['%Y-%m-%d %H:%M:%S']) create new index with settings and mappings" | tee -a "$log_file"
-    time curl -XPOST "http://${es_ip}:${es_port}/${new_index_name}" -d "${tmp_dir}/create.json" | tee -a "$log_file"
+    time curl -XPOST "http://${es_ip}:${es_port}/${new_index_name}" -d @"${tmp_dir}/create.json" | tee -a "$log_file"
 
     if tail -n 5 "$log_file" | grep "\"acknowledged\" : true"; then
         echo "$(date +['%Y-%m-%d %H:%M:%S']) keep going with the following process" | tee -a "$log_file"
