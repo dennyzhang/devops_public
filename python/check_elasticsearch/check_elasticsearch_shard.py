@@ -12,7 +12,7 @@
 ##    Make sure no same shard(primary, replica) are in the same node, to avoid SPOF
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-02 21:48:45>
+## Updated: Time-stamp: <2017-04-02 21:49:18>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -91,7 +91,7 @@ if __name__ == '__main__':
         s.connect(("8.8.8.8", 80))
         es_host = s.getsockname()[0]
 
-    es_index_list = get_es_index_list(es_host, es_port, es_pattern_regexp)
+    es_index_list = get_es_index_info(es_host, es_port, es_pattern_regexp)
 
     failed_index_list = confirm_es_shard_count(es_host, es_port, es_index_list, min_shard_count)
 
