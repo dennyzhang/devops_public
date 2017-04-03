@@ -12,7 +12,7 @@
 ##    Make sure no same shard(primary, replica) are in the same node, to avoid SPOF
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-03-27 14:29:11>
+## Updated: Time-stamp: <2017-04-02 21:48:45>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -23,7 +23,7 @@ import re
 NAGIOS_OK_ERROR=0
 NAGIOS_EXIT_ERROR=2
 
-def get_es_index_list(es_host, es_port):
+def get_es_index_info(es_host, es_port, es_pattern_regexp):
     index_list = []
     url = "http://%s:%s/_cat/indices?v" % (es_host, es_port)
     r = requests.get(url)
@@ -36,54 +36,27 @@ green  open   master-index-13a1f8adbec032ed68f3d035449ef48d    1   0          1 
 ...
 ...
 '''
+    # TODO: use python library for ES
     # TODO: error handling, if curl requests fails
     for line in r.content.split("\n"):
         # remove the header, and skip closed ES indices
         if line == '' or " index " in line  or " close " in line:
             continue
         else:
-            # get the column of index name
-            line = ' '.join(line.split())
-            l = line.split(" ")
-            index_list.append(l[2])
+            line = " ".join(line.split())
+            l = line.split()
+            index_name = l[2]
+            number_of_shards = l[3]
+            pri_store_size = l[8]
+            index_list.append([index_name, number_of_shards, pri_store_size])
     return index_list
 
-def get_es_shard_count(es_host, es_port, index_name):
-    number_of_shards = -1
-    url = "http://%s:%s/%s/_settings?pretty" % (es_host, es_port, index_name)
-    r = requests.get(url)
-    '''
-Sample output:
-        ...
-        ...
-        "number_of_shards" : "1",
-        "query" : {
-          "bool" : {
-            "max_clause_count" : "10240"
-        ...
-        ...
-    '''
-    # TODO: error handling, if curl requests fails
-    for line in r.content.split("\n"):
-        if "\"number_of_shards\" : " in line:
-            value = line.split(":")[1]
-            value = value.replace(" ", "").replace("\"", "").replace(",", "")
-            number_of_shards = int(value)
-    if number_of_shards == -1:
-        raise Exception("Error: fail to get shard count of elasticsearch index(%s)." % (index_name))
-    return number_of_shards
-
-def confirm_es_shard_count(es_host, es_port, es_index_list, \
-                             min_shard_count, es_pattern_regexp):
+def confirm_es_shard_count(es_host, es_port, es_index_list, min_shard_count):
     # Check all ES indices have more than $min_shard_count shards
     failed_index_list = []
-    for index_name in es_index_list:
-        if es_pattern_regexp != "":
-            m = re.search(es_pattern_regexp, index_name)
-            # Skip ES index which doesn't match the pattern
-            if m is None:
-                continue
-        number_of_shards = get_es_shard_count(es_host, es_port, index_name)
+    for l in es_index_list:
+        index_name = l[1]
+        number_of_shards = l[1]
         if number_of_shards < min_shard_count:
             print "ERROR: index(%s) only has %d shards, less than %d." \
                 % (index_name, number_of_shards, min_shard_count)
@@ -118,10 +91,9 @@ if __name__ == '__main__':
         s.connect(("8.8.8.8", 80))
         es_host = s.getsockname()[0]
 
-    es_index_list = get_es_index_list(es_host, es_port)
+    es_index_list = get_es_index_list(es_host, es_port, es_pattern_regexp)
 
-    failed_index_list = confirm_es_shard_count(es_host, es_port, es_index_list, \
-                                                 min_shard_count, es_pattern_regexp)
+    failed_index_list = confirm_es_shard_count(es_host, es_port, es_index_list, min_shard_count)
 
     if len(failed_index_list) != 0:
         print "ERROR: Below indices don't have enough shards:\n%s" % \
@@ -130,5 +102,7 @@ if __name__ == '__main__':
     else:
         # TODO: make sure no same shard in one node, to avoid SPOF
         print "OK: all ES indices have no less than %d shards" % (min_shard_count)
-        sys.exit(NAGIOS_OK_ERROR)
+
+    # TODO: verify shard primary store size
+
 ## File : check_elasticsearch_shard.py ends
