@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2017-01-18 10:06:43>
+## Updated: Time-stamp: <2017-04-04 15:37:52>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -45,7 +45,7 @@ function exec_kitchen_cmd() {
 
     if [ -a "${hooks_dir}/pre-$cmd.sh" ];then
         log "start to exec kitchen hook: pre-$cmd.sh"
-        bash -e "${hooks_dir}/pre-$cmd.sh" && log "kitchen hook: pre-$cmd.sh exec done!"
+        bash -ex "${hooks_dir}/pre-$cmd.sh" && log "kitchen hook: pre-$cmd.sh exec done!"
     fi
 
     command="kitchen $cmd $options"
@@ -54,7 +54,7 @@ function exec_kitchen_cmd() {
 
     if [ -a "${hooks_dir}/post-$cmd.sh" ];then
         log "start to exec kitchen hook: post-$cmd.sh"
-        bash -e "${hooks_dir}/post-$cmd.sh" && log "kitchen hook: post-$cmd.sh exec done!"
+        bash -ex "${hooks_dir}/post-$cmd.sh" && log "kitchen hook: post-$cmd.sh exec done!"
     fi
 }
 
