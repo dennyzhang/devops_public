@@ -12,7 +12,7 @@
 ##    Make sure no same shard(primary, replica) are in the same node, to avoid SPOF
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-02 21:49:18>
+## Updated: Time-stamp: <2017-04-04 22:54:40>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -72,8 +72,10 @@ if __name__ == '__main__':
                         help="server port for elasticsearch instance", type=str)
     parser.add_argument('--es_pattern_regexp', required=False, default='', \
                         help="ES index name pattern. Only ES indices with matched pattern will be examined", type=str)
-    parser.add_argument('--min_shard_count', default=3, required=False, \
-                        help="minimal shard each elasticsearch index should have", type=str)
+    parser.add_argument('--min_shard_count', default='3', required=False, \
+                        help='minimal shards each elasticsearch index should have', type=str)
+    parser.add_argument('--max_shard_size', default='50gb', required=False, \
+                        help='maximum shards size: avoid giant shards', type=str)
     l = parser.parse_args()
 
     es_port = l.es_port
