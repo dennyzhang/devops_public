@@ -12,7 +12,7 @@
 ##    Make sure no same shard(primary, replica) are in the same node, to avoid SPOF
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-05 17:09:24>
+## Updated: Time-stamp: <2017-04-05 17:15:10>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -34,9 +34,12 @@ def get_gb_size_from_string(string):
         val = float(string.replace("mb", "")) * 0.001
     elif string.endswith("kb"):
         val = float(string.replace("kb", "")) * 0.001 * 0.001
+    elif string.endswith("b"):
+        val = float(string.replace("b", "")) * 0.001 * 0.001 * 0.001
     else:
         print "ERROR: unexpected. size string: %s" % (string)
         sys.exit(NAGIOS_EXIT_ERROR)
+    return val
 
 def get_es_index_info(es_host, es_port, es_pattern_regexp):
     index_list = []
@@ -85,7 +88,8 @@ def confirm_es_shard_size(es_host, es_port, es_index_list, max_shard_size):
         index_name = l[0]
         number_of_shards = l[1]
         pri_store_size = l[2]
-        avg_shard_size_gb = get_gb_size_from_string(pri_store_size) /int(number_of_shards)
+        # print l, pri_store_size, number_of_shards
+        avg_shard_size_gb = get_gb_size_from_string(pri_store_size)/int(number_of_shards)
         if avg_shard_size_gb > max_shard_size:
             print "ERROR: index(%s) has some shards bigger than %s gb." \
                 % (index_name, max_shard_size)
@@ -146,5 +150,5 @@ if __name__ == '__main__':
         sys.exit(NAGIOS_EXIT_ERROR)
     else:
         # TODO: make sure no same shard in one node, to avoid SPOF
-        print "OK: all matched ES indices have no shards bigger than %s" % (max_shard_size)
+        print "OK: all matched ES indices have no shards bigger than %s gb." % (max_shard_size)
 ## File : check_elasticsearch_shard.py ends
