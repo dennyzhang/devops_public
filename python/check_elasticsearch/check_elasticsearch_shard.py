@@ -12,7 +12,7 @@
 ##    Make sure no same shard(primary, replica) are in the same node, to avoid SPOF
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-05 17:16:41>
+## Updated: Time-stamp: <2017-04-05 17:21:01>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -74,7 +74,7 @@ def confirm_es_shard_count(es_host, es_port, es_index_list, min_shard_count):
     failed_index_list = []
     for l in es_index_list:
         index_name = l[0]
-        number_of_shards = l[1]
+        number_of_shards = int(l[1])
         if number_of_shards < min_shard_count:
             print "ERROR: index(%s) only has %d shards, less than %d." \
                 % (index_name, number_of_shards, min_shard_count)
@@ -86,10 +86,10 @@ def confirm_es_shard_size(es_host, es_port, es_index_list, max_shard_size):
     failed_index_list = []
     for l in es_index_list:
         index_name = l[0]
-        number_of_shards = l[1]
+        number_of_shards = int(l[1])
         pri_store_size = l[2]
         # print l, pri_store_size, number_of_shards
-        avg_shard_size_gb = get_gb_size_from_string(pri_store_size)/int(number_of_shards)
+        avg_shard_size_gb = get_gb_size_from_string(pri_store_size)/number_of_shards
         if avg_shard_size_gb > max_shard_size:
             print "ERROR: index(%s) has some shards bigger than %s gb." \
                 % (index_name, max_shard_size)
