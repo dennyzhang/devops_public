@@ -12,7 +12,7 @@
 ##    Make sure no same shard(primary, replica) are in the same node, to avoid SPOF
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-04 22:54:40>
+## Updated: Time-stamp: <2017-04-05 12:11:47>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -63,6 +63,11 @@ def confirm_es_shard_count(es_host, es_port, es_index_list, min_shard_count):
             failed_index_list.append(index_name)
     return failed_index_list
 
+# Sample:
+# python ./check_elasticsearch_shard.py --es_pattern_regexp "master-.*|staging-.*" \
+#          --min_shard_count "5" \
+#          --max_shard_size "60gb"
+
 if __name__ == '__main__':
     # get parameters from users
     parser = argparse.ArgumentParser()
@@ -82,6 +87,7 @@ if __name__ == '__main__':
     min_shard_count = int(l.min_shard_count)
     es_pattern_regexp = l.es_pattern_regexp
     es_host = l.es_host
+    max_shard_size = l.max_shard_size
 
     if min_shard_count == 0:
         print "OK: skip the check, since the given min_shard_count is 0"
@@ -103,8 +109,9 @@ if __name__ == '__main__':
         sys.exit(NAGIOS_EXIT_ERROR)
     else:
         # TODO: make sure no same shard in one node, to avoid SPOF
-        print "OK: all ES indices have no less than %d shards" % (min_shard_count)
+        print "OK: all matched ES indices have no less than %d shards" % (min_shard_count)
 
     # TODO: verify shard primary store size
+    print "OK: all matched ES indices have no shards bigger than %s" % (max_shard_size)
 
 ## File : check_elasticsearch_shard.py ends
