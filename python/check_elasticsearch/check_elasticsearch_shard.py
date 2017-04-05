@@ -12,7 +12,7 @@
 ##    Make sure no same shard(primary, replica) are in the same node, to avoid SPOF
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-05 17:21:01>
+## Updated: Time-stamp: <2017-04-05 17:26:18>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -121,10 +121,6 @@ if __name__ == '__main__':
     es_pattern_regexp = l.es_pattern_regexp
     es_host = l.es_host
     max_shard_size = get_gb_size_from_string(l.max_shard_size)
-
-    if min_shard_count == 0:
-        print "OK: skip the check, since the given min_shard_count is 0"
-        sys.exit(NAGIOS_OK_ERROR)
 
     # get ip of eth0, if es_host is not given
     if es_host is None:
