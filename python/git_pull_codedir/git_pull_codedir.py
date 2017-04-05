@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-03-24>
-## Updated: Time-stamp: <2017-03-27 18:10:44>
+## Updated: Time-stamp: <2017-04-05 16:35:04>
 ##-------------------------------------------------------------------
 import os, sys
 import sys
@@ -35,6 +35,7 @@ def git_pull(code_dir):
         sys.exit(1)
     os.chdir(code_dir)
     g = git.cmd.Git(code_dir)
+    # TODO: we need verbose output
     g.pull()
 
 # Sample python git_pull_codedir.py --code_dirs "/data/code_dir/repo1,/data/code_dir/repo2"
