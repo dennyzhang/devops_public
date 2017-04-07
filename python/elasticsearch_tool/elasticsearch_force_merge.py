@@ -8,7 +8,7 @@
 ##    Run force merge for existing indices, when ratio of deleted count/doc count is over 0.1
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-07 12:28:04>
+## Updated: Time-stamp: <2017-04-07 12:49:43>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -49,37 +49,52 @@ green  open   master-index-13a1f8adbec032ed68f3d035449ef48d    1   0          1 
             index_name = l[2]
             total_doc_count = int(l[5])
             deleted_doc_count = int(l[6])
-            if (deleted_doc_count < min_deleted_count) or \
-               float(deleted_doc_count)/total_doc_count < min_deleted_ratio:
-                continue
+            if min_deleted_count != 0 and min_deleted_ratio != 0:
+                if (deleted_doc_count < min_deleted_count):
+                    continue
+                if float(deleted_doc_count)/total_doc_count < min_deleted_ratio:
+                    continue
+            print "Skip index_name(%s). total doc count: %d, deleted doc: %d" % \
+                (index_name, total_doc_count, deleted_doc_count)
             index_list.append([index_name, total_doc_count, deleted_doc_count])
     return index_list
 
-def force_merge_index(es_host, es_port, index_name):
-    # Get index setting, before merge
+def print_index_setting(es_host, es_port, index_name):
     url = "http://%s:%s/%s/_stats?pretty" % (es_host, es_port, index_name)
     r = requests.get(url)
     if r.status_code != 200:
         print "ERROR: fail to run REST API: %s" % (url)
         sys.exit(NAGIOS_EXIT_ERROR)
     content_json = json.loads(r.content)
-    print content_json["_all"]["primaries"]["docs"].to_s
-    content_json["_all"]["primaries"]["merges"]
-    content_json["_all"]["primaries"]["segments"]
+    print "docs:%s, merges:%s, segments:%s" % \
+        (content_json["_all"]["primaries"]["docs"], 
+         content_json["_all"]["primaries"]["merges"],
+         content_json["_all"]["primaries"]["segments"])
+
+def force_merge_index(es_host, es_port, index_name):
+    print "Get index (%s) settings, before merge" % (index_name)
+    print_index_setting(es_host, es_port, index_name)
+
     # TODO: Quit if something wrong; get time performance
     # force-merge is a sync call, and it might take a long time
-    url = "http://%s:%s/%s/_forcemerge?pretty&only_expunge_deletes=true" % \
-                                                                    (es_host, es_port, index_name)
+    url = \
+          "http://%s:%s/%s/_forcemerge?pretty&only_expunge_deletes=true" % \
+          (es_host, es_port, index_name)
     r = requests.post(url)
     if r.status_code != 200:
         print "ERROR: fail to run REST API: %s" % (url)
         sys.exit(NAGIOS_EXIT_ERROR)
-    return True
+
+    # TODO: get time performance
+    print "Get index (%s) settings, after merge" % (index_name)
+    print_index_setting(es_host, es_port, index_name)
 
 # Sample:
 # python ./elasticsearch_force_merge.py --es_pattern_regexp "master-.*|staging-.*" \
 #          --min_deleted_count 1000 \
 #          --min_deleted_ratio 0.1
+#
+# python /tmp/elasticsearch_force_merge.py --min_deleted_count 0  --min_deleted_ratio 0
 
 if __name__ == '__main__':
     # get parameters from users
