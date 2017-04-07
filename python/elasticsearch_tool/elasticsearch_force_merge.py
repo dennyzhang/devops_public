@@ -8,12 +8,13 @@
 ##    Run force merge for existing indices, when ratio of deleted count/doc count is over 0.1
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-07 11:35:25>
+## Updated: Time-stamp: <2017-04-07 12:28:04>
 ##-------------------------------------------------------------------
 import argparse
 import requests
 import sys
 import socket
+import json
 
 NAGIOS_OK_ERROR=0
 NAGIOS_EXIT_ERROR=2
@@ -33,7 +34,7 @@ green  open   master-index-13a1f8adbec032ed68f3d035449ef48d    1   0          1 
 ...
 ...
 '''
-    if r.status_code != "200":
+    if r.status_code != 200:
         print "ERROR: fail to run REST API: %s" % (url)
         sys.exit(NAGIOS_EXIT_ERROR)
 
@@ -48,7 +49,7 @@ green  open   master-index-13a1f8adbec032ed68f3d035449ef48d    1   0          1 
             index_name = l[2]
             total_doc_count = int(l[5])
             deleted_doc_count = int(l[6])
-            if deleted_doc_count < min_deleted_count || \
+            if (deleted_doc_count < min_deleted_count) or \
                float(deleted_doc_count)/total_doc_count < min_deleted_ratio:
                 continue
             index_list.append([index_name, total_doc_count, deleted_doc_count])
@@ -58,15 +59,19 @@ def force_merge_index(es_host, es_port, index_name):
     # Get index setting, before merge
     url = "http://%s:%s/%s/_stats?pretty" % (es_host, es_port, index_name)
     r = requests.get(url)
-    if r.status_code != "200":
+    if r.status_code != 200:
         print "ERROR: fail to run REST API: %s" % (url)
         sys.exit(NAGIOS_EXIT_ERROR)
+    content_json = json.loads(r.content)
+    print content_json["_all"]["primaries"]["docs"].to_s
+    content_json["_all"]["primaries"]["merges"]
+    content_json["_all"]["primaries"]["segments"]
     # TODO: Quit if something wrong; get time performance
     # force-merge is a sync call, and it might take a long time
     url = "http://%s:%s/%s/_forcemerge?pretty&only_expunge_deletes=true" % \
                                                                     (es_host, es_port, index_name)
     r = requests.post(url)
-    if r.status_code != "200":
+    if r.status_code != 200:
         print "ERROR: fail to run REST API: %s" % (url)
         sys.exit(NAGIOS_EXIT_ERROR)
     return True

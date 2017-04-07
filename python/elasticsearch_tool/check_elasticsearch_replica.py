@@ -11,7 +11,7 @@
 ##    Check all ES indices have more than $min_replica_count replicas
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-07 11:35:40>
+## Updated: Time-stamp: <2017-04-07 12:27:56>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -35,7 +35,7 @@ green  open   master-index-13a1f8adbec032ed68f3d035449ef48d    1   0          1 
 ...
 ...
 '''
-    if r.status_code != "200":
+    if r.status_code != 200:
         print "ERROR: fail to run REST API: %s" % (url)
         sys.exit(NAGIOS_EXIT_ERROR)
     # TODO: error handling, if curl requests fails
@@ -66,7 +66,7 @@ Sample output:
         ...
         ...
     '''
-    if r.status_code != "200":
+    if r.status_code != 200:
         print "ERROR: fail to run REST API: %s" % (url)
         sys.exit(NAGIOS_EXIT_ERROR)
     # TODO: error handling, if curl requests fails

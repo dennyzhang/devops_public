@@ -12,7 +12,7 @@
 ##    Make sure no same shard(primary, replica) are in the same node, to avoid SPOF
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-07 11:35:51>
+## Updated: Time-stamp: <2017-04-07 12:28:00>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -54,7 +54,7 @@ green  open   master-index-13a1f8adbec032ed68f3d035449ef48d    1   0          1 
 ...
 ...
 '''
-    if r.status_code != "200":
+    if r.status_code != 200:
         print "ERROR: fail to run REST API: %s" % (url)
         sys.exit(NAGIOS_EXIT_ERROR)
     # TODO: use python library for ES
