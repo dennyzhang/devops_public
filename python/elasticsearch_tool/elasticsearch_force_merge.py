@@ -8,7 +8,7 @@
 ##    Run force merge for existing indices, when ratio of deleted count/doc count is over 0.1
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-07 12:49:43>
+## Updated: Time-stamp: <2017-04-07 14:19:20>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -54,8 +54,6 @@ green  open   master-index-13a1f8adbec032ed68f3d035449ef48d    1   0          1 
                     continue
                 if float(deleted_doc_count)/total_doc_count < min_deleted_ratio:
                     continue
-            print "Skip index_name(%s). total doc count: %d, deleted doc: %d" % \
-                (index_name, total_doc_count, deleted_doc_count)
             index_list.append([index_name, total_doc_count, deleted_doc_count])
     return index_list
 
