@@ -8,16 +8,12 @@
 ##    Run force merge for existing indices, when ratio of deleted count/doc count is over 0.1
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-07 10:25:09>
+## Updated: Time-stamp: <2017-04-07 10:29:02>
 ##-------------------------------------------------------------------
 import argparse
 import requests
 import sys
 import socket
-import re
-
-NAGIOS_OK_ERROR=0
-NAGIOS_EXIT_ERROR=2
 
 def get_es_index_info(es_host, es_port, es_pattern_regexp, \
                       min_deleted_count, min_deleted_ratio):
@@ -52,7 +48,13 @@ green  open   master-index-13a1f8adbec032ed68f3d035449ef48d    1   0          1 
     return index_list
 
 def force_merge_index(es_host, es_port, index_name):
+    # Get index setting, before merge
+
     # TODO: Quit if something wrong; get time performance
+    # force-merge is a sync call, and it might take a long time
+    url = "http://%s:%s/%s/_forcemerge?pretty&only_expunge_deletes=true" % \
+                                                                    (es_host, es_port, index_name)
+    r = requests.post(url)
     return True
 
 # Sample:
