@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Monitor servers for key files change. Once they&apos;re changed, send out alerts. &#xd;
+This helps us to detect malicious or unexpected changes.&#xd;
+</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.TextParameterDefinition>
+          <name>server_list</name>
+          <description></description>
+          <defaultValue># server_ip:ssh_port
+172.17.0.2:2702
+172.17.0.3:2702
+</defaultValue>
+        </hudson.model.TextParameterDefinition>
+        <hudson.model.TextParameterDefinition>
+          <name>file_list</name>
+          <description></description>
+          <defaultValue>/etc/apt/sources.list.d
+/etc/hosts
+/opt/mdm/config
+/opt/couchbase/etc/
+/etc/elasticsearch</defaultValue>
+        </hudson.model.TextParameterDefinition>
+        <hudson.model.TextParameterDefinition>
+          <name>env_parameters</name>
+          <description></description>
+          <defaultValue>export mark_previous_as_true=false
+export start_inotifywait_when_stopped=true</defaultValue>
+        </hudson.model.TextParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>true</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers>
+    <hudson.triggers.TimerTrigger>
+      <spec>H H/3 * * *</spec>
+    </hudson.triggers.TimerTrigger>
+  </triggers>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>#!/bin/bash
+export ssh_key_file=&quot;/var/lib/jenkins/.ssh/ci_id_rsa&quot;
+
+curl -o /tmp/monitor_server_filechanges.sh https://raw.githubusercontent.com/TOTVS/mdmpublic/2016-06-24/common_bash/monitor/monitor_server_filechanges.sh
+bash -e /tmp/monitor_server_filechanges.sh</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers>
+    <hudson.tasks.Mailer plugin="mailer@1.11">
+      <recipients>devops.totvslabs@dennyzhang.com</recipients>
+      <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
+      <sendToIndividuals>false</sendToIndividuals>
+    </hudson.tasks.Mailer>
+  </publishers>
+  <buildWrappers>
+    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@1.8.2"/>
+  </buildWrappers>
+</project>

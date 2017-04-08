@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-06-24 15:52:57>
+## Updated: Time-stamp: <2017-04-08 15:14:22>
 ##-------------------------------------------------------------------
 function configure_jenkins_port() {
     port=${1?}
@@ -45,8 +45,8 @@ function install_jenkins() {
 }
 
 function setup_jenkins_jobs() {
-    http_prefix="https://raw.githubusercontent.com/TOTVS/mdmpublic/2016-06-24/chef/setup_jenkins/jenkins_jobs"
-    jenkins_jobs="DeploySystem,RunCommandOnServers,MonitorServerFileChanges,VerifySystem,CollectFiles,DiagnosticJenkinsJobSlow,BackupCriticalData"
+    http_prefix="https://raw.githubusercontent.com/TOTVS/mdmpublic/tag_v5/chef/setup_jenkins/jenkins_jobs"
+    jenkins_jobs="DeploySystem,RunCommandOnServers,MonitorServerFileChanges,VerifySystem,CollectFiles,CommonServerCheck"
     should_restart=false
     IFS=','
     for job_name in $jenkins_jobs; do
@@ -72,12 +72,22 @@ function grant_jenkins_privilege() {
     fi
 }
 
+function jenkins_ssh_file_setup() {
+    if [ ! -f /var/lib/jenkins/.ssh/ci_id_rsa ]; then
+        mkdir -p /var/lib/jenkins/.ssh
+        chown jenkins:jenkins -R /var/lib/jenkins/.ssh
+        touch /var/lib/jenkins/.ssh/ci_id_rsa
+        chmod 400 /var/lib/jenkins/.ssh/ci_id_rsa
+    fi
+}
+
 jenkins_port=18080
 
 grant_jenkins_privilege
 install_jenkins
 configure_jenkins_port $jenkins_port
 setup_jenkins_jobs
+jenkins_ssh_file_setup
 
 # TODO: use real ip
 echo "Jenkins is up: http://\$server_ip:$jenkins_port"
