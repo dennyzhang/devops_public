@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-05-10>
-## Updated: Time-stamp: <2016-10-26 13:29:02>
+## Updated: Time-stamp: <2017-04-08 15:03:10>
 ##-------------------------------------------------------------------
 require 'socket'
 require 'serverspec'
@@ -24,7 +24,7 @@ def wait_jenkins_up(jenkins_run_cmd)
 
   # TODO: don't hardcode download link
   url_link_prefix = \
-    'https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v2/jenkins_scripts/jenkins'
+    'https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v5/jenkins_scripts/jenkins'
 
   %w(poll_jenkins_job.sh wait_jenkins_up.sh).each do |f|
     describe command("#{jenkins_run_cmd} curl -o /root/#{f} " \

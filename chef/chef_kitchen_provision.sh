@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-11-30>
-## Updated: Time-stamp: <2016-07-08 11:28:10>
+## Updated: Time-stamp: <2017-04-08 15:02:55>
 ##-------------------------------------------------------------------
 # pre-cache Chef Omnibus installation
 mkdir -p /tmp/install.sh.14
@@ -22,7 +22,7 @@ if [ ! -f /tmp/install.sh.14/chef_12.7.2-1_amd64.deb ]; then
 fi
 
 echo "Inject ssh key to kitchen user and root user"
-[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v2"
+[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v5"
 export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/${DOWNLOAD_TAG_NAME}"
 wget -O inject_ssh_key.sh "${DOWNLOAD_PREFIX}/bash/inject_ssh_key/inject_ssh_key.sh"
 
