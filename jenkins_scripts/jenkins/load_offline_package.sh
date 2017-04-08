@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-06>
-## Updated: Time-stamp: <2017-01-18 10:06:43>
+## Updated: Time-stamp: <2017-04-08 14:40:09>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -22,7 +22,7 @@
 ##       package_new_location: /var/www/repo/download
 ################################################################################################
 . /etc/profile
-[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v3"
+[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v5"
 export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/${DOWNLOAD_TAG_NAME}"
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)

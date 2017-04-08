@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2017-04-04 15:37:52>
+## Updated: Time-stamp: <2017-04-08 14:40:10>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -23,7 +23,7 @@
 ##      SKIP_KITCHEN_VERIFY(boolean)
 ################################################################################################
 . /etc/profile
-[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v3"
+[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v5"
 export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/${DOWNLOAD_TAG_NAME}"
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
