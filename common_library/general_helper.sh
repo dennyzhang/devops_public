@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2017-01-17 15:53:55>
+## Updated: Time-stamp: <2017-04-08 14:30:43>
 ##-------------------------------------------------------------------
 function log() {
     # log message to both stdout and logfile on condition
@@ -128,7 +128,11 @@ do
     host_split=(${host//:/ })
     ip=${host_split[0]}
     domain=${host_split[1]}
-    grep ${domain} /root/hosts && sed -i "/${domain}/c\\${ip}    ${domain}" /root/hosts ||  echo "${ip}    ${domain}" >> /root/hosts
+    if grep "${domain}$" /root/hosts; then
+       sed -i "s/.*    ${domain}$/${ip}    ${domain}/g" /root/hosts
+    else
+        echo "${ip}    ${domain}" >> /root/hosts
+    fi
 done
 
 if [ "$(cat /root/hosts)" != "$(cat /etc/hosts)" ]; then
