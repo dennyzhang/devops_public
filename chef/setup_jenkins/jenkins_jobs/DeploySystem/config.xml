@@ -231,7 +231,7 @@ if [ &quot;$whether_flushdatabaseonconnect&quot; = &quot;true&quot; ]; then
    fi
 fi
 
-curl -o /var/lib/jenkins/deploy_cluster.sh https://raw.githubusercontent.com/TOTVS/mdmpublic/tag_v3/jenkins_scripts/chef/deploy_cluster.sh
+curl -o /var/lib/jenkins/deploy_cluster.sh https://raw.githubusercontent.com/TOTVS/mdmpublic/tag_v5/jenkins_scripts/chef/deploy_cluster.sh
 bash -e /var/lib/jenkins/deploy_cluster.sh</command>
     </hudson.tasks.Shell>
   </builders>
