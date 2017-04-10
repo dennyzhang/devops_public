@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-04-09 22:04:46>
+## Updated: Time-stamp: <2017-04-09 22:08:15>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -46,16 +46,10 @@ def run_check(file_list, check_pattern):
     for fname in file_list:
         check_command = check_pattern % (fname)
         print "Run check command: %s" % (check_command)
-        p = subprocess.Popen(check_command, shell=True)
-        if p.returncode != 0:
+        returncode = subprocess.call(check_command, shell=True)
+        if returncode != 0:
             has_error = True
-            while True:
-                out = p.stderr.read(1)
-                if out == '' and p.poll() != None:
-                    break
-                if out != '':
-                    sys.stdout.write(out)
-                    sys.stdout.flush()
+            print "Error to run %s. Return code: %d" % (check_command, returncode)
     return has_error
 ################################################################################
 #
@@ -77,7 +71,7 @@ if __name__ == '__main__':
     file_list = find_files_by_postfix(code_dir, ".py")
     file_list = ignore_files(file_list, check_ignore_file)
     has_error = run_check(file_list, "pylint -E %s")
-    if has_error is True:
+    if has_error is False:
         sys.exit(0)
     else:
         print "ERROR: pylint_check has failed."
