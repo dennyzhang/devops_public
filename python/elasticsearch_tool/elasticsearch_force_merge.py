@@ -8,7 +8,7 @@
 ##    Run force merge for existing indices, when ratio of deleted count/doc count is over 0.1
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-10 17:22:23>
+## Updated: Time-stamp: <2017-04-10 17:35:19>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -19,31 +19,47 @@ import json
 NAGIOS_OK_ERROR=0
 NAGIOS_EXIT_ERROR=2
 
+logger = setup_custom_logger('myapp')
 ################################################################################
+def setup_custom_logger(name):
+    import logging
+    formatter = logging.Formatter(fmt='%(asctime)s %(levelname)-8s %(message)s',
+                                  datefmt='%Y-%m-%d %H:%M:%S')
+    log_fname = "/var/log/%s.log" % (name)
+    handler = logging.FileHandler(log_fname, mode='w')
+    handler.setFormatter(formatter)
+    screen_handler = logging.StreamHandler(stream=sys.stdout)
+    screen_handler.setFormatter(formatter)
+    logger = logging.getLogger(name)
+    logger.setLevel(logging.DEBUG)
+    logger.addHandler(handler)
+    logger.addHandler(screen_handler)
+    return logger
+
 def print_all_index_summary(es_host, es_port):
     url = "http://%s:%s/_cat/indices?v" % (es_host, es_port)
     r = requests.get(url)
     if r.status_code != 200:
-        print "ERROR: fail to run REST API: %s" % (url)
+        logger.error("Fail to run REST API: %s" % (url))
         sys_exit(es_host, es_port)
-    print r.content
+    logger.info(r.content)
 
 def print_index_setting(es_host, es_port, index_name):
     url = "http://%s:%s/%s/_stats?pretty" % (es_host, es_port, index_name)
     r = requests.get(url)
     if r.status_code != 200:
-        print "ERROR: fail to run REST API: %s" % (url)
+        logger.error("Fail to run REST API: %s" % (url))
         sys_exit(es_host, es_port)
     content_json = json.loads(r.content)
-    print "Index setting for %s.\n\tdocs:%s\n\tmerges:%s\n\tsegments:%s\n\n" % \
+    logger.info("Index setting for %s.\n\tdocs:%s\n\tmerges:%s\n\tsegments:%s\n\n" % \
         (index_name,
          json.dumps(content_json["_all"]["primaries"]["docs"]),
          json.dumps(content_json["_all"]["primaries"]["merges"]),
-         json.dumps(content_json["_all"]["primaries"]["segments"]))
+         json.dumps(content_json["_all"]["primaries"]["segments"])))
 ################################################################################
 
 def sys_exit(es_host, es_port):
-    print "Unexpected error has happened. Current summary of ES indices."
+    logger.error("Unexpected error has happened. Current summary of ES indices.")
     print_all_index_summary(es_host, es_port)
     sys.exit(NAGIOS_EXIT_ERROR)
 
@@ -63,7 +79,7 @@ green  open   master-index-13a1f8adbec032ed68f3d035449ef48d    1   0          1 
 ...
 '''
     if r.status_code != 200:
-        print "ERROR: fail to run REST API: %s" % (url)
+        logger.error("Fail to run REST API: %s" % (url))
         sys_exit(es_host, es_port)
 
     # TODO: use python library for ES
@@ -95,13 +111,10 @@ def force_merge_index(es_host, es_port, index_name):
           (es_host, es_port, index_name)
     r = requests.post(url)
     if r.status_code != 200:
-        print "ERROR: fail to run REST API: %s" % (url)
+        logger.error("Fail to run REST API: %s" % (url))
         sys_exit(es_host, es_port)
-    print "http response: %s" % (r.content)
+    logger.info("http response: %s" % (r.content))
 
-    # TODO: print the output
-
-    # TODO: get time performance
     print_index_setting(es_host, es_port, index_name)
 
 # Sample:
@@ -141,20 +154,19 @@ if __name__ == '__main__':
     es_index_list = get_es_index_info(es_host, es_port, es_pattern_regexp, \
                                       min_deleted_count, min_deleted_ratio)
     if len(es_index_list) == 0:
-        print "OK: no indices need to run force-merge."
+        logger.info("OK: no indices need to run force-merge.")
     else:
-        print "Indices summary before force-merge."
+        logger.info("Indices summary before force-merge.")
         print_all_index_summary(es_host, es_port)
 
-        # TODO: print timestamp
         updated_index_list = []
         for es_index in es_index_list:
             index_name = es_index[0]
-            print "Run force-merge for %s" % (index_name)
+            logger.info("Run force-merge for %s" % (index_name))
             force_merge_index(es_host, es_port, index_name)
             updated_index_list.append(index_name)
-        print "OK: Run force-merge successfully on below indices: %s" % (','.join(updated_index_list))
+        logger.info("OK: Run force-merge successfully on below indices: %s" % (','.join(updated_index_list)))
 
-        print "Indices summary after force-merge."
+        logger.info("Indices summary after force-merge.")
         print_all_index_summary(es_host, es_port)
 ## File : elasticsearch_force_merge.py ends
