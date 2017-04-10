@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-04-09 22:12:58>
+## Updated: Time-stamp: <2017-04-09 22:18:57>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -81,6 +81,6 @@ if __name__ == '__main__':
     if has_error is False:
         sys.exit(0)
     else:
-        print "ERROR: pylint_check has failed."
+        print "ERROR: %s has failed." % (os.path.basename(__file__))
         sys.exit(1)
 ## File : enforce_shellcheck.py ends
