@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-04-09 22:19:01>
+## Updated: Time-stamp: <2017-04-09 22:42:49>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -68,7 +68,11 @@ if __name__ == '__main__':
     check_ignore_file = l.check_ignore_file
 
     file_list = find_files_by_postfix(code_dir, ".py")
-    file_list = ignore_files(file_list, check_ignore_file)
+    if check_ignore_file is not None:
+        with open(check_ignore_file) as f:
+            ignore_file_list = f.readlines()
+            file_list = ignore_files(file_list, ignore_file_list)
+
     has_error = run_check(file_list, "pylint -E %s")
     if has_error is False:
         sys.exit(0)

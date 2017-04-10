@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-04-09 22:38:23>
+## Updated: Time-stamp: <2017-04-09 22:42:52>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -75,7 +75,11 @@ if __name__ == '__main__':
     exclude_code_list = l.exclude_code_list
 
     file_list = find_files_by_postfix(code_dir, ".sh")
-    file_list = ignore_files(file_list, check_ignore_file)
+    if check_ignore_file is not None:
+        with open(check_ignore_file) as f:
+            ignore_file_list = f.readlines()
+            file_list = ignore_files(file_list, ignore_file_list)
+
     has_error = run_check(file_list, \
                           "shellcheck -e " + exclude_code_list + " %s")
     if has_error is False:
