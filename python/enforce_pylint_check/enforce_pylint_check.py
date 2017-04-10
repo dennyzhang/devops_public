@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-04-09 22:08:15>
+## Updated: Time-stamp: <2017-04-09 22:08:46>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -40,7 +40,6 @@ def ignore_files(file_list, ignore_file_list):
             l.append(fname)
     return l
 
-################################################################################
 def run_check(file_list, check_pattern):
     has_error = False
     for fname in file_list:
