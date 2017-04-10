@@ -5,10 +5,10 @@
 ## File : elasticsearch_force_merge.py
 ## Author : 
 ## Description :
-##    Run force merge for existing indices, when ratio of deleted count/doc count is over 0.1
+##    Run force merge for existing indices, which has many deleted documents
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-10 18:05:45>
+## Updated: Time-stamp: <2017-04-10 18:41:24>
 ##-------------------------------------------------------------------
 import argparse
 import requests
