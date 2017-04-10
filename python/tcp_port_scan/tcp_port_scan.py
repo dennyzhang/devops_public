@@ -7,7 +7,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2016-08-18 08:35:54>
+## Updated: Time-stamp: <2017-04-09 22:00:15>
 ##-------------------------------------------------------------------
 import argparse
 import subprocess
@@ -75,7 +75,7 @@ def nmap_check(server_ip, ports):
         nmap_opts = "-p %s %s" % (ports, server_ip)
     command = nmap_command % (nmap_opts)
     print output_prefix, "Run: %s" % (command)
-    nmap_output =subprocess.check_output(command, shell=True)
+    nmap_output = subprocess.check_output(command, shell=True)
     print nmap_output
     return nmap_output
 

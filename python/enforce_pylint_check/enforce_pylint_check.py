@@ -10,11 +10,12 @@
 ## Description :
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-04-09 21:56:42>
+## Updated: Time-stamp: <2017-04-09 22:04:46>
 ##-------------------------------------------------------------------
 import argparse
 import sys
 import os
+import subprocess
 
 def find_files_by_postfix(folder_check, filename_postfix):
     l = []
@@ -40,11 +41,22 @@ def ignore_files(file_list, ignore_file_list):
     return l
 
 ################################################################################
-def run_check(sh_file_list):
-    # TODO: to be implemented
-    l = []
-    return True
-
+def run_check(file_list, check_pattern):
+    has_error = False
+    for fname in file_list:
+        check_command = check_pattern % (fname)
+        print "Run check command: %s" % (check_command)
+        p = subprocess.Popen(check_command, shell=True)
+        if p.returncode != 0:
+            has_error = True
+            while True:
+                out = p.stderr.read(1)
+                if out == '' and p.poll() != None:
+                    break
+                if out != '':
+                    sys.stdout.write(out)
+                    sys.stdout.flush()
+    return has_error
 ################################################################################
 #
 # wget -O /tmp/enforce_pylint_check.py https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v5/python/enforce_pylint_check/enforce_pylint_check.py
@@ -64,8 +76,8 @@ if __name__ == '__main__':
 
     file_list = find_files_by_postfix(code_dir, ".py")
     file_list = ignore_files(file_list, check_ignore_file)
-    has_pass = run_check(file_list)
-    if has_pass is True:
+    has_error = run_check(file_list, "pylint -E %s")
+    if has_error is True:
         sys.exit(0)
     else:
         print "ERROR: pylint_check has failed."
