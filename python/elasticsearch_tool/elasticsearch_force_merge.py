@@ -8,7 +8,7 @@
 ##    Run force merge for existing indices, when ratio of deleted count/doc count is over 0.1
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-10 18:03:51>
+## Updated: Time-stamp: <2017-04-10 18:05:45>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -42,7 +42,7 @@ def print_all_index_summary(es_host, es_port):
     if r.status_code != 200:
         logger.error("Fail to run REST API: %s" % (url))
         sys_exit(es_host, es_port)
-    logger.info(r.content)
+    logger.info("\n:%s" % (r.content))
 
 def print_index_setting(es_host, es_port, index_name):
     url = "http://%s:%s/%s/_stats?pretty" % (es_host, es_port, index_name)
