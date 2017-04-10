@@ -8,7 +8,7 @@
 ##    Run force merge for existing indices, when ratio of deleted count/doc count is over 0.1
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-10 16:50:27>
+## Updated: Time-stamp: <2017-04-10 16:55:59>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -107,7 +107,7 @@ if __name__ == '__main__':
                         help="ES index name pattern. Only ES indices with matched pattern will be examined", type=str)
     parser.add_argument('--min_deleted_count', default=1000, required=False, \
                         help='If indices do not have too many deleted docs, skip the force merge', type=int)
-    parser.add_argument('--min_deleted_ratio', default=0.1, required=False, \
+    parser.add_argument('--min_deleted_ratio', default=0.05, required=False, \
                         help='If the ratio of deleted/total doc count is too small, skip the force merge', type=float)
     l = parser.parse_args()
 
