@@ -8,7 +8,7 @@
 ##    Run force merge for existing indices, when ratio of deleted count/doc count is over 0.1
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-10 17:40:32>
+## Updated: Time-stamp: <2017-04-10 18:03:51>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -20,7 +20,6 @@ import re
 NAGIOS_OK_ERROR=0
 NAGIOS_EXIT_ERROR=2
 
-logger = setup_custom_logger('myapp')
 ################################################################################
 def setup_custom_logger(name):
     import logging
@@ -131,6 +130,8 @@ def force_merge_index(es_host, es_port, index_name):
 #          --min_deleted_ratio 0.1
 #
 # python /tmp/elasticsearch_force_merge.py --min_deleted_count 0  --min_deleted_ratio 0
+
+logger = setup_custom_logger('myapp')
 
 if __name__ == '__main__':
     # get parameters from users
