@@ -8,7 +8,7 @@
 ##    Run force merge for existing indices, when ratio of deleted count/doc count is over 0.1
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-07 14:19:20>
+## Updated: Time-stamp: <2017-04-10 16:42:08>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -123,13 +123,15 @@ if __name__ == '__main__':
 
     es_index_list = get_es_index_info(es_host, es_port, es_pattern_regexp, \
                                       min_deleted_count, min_deleted_ratio)
-
-    # TODO: print timestamp
-    updated_index_list = []
-    for es_index in es_index_list:
-        index_name = es_index[0]
-        print "Run force-merge for %s" % (index_name)
-        force_merge_index(es_host, es_port, index_name)
-        updated_index_list.append(index_name)
-    print "OK: Run force-merge successfully on below indices: %s" % (','.join(updated_index_list))
+    if len(es_index_list) == 0:
+        print "OK: no indices need to run force-merge"
+    else:
+        # TODO: print timestamp
+        updated_index_list = []
+        for es_index in es_index_list:
+            index_name = es_index[0]
+            print "Run force-merge for %s" % (index_name)
+            force_merge_index(es_host, es_port, index_name)
+            updated_index_list.append(index_name)
+        print "OK: Run force-merge successfully on below indices: %s" % (','.join(updated_index_list))
 ## File : elasticsearch_force_merge.py ends
