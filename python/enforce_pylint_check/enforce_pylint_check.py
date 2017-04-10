@@ -10,16 +10,25 @@
 ## Description :
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-04-02 21:29:39>
+## Updated: Time-stamp: <2017-04-09 21:49:23>
 ##-------------------------------------------------------------------
 import argparse
 import sys
+import os
 
-def find_python_files(working_dir, pylint_check_ignore_file):
-    # TODO: to be implemented
+def find_files_by_postfix(folder_check, filename_postfix):
     l = []
+    for root, dirs, files in os.walk(folder_check):
+        for file in files:
+            if file.endswith(filename_postfix):
+                l.append(os.path.join(root, file))
     return l
 
+def ignore_files(file_list, ignore_file_list):
+    # TODO
+    return file_list
+
+################################################################################
 def run_pylint_check(sh_file_list):
     # TODO: to be implemented
     l = []
@@ -37,7 +46,10 @@ if __name__ == '__main__':
     code_dir = l.code_dir
     pylint_check_ignore_file = l.pylint_check_ignore_file
 
-    file_list = find_python_files(code_dir, pylint_check_ignore_file)
+    file_list = find_files_by_postfix(code_dir, ".py")
+    # TODO
+    print file_list
+
     has_pass = run_pylint_check(file_list)
     if has_pass is True:
         sys.exit(0)
