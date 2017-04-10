@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-04-09 21:53:50>
+## Updated: Time-stamp: <2017-04-09 21:56:42>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -45,6 +45,11 @@ def run_check(sh_file_list):
     l = []
     return True
 
+################################################################################
+#
+# wget -O /tmp/enforce_pylint_check.py https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v5/python/enforce_pylint_check/enforce_pylint_check.py
+# python /tmp/enforce_pylint_check.py --code_dir devops_code/devops_public
+################################################################################
 if __name__ == '__main__':
     # get parameters from users
     parser = argparse.ArgumentParser()
