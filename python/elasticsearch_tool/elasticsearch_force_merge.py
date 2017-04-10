@@ -8,7 +8,7 @@
 ##    Run force merge for existing indices, when ratio of deleted count/doc count is over 0.1
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-10 16:45:53>
+## Updated: Time-stamp: <2017-04-10 16:50:27>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -64,11 +64,11 @@ def print_index_setting(es_host, es_port, index_name):
         print "ERROR: fail to run REST API: %s" % (url)
         sys.exit(NAGIOS_EXIT_ERROR)
     content_json = json.loads(r.content)
-    print "Index setting for %s.\ndocs:%s, merges:%s, segments:%s" % \
+    print "Index setting for %s.\n\tdocs:%s\n\tmerges:%s\n\tsegments:%s\n\n" % \
         (index_name,
-         content_json["_all"]["primaries"]["docs"], 
-         content_json["_all"]["primaries"]["merges"],
-         content_json["_all"]["primaries"]["segments"])
+         json.dumps(content_json["_all"]["primaries"]["docs"]),
+         json.dumps(content_json["_all"]["primaries"]["merges"]),
+         json.dumps(content_json["_all"]["primaries"]["segments"]))
 
 def force_merge_index(es_host, es_port, index_name):
     print_index_setting(es_host, es_port, index_name)
