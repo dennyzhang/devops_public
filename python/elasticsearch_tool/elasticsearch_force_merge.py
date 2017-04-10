@@ -8,7 +8,7 @@
 ##    Run force merge for existing indices, when ratio of deleted count/doc count is over 0.1
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-10 16:42:08>
+## Updated: Time-stamp: <2017-04-10 16:45:53>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -64,13 +64,13 @@ def print_index_setting(es_host, es_port, index_name):
         print "ERROR: fail to run REST API: %s" % (url)
         sys.exit(NAGIOS_EXIT_ERROR)
     content_json = json.loads(r.content)
-    print "docs:%s, merges:%s, segments:%s" % \
-        (content_json["_all"]["primaries"]["docs"], 
+    print "Index setting for %s.\ndocs:%s, merges:%s, segments:%s" % \
+        (index_name,
+         content_json["_all"]["primaries"]["docs"], 
          content_json["_all"]["primaries"]["merges"],
          content_json["_all"]["primaries"]["segments"])
 
 def force_merge_index(es_host, es_port, index_name):
-    print "Get index (%s) settings, before merge" % (index_name)
     print_index_setting(es_host, es_port, index_name)
 
     # TODO: Quit if something wrong; get time performance
@@ -82,9 +82,11 @@ def force_merge_index(es_host, es_port, index_name):
     if r.status_code != 200:
         print "ERROR: fail to run REST API: %s" % (url)
         sys.exit(NAGIOS_EXIT_ERROR)
+    print "http response: %s" % (r.content)
+
+    # TODO: print the output
 
     # TODO: get time performance
-    print "Get index (%s) settings, after merge" % (index_name)
     print_index_setting(es_host, es_port, index_name)
 
 # Sample:
