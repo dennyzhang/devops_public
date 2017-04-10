@@ -8,13 +8,14 @@
 ##    Run force merge for existing indices, when ratio of deleted count/doc count is over 0.1
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-10 17:35:19>
+## Updated: Time-stamp: <2017-04-10 17:40:32>
 ##-------------------------------------------------------------------
 import argparse
 import requests
 import sys
 import socket
 import json
+import re
 
 NAGIOS_OK_ERROR=0
 NAGIOS_EXIT_ERROR=2
@@ -91,6 +92,13 @@ green  open   master-index-13a1f8adbec032ed68f3d035449ef48d    1   0          1 
             line = " ".join(line.split())
             l = line.split()
             index_name = l[2]
+
+            # skip indices, if not in the matched pattern
+            if es_pattern_regexp != "":
+                m = re.search(es_pattern_regexp, index_name)
+                if m is None:
+                    continue
+
             total_doc_count = int(l[5])
             deleted_doc_count = int(l[6])
             if min_deleted_count != 0 and min_deleted_ratio != 0:
