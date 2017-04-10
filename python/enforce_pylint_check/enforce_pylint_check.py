@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-04-09 21:49:23>
+## Updated: Time-stamp: <2017-04-09 21:53:50>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -25,11 +25,22 @@ def find_files_by_postfix(folder_check, filename_postfix):
     return l
 
 def ignore_files(file_list, ignore_file_list):
-    # TODO
-    return file_list
+    if ignore_file_list is None:
+        return file_list
+
+    l = []
+    for fname in file_list:
+        skip = False
+        for ignore_file_pattern in ignore_file_list:
+            if ignore_file_pattern in fname:
+                skip = True
+                break
+        if skip is False:
+            l.append(fname)
+    return l
 
 ################################################################################
-def run_pylint_check(sh_file_list):
+def run_check(sh_file_list):
     # TODO: to be implemented
     l = []
     return True
@@ -39,18 +50,16 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--code_dir', required=True, \
                         help="Source code directory to be scanned", type=str)
-    parser.add_argument('--pylint_check_ignore_file', required=False, \
+    parser.add_argument('--check_ignore_file', required=False, \
                         help="file pattern listed in the file will be skipped for scan", type=str)
     l = parser.parse_args()
     
     code_dir = l.code_dir
-    pylint_check_ignore_file = l.pylint_check_ignore_file
+    check_ignore_file = l.check_ignore_file
 
     file_list = find_files_by_postfix(code_dir, ".py")
-    # TODO
-    print file_list
-
-    has_pass = run_pylint_check(file_list)
+    file_list = ignore_files(file_list, check_ignore_file)
+    has_pass = run_check(file_list)
     if has_pass is True:
         sys.exit(0)
     else:
