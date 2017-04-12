@@ -5,7 +5,7 @@
 ## Description : Couchbase Daily Backup
 ## --
 ## Created : <2016-08-01>
-## Updated: Time-stamp: <2017-02-09 22:36:07>
+## Updated: Time-stamp: <2017-04-12 15:28:49>
 ##-------------------------------------------------------------------
 # TODO: move to common library
 import argparse
@@ -50,6 +50,8 @@ parser.add_argument('--cbbackup_bin', default='/opt/couchbase/bin/cbbackup',
                     help="Path of cbbackup command line", type=str)
 parser.add_argument('--backup_dir', default='/data/backup/couchbase',
                     help="Destination directory for backup", type=str)
+parser.add_argument('--backup_method', default='',
+                    help="Backup method: full, diff, accu", type=str)
 args = parser.parse_args()
 
 bucket_list = args.bucket_list
@@ -58,6 +60,7 @@ cbbackup_bin = args.cbbackup_bin
 username = args.username
 password = args.password
 backup_dir = args.backup_dir
+backup_method = args.backup_method
 
 weekday_method = {
     "Sunday": "diff",
@@ -78,11 +81,12 @@ def cb_backup_command(bucket, method):
     #         -p $MYPASSWD -b mdm-master -m diff -t 4 --single-node
     return "%s >> %s" % (command, backup_log_file)
 
-def cb_backup_bucket(bucket):
-    today = date.today()
-    day = calendar.day_name[today.weekday()]
-    # Run DB backup with complete/diff/accu in different days
-    backup_method = weekday_method.get(day)
+def cb_backup_bucket(bucket, backup_method = ""):
+    if backup_method == "":
+        today = date.today()
+        day = calendar.day_name[today.weekday()]
+        # Run DB backup with complete/diff/accu in different days
+        backup_method = weekday_method.get(day)
     backup_command = cb_backup_command(bucket, backup_method)
     log.info("Backup Couchbase bucket: %s, method: %s" % (bucket, backup_method))
     log.info("Run command: %s" % (backup_command))
@@ -97,7 +101,7 @@ if __name__=='__main__':
     if not os.path.exists(backup_dir):
         os.makedirs(backup_dir)
     for bucket in bucket_list.split(','):
-        cb_backup_bucket(bucket)
+        cb_backup_bucket(bucket, backup_method)
     # TODO: show file size of backup set
     log.info("Backup succeed for Couchbase.")
 ## File : cb_backup.py ends
