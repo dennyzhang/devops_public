@@ -11,7 +11,7 @@
 #   bash -e /root/devops_provision_os.sh
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2017-04-08 15:08:57>
+## Updated: Time-stamp: <2017-04-12 15:11:51>
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v5"
@@ -59,7 +59,7 @@ log "Change vm.swappiness=0, only use swap when all RAM is used"
 change_vm_swappiness
 
 log "enable chef deployment"
-install_package_list "wget,curl,git,tmux"
+install_package_list "wget,curl,git,tmux,zip"
 install_chef $chef_version
 
 download_facility "/root/git_update.sh" "${DOWNLOAD_PREFIX}/bash/git_update.sh"
