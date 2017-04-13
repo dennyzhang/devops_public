@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2017-04-08 15:03:00>
+## Updated: Time-stamp: <2017-04-12 19:46:04>
 ##-------------------------------------------------------------------
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v5"
@@ -19,6 +19,7 @@ if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
     wget -O /var/lib/devops/refresh_common_library.sh \
          "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
+    chmod 777 /var/lib/devops/refresh_common_library.sh
 fi
 
 library_list="

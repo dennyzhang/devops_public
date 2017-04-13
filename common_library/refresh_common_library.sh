@@ -10,7 +10,7 @@
 ## By default, this file keeps stable and untouched
 ## --
 ## Created : <2016-04-07>
-## Updated: Time-stamp: <2017-04-08 15:03:04>
+## Updated: Time-stamp: <2017-04-12 19:45:41>
 ##-------------------------------------------------------------------
 function refresh_common_library() {
     local library_file=${1?}
@@ -20,15 +20,18 @@ function refresh_common_library() {
     if [ "x${AVOID_REFRESH_LIBRARY}" != "true" ]; then
         if [ "x${library_file_checksum}" = "x" ]; then
             wget -O "$library_file" "$library_url"
+            chmod 777 "$library_file"
         else
             if [ ! -f "$library_file" ]; then
                 echo "download bash common library"
                 wget -O "$library_file" "$library_url"
+                chmod 777 "$library_file"
             else
                 checksum=$(cksum "$library_file" | awk -F' ' '{print $1}')
                 if [ "$library_file_checksum" != "$checksum" ]; then
                     # echo "refresh bash common library"
                     wget -O "$library_file" "$library_url"
+                    chmod 777 "$library_file"
                 fi
             fi
         fi
