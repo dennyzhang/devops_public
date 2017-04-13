@@ -5,7 +5,7 @@
 ## Description : Couchbase Daily Backup
 ## --
 ## Created : <2016-08-01>
-## Updated: Time-stamp: <2017-04-12 15:28:49>
+## Updated: Time-stamp: <2017-04-12 22:57:00>
 ##-------------------------------------------------------------------
 # TODO: move to common library
 import argparse
@@ -74,7 +74,9 @@ weekday_method = {
 
 ################################################################################
 def cb_backup_command(bucket, method):
-    command = "%s %s %s/%s -u %s -p %s -b %s -m %s -t 4 --single-node" % \
+    # Back up all nodes and all buckets:
+    # https://developer.couchbase.com/documentation/server/current/cli/backup-cbbackup.html
+    command = "%s %s %s/%s -u %s -p %s -b %s -m %s -t 4" % \
               (cbbackup_bin, cbserver, backup_dir, bucket, username, password, bucket, method)
     # Sample: /opt/couchbase/bin/cbbackup http://127.0.0.1:8091 \
     #         /data/cb_backup/mdm-master -u $MYUSERNAME \
