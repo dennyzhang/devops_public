@@ -8,6 +8,6 @@ Update Common Library Checksum
 ==============================
 ```
 cd /Users/mac/baidu/*/private_data/project/devops_consultant/consultant_code/devops_public/jenkins_scripts
-find . -name "*.sh" | xargs sed  -i "" "s/106829884/1330011301/g"
+find . -name "*.sh" | xargs sed  -i "" "s/1330011301/3788961705/g"
 find . -name "*.sh" | xargs grep "bash /var/lib/devops/refresh_common_library.sh"
 ```

@@ -28,7 +28,7 @@ library_list="
 4132387734 3040 git_helper.sh
 3267528388 2977 language_helper.sh
 1056265537 2369 network_helper.sh
-2257779887 3866 package_helper.sh
+2719501647 3912 package_helper.sh
 1769136427 8849 paramater_helper.sh
 2232144565 1637 process_helper.sh
 3078361702 1778 refresh_common_library.sh
