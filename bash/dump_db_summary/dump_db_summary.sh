@@ -57,7 +57,7 @@ print '\n'.join(list)" < "$tmp_data_file")
         unset IFS
         item_name=$(echo "$line" | awk -F"\t" '{print $1}')
         prop_value=$(echo "$line" | awk -F"\t" '{print $8}')
-        # sample output: echo "[11/Jul/2016:14:10:45 +0000] mdm-master CBItemNum 20" >> /var/log/data_report.log
+        # sample output: echo "[11/Jul/2016:14:10:45 +0000] bucket1 CBItemNum 20" >> /var/log/data_report.log
         insert_elk_entry "$item_name" "CBItemNum" "$prop_value" "${output_file_prefix}${logstash_postfix}"
     done
 }

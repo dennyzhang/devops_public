@@ -5,7 +5,7 @@
 ## Description : Couchbase Daily Backup
 ## --
 ## Created : <2016-08-01>
-## Updated: Time-stamp: <2017-04-12 22:57:00>
+## Updated: Time-stamp: <2017-04-17 21:23:59>
 ##-------------------------------------------------------------------
 # TODO: move to common library
 import argparse
@@ -42,7 +42,7 @@ parser.add_argument('--username', default='Administrator', required=True,
                     help="username of couchbase", type=str)
 parser.add_argument('--password', default='password', required=True,
                     help="password of couchbase", type=str)
-parser.add_argument('--bucket_list', default = 'mdm-master,mdm-staging', 
+parser.add_argument('--bucket_list', default = 'bucket1,bucket2',
                     help="Bucket name list to be backup", type=str)
 parser.add_argument('--cbserver', default='http://127.0.0.1:8091',
                     help="Couchbase management url", type=str)
@@ -79,8 +79,8 @@ def cb_backup_command(bucket, method):
     command = "%s %s %s/%s -u %s -p %s -b %s -m %s -t 4" % \
               (cbbackup_bin, cbserver, backup_dir, bucket, username, password, bucket, method)
     # Sample: /opt/couchbase/bin/cbbackup http://127.0.0.1:8091 \
-    #         /data/cb_backup/mdm-master -u $MYUSERNAME \
-    #         -p $MYPASSWD -b mdm-master -m diff -t 4 --single-node
+    #         /data/cb_backup/bucket1 -u $MYUSERNAME \
+    #         -p $MYPASSWD -b bucket1 -m diff -t 4
     return "%s >> %s" % (command, backup_log_file)
 
 def cb_backup_bucket(bucket, backup_method = ""):

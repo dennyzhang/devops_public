@@ -8,7 +8,7 @@
 ##    Run force merge for existing indices, which has many deleted documents
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-10 18:41:24>
+## Updated: Time-stamp: <2017-04-17 21:22:23>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -20,6 +20,7 @@ import re
 NAGIOS_OK_ERROR=0
 NAGIOS_EXIT_ERROR=2
 
+indices_before = ""
 ################################################################################
 def setup_custom_logger(name):
     import logging
@@ -36,13 +37,13 @@ def setup_custom_logger(name):
     logger.addHandler(screen_handler)
     return logger
 
-def print_all_index_summary(es_host, es_port):
+def get_all_index_summary(es_host, es_port):
     url = "http://%s:%s/_cat/indices?v" % (es_host, es_port)
     r = requests.get(url)
     if r.status_code != 200:
         logger.error("Fail to run REST API: %s" % (url))
         sys_exit(es_host, es_port)
-    logger.info("\n:%s" % (r.content))
+    return r.content
 
 def print_index_setting(es_host, es_port, index_name):
     url = "http://%s:%s/%s/_stats?pretty" % (es_host, es_port, index_name)
@@ -58,10 +59,15 @@ def print_index_setting(es_host, es_port, index_name):
          json.dumps(content_json["_all"]["primaries"]["segments"])))
 ################################################################################
 
-def sys_exit(es_host, es_port):
-    logger.error("Unexpected error has happened. Current summary of ES indices.")
-    print_all_index_summary(es_host, es_port)
-    sys.exit(NAGIOS_EXIT_ERROR)
+def sys_exit(es_host, es_port, exit_code = NAGIOS_EXIT_ERROR):
+    if exit_code != 0:
+        logger.error("Unexpected error has happened. Current summary of ES indices.")
+
+    if indices_before != "":
+        logger.info("Indices summary before force-merge.\n%s" % (indices_before))
+    indices_after = get_all_index_summary(es_host, es_port)
+    logger.info("Indices summary after force-merge.\n%s" % (indices_after))
+    sys.exit(exit_code)
 
 def get_es_index_info(es_host, es_port, es_pattern_regexp, \
                       min_deleted_count, min_deleted_ratio):
@@ -165,9 +171,7 @@ if __name__ == '__main__':
     if len(es_index_list) == 0:
         logger.info("OK: no indices need to run force-merge.")
     else:
-        logger.info("Indices summary before force-merge.")
-        print_all_index_summary(es_host, es_port)
-
+        indices_before = get_all_index_summary(es_host, es_port)
         updated_index_list = []
         for es_index in es_index_list:
             index_name = es_index[0]
@@ -176,6 +180,5 @@ if __name__ == '__main__':
             updated_index_list.append(index_name)
         logger.info("OK: Run force-merge successfully on below indices: %s" % (','.join(updated_index_list)))
 
-        logger.info("Indices summary after force-merge.")
-        print_all_index_summary(es_host, es_port)
+        sys_exit(es_host, es_port, 0)
 ## File : elasticsearch_force_merge.py ends
