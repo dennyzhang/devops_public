@@ -6,9 +6,19 @@
 ## Author : 
 ## Description :
 ##    Run force merge for existing indices, which has many deleted documents
+## Sample:
+##   - Run force-merge for indices which has many deleted records
+##        python ./elasticsearch_force_merge.py --min_deleted_count 1000 --min_deleted_ratio 0.1
+##
+##   - Run force-merge for indices with matched index name
+##        python ./elasticsearch_force_merge.py --es_pattern_regexp "master-.*|staging-.*"
+##
+##   - Run force-merge for all indices
+##        python ./elasticsearch_force_merge.py --min_deleted_count 0 --min_deleted_ratio 0
+##
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-17 21:22:23>
+## Updated: Time-stamp: <2017-04-17 21:40:32>
 ##-------------------------------------------------------------------
 import argparse
 import requests
