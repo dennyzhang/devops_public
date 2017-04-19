@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-03-24>
-## Updated: Time-stamp: <2017-04-05 16:35:04>
+## Updated: Time-stamp: <2017-04-19 11:54:16>
 ##-------------------------------------------------------------------
 import os, sys
 import sys
@@ -35,8 +35,8 @@ def git_pull(code_dir):
         sys.exit(1)
     os.chdir(code_dir)
     g = git.cmd.Git(code_dir)
-    # TODO: we need verbose output
-    g.pull()
+    output = g.pull()
+    return output
 
 # Sample python git_pull_codedir.py --code_dirs "/data/code_dir/repo1,/data/code_dir/repo2"
 if __name__ == '__main__':
@@ -48,5 +48,15 @@ if __name__ == '__main__':
 
     separator = ","
     for code_dir in code_dirs.split(separator):
-        git_pull(code_dir)    
+        git_output = git_pull(code_dir)
+        if git_output == 'Already up-to-date.':
+            has_changed = False
+        else:
+            has_changed = True
+            logger.info("Code has changed in %s. Detail: %s" % (code_dir, git_output))
+
+    if git_output is True:
+        sys.exit(1)
+    else:
+        sys.exit(0)
 ## File : git_pull_codedir.py ends
