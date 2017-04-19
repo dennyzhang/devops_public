@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-04-09 22:42:49>
+## Updated: Time-stamp: <2017-04-19 14:49:31>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -54,6 +54,7 @@ def run_check(file_list, check_pattern):
 #
 # wget -O /tmp/enforce_pylint_check.py https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v5/python/enforce_pylint_check/enforce_pylint_check.py
 # python /tmp/enforce_pylint_check.py --code_dir devops_code/devops_public
+# python /tmp/enforce_pylint_check.py --code_dir devops_code/devops_public --check_ignore_file .pylint_ignore
 ################################################################################
 if __name__ == '__main__':
     # get parameters from users
@@ -64,8 +65,8 @@ if __name__ == '__main__':
                         help="file pattern listed in the file will be skipped for scan", type=str)
     l = parser.parse_args()
     
-    code_dir = l.code_dir
-    check_ignore_file = l.check_ignore_file
+    code_dir = os.path.expanduser(l.code_dir)
+    check_ignore_file = os.path.expanduser(l.check_ignore_file)
 
     file_list = find_files_by_postfix(code_dir, ".py")
     if check_ignore_file is not None:

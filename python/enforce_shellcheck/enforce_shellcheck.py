@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-04-09 22:42:52>
+## Updated: Time-stamp: <2017-04-19 14:51:01>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -70,8 +70,8 @@ if __name__ == '__main__':
 
     l = parser.parse_args()
     
-    code_dir = l.code_dir
-    check_ignore_file = l.check_ignore_file
+    code_dir = os.path.expanduser(l.code_dir)
+    check_ignore_file = os.path.expanduser(l.check_ignore_file)
     exclude_code_list = l.exclude_code_list
 
     file_list = find_files_by_postfix(code_dir, ".sh")
