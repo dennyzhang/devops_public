@@ -183,6 +183,8 @@ if __name__ == '__main__':
         s.connect(("8.8.8.8", 80))
         es_host = s.getsockname()[0]
 
+    indices_stats = get_all_index_summary(es_host, es_port)
+    logger.info("Indices summary:\n%s" % (indices_stats))
     es_index_list = get_es_index_info(es_host, es_port, es_pattern_regexp, \
                                       min_deleted_count, min_deleted_ratio)
     if len(es_index_list) == 0:
