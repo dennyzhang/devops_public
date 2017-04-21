@@ -53,7 +53,14 @@ def get_all_index_summary(es_host, es_port):
     if r.status_code != 200:
         logger.error("Fail to run REST API: %s" % (url))
         sys_exit(es_host, es_port)
-    return r.content
+
+    l = []
+    for line in r.content.split("\n"):
+        # remove the header, and skip closed ES indices
+        if line == '' or " index " in line  or " close " in line:
+            continue
+        l.append(line)
+    return "\n".join(l)
 
 def print_index_setting(es_host, es_port, index_name):
     url = "http://%s:%s/%s/_stats?pretty" % (es_host, es_port, index_name)
