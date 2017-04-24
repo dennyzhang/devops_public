@@ -22,10 +22,9 @@
 ## Updated: Time-stamp: <2017-04-24 13:12:44>
 ##-------------------------------------------------------------------
 import argparse
-def load_page(page_url, remote_server, should_save_screenshot):
+def load_page(page_url, remote_server, max_load_seconds, \
+              screenshot_dir, should_save_screenshot):
     load_timeout = 60 # seconds
-    screenshot_dir = "/tmp"
-    has_failed = False
 
     import time
     from selenium import webdriver
@@ -44,7 +43,11 @@ def load_page(page_url, remote_server, should_save_screenshot):
     p = driver.get(page_url)
     end_clock = time.clock()
     elapsed_seconds = ((end_clock - start_clock) * 1000)
-    print "Page load took: %f seconds." % (elapsed_seconds)
+    if elapsed_seconds > max_load_seconds:
+        print "ERROR: page load too slow. It took %f seconds, more than %d" \
+            % (elapsed_seconds, max_load_seconds)
+    else:
+        print "Page load took: %f seconds." % (elapsed_seconds)
 
     all_warnings = driver.get_log('browser')
     critical_errors = []
@@ -54,7 +57,7 @@ def load_page(page_url, remote_server, should_save_screenshot):
             critical_errors.append(warning)
 
     if len(critical_errors) != 0:
-        print "ERROR: severe errors happen when loading the page. Details: %s" % critical_errors
+        print "ERROR: severe errors have happened when loading the page.\nDetails: %s" % critical_errors
 
     save_screenshot_filepath = "%s/%s.png" % (screenshot_dir, page_url.rstrip("/").split("/")[-1])
     if should_save_screenshot is True:
@@ -65,7 +68,7 @@ def load_page(page_url, remote_server, should_save_screenshot):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--page_url', required=True, help="URL for the web page to test", type=str)
-    parser.add_argument('--remote_server', required=False, default="http://127.0.0.1:32768/wd/hub", \
+    parser.add_argument('--remote_server', required=False, default="http://127.0.0.1:4444/wd/hub", \
                         help="Remote selenium server to run the test", type=str)
     parser.add_argument('--max_load_seconds', required=False, default=20, \
                         help="If page load takes too long, quit the test", type=int)
@@ -78,7 +81,8 @@ if __name__ == '__main__':
     remote_server = l.remote_server
     max_load_seconds = l.max_load_seconds
     should_save_screenshot = l.should_save_screenshot
-
+    screenshot_dir = "/tmp/screenshot"
     # Run page loading test
-    elapsed_seconds, all_warnings = load_page(page_url, remote_server, should_save_screenshot)
+    elapsed_seconds, all_warnings = load_page(page_url, remote_server, max_load_seconds, \
+                                              screenshot_dir, should_save_screenshot)
 ## File : selenium_load_page.py ends
