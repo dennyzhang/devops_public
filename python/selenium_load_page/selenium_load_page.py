@@ -25,6 +25,7 @@ import argparse
 def load_page(page_url, remote_server, should_save_screenshot):
     load_timeout = 60 # seconds
     screenshot_dir = "/tmp"
+    has_failed = False
 
     import time
     from selenium import webdriver
@@ -54,10 +55,9 @@ def load_page(page_url, remote_server, should_save_screenshot):
             critical_errors.append(warning)
 
     if len(critical_errors) != 0:
-        print "ERROR: severe errors happen when loading the page. Details: %s" \
-            % "\n".join(critical_errors)
+        print "ERROR: severe errors happen when loading the page. Details: %s" % critical_errors
 
-    save_screenshot_filepath = "%s/%s" % (screenshot_dir, page_url.rstrip("/").split()[-1])
+    save_screenshot_filepath = "%s/%s.png" % (screenshot_dir, page_url.rstrip("/").split()[-1])
     if should_save_screenshot is True:
         print "Save screenshot to %s" % (save_screenshot_filepath)
         driver.get_screenshot_as_file(save_screenshot_filepath)
