@@ -49,7 +49,6 @@ def load_page(page_url, remote_server, should_save_screenshot):
     all_warnings = driver.get_log('browser')
     critical_errors = []
 
-    print all_warnings
     for warning in all_warnings:
         if warning['level'] == 'SEVERE':
             critical_errors.append(warning)
@@ -57,7 +56,7 @@ def load_page(page_url, remote_server, should_save_screenshot):
     if len(critical_errors) != 0:
         print "ERROR: severe errors happen when loading the page. Details: %s" % critical_errors
 
-    save_screenshot_filepath = "%s/%s.png" % (screenshot_dir, page_url.rstrip("/").split()[-1])
+    save_screenshot_filepath = "%s/%s.png" % (screenshot_dir, page_url.rstrip("/").split("/")[-1])
     if should_save_screenshot is True:
         print "Save screenshot to %s" % (save_screenshot_filepath)
         driver.get_screenshot_as_file(save_screenshot_filepath)
