@@ -21,11 +21,13 @@
 ## Created : <2017-02-24>
 ## Updated: Time-stamp: <2017-04-24 13:12:44>
 ##-------------------------------------------------------------------
-import argparse
+import sys, argparse
 def load_page(page_url, remote_server, max_load_seconds, \
               screenshot_dir, should_save_screenshot):
     load_timeout = 60 # seconds
+    is_ok = True
 
+    from datetime import datetime
     import time
     from selenium import webdriver
     from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
@@ -46,6 +48,7 @@ def load_page(page_url, remote_server, max_load_seconds, \
     if elapsed_seconds > max_load_seconds:
         print "ERROR: page load too slow. It took %f seconds, more than %d" \
             % (elapsed_seconds, max_load_seconds)
+        is_ok = False
     else:
         print "Page load took: %f seconds." % (elapsed_seconds)
 
@@ -58,12 +61,15 @@ def load_page(page_url, remote_server, max_load_seconds, \
 
     if len(critical_errors) != 0:
         print "ERROR: severe errors have happened when loading the page.\nDetails: %s" % critical_errors
+        is_ok = False
 
-    save_screenshot_filepath = "%s/%s.png" % (screenshot_dir, page_url.rstrip("/").split("/")[-1])
+    save_screenshot_filepath = "%s/%s-%s.png" % \
+                               (screenshot_dir, datetime.now().strftime('%Y-%m-%d_%H%M%S'), \
+                                page_url.rstrip("/").split("/")[-1])
     if should_save_screenshot is True:
         print "Save screenshot to %s" % (save_screenshot_filepath)
         driver.get_screenshot_as_file(save_screenshot_filepath)
-    return elapsed_seconds, all_warnings
+    return is_ok
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -83,6 +89,8 @@ if __name__ == '__main__':
     should_save_screenshot = l.should_save_screenshot
     screenshot_dir = "/tmp/screenshot"
     # Run page loading test
-    elapsed_seconds, all_warnings = load_page(page_url, remote_server, max_load_seconds, \
-                                              screenshot_dir, should_save_screenshot)
+    is_ok = load_page(page_url, remote_server, max_load_seconds, \
+                      screenshot_dir, should_save_screenshot)
+    if is_ok is False:
+        sys.exit(1)
 ## File : selenium_load_page.py ends
