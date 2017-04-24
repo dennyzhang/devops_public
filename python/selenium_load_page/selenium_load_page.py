@@ -4,10 +4,11 @@ def load_page(page_url, save_screenshot_filepath = ''):
     import time
     from selenium import webdriver
     seconds_to_load = 0
-
-    driver_path = "/Users/mac/Downloads/chromedriver"
     load_timeout = 300 # seconds
-    driver = webdriver.Chrome(driver_path)
+
+    # driver_path = "/Users/mac/Downloads/chromedriver"
+    # driver = webdriver.Chrome(driver_path)
+    driver = webdriver.Chrome()
 
     # cleanup cache
     driver.delete_all_cookies()
@@ -36,7 +37,7 @@ def load_page(page_url, save_screenshot_filepath = ''):
         print "ERROR: network issues are detected when loading the page. Details: %s" \
             % (network_warnings)
 
-    if len(network_warnings) != 0:
+    if len(javascript_warnings) != 0:
         print "ERROR: javascript issues are detected when loading the page. Details: %s" \
             % (javascript_warnings)
 
@@ -46,5 +47,5 @@ def load_page(page_url, save_screenshot_filepath = ''):
     return elapsed_seconds, all_warnings
 
 if __name__ == '__main__':
-    elapsed_seconds, all_warnings = load_page('http://doc.carol.ai', '/tmp/test.png')
-    # elapsed_seconds, all_warnings = load_page('http://www.dennyzhang.com', '/tmp/test.png')
+    # elapsed_seconds, all_warnings = load_page('http://doc.carol.ai', '/tmp/test.png')
+    elapsed_seconds, all_warnings = load_page('http://www.dennyzhang.com', '/tmp/test.png')
