@@ -9,13 +9,13 @@
 ##              errors when launching network requests, and save screenshots as images.
 ## Sample:
 ##   - Test page load: basic test
-##        python ./selenium_load_page.py --page_url "http://www.dennyzhang.com"
+##        python ./selenium_load_page.py --page_url http://www.dennyzhang.com
 ##
-##   - Test page load: if it takes more than 5 seconds, fail the test
-##        python ./selenium_load_page.py --page_url "http://www.dennyzhang.com" --max_load_seconds 5
+##   - Test page load: if it takes more than 5 seconds, fail the test. Default timeout is 10 seconds
+##        python ./selenium_load_page.py --page_url http://www.dennyzhang.com --max_load_seconds 5
 ##
 ##   - Test page load: after page loading, save screenshot
-##        python ./selenium_load_page.py --page_url "http://www.dennyzhang.com" --should_save_screenshot true
+##        python ./selenium_load_page.py --page_url http://www.dennyzhang.com --should_save_screenshot true
 ##
 ## --
 ## Created : <2017-02-24>
@@ -24,7 +24,7 @@
 import sys, argparse
 def load_page(page_url, remote_server, max_load_seconds, \
               screenshot_dir, should_save_screenshot):
-    load_timeout = 60 # seconds
+    load_timeout = 120 # seconds
     is_ok = True
 
     from datetime import datetime
@@ -60,7 +60,8 @@ def load_page(page_url, remote_server, max_load_seconds, \
             critical_errors.append(warning)
 
     if len(critical_errors) != 0:
-        print "ERROR: severe errors have happened when loading the page.\nDetails: %s" % critical_errors
+        print "ERROR: severe errors have happened when loading the page. Details:\n\t%s" \
+            % "\n\t".join([str(error) for error in critical_errors])
         is_ok = False
 
     save_screenshot_filepath = "%s/%s-%s.png" % \
@@ -76,18 +77,21 @@ if __name__ == '__main__':
     parser.add_argument('--page_url', required=True, help="URL for the web page to test", type=str)
     parser.add_argument('--remote_server', required=False, default="http://127.0.0.1:4444/wd/hub", \
                         help="Remote selenium server to run the test", type=str)
-    parser.add_argument('--max_load_seconds', required=False, default=20, \
+    parser.add_argument('--max_load_seconds', required=False, default=10, \
                         help="If page load takes too long, quit the test", type=int)
     parser.add_argument('--should_save_screenshot', required=False, default=True, \
                         help="Once enabled, selenium will save the page as screenshot in the selenium server", \
                         type=bool)
+    parser.add_argument('--screenshot_dir', required=False, default="/tmp/screenshot""", \
+                        help="Where to save screenshots", type=str)
 
     l = parser.parse_args()
     page_url = l.page_url
     remote_server = l.remote_server
     max_load_seconds = l.max_load_seconds
     should_save_screenshot = l.should_save_screenshot
-    screenshot_dir = "/tmp/screenshot"
+    screenshot_dir = l.screenshot_dir
+
     # Run page loading test
     is_ok = load_page(page_url, remote_server, max_load_seconds, \
                       screenshot_dir, should_save_screenshot)
