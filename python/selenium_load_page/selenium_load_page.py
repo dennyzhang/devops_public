@@ -53,9 +53,9 @@ def load_page(page_url, remote_server, should_save_screenshot):
         if warning['level'] == 'SEVERE':
             critical_errors.append(warning)
 
-    if len(all_warnings) != 0:
+    if len(critical_errors) != 0:
         print "ERROR: severe errors happen when loading the page. Details: %s" \
-            % "\n".join(all_warnings)
+            % "\n".join(critical_errors)
 
     save_screenshot_filepath = "%s/%s" % (screenshot_dir, page_url.rstrip("/").split()[-1])
     if should_save_screenshot is True:
