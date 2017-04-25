@@ -70,6 +70,7 @@ def load_page(page_url, remote_server, max_load_seconds, \
     if should_save_screenshot is True:
         print "Save screenshot to %s" % (save_screenshot_filepath)
         driver.get_screenshot_as_file(save_screenshot_filepath)
+    driver.close()
     return is_ok
 
 if __name__ == '__main__':
