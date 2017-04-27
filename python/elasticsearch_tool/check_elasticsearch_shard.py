@@ -12,7 +12,7 @@
 ##    Make sure no same shard(primary, replica) are in the same node, to avoid SPOF
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-07 12:28:00>
+## Updated: Time-stamp: <2017-04-27 18:31:42>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -69,6 +69,12 @@ green  open   master-index-13a1f8adbec032ed68f3d035449ef48d    1   0          1 
             index_name = l[2]
             number_of_shards = l[3]
             pri_store_size = l[8]
+
+            if es_pattern_regexp != "":
+                m = re.search(es_pattern_regexp, index_name)
+                # Skip ES index which doesn't match the pattern
+                if m is None:
+                    continue
             index_list.append([index_name, number_of_shards, pri_store_size])
     return index_list
 
