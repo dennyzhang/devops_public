@@ -8,7 +8,7 @@
 ## File : cleanup_old_files.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-04 17:42:38>
+## Updated: Time-stamp: <2017-05-04 17:42:59>
 ## Description :
 ##    Remove old files in a safe and organized way
 ## Sample:
@@ -37,7 +37,7 @@ log_file = "/var/log/cleanup_old_files.log"
 
 logging.basicConfig(filename=log_file,level=logging.DEBUG)
 
-def list_old_files(filename_pattern, min_copies, min_size_mb)):
+def list_old_files(filename_pattern, min_copies, min_size_mb):
     l = []
     # TODO: sort files by create time
     for f in glob.glob(filename_pattern):
