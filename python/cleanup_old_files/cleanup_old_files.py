@@ -8,7 +8,7 @@
 ## File : cleanup_old_files.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-04 17:26:14>
+## Updated: Time-stamp: <2017-05-04 17:42:38>
 ## Description :
 ##    Remove old files in a safe and organized way
 ## Sample:
@@ -37,13 +37,14 @@ log_file = "/var/log/cleanup_old_files.log"
 
 logging.basicConfig(filename=log_file,level=logging.DEBUG)
 
-def list_old_files(filename_pattern, min_copies):
+def list_old_files(filename_pattern, min_copies, min_size_mb)):
     l = []
+    # TODO: sort files by create time
     for f in glob.glob(filename_pattern):
         l.append(f)
     return l
 
-def list_old_folders(filename_pattern, min_copies, min_size_mb):
+def list_old_folders(filename_pattern, min_copies:
     l = []
     return l
 
@@ -61,9 +62,9 @@ if __name__ == '__main__':
     parser.add_argument('--cleanup_type', required=False, default='file', \
                         help="Whether to perform the cleanup for files or directories", type=str)
     parser.add_argument('--min_copies', default=3, required=False, \
-                        help='minimal shards each elasticsearch index should have', type=int)
+                        help='minimal copies to keep, before removal.', type=int)
     parser.add_argument('--min_size_mb', default='10', required=False, \
-                        help='When remove files, skip files too small', type=str)
+                        help='When remove files, skip files too small. It will be skipped when removing directories', type=str)
     l = parser.parse_args()
 
     working_dir = l.working_dir
@@ -79,9 +80,9 @@ if __name__ == '__main__':
 
     os.chdir(working_dir)
     if cleanup_type == 'file':
-        l = list_old_files(filename_pattern, min_copies)
+        l = list_old_files(filename_pattern, min_copies, min_size_mb))
     else:
-        l = list_old_folders(filename_pattern, min_copies, min_size_mb)
+        l = list_old_folders(filename_pattern, min_copies)
 
     if l == []:
         logging.info("No matched files/directories to be clean")
