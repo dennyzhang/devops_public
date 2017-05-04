@@ -8,28 +8,29 @@
 ## File : cleanup_old_files.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-04 16:18:36>
+## Updated: Time-stamp: <2017-05-04 17:26:14>
 ## Description :
 ##    Remove old files in a safe and organized way
 ## Sample:
 ##    # Remove files: Check /opt/app and remove files naming "app-.*-SNAPSHOT.jar". But keep latest 2 copies
-##    python cleanup_old_files.py --working_dir "/opt/app" --filename_pattern "app-.*-SNAPSHOT.jar" \
+##    python cleanup_old_files.py --working_dir "/opt/app" --filename_pattern "app-*-SNAPSHOT.jar" \
 ##               --cleanup_type file --min_copies 3 --min_size_mb 10
 ##
 ##    # Only list delete candidates, instead of perform the actual changes
-##    python cleanup_old_files.py --working_dir "/opt/app" --filename_pattern "app-.*-SNAPSHOT.jar" \
+##    python cleanup_old_files.py --working_dir "/opt/app" --filename_pattern "app-*-SNAPSHOT.jar" \
 ##               --examine_only true
 ##
 ##    # Remove files: Only cleanup files over 200MB
-##    python cleanup_old_files.py --working_dir "/opt/app" --filename_pattern "app-.*-SNAPSHOT.jar" \
+##    python cleanup_old_files.py --working_dir "/opt/app" --filename_pattern "app-*-SNAPSHOT.jar" \
 ##               --cleanup_type file --min_size_mb 200
 ##
 ##    # Remove folders: Cleanup subdirectories, keeping latest 2 directories
-##    python cleanup_old_files.py --working_dir "/opt/app" --filename_pattern ".*" --cleanup_type directory
+##    python cleanup_old_files.py --working_dir "/opt/app" --filename_pattern "*" --cleanup_type directory
 ##-------------------------------------------------------------------
 import os, sys
 import argparse
-import re
+import glob
+import shutil
 
 import logging
 log_file = "/var/log/cleanup_old_files.log"
@@ -38,19 +39,13 @@ logging.basicConfig(filename=log_file,level=logging.DEBUG)
 
 def list_old_files(filename_pattern, min_copies):
     l = []
+    for f in glob.glob(filename_pattern):
+        l.append(f)
     return l
 
-def list_old_folders(filename_pattern, min_copies, min_size_mb, examine_only):
+def list_old_folders(filename_pattern, min_copies, min_size_mb):
     l = []
     return l
-
-def remove_old_files(filename_pattern, min_copies, examine_only):
-    # TODO: implement the logic
-    return True
-
-def remove_old_folders(filename_pattern, min_copies, min_size_mb, examine_only):
-    # TODO: implement the logic
-    return True
 
 if __name__ == '__main__':
     # get parameters from users
@@ -84,7 +79,22 @@ if __name__ == '__main__':
 
     os.chdir(working_dir)
     if cleanup_type == 'file':
-        remove_old_files(filename_pattern, min_copies, examine_only)
+        l = list_old_files(filename_pattern, min_copies)
     else:
-        remove_old_folders(filename_pattern, min_copies, min_size_mb, examine_only)
+        l = list_old_folders(filename_pattern, min_copies, min_size_mb)
+
+    if l == []:
+        logging.info("No matched files/directories to be clean")
+        sys.exit(0)
+    else:
+        if examine_only is True:
+            logging.info("Below files/directories are selected to be removed:%s" \
+                         % ",".join(l)) 
+            sys.exit(0)
+        else:
+            # Perform the actual removal
+            for f in l:
+                logging.info("Remove: %s" % f)
+                # TODO: error handling
+                shutil.rmtree(f)
 ## File : cleanup_old_files.py ends
