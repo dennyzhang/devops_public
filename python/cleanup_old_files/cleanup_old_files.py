@@ -33,7 +33,10 @@ import os, sys
 import argparse
 import re
 
-# TODO: add logging
+import logging
+log_file = "/var/log/cleanup_old_files.log"
+
+logging.basicConfig(filename=log_file,level=logging.DEBUG)
 
 def remove_old_files(filename_pattern, min_copies, examine_only):
     # TODO: implement the logic
@@ -70,7 +73,7 @@ if __name__ == '__main__':
     min_size_mb = l.min_size_mb
 
     if os.path.exists(working_dir) is False:
-        print "Warning: %d doesn't exists" % (working_dir)
+        logging.warning("%d doesn't exists" % (working_dir))
         sys.exit(0)
 
     os.chdir(working_dir)
