@@ -8,7 +8,7 @@
 ## File : cleanup_old_files.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-04 17:43:18>
+## Updated: Time-stamp: <2017-05-05 13:29:56>
 ## Description :
 ##    Remove old files in a safe and organized way
 ## Sample:
@@ -35,17 +35,36 @@ import shutil
 import logging
 log_file = "/var/log/cleanup_old_files.log"
 
-logging.basicConfig(filename=log_file,level=logging.DEBUG)
+logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s %(message)s')
 
 def list_old_files(filename_pattern, min_copies, min_size_mb):
     l = []
-    # TODO: sort files by create time
-    for f in glob.glob(filename_pattern):
-        l.append(f)
+    files = glob.glob(filename_pattern)
+    files.sort(key=os.path.getmtime, reverse=True)
+    i = 0
+    for f in files:
+        if os.path.isfile(f) is False:
+            continue
+        # skip too small files
+        filesize_mb = os.stat(f).st_size/(1000*1000)
+        if filesize_mb < min_size_mb:
+            continue
+        i = i + 1
+        if i > min_copies:
+            l.append(f)
     return l
 
 def list_old_folders(filename_pattern, min_copies):
     l = []
+    files = glob.glob(filename_pattern)
+    files.sort(key=os.path.getmtime, reverse=True)
+    i = 0
+    for f in files:
+        if os.path.isdir(f) is False:
+            continue
+        i = i + 1
+        if i > min_copies:
+            l.append(f)
     return l
 
 if __name__ == '__main__':
@@ -55,7 +74,7 @@ if __name__ == '__main__':
                         help="Perform cleanup under which directory", type=str)
 
     parser.add_argument('--examine_only', required=False, \
-                        help="Only list delete candidates, instead perform the actual removal", type=bool)
+                        help="Only list delete candidates, instead perform the actual removal", type=str)
 
     parser.add_argument('--filename_pattern', required=False, default=".*", \
                         help="Filter files/directories by filename, before cleanup", type=str)
@@ -68,7 +87,7 @@ if __name__ == '__main__':
     l = parser.parse_args()
 
     working_dir = l.working_dir
-    examine_only = l.examine_only
+    examine_only = l.examine_only.lower()
     cleanup_type = l.cleanup_type
     filename_pattern = l.filename_pattern
     min_copies = l.min_copies
@@ -88,7 +107,7 @@ if __name__ == '__main__':
         logging.info("No matched files/directories to be clean")
         sys.exit(0)
     else:
-        if examine_only is True:
+        if examine_only == "true":
             logging.info("Below files/directories are selected to be removed:%s" \
                          % ",".join(l)) 
             sys.exit(0)
@@ -98,4 +117,5 @@ if __name__ == '__main__':
                 logging.info("Remove: %s" % f)
                 # TODO: error handling
                 shutil.rmtree(f)
+            logging.info("Cleanup is done")
 ## File : cleanup_old_files.py ends
