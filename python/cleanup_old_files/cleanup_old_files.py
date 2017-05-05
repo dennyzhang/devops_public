@@ -8,7 +8,7 @@
 ## File : cleanup_old_files.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-05 13:37:03>
+## Updated: Time-stamp: <2017-05-05 13:39:41>
 ## Description :
 ##    Remove old files in a safe and organized way
 ## Sample:
@@ -88,7 +88,7 @@ if __name__ == '__main__':
 
     working_dir = l.working_dir
     examine_only = l.examine_only.lower()
-    cleanup_type = l.cleanup_type
+    cleanup_type = l.cleanup_type.lower()
     filename_pattern = l.filename_pattern
     min_copies = l.min_copies
     min_size_mb = l.min_size_mb
@@ -115,7 +115,10 @@ if __name__ == '__main__':
         else:
             # Perform the actual removal
             for f in l:
-                logging.info("Remove folder: %s/%s." % (working_dir, f))
+                if cleanup_type == 'file':
+                    logging.info("Remove file. %s/%s." % (working_dir, f))
+                else:
+                    logging.info("Remove folder: %s/%s." % (working_dir, f))
                 # TODO: error handling
                 shutil.rmtree(f)
             logging.info("Cleanup is done.")
