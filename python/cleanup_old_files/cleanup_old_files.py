@@ -8,7 +8,7 @@
 ## File : cleanup_old_files.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-05 13:39:41>
+## Updated: Time-stamp: <2017-05-08 17:15:52>
 ## Description :
 ##    Remove old files in a safe and organized way
 ## Sample:
@@ -18,7 +18,7 @@
 ##
 ##    # Only list delete candidates, instead of perform the actual changes
 ##    python cleanup_old_files.py --working_dir "/opt/app" --filename_pattern "app-*-SNAPSHOT.jar" \
-##               --examine_only true
+##               --examine_only
 ##
 ##    # Remove files: Only cleanup files over 200MB
 ##    python cleanup_old_files.py --working_dir "/opt/app" --filename_pattern "app-*-SNAPSHOT.jar" \
@@ -73,8 +73,8 @@ if __name__ == '__main__':
     parser.add_argument('--working_dir', required=True, \
                         help="Perform cleanup under which directory", type=str)
 
-    parser.add_argument('--examine_only', required=False, \
-                        help="Only list delete candidates, instead perform the actual removal", type=str)
+    parser.add_argument('--examine_only', dest='examine_only', action='store_true', default=False, \
+                        help="Only list delete candidates, instead perform the actual removal")
 
     parser.add_argument('--filename_pattern', required=False, default=".*", \
                         help="Filter files/directories by filename, before cleanup", type=str)
@@ -87,7 +87,7 @@ if __name__ == '__main__':
     l = parser.parse_args()
 
     working_dir = l.working_dir
-    examine_only = l.examine_only.lower()
+    examine_only = l.examine_only
     cleanup_type = l.cleanup_type.lower()
     filename_pattern = l.filename_pattern
     min_copies = l.min_copies
@@ -108,8 +108,9 @@ if __name__ == '__main__':
         logging.info("No matched files/directories to be clean.")
         sys.exit(0)
     else:
-        if examine_only == "true":
-            logging.info("Below files/directories are selected to be removed: %s." \
+        if examine_only is True:
+            logging.info("Below files/directories are selected to be removed: %s.\n"\
+                         "Skip following removal, since --examine_only has already been given." \
                          % ",".join(l)) 
             sys.exit(0)
         else:
