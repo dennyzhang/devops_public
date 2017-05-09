@@ -8,7 +8,7 @@
 ## File : cleanup_old_files.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-08 17:19:20>
+## Updated: Time-stamp: <2017-05-08 21:12:43>
 ## Description :
 ##    Remove old files in a safe and organized way
 ## Sample:
@@ -83,8 +83,8 @@ if __name__ == '__main__':
                         help="Whether to perform the cleanup for files or directories", type=str)
     parser.add_argument('--min_copies', default=3, required=False, \
                         help='minimal copies to keep, before removal.', type=int)
-    parser.add_argument('--min_size_mb', default='10', required=False, \
-                        help='When remove files, skip files too small. It will be skipped when removing directories', type=str)
+    parser.add_argument('--min_size_mb', default=10, required=False, \
+                        help='When remove files, skip files too small. It will be skipped when removing directories', type=int)
     l = parser.parse_args()
 
     working_dir = l.working_dir
