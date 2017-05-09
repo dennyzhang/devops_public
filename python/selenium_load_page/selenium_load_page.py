@@ -22,15 +22,16 @@
 ## Updated: Time-stamp: <2017-04-24 13:12:44>
 ##-------------------------------------------------------------------
 import sys, argparse
+
+from datetime import datetime
+import time
+from selenium import webdriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+
 def load_page(page_url, remote_server, max_load_seconds, \
               screenshot_dir, should_save_screenshot):
     load_timeout = 120 # seconds
     is_ok = True
-
-    from datetime import datetime
-    import time
-    from selenium import webdriver
-    from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
     driver = webdriver.Remote(command_executor = remote_server, \
                               desired_capabilities=DesiredCapabilities.CHROME)
