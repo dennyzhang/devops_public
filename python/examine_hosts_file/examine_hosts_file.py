@@ -8,7 +8,7 @@
 ## File : examine_hosts_file.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-10 16:26:30>
+## Updated: Time-stamp: <2017-05-10 16:41:16>
 ## Description :
 ##    Examine /etc/hosts:
 ##        1. Whether expected list of ip-hostname are included in /etc/hosts
@@ -56,5 +56,7 @@ if __name__ == '__main__':
 
     extra_hosts_file = l.extra_hosts_file
 
-    print load_hosts_to_list()
+    host_list = load_hosts_to_list()
+    if len(host_list) != len(set(host_list)):
+        logging.error("ERROR: Detected duplicate entries in /etc/hosts. \nHere is full list is: %s" % (host_list))
 ## File : examine_hosts_file.py ends
