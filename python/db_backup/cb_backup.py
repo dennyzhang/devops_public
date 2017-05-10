@@ -5,7 +5,7 @@
 ## Description : Couchbase Daily Backup
 ## --
 ## Created : <2016-08-01>
-## Updated: Time-stamp: <2017-04-17 21:23:59>
+## Updated: Time-stamp: <2017-05-10 16:07:01>
 ##-------------------------------------------------------------------
 # TODO: move to common library
 import argparse
@@ -14,7 +14,7 @@ from datetime import date
 import calendar
 import subprocess
 
-backup_log_file = "/var/log/cb_backup.log"
+log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
 # setup logging
 from logging.handlers import RotatingFileHandler
 import logging
@@ -22,7 +22,7 @@ format = "%(asctime)s %(filename)s:%(lineno)d - %(levelname)s: %(message)s"
 formatter = logging.Formatter(format)
 log = logging.getLogger('cbbackup')
 
-Rthandler = RotatingFileHandler(backup_log_file, maxBytes=5*1024*1024,backupCount=5)
+Rthandler = RotatingFileHandler(log_file, maxBytes=5*1024*1024,backupCount=5)
 Rthandler.setLevel(logging.INFO)
 Rthandler.setFormatter(formatter)
 consoleHandler = logging.StreamHandler()
@@ -81,7 +81,7 @@ def cb_backup_command(bucket, method):
     # Sample: /opt/couchbase/bin/cbbackup http://127.0.0.1:8091 \
     #         /data/cb_backup/bucket1 -u $MYUSERNAME \
     #         -p $MYPASSWD -b bucket1 -m diff -t 4
-    return "%s >> %s" % (command, backup_log_file)
+    return "%s >> %s" % (command, log_file)
 
 def cb_backup_bucket(bucket, backup_method = ""):
     if backup_method == "":

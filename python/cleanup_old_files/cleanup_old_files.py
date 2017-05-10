@@ -8,7 +8,7 @@
 ## File : cleanup_old_files.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-08 21:12:43>
+## Updated: Time-stamp: <2017-05-10 16:07:02>
 ## Description :
 ##    Remove old files in a safe and organized way
 ## Sample:
@@ -33,7 +33,7 @@ import glob
 import shutil
 
 import logging
-log_file = "/var/log/cleanup_old_files.log"
+log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
 
 logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s %(message)s')
 logging.getLogger().addHandler(logging.StreamHandler())

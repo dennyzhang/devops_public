@@ -5,7 +5,7 @@
 ## Description : Elasticsearch Backup By ES Snapshot feature
 ## --
 ## Created : <2016-08-01>
-## Updated: Time-stamp: <2016-08-12 16:56:28>
+## Updated: Time-stamp: <2017-05-10 16:07:26>
 ##-------------------------------------------------------------------
 # TODO: move to common library
 import os
@@ -15,7 +15,7 @@ import subprocess
 
 from elasticsearch import Elasticsearch
 
-backup_log_file = "/var/log/es_backup.log"
+log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
 # setup logging
 from logging.handlers import RotatingFileHandler
 import logging
@@ -23,7 +23,7 @@ format = "%(asctime)s %(filename)s:%(lineno)d - %(levelname)s: %(message)s"
 formatter = logging.Formatter(format)
 log = logging.getLogger('cbbackup')
 
-Rthandler = RotatingFileHandler(backup_log_file, maxBytes=5*1024*1024,backupCount=5)
+Rthandler = RotatingFileHandler(log_file, maxBytes=5*1024*1024,backupCount=5)
 Rthandler.setLevel(logging.INFO)
 Rthandler.setFormatter(formatter)
 consoleHandler = logging.StreamHandler()
