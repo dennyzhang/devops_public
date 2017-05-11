@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-04-19 14:49:31>
+## Updated: Time-stamp: <2017-05-11 05:13:43>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -66,7 +66,10 @@ if __name__ == '__main__':
     l = parser.parse_args()
     
     code_dir = os.path.expanduser(l.code_dir)
-    check_ignore_file = os.path.expanduser(l.check_ignore_file)
+    if l.check_ignore_file is None:
+        check_ignore_file = os.path.expanduser(l.check_ignore_file)
+    else:
+        check_ignore_file = None
 
     file_list = find_files_by_postfix(code_dir, ".py")
     if check_ignore_file is not None:

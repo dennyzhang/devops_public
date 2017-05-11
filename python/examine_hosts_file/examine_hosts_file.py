@@ -8,7 +8,7 @@
 ## File : examine_hosts_file.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-10 16:41:16>
+## Updated: Time-stamp: <2017-05-10 16:55:25>
 ## Description :
 ##    Examine /etc/hosts:
 ##        1. Whether expected list of ip-hostname are included in /etc/hosts
@@ -26,8 +26,22 @@ log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
 logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s %(message)s')
 logging.getLogger().addHandler(logging.StreamHandler())
 
-def load_hosts_to_list():
-    l = []
+def add_host_binding_to_dict(hosts_dict, ip, hostname):
+    # TODO: return the output
+    if hostname in hosts_dict:
+        if hosts_dict[hostname] == ip:
+            logging.error("Duplicate binding in /etc/hosts: ip(%s), hostname(%s)") \
+                % (ip, hostname)
+        else:
+            logging.error("One hostname bind with multiple different ip address in /etc/hosts: ip(%s), hostname(%s)") \
+                % (ip, hostname)
+        return False
+    else:
+        hosts_dict[hostname] = ip
+        return True
+
+def load_hosts_to_dict():
+    host_dict = {}
     with open('/etc/hosts','r') as f:
         for row in f:
             row = row.strip()
@@ -37,6 +51,8 @@ def load_hosts_to_list():
 
             if '::' in entry_l[0]:
                 continue
+
+            ip = entry_l[0]
 
             if len(entry_l) == 2:
                 l.append((entry_l[0], entry_l[1]))
@@ -56,7 +72,5 @@ if __name__ == '__main__':
 
     extra_hosts_file = l.extra_hosts_file
 
-    host_list = load_hosts_to_list()
-    if len(host_list) != len(set(host_list)):
-        logging.error("ERROR: Detected duplicate entries in /etc/hosts. \nHere is full list is: %s" % (host_list))
+    host_dict = load_hosts_to_dict()
 ## File : examine_hosts_file.py ends
