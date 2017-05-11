@@ -8,7 +8,7 @@
 ## File : examine_hosts_file.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-11 11:29:08>
+## Updated: Time-stamp: <2017-05-11 12:11:26>
 ## Description :
 ##    Examine /etc/hosts:
 ##        1. Whether expected list of ip-hostname are included in /etc/hosts
@@ -78,10 +78,14 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--extra_hosts_file', required=False, default="", \
                         help="Make sure extra hosts mapping are already in place for /etc/hosts", type=str)
+    parser.add_argument('--allow_duplicate_for_ips', required=False, default="", \
+                        help="IP list separated by comma. For those ips, we accept duplicated entries in /etc/hosts", type=str)
 
     l = parser.parse_args()
     extra_hosts_file = l.extra_hosts_file
+    allow_duplicate_for_ips = l.allow_duplicate_for_ips
 
+    allow_duplicate_list = map(lambda x: x.strip(), allow_duplicate_for_ips.split(','))
     has_duplicate_entries = False
     has_conflict_entries = False
     has_error_with_extra_hosts = False
@@ -93,8 +97,9 @@ if __name__ == '__main__':
         if hostname in host_dict:
             # Check any duplicate entries: ip-hostname mapping
             if host_dict[hostname] == ip:
-                logging.error("Error: Detect duplicate ip-hostname mapping: ip(%s), hostname(%s)" % (ip, hostname))
-                has_duplicate_entries = True
+                if ip not in allow_duplicate_list:
+                    logging.error("Error: Detect duplicate ip-hostname mapping: ip(%s), hostname(%s)" % (ip, hostname))
+                    has_duplicate_entries = True
             else:
                 # Check any entries which has the same hostname with different ip
                 logging.error("Error: Detect conflict entries ip-hostname mapping for %s" % (hostname))
