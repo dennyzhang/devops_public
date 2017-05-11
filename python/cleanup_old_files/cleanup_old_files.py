@@ -8,7 +8,7 @@
 ## File : cleanup_old_files.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-10 16:07:02>
+## Updated: Time-stamp: <2017-05-11 14:00:25>
 ## Description :
 ##    Remove old files in a safe and organized way
 ## Sample:
@@ -73,10 +73,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--working_dir', required=True, \
                         help="Perform cleanup under which directory", type=str)
-
     parser.add_argument('--examine_only', dest='examine_only', action='store_true', default=False, \
                         help="Only list delete candidates, instead perform the actual removal")
-
     parser.add_argument('--filename_pattern', required=False, default=".*", \
                         help="Filter files/directories by filename, before cleanup", type=str)
     parser.add_argument('--cleanup_type', required=False, default='file', \

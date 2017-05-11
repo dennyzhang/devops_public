@@ -8,7 +8,7 @@
 ## File : update_hosts_file.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-11 13:19:28>
+## Updated: Time-stamp: <2017-05-11 14:00:08>
 ## Description :
 ##    Load an extra hosts binding into /etc/hosts
 ## Sample:
@@ -53,8 +53,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--extra_hosts_file', required=False, default="", \
                         help="Load extra hosts into /etc/hosts", type=str)
-    parser.add_argument('--skip_current_hostname', required=False, default=False, \
-                        help="Skip the binding for current hostname, if it's specified in --extra_hosts_file", type=bool)
+    parser.add_argument('--skip_current_hostname', required=False, dest='skip_current_hostname', \
+                        action='store_true', default=False, \
+                        help="Skip the binding for current hostname, if it's specified in --extra_hosts_file")
 
     l = parser.parse_args()
     extra_hosts_file = l.extra_hosts_file
