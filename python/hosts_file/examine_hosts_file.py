@@ -8,7 +8,7 @@
 ## File : examine_hosts_file.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-11 11:03:32>
+## Updated: Time-stamp: <2017-05-11 11:29:08>
 ## Description :
 ##    Examine /etc/hosts:
 ##        1. Whether expected list of ip-hostname are included in /etc/hosts
@@ -16,7 +16,7 @@
 ##        3. Whether one hostname binds to multiple ip addresses
 ## Sample:
 ##        python ./examine_hosts_file.py
-##        python ./examine_hosts_file.py  --extra_hosts_file /tmp/hosts
+##        python ./examine_hosts_file.py --extra_hosts_file /tmp/hosts
 ##-------------------------------------------------------------------
 import os, sys
 import argparse
@@ -26,38 +26,6 @@ log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
 
 logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s %(message)s')
 logging.getLogger().addHandler(logging.StreamHandler())
-
-def add_host_binding_to_dict(hosts_dict, ip, hostname):
-    # TODO: return the output
-    if hostname in hosts_dict:
-        if hosts_dict[hostname] == ip:
-            logging.error("Duplicate binding in /etc/hosts: ip(%s), hostname(%s)") \
-                % (ip, hostname)
-        else:
-            logging.error("One hostname bind with multiple different ip address in /etc/hosts: ip(%s), hostname(%s)") \
-                % (ip, hostname)
-        return False
-    else:
-        hosts_dict[hostname] = ip
-        return True
-
-def examine_host_list(host_list):
-    host_dict = {}
-
-    has_duplicate_entries = False
-    has_conflict_entries = False
-    for (hostname, ip) in host_list:
-        if hostname in host_dict:
-            # Check any duplicate entries: ip-hostname mapping
-            if host_dict[hostname] == ip:
-                logging.error("Error: Detect duplicate ip-hostname mapping: ip(%s), hostname(%s)" % (ip, hostname))
-                has_duplicate_entries = True
-            else:
-                # Check any entries which has the same hostname with different ip
-                logging.error("Error: Detect conflict entries ip-hostname mapping for %s" % (hostname))
-                has_conflict_entries = True
-        host_dict[hostname] = ip
-    return (host_dict, has_duplicate_entries, has_conflict_entries)
 
 def load_hostsfile_to_list(host_file):
     l = []
@@ -119,8 +87,19 @@ if __name__ == '__main__':
     has_error_with_extra_hosts = False
 
     host_list = load_hostsfile_to_list("/etc/hosts")
-    # print host_list
-    (host_dict, has_duplicate_entries, has_conflict_entries) = examine_host_list(host_list)
+    host_dict = {}
+
+    for (hostname, ip) in host_list:
+        if hostname in host_dict:
+            # Check any duplicate entries: ip-hostname mapping
+            if host_dict[hostname] == ip:
+                logging.error("Error: Detect duplicate ip-hostname mapping: ip(%s), hostname(%s)" % (ip, hostname))
+                has_duplicate_entries = True
+            else:
+                # Check any entries which has the same hostname with different ip
+                logging.error("Error: Detect conflict entries ip-hostname mapping for %s" % (hostname))
+                has_conflict_entries = True
+        host_dict[hostname] = ip
 
     if extra_hosts_file != "":
         current_hosts_dict = load_hostsfile_to_dict("/etc/hosts")
