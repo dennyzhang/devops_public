@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-05-11 05:13:43>
+## Updated: Time-stamp: <2017-05-11 06:08:27>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -59,20 +59,19 @@ def run_check(file_list, check_pattern):
 if __name__ == '__main__':
     # get parameters from users
     parser = argparse.ArgumentParser()
-    parser.add_argument('--code_dir', required=True, \
+    parser.add_argument('--code_dir', required=False, default=".", \
                         help="Source code directory to be scanned", type=str)
-    parser.add_argument('--check_ignore_file', required=False, \
+    parser.add_argument('--check_ignore_file', required=False, default="" \
                         help="file pattern listed in the file will be skipped for scan", type=str)
     l = parser.parse_args()
-    
+
     code_dir = os.path.expanduser(l.code_dir)
-    if l.check_ignore_file is None:
+    check_ignore_file = l.check_ignore_file
+    if check_ignore_file != "":
         check_ignore_file = os.path.expanduser(l.check_ignore_file)
-    else:
-        check_ignore_file = None
 
     file_list = find_files_by_postfix(code_dir, ".py")
-    if check_ignore_file is not None:
+    if check_ignore_file != "":
         with open(check_ignore_file) as f:
             ignore_file_list = f.readlines()
             file_list = ignore_files(file_list, ignore_file_list)

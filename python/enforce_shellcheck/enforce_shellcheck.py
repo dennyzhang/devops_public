@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-05-11 05:14:24>
+## Updated: Time-stamp: <2017-05-11 06:09:12>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -59,26 +59,25 @@ def run_check(file_list, check_pattern):
 if __name__ == '__main__':
     # get parameters from users
     parser = argparse.ArgumentParser()
-    parser.add_argument('--code_dir', required=True, \
+    parser.add_argument('--code_dir', required=False, default=".", \
                         help="Source code directory to be scanned", type=str)
     parser.add_argument('--check_ignore_file', required=False, \
                         help="file pattern listed in the file will be skipped for scan", type=str)
-
     parser.add_argument('--exclude_code_list', required=False, \
                         default="SC1090,SC1091,SC2154,SC2001,SC2002,SC2181", \
                         help="shellcheck code to be skipped", type=str)
 
     l = parser.parse_args()
-    
+
     code_dir = os.path.expanduser(l.code_dir)
-    if l.check_ignore_file is None:
+    check_ignore_file = l.check_ignore_file
+    if check_ignore_file != "":
         check_ignore_file = os.path.expanduser(l.check_ignore_file)
-    else:
-        check_ignore_file = None
+
     exclude_code_list = l.exclude_code_list
 
     file_list = find_files_by_postfix(code_dir, ".sh")
-    if check_ignore_file is not None:
+    if check_ignore_file != "":
         with open(check_ignore_file) as f:
             ignore_file_list = f.readlines()
             file_list = ignore_files(file_list, ignore_file_list)
