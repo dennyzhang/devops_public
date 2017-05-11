@@ -8,7 +8,7 @@
 ## File : examine_hosts_file.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-11 12:11:26>
+## Updated: Time-stamp: <2017-05-11 13:30:41>
 ## Description :
 ##    Examine /etc/hosts:
 ##        1. Whether expected list of ip-hostname are included in /etc/hosts
@@ -20,6 +20,7 @@
 ##-------------------------------------------------------------------
 import os, sys
 import argparse
+import socket
 
 import logging
 log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
@@ -78,14 +79,20 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--extra_hosts_file', required=False, default="", \
                         help="Make sure extra hosts mapping are already in place for /etc/hosts", type=str)
-    parser.add_argument('--allow_duplicate_for_ips', required=False, default="", \
-                        help="IP list separated by comma. For those ips, we accept duplicated entries in /etc/hosts", type=str)
+    parser.add_argument('--allow_check_for_ips', required=False, default="", \
+                        help="Skip checks for entries in /etc/hosts filtered by ip. Separated by comma.", type=str)
+    # By default: skip check for entries of current hostname
+    parser.add_argument('--allow_check_for_hostnames', required=False, default=socket.gethostname(), \
+                        help="Skip checks for entries in /etc/hosts filtered by hostname. Separated by comma.", type=str)
 
     l = parser.parse_args()
     extra_hosts_file = l.extra_hosts_file
-    allow_duplicate_for_ips = l.allow_duplicate_for_ips
+    allow_check_for_ips = l.allow_check_for_ips
+    allow_check_for_ip_list = map(lambda x: x.strip(), allow_check_for_ips.split(','))
 
-    allow_duplicate_list = map(lambda x: x.strip(), allow_duplicate_for_ips.split(','))
+    allow_check_for_hostnames = l.allow_check_for_hostnames
+    allow_check_for_hostname_list = map(lambda x: x.strhostname(), allow_check_for_hostnames.split(','))
+
     has_duplicate_entries = False
     has_conflict_entries = False
     has_error_with_extra_hosts = False
@@ -94,10 +101,12 @@ if __name__ == '__main__':
     host_dict = {}
 
     for (hostname, ip) in host_list:
+        if ip in allow_check_for_ip_list or hostname in allow_check_for_hostname_list:
+            continue
         if hostname in host_dict:
             # Check any duplicate entries: ip-hostname mapping
             if host_dict[hostname] == ip:
-                if ip not in allow_duplicate_list:
+                if ip not in allow_check_for_ip_list or hostname in allow_check_for_hostname_list:
                     logging.error("Error: Detect duplicate ip-hostname mapping: ip(%s), hostname(%s)" % (ip, hostname))
                     has_duplicate_entries = True
             else:
@@ -110,12 +119,15 @@ if __name__ == '__main__':
         current_hosts_dict = load_hostsfile_to_dict("/etc/hosts")
         extra_hosts_dict = load_hostsfile_to_dict(extra_hosts_file)
         for hostname in extra_hosts_dict:
+            ip = extra_hosts_dict[hostname]
+            if ip in allow_check_for_ip_list or hostname in allow_check_for_hostname_list:
+                continue
             if hostname not in current_hosts_dict:
                 logging.error("ERROR /etc/hosts is missing entries of hostname:ip (%s:%s)" % \
-                              (hostname, extra_hosts_dict[hostname]))
+                              (hostname, ip))
                 has_error_with_extra_hosts = True
             else:
-                if current_hosts_dict[hostname] != extra_hosts_dict[hostname]:
+                if ip != current_hosts_dict[hostname]:
                     logging.error("ERROR /etc/hosts is conflict with %s for entry of hostname(%s)" % \
                                   (extra_hosts_file, hostname))
                     has_error_with_extra_hosts = True
