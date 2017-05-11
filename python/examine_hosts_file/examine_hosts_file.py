@@ -8,14 +8,15 @@
 ## File : examine_hosts_file.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-11 10:35:38>
+## Updated: Time-stamp: <2017-05-11 11:03:32>
 ## Description :
 ##    Examine /etc/hosts:
 ##        1. Whether expected list of ip-hostname are included in /etc/hosts
 ##        2. Whether it has duplicates ip-hostname binding
 ##        3. Whether one hostname binds to multiple ip addresses
 ## Sample:
-##    #
+##        python ./examine_hosts_file.py
+##        python ./examine_hosts_file.py  --extra_hosts_file /tmp/hosts
 ##-------------------------------------------------------------------
 import os, sys
 import argparse
@@ -58,7 +59,7 @@ def examine_host_list(host_list):
         host_dict[hostname] = ip
     return (host_dict, has_duplicate_entries, has_conflict_entries)
 
-def load_hostsfile_to_list(host_file="/etc/hosts"):
+def load_hostsfile_to_list(host_file):
     l = []
     with open(host_file,'r') as f:
         for row in f:
@@ -80,8 +81,8 @@ def load_hostsfile_to_list(host_file="/etc/hosts"):
                     l.append((hostname, ip))
     return l
 
-def load_hostsfile_to_dict(host_file="/etc/hosts"):
-    host_dict = []
+def load_hostsfile_to_dict(host_file):
+    host_dict = {}
     with open(host_file,'r') as f:
         for row in f:
             row = row.strip()
@@ -107,16 +108,37 @@ def load_hostsfile_to_dict(host_file="/etc/hosts"):
 if __name__ == '__main__':
     # get parameters from users
     parser = argparse.ArgumentParser()
-    parser.add_argument('--extra_hosts_file', required=False, \
+    parser.add_argument('--extra_hosts_file', required=False, default="", \
                         help="Make sure extra hosts mapping are already in place for /etc/hosts", type=str)
 
     l = parser.parse_args()
-
     extra_hosts_file = l.extra_hosts_file
 
-    host_list = load_hostsfile_to_list()
+    has_duplicate_entries = False
+    has_conflict_entries = False
+    has_error_with_extra_hosts = False
+
+    host_list = load_hostsfile_to_list("/etc/hosts")
     # print host_list
     (host_dict, has_duplicate_entries, has_conflict_entries) = examine_host_list(host_list)
-    if has_duplicate_entries is True or has_conflict_entries is True:
+
+    if extra_hosts_file != "":
+        current_hosts_dict = load_hostsfile_to_dict("/etc/hosts")
+        extra_hosts_dict = load_hostsfile_to_dict(extra_hosts_file)
+        for hostname in extra_hosts_dict:
+            if hostname not in current_hosts_dict:
+                logging.error("ERROR /etc/hosts is missing entries of hostname:ip (%s:%s)" % \
+                              (hostname, extra_hosts_dict[hostname]))
+                has_error_with_extra_hosts = True
+            else:
+                if current_hosts_dict[hostname] != extra_hosts_dict[hostname]:
+                    logging.error("ERROR /etc/hosts is conflict with %s for entry of hostname(%s)" % \
+                                  (extra_hosts_file, hostname))
+                    has_error_with_extra_hosts = True
+
+    if has_duplicate_entries is True or has_conflict_entries is True \
+       or has_error_with_extra_hosts is True:
         sys.exit(1)
+    else:
+        logging.info("OK: /etc/hosts is good.")
 ## File : examine_hosts_file.py ends
