@@ -8,7 +8,7 @@
 ## File : examine_hosts_file.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-10 16:55:25>
+## Updated: Time-stamp: <2017-05-11 09:55:24>
 ## Description :
 ##    Examine /etc/hosts:
 ##        1. Whether expected list of ip-hostname are included in /etc/hosts
@@ -40,8 +40,8 @@ def add_host_binding_to_dict(hosts_dict, ip, hostname):
         hosts_dict[hostname] = ip
         return True
 
-def load_hosts_to_dict():
-    host_dict = {}
+def load_hosts_to_list():
+    l = []
     with open('/etc/hosts','r') as f:
         for row in f:
             row = row.strip()
@@ -55,9 +55,8 @@ def load_hosts_to_dict():
             ip = entry_l[0]
 
             if len(entry_l) == 2:
-                l.append((entry_l[0], entry_l[1]))
+                l.append((ip, entry_l[1]))
             else:
-                ip = entry_l[0]
                 for hostname in entry_l[1:]:
                     l.append((ip, hostname))
     return l
@@ -72,5 +71,6 @@ if __name__ == '__main__':
 
     extra_hosts_file = l.extra_hosts_file
 
-    host_dict = load_hosts_to_dict()
+    host_list = load_hosts_to_list()
+    print host_list
 ## File : examine_hosts_file.py ends
