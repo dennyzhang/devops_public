@@ -8,7 +8,7 @@
 ## File : update_hosts_file.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-11 11:34:50>
+## Updated: Time-stamp: <2017-05-11 13:19:28>
 ## Description :
 ##    Load an extra hosts binding into /etc/hosts
 ## Sample:
@@ -16,6 +16,7 @@
 ##-------------------------------------------------------------------
 import os, sys
 import argparse
+import socket
 
 import logging
 log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
@@ -52,14 +53,21 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--extra_hosts_file', required=False, default="", \
                         help="Load extra hosts into /etc/hosts", type=str)
+    parser.add_argument('--skip_current_hostname', required=False, default=False, \
+                        help="Skip the binding for current hostname, if it's specified in --extra_hosts_file", type=bool)
 
     l = parser.parse_args()
     extra_hosts_file = l.extra_hosts_file
+    skip_current_hostname = l.skip_current_hostname
 
     current_hosts_dict = load_hostsfile_to_dict("/etc/hosts")
     extra_hosts_dict = load_hostsfile_to_dict(extra_hosts_file)
     has_changed = False
+    current_hostname = socket.gethostname()
     for hostname in extra_hosts_dict:
+        if skip_current_hostname is True and hostname == current_hostname:
+            continue
+
         if hostname not in current_hosts_dict:
             open("/etc/hosts", "ab").write("%s %s" % (extra_hosts_dict[hostname]), hostname)
             logging.error("Append /etc/hosts: (%s:%s)" % (hostname, extra_hosts_dict[hostname]))
