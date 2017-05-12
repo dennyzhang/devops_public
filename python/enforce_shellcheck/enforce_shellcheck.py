@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-05-11 06:09:12>
+## Updated: Time-stamp: <2017-05-12 15:02:54>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -76,6 +76,7 @@ if __name__ == '__main__':
 
     exclude_code_list = l.exclude_code_list
 
+    print "Run shellcheck for *.sh under %s" % (code_dir)
     file_list = find_files_by_postfix(code_dir, ".sh")
     if check_ignore_file != "":
         with open(check_ignore_file) as f:
@@ -89,4 +90,5 @@ if __name__ == '__main__':
     else:
         print "ERROR: %s has failed." % (os.path.basename(__file__))
         sys.exit(1)
+    print "OK: no error detected from shellcheck"
 ## File : enforce_shellcheck.py ends
