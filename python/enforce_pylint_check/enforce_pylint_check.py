@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-05-12 15:02:19>
+## Updated: Time-stamp: <2017-05-12 15:11:33>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -79,10 +79,9 @@ if __name__ == '__main__':
 
     has_error = run_check(file_list, "pylint -E %s")
     if has_error is False:
+        print "OK: no error detected from pylint"
         sys.exit(0)
     else:
         print "ERROR: %s has failed." % (os.path.basename(__file__))
         sys.exit(1)
-
-    print "OK: no error detected from pylint"
 ## File : enforce_pylint_check.py ends
