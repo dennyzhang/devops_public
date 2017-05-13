@@ -9,10 +9,11 @@
 ## Description :
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-05-12 23:06:12>
+## Updated: Time-stamp: <2017-05-13 08:38:03>
 ##-------------------------------------------------------------------
 code_dir=${1?""}
-ignore_file_list=${2-""}
+preinstall_pip_packages=${2-""}
+ignore_file_list=${3-""}
 
 image_name="denny/pylint:1.0"
 check_filename="/enforce_pylint.py"
@@ -57,6 +58,12 @@ docker run -t -d --privileged -v "${code_dir}:/code" --name "$container_name" --
 
 echo "Copy ignore file"
 docker cp "/tmp/$ignore_file" "$container_name:/$ignore_file"
+
+echo "Install pip packages before testing"
+for pip_package in ${preinstall_pip_packages//,/ }; do
+    echo "pip install $pip_package"
+    docker exec -t "$container_name" "pip install $pip_package"
+done
 
 echo "Run code check"
 docker exec -t "$container_name" python "$check_filename" --code_dir /code --check_ignore_file "/${ignore_file}"
