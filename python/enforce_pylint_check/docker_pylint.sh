@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-05-13 08:42:12>
+## Updated: Time-stamp: <2017-05-13 08:45:21>
 ##-------------------------------------------------------------------
 code_dir=${1?""}
 preinstall_pip_packages=${2-""}
@@ -60,7 +60,8 @@ echo "Copy ignore file"
 docker cp "/tmp/$ignore_file" "$container_name:/$ignore_file"
 
 echo "Install pip packages before testing"
-for pip_package in ${preinstall_pip_packages//,/ }; do
+package_list=${preinstall_pip_packages//,/ }
+for pip_package in $package_list; do
     echo "pip install $pip_package"
     docker exec -t "$container_name" pip install $pip_package
 done
