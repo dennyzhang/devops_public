@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-05-13 08:38:03>
+## Updated: Time-stamp: <2017-05-13 08:42:12>
 ##-------------------------------------------------------------------
 code_dir=${1?""}
 preinstall_pip_packages=${2-""}
@@ -62,7 +62,7 @@ docker cp "/tmp/$ignore_file" "$container_name:/$ignore_file"
 echo "Install pip packages before testing"
 for pip_package in ${preinstall_pip_packages//,/ }; do
     echo "pip install $pip_package"
-    docker exec -t "$container_name" "pip install $pip_package"
+    docker exec -t "$container_name" pip install $pip_package
 done
 
 echo "Run code check"
