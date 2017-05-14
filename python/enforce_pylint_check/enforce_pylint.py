@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-05-13 22:45:21>
+## Updated: Time-stamp: <2017-05-14 16:23:26>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -34,7 +34,10 @@ def ignore_files(file_list, ignore_file_list):
     for fname in file_list:
         skip = False
         for ignore_file_pattern in ignore_file_list:
-            if re.search(ignore_file_pattern, fname):
+            ignore_file_pattern = ignore_file_pattern.strip().strip("\n")
+            if ignore_file_pattern == "":
+                continue
+            if re.search(ignore_file_pattern, fname) is not None:
                 skip = True
                 break
         if skip is False:
