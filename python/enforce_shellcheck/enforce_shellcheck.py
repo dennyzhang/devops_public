@@ -10,12 +10,13 @@
 ## Description :
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-05-13 22:36:45>
+## Updated: Time-stamp: <2017-05-13 22:45:08>
 ##-------------------------------------------------------------------
 import argparse
 import sys
 import os
 import subprocess
+import re
 
 def find_files_by_postfix(folder_check, filename_postfix):
     l = []
@@ -33,7 +34,7 @@ def ignore_files(file_list, ignore_file_list):
     for fname in file_list:
         skip = False
         for ignore_file_pattern in ignore_file_list:
-            if fname in ignore_file_pattern:
+            if re.search(ignore_file_pattern, fname):
                 skip = True
                 break
         if skip is False:
