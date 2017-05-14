@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-05-13 09:10:54>
+## Updated: Time-stamp: <2017-05-13 22:32:07>
 ##-------------------------------------------------------------------
 code_dir=${1?""}
 preinstall_pip_packages=${2-""}
@@ -40,7 +40,7 @@ function shell_exit() {
     fi
 
     echo "Remove tmp file: $ignore_file"
-    rm -rf "$ignore_file"
+    rm -rf "/tmp/$ignore_file"
 
     remove_container "$container_name"
     exit $errcode

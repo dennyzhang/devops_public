@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-05-12 23:05:21>
+## Updated: Time-stamp: <2017-05-13 22:32:15>
 ##-------------------------------------------------------------------
 code_dir=${1?""}
 ignore_file_list=${2-""}
@@ -39,7 +39,7 @@ function shell_exit() {
     fi
 
     echo "Remove tmp file: $ignore_file"
-    rm -rf "$ignore_file"
+    rm -rf "/tmp/$ignore_file"
 
     remove_container "$container_name"
     exit $errcode
