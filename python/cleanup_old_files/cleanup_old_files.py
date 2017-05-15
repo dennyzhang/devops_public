@@ -8,24 +8,24 @@
 ## File : cleanup_old_files.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-11 14:00:25>
+## Updated: Time-stamp: <2017-05-15 14:33:11>
 ## Description :
 ##    Remove old files in a safe and organized way
 ## Sample:
 ##    # Remove files: Check /opt/app and remove files naming "app-.*-SNAPSHOT.jar". But keep latest 2 copies
-##    python cleanup_old_files.py --working_dir "/opt/app" --filename_pattern "app-*-SNAPSHOT.jar" \
+##    python cleanup_old_files.py --working_dir "/opt/app" --filename_pattern "app-.*-SNAPSHOT.jar" \
 ##               --cleanup_type file --min_copies 3 --min_size_mb 10
 ##
 ##    # Only list delete candidates, instead of perform the actual changes
-##    python cleanup_old_files.py --working_dir "/opt/app" --filename_pattern "app-*-SNAPSHOT.jar" \
+##    python cleanup_old_files.py --working_dir "/opt/app" --filename_pattern "app-.*-SNAPSHOT.jar" \
 ##               --examine_only
 ##
 ##    # Remove files: Only cleanup files over 200MB
-##    python cleanup_old_files.py --working_dir "/opt/app" --filename_pattern "app-*-SNAPSHOT.jar" \
+##    python cleanup_old_files.py --working_dir "/opt/app" --filename_pattern "app-.*-SNAPSHOT.jar" \
 ##               --cleanup_type file --min_size_mb 200
 ##
 ##    # Remove folders: Cleanup subdirectories, keeping latest 2 directories
-##    python cleanup_old_files.py --working_dir "/opt/app" --filename_pattern "*" --cleanup_type directory
+##    python cleanup_old_files.py --working_dir "/opt/app" --filename_pattern ".*" --cleanup_type directory
 ##-------------------------------------------------------------------
 import os, sys
 import argparse
