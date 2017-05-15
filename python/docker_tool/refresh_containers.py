@@ -7,12 +7,17 @@
 ##
 ## File : refresh_containers.py
 ## Author : Denny <denny@dennyzhang.com>
-## Description :
+## Description : Restart a list of docker containers.
+##               If required, related docker images will be updated.
+## Requirements:
+##          pip install docker==2.0.0
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-05-13 15:32:26>
+## Updated: Time-stamp: <2017-05-15 17:25:10>
 ##-------------------------------------------------------------------
-def test():
+import docker
+
+def pull_image_by_container(container_name):
     print("hello, world")
     
 if __name__ == '__main__':

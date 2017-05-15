@@ -6,7 +6,7 @@
 ## Description :
 ## --
 ## Created : <2017-03-03>
-## Updated: Time-stamp: <2017-05-13 15:36:41>
+## Updated: Time-stamp: <2017-05-15 16:29:04>
 ##-------------------------------------------------------------------
 import os, sys
 import subprocess
@@ -46,41 +46,26 @@ def list_directory(directory):
         out = p.stderr.read(1)
         if out == '' and p.poll() != None:
             break
-        # TODO: enable error handling
         if out != '':
             sys.stdout.write(out)
             sys.stdout.flush()
-
-def remove_old_files(dst_dir, filename_postfix=".sql", old_days = 14):
-    print("Remove *%s files older than %s over %s days" % (filename_postfix, dst_dir, old_days))
-    current_time = time.time()
-    for f in os.listdir(dst_dir):
-        if f.endswith(filename_postfix):
-            full_fname = "%s/%s" % (dst_dir, f)
-            creation_time = os.path.getctime(full_fname)
-            if (current_time - creation_time) // (24 * 3600) >= 7:
-                os.unlink(full_fname)
-                print('Remove {} removed'.format(full_fname))
 ################################################################################
 
 def docker_backup_mysql(container_name, db_name, db_username, \
                         db_passwd, dst_fname):
     # https://gist.github.com/spalladino/6d981f7b33f6e0afe6bb
-    # TODO: error handling
+    has_error = False
     backup_command = "/usr/bin/mysqldump -u %s --password=%s %s > %s" \
                      % (db_username, db_passwd, db_name, dst_fname)
     command = "docker exec %s %s" % (container_name, backup_command)
     print("In container(%s), run mysqldump for db(%s)" % (container_name, db_name))
+    print("command: %s" % (command))
     # TODO: simplify the code block, running shell command
-    p = subprocess.Popen(command, shell=True, stderr=subprocess.PIPE)
-    while True:
-        out = p.stderr.read(1)
-        if out == '' and p.poll() != None:
-            break
-        # TODO: enable error handling
-        if out != '':
-            sys.stdout.write(out)
-            sys.stdout.flush()
+    returncode = subprocess.call(command, shell=True, stderr=subprocess.PIPE)
+    print "returncode: %s" % (returncode)
+    if returncode != 0:
+        has_error = True
+    return has_error
 
 def get_backup_fname(dst_dir, db_name, fname_postfix =".sql"):
     return  "%s/db-%s-%s%s" % (dst_dir, db_name, \
@@ -95,18 +80,17 @@ def backup_db(container_name, db_name, db_username, \
     list_disk_usage()
     print("List existing backupset, before backup")
     list_directory(dst_dir)
-    docker_backup_mysql(container_name, db_name, db_username, \
-                        db_passwd, dst_fname)
 
-    # TODO: verify backupset not empty, and not too small
-    remove_old_files(dst_dir)
+    has_error = docker_backup_mysql(container_name, db_name, db_username, \
+                                    db_passwd, dst_fname)
+
     print("List existing backupset, after backup")
-
     # TODO: If free disk in docker host lower than 15%, the job will be marked as failed.
     list_disk_usage()
 
     print("List existing backupset, after backup")
     list_directory(dst_dir)
+    return has_error
 
 if __name__ == '__main__':
     '''
@@ -126,5 +110,10 @@ if __name__ == '__main__':
     parser.add_argument('--dst_dir', required=True, \
                         help="Folder to save backupset", type=str)
     l = parser.parse_args()
-    backup_db(l.container_name, l.db_name, l.db_username, l.db_passwd, l.dst_dir)
+
+    has_error = backup_db(l.container_name, l.db_name, l.db_username, l.db_passwd, l.dst_dir)
+    if has_error is False:
+        print "ERROR: db backup has failed."
+    else:
+        print "OK: db backup has succeeded."
 ## File : docker_backup_mysql.py ends
