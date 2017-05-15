@@ -14,7 +14,7 @@
 ##               --volume_dir "/var/lib/docker/volumes" --backup_dir "/data/backup/"
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-05-15 12:18:05>
+## Updated: Time-stamp: <2017-05-15 13:43:40>
 ##-------------------------------------------------------------------
 import os, sys
 import argparse
@@ -31,6 +31,22 @@ def get_backup_fname(backup_dir, volume_name):
     return  "%s/%s-%s" % (backup_dir, volume_name, \
                           datetime.now().strftime('%Y-%m-%d-%H%M%S'))
 
+def copytree(src, dst, symlinks=False, ignore=None):
+    for item in os.listdir(src):
+        s = os.path.join(src, item)
+        d = os.path.join(dst, item)
+        if os.path.isdir(s):
+            # TODO: better way to copy while skip symbol links
+            try:
+                shutil.copytree(s, d, symlinks, ignore)
+            except shutil.Error as e:
+                logging.warning('Warning: Some directories not copied under %s.' % (s))
+            except OSError as e:
+                logging.warning('Warning: Some directories not copied under %s.' % (s))
+                # logging.warning('Some directories not copied. Error: %s' % e)
+        else:
+            shutil.copy2(s, d)
+
 def backup_volume(volume_dir, volume_name, backup_dir):
     src_dir = "%s/%s" % (volume_dir, volume_name)
     dst_dir = get_backup_fname(backup_dir, volume_name)
@@ -38,14 +54,10 @@ def backup_volume(volume_dir, volume_name, backup_dir):
     if os.path.exists(dst_dir) is False:
         os.makedirs(dst_dir)
 
-    # TODO: run recursive backup
-    try:
-        shutil.copytree(src_dir, dst_dir)
-    except OSError as exc: # python >2.5
-        if exc.errno == errno.ENOTDIR:
-            logging.warning("Errors have happened when doing folder copy")
-            shutil.copy(src_dir, dst_dir)
-        else: raise
+    # run recursive backup
+    copytree(src_dir, dst_dir)
+
+    # TODO: trap the error message
     return True
 
 if __name__ == '__main__':
@@ -71,7 +83,7 @@ if __name__ == '__main__':
     for volume_name in docker_volume_list.split(','):
         backup_volume(volume_dir, volume_name, backup_dir)
 
-    # TODO: List folders with depth of 2
+    # TODO: list folder size
     logging.info("List folders under %s" % (backup_dir))
     os.listdir(backup_dir)
 ## File : backup_docker_volumes.py ends
