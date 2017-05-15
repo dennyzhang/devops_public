@@ -8,7 +8,7 @@
 ## File : cleanup_old_files.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-15 15:02:15>
+## Updated: Time-stamp: <2017-05-15 15:03:50>
 ## Description :
 ##    Remove old files in a safe and organized way
 ## Sample:
@@ -47,7 +47,7 @@ def list_old_files(filename_pattern, min_copies, min_size_kb):
         if os.path.isfile(f) is False:
             continue
         # skip too small files
-        filesize_kb = os.stat(f).st_size/(1000)
+        filesize_kb = os.stat(f).st_size/1000
         if filesize_kb < min_size_kb:
             continue
         i = i + 1
