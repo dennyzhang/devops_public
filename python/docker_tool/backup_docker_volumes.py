@@ -14,12 +14,11 @@
 ##               --volume_dir "/var/lib/docker/volumes" --backup_dir "/data/backup/"
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-05-15 11:55:36>
+## Updated: Time-stamp: <2017-05-15 12:06:50>
 ##-------------------------------------------------------------------
 import os, sys
 import argparse
-import glob
-import shutil
+from datetime import datetime
 
 import logging
 log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
@@ -27,8 +26,13 @@ log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
 logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s %(message)s')
 logging.getLogger().addHandler(logging.StreamHandler())
 
+def get_backup_fname(dst_dir, volume_name):
+    return  "%s/%s-%s" % (dst_dir, volume_name, \
+                          datetime.now().strftime('%Y-%m-%d-%H%M%S'))
+
 def backup_volume(volume_dir, volume_name, backup_dir):
-    logging.info("Backup %s/%s to %s" % (volume_dir, volume_name, backup_dir))
+    backup_fname = get_backup_fname(backup_dir, volume_name)
+    logging.info("Backup %s/%s to %s." % (volume_dir, volume_name, backup_fname))
     return True
 
 if __name__ == '__main__':
@@ -45,10 +49,16 @@ if __name__ == '__main__':
     backup_dir = l.backup_dir
     docker_volume_list = l.docker_volume_list
 
-    # TODO: create backup directory, if missing
+    # Create backup directory, if missing
+    if os.path.exists(backup_dir) is False:
+        logging.warning("Warning: backup directory(%s) doesn't exist. Create it in advance." \
+                        % (backup_dir))
+        os.makedirs(backup_dir)
+
     for volume_name in docker_volume_list.split(','):
         backup_volume(volume_dir, volume_name, backup_dir)
 
     # TODO: List folders with depth of 2
-
+    logging.info("List folders under %s" % (backup_dir))
+    os.listdir(backup_dir)
 ## File : backup_docker_volumes.py ends
