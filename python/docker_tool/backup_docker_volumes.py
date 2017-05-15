@@ -14,7 +14,7 @@
 ##               --volume_dir "/var/lib/docker/volumes" --backup_dir "/data/backup/"
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-05-15 12:11:04>
+## Updated: Time-stamp: <2017-05-15 12:18:05>
 ##-------------------------------------------------------------------
 import os, sys
 import argparse
@@ -35,6 +35,10 @@ def backup_volume(volume_dir, volume_name, backup_dir):
     src_dir = "%s/%s" % (volume_dir, volume_name)
     dst_dir = get_backup_fname(backup_dir, volume_name)
     logging.info("Backup %s to %s." % (src_dir, dst_dir))
+    if os.path.exists(dst_dir) is False:
+        os.makedirs(dst_dir)
+
+    # TODO: run recursive backup
     try:
         shutil.copytree(src_dir, dst_dir)
     except OSError as exc: # python >2.5
