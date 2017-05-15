@@ -14,7 +14,7 @@
 ##               --volume_dir "/var/lib/docker/volumes" --backup_dir "/data/backup/"
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-05-15 13:43:40>
+## Updated: Time-stamp: <2017-05-15 13:52:30>
 ##-------------------------------------------------------------------
 import os, sys
 import argparse
@@ -30,6 +30,14 @@ logging.getLogger().addHandler(logging.StreamHandler())
 def get_backup_fname(backup_dir, volume_name):
     return  "%s/%s-%s" % (backup_dir, volume_name, \
                           datetime.now().strftime('%Y-%m-%d-%H%M%S'))
+
+def get_size_mb(start_path = '.'):
+    total_size = 0
+    for dirpath, dirnames, filenames in os.walk(start_path):
+        for f in filenames:
+            fp = os.path.join(dirpath, f)
+            total_size += os.path.getsize(fp)
+    return total_size/(1000*1000)
 
 def copytree(src, dst, symlinks=False, ignore=None):
     for item in os.listdir(src):
@@ -47,6 +55,7 @@ def copytree(src, dst, symlinks=False, ignore=None):
         else:
             shutil.copy2(s, d)
 
+################################################################################
 def backup_volume(volume_dir, volume_name, backup_dir):
     src_dir = "%s/%s" % (volume_dir, volume_name)
     dst_dir = get_backup_fname(backup_dir, volume_name)
@@ -83,7 +92,9 @@ if __name__ == '__main__':
     for volume_name in docker_volume_list.split(','):
         backup_volume(volume_dir, volume_name, backup_dir)
 
-    # TODO: list folder size
-    logging.info("List folders under %s" % (backup_dir))
-    os.listdir(backup_dir)
+    # list folder size
+    logging.info("List folders under %s." % (backup_dir))
+    for directory in os.listdir(backup_dir):
+        size_mb = get_size_mb("%s/%s" % (backup_dir, directory))
+        logging.info("%s\t%sM" % (directory, "{:10.2f}".format(size_mb)))
 ## File : backup_docker_volumes.py ends
