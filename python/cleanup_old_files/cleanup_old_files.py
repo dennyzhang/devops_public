@@ -8,7 +8,7 @@
 ## File : cleanup_old_files.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-15 14:33:11>
+## Updated: Time-stamp: <2017-05-15 14:36:51>
 ## Description :
 ##    Remove old files in a safe and organized way
 ## Sample:
@@ -29,7 +29,7 @@
 ##-------------------------------------------------------------------
 import os, sys
 import argparse
-import glob
+import re
 import shutil
 
 import logging
@@ -40,7 +40,7 @@ logging.getLogger().addHandler(logging.StreamHandler())
 
 def list_old_files(filename_pattern, min_copies, min_size_mb):
     l = []
-    files = glob.glob(filename_pattern)
+    files = [f for f in os.listdir(".") if re.search(filename_pattern, f)]
     files.sort(key=os.path.getmtime, reverse=True)
     i = 0
     for f in files:
@@ -57,7 +57,7 @@ def list_old_files(filename_pattern, min_copies, min_size_mb):
 
 def list_old_folders(filename_pattern, min_copies):
     l = []
-    files = glob.glob(filename_pattern)
+    files = [f for f in os.listdir(".") if re.search(filename_pattern, f)]
     files.sort(key=os.path.getmtime, reverse=True)
     i = 0
     for f in files:
