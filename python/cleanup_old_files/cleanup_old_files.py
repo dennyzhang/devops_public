@@ -8,7 +8,7 @@
 ## File : cleanup_old_files.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-15 15:06:31>
+## Updated: Time-stamp: <2017-05-15 15:25:49>
 ## Description :
 ##    Remove old files in a safe and organized way
 ## Sample:
@@ -38,9 +38,17 @@ log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
 logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s %(message)s')
 logging.getLogger().addHandler(logging.StreamHandler())
 
-def list_old_files(filename_pattern, min_copies, min_size_kb):
+def get_size_mb(start_path = '.'):
+    total_size = 0
+    for dirpath, dirnames, filenames in os.walk(start_path):
+        for f in filenames:
+            fp = os.path.join(dirpath, f)
+            total_size += os.path.getsize(fp)
+    return total_size/(1000*1000)
+################################################################################
+
+def list_old_files(files, min_copies, min_size_kb):
     l = []
-    files = [f for f in os.listdir(".") if re.search(filename_pattern, f)]
     files.sort(key=os.path.getmtime, reverse=True)
     i = 0
     for f in files:
@@ -53,12 +61,10 @@ def list_old_files(filename_pattern, min_copies, min_size_kb):
         i = i + 1
         if i > min_copies:
             l.append(f)
-    # print "files: %s, l: %s" % (files, l)
     return l
 
-def list_old_folders(filename_pattern, min_copies):
+def list_old_folders(files, min_copies):
     l = []
-    files = [f for f in os.listdir(".") if re.search(filename_pattern, f)]
     files.sort(key=os.path.getmtime, reverse=True)
     i = 0
     for f in files:
@@ -99,10 +105,16 @@ if __name__ == '__main__':
         sys.exit(0)
 
     os.chdir(working_dir)
+    files = [f for f in os.listdir(".") if re.search(filename_pattern, f)]
+    logging.info("List all matched entries:")
+    for f in files:
+        size_mb = get_size_mb(f)
+        logging.info("%s\t%sM" % (f, "{:10.2f}".format(size_mb)))
+
     if cleanup_type == 'file':
-        l = list_old_files(filename_pattern, min_copies, min_size_kb)
+        l = list_old_files(files, min_copies, min_size_kb)
     else:
-        l = list_old_folders(filename_pattern, min_copies)
+        l = list_old_folders(files, min_copies)
 
     if l == []:
         logging.info("No matched files/directories to be clean.")
