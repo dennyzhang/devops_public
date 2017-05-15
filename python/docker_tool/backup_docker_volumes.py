@@ -14,7 +14,7 @@
 ##               --volume_dir "/var/lib/docker/volumes" --backup_dir "/data/backup/"
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-05-15 11:53:21>
+## Updated: Time-stamp: <2017-05-15 11:55:36>
 ##-------------------------------------------------------------------
 import os, sys
 import argparse
@@ -26,6 +26,10 @@ log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
 
 logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s %(message)s')
 logging.getLogger().addHandler(logging.StreamHandler())
+
+def backup_volume(volume_dir, volume_name, backup_dir):
+    logging.info("Backup %s/%s to %s" % (volume_dir, volume_name, backup_dir))
+    return True
 
 if __name__ == '__main__':
     # get parameters from users
@@ -39,5 +43,12 @@ if __name__ == '__main__':
     l = parser.parse_args()
     volume_dir = l.volume_dir
     backup_dir = l.backup_dir
-    docker_volume_list = l.docker_volume_list.split(',')
+    docker_volume_list = l.docker_volume_list
+
+    # TODO: create backup directory, if missing
+    for volume_name in docker_volume_list.split(','):
+        backup_volume(volume_dir, volume_name, backup_dir)
+
+    # TODO: List folders with depth of 2
+
 ## File : backup_docker_volumes.py ends
