@@ -8,13 +8,13 @@
 ## File : cleanup_old_files.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-15 14:45:20>
+## Updated: Time-stamp: <2017-05-15 15:02:15>
 ## Description :
 ##    Remove old files in a safe and organized way
 ## Sample:
 ##    # Remove files: Check /opt/app and remove files naming "app-.*-SNAPSHOT.jar". But keep latest 2 copies
 ##    python cleanup_old_files.py --working_dir "/opt/app" --filename_pattern "app-.*-SNAPSHOT.jar" \
-##               --cleanup_type file --min_copies 3 --min_size_mb 10
+##               --cleanup_type file --min_copies 3 --min_size_kb 10240
 ##
 ##    # Only list delete candidates, instead of perform the actual changes
 ##    python cleanup_old_files.py --working_dir "/opt/app" --filename_pattern "app-.*-SNAPSHOT.jar" \
@@ -22,7 +22,7 @@
 ##
 ##    # Remove files: Only cleanup files over 200MB
 ##    python cleanup_old_files.py --working_dir "/opt/app" --filename_pattern "app-.*-SNAPSHOT.jar" \
-##               --cleanup_type file --min_size_mb 200
+##               --cleanup_type file --min_size_kb 204800
 ##
 ##    # Remove folders: Cleanup subdirectories, keeping latest 2 directories
 ##    python cleanup_old_files.py --working_dir "/opt/app" --filename_pattern ".*" --cleanup_type directory
@@ -38,7 +38,7 @@ log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
 logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s %(message)s')
 logging.getLogger().addHandler(logging.StreamHandler())
 
-def list_old_files(filename_pattern, min_copies, min_size_mb):
+def list_old_files(filename_pattern, min_copies, min_size_kb):
     l = []
     files = [f for f in os.listdir(".") if re.search(filename_pattern, f)]
     files.sort(key=os.path.getmtime, reverse=True)
@@ -47,8 +47,8 @@ def list_old_files(filename_pattern, min_copies, min_size_mb):
         if os.path.isfile(f) is False:
             continue
         # skip too small files
-        filesize_mb = os.stat(f).st_size/(1000*1000)
-        if filesize_mb < min_size_mb:
+        filesize_kb = os.stat(f).st_size/(1000)
+        if filesize_kb < min_size_kb:
             continue
         i = i + 1
         if i > min_copies:
@@ -81,7 +81,7 @@ if __name__ == '__main__':
                         help="Whether to perform the cleanup for files or directories", type=str)
     parser.add_argument('--min_copies', default=3, required=False, \
                         help='minimal copies to keep, before removal.', type=int)
-    parser.add_argument('--min_size_mb', default=10, required=False, \
+    parser.add_argument('--min_size_kb', default=100, required=False, \
                         help='When remove files, skip files too small. It will be skipped when removing directories', type=int)
     l = parser.parse_args()
 
@@ -90,7 +90,7 @@ if __name__ == '__main__':
     cleanup_type = l.cleanup_type.lower()
     filename_pattern = l.filename_pattern
     min_copies = l.min_copies
-    min_size_mb = l.min_size_mb
+    min_size_kb = l.min_size_kb
 
     logging.info("Start to run cleanup for folder: %s." % working_dir)
     if os.path.exists(working_dir) is False:
@@ -99,7 +99,7 @@ if __name__ == '__main__':
 
     os.chdir(working_dir)
     if cleanup_type == 'file':
-        l = list_old_files(filename_pattern, min_copies, min_size_mb)
+        l = list_old_files(filename_pattern, min_copies, min_size_kb)
     else:
         l = list_old_folders(filename_pattern, min_copies)
 
