@@ -14,11 +14,12 @@
 ##               --volume_dir "/var/lib/docker/volumes" --backup_dir "/data/backup/"
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-05-15 12:06:50>
+## Updated: Time-stamp: <2017-05-15 12:11:04>
 ##-------------------------------------------------------------------
 import os, sys
 import argparse
 from datetime import datetime
+import shutil, errno
 
 import logging
 log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
@@ -26,13 +27,21 @@ log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
 logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s %(message)s')
 logging.getLogger().addHandler(logging.StreamHandler())
 
-def get_backup_fname(dst_dir, volume_name):
-    return  "%s/%s-%s" % (dst_dir, volume_name, \
+def get_backup_fname(backup_dir, volume_name):
+    return  "%s/%s-%s" % (backup_dir, volume_name, \
                           datetime.now().strftime('%Y-%m-%d-%H%M%S'))
 
 def backup_volume(volume_dir, volume_name, backup_dir):
-    backup_fname = get_backup_fname(backup_dir, volume_name)
-    logging.info("Backup %s/%s to %s." % (volume_dir, volume_name, backup_fname))
+    src_dir = "%s/%s" % (volume_dir, volume_name)
+    dst_dir = get_backup_fname(backup_dir, volume_name)
+    logging.info("Backup %s to %s." % (src_dir, dst_dir))
+    try:
+        shutil.copytree(src_dir, dst_dir)
+    except OSError as exc: # python >2.5
+        if exc.errno == errno.ENOTDIR:
+            logging.warning("Errors have happened when doing folder copy")
+            shutil.copy(src_dir, dst_dir)
+        else: raise
     return True
 
 if __name__ == '__main__':
