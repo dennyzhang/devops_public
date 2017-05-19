@@ -88,8 +88,14 @@ def list_image_list(tag_list, cli_client = None):
         size_mb = get_image_size_by_tag_mb(tag_name)
         logging.info("%s\t%sMB" % (tag_name, size_mb))
 
-def examine_docker_images(tag_list, checklist_file, cli_client = None):
+def examine_docker_images(checklist_file, whitelist_file):
     problematic_list = []
+
+    cli_client = docker.APIClient(base_url='unix://var/run/docker.sock')
+    client = docker.from_env()
+    tag_list = list_all_docker_tag(client)
+    tag_list = skip_items_by_whitelist(tag_list, whitelist_file)
+
     check_list = []
     with open(checklist_file,'r') as f:
         for row in f:
@@ -123,7 +129,14 @@ if __name__ == '__main__':
                         help="The list of volumes to backup. Separated by comma", type=str)
 
     l = parser.parse_args()
-    volume_dir = l.volume_dir
-    backup_dir = l.backup_dir
-    docker_volume_list = l.docker_volume_list
+    checklist_file = l.checklist_file
+    whitelist_file = l.whitelist_file
+
+    problematic_list = examine_docker_images(checklist_file, whitelist_file)
+    if len(problematic_list) == 0:
+        logging.info("OK: all docker images are as small as you wish.")
+    else:
+        logging.error("ERROR: below docker images are bigger than you wish.")
+        list_image_list(problematic_list)
+        sys.exit(1)
 ## File : detect_big_docker_image.py ends
