@@ -59,38 +59,28 @@ def skip_items_by_whitelist(item_list, whitelist_file):
             ret_list.append(item)
     return ret_list
 
-def list_all_docker_tag(client = None):
-    # https://docker-py.readthedocs.io/en/stable/client.html
-    if client is None:
-        client = docker.from_env()
+def list_all_docker_tag(client):
     tag_list = []
     for image in client.images.list():
         for tag in image.tags:
             tag_list.append(tag)
     return tag_list
 
-def get_image_size_by_tag_mb(tag_name, cli_client = None):
-    # Use Python Low-level API: https://docker-py.readthedocs.io/en/stable/api.html
-    if cli_client is None:
-        cli_client = docker.APIClient(base_url='unix://var/run/docker.sock')
+def get_image_size_by_tag_mb(tag_name, cli_client):
     # raise exception, if image not found
     response_list = cli_client.inspect_image(tag_name)
     size_mb = float(response_list['Size'])/(1024*1024)
     return round(size_mb, 2)
 
-def list_image_list(tag_list, cli_client = None):
-    if cli_client is None:
-        cli_client = docker.APIClient(base_url='unix://var/run/docker.sock')
-    logging.info("Show image status.\n%s\t%s\n" % ("IMAGE TAG", "SIZE"))
+def list_image_list(tag_list, cli_client):
+    logging.info("Show image status:\n%s\t%s" % ("IMAGE TAG", "SIZE"))
     for tag_name in tag_list:
-        size_mb = get_image_size_by_tag_mb(tag_name)
+        size_mb = get_image_size_by_tag_mb(tag_name, cli_client)
         logging.info("%s\t%sMB" % (tag_name, size_mb))
 
-def examine_docker_images(checklist_file, whitelist_file):
+def examine_docker_images(checklist_file, whitelist_file, cli_client, client):
     problematic_list = []
 
-    cli_client = docker.APIClient(base_url='unix://var/run/docker.sock')
-    client = docker.from_env()
     tag_list = list_all_docker_tag(client)
     tag_list = skip_items_by_whitelist(tag_list, whitelist_file)
 
@@ -130,11 +120,15 @@ if __name__ == '__main__':
     checklist_file = l.checklist_file
     whitelist_file = l.whitelist_file
 
-    problematic_list = examine_docker_images(checklist_file, whitelist_file)
+    # Use Python Low-level API: https://docker-py.readthedocs.io/en/stable/api.html
+    cli_client = docker.APIClient(base_url='unix://var/run/docker.sock')
+    # https://docker-py.readthedocs.io/en/stable/client.html
+    client = docker.from_env()
+    problematic_list = examine_docker_images(checklist_file, whitelist_file, cli_client, client)
     if len(problematic_list) == 0:
         logging.info("OK: all docker images are as small as you wish.")
     else:
         logging.error("ERROR: below docker images are bigger than you wish.")
-        list_image_list(problematic_list)
+        list_image_list(problematic_list, cli_client)
         sys.exit(1)
 ## File : detect_big_docker_image.py ends
