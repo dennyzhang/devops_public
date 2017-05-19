@@ -9,17 +9,16 @@
 ## Author : Denny <denny@dennyzhang.com>
 ## Description : Make sure all docker images you build is small enough
 ## Usage:
-##            python /usr/sbin/detect_big_docker_image.py.py --docker_volume_list \
-##               "cijenkins_volume_backup,cijenkins_volume_jobs,cijenkins_volume_workspace" \
-##               --volume_dir "/var/lib/docker/volumes" --backup_dir "/data/backup/"
+##            python /usr/sbin/detect_big_docker_image.py \
+##                   --check_list_file "/tmp/check_list.txt"
+##                   --whitelist_file "/tmp/whitelist.txt"
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-05-19 09:50:48>
+## Updated: Time-stamp: <2017-05-19 10:35:54>
 ##-------------------------------------------------------------------
 import os, sys
 import argparse
-from datetime import datetime
-import shutil, errno
+import docker
 
 import logging
 log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
@@ -27,74 +26,30 @@ log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
 logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s %(message)s')
 logging.getLogger().addHandler(logging.StreamHandler())
 
-def get_backup_fname(backup_dir, volume_name):
-    return  "%s/%s-%s" % (backup_dir, volume_name, \
-                          datetime.now().strftime('%Y-%m-%d-%H%M%S'))
+def skip_items_by_whitelist(item_list, whitelist_file):
+    import re
+    ret_list = []
+    return ret_list
 
-def get_size_mb(start_path = '.'):
-    total_size = 0
-    for dirpath, dirnames, filenames in os.walk(start_path):
-        for f in filenames:
-            fp = os.path.join(dirpath, f)
-            total_size += os.path.getsize(fp)
-    return total_size/(1000*1000)
-
-def copytree(src, dst, symlinks=False, ignore=None):
-    for item in os.listdir(src):
-        s = os.path.join(src, item)
-        d = os.path.join(dst, item)
-        if os.path.isdir(s):
-            # TODO: better way to copy while skip symbol links
-            try:
-                shutil.copytree(s, d, symlinks, ignore)
-            except shutil.Error as e:
-                logging.warning('Warning: Some directories not copied under %s.' % (s))
-            except OSError as e:
-                logging.warning('Warning: Some directories not copied under %s.' % (s))
-                # logging.warning('Some directories not copied. Error: %s' % e)
-        else:
-            shutil.copy2(s, d)
+def list_all_docker_tag(client):
+    tag_list = []
+    for image in client.images.list():
+        for tag in image.tags:
+            tag_list.append(tag)
+    return tag_list
 
 ################################################################################
-def backup_volume(volume_dir, volume_name, backup_dir):
-    src_dir = "%s/%s" % (volume_dir, volume_name)
-    dst_dir = get_backup_fname(backup_dir, volume_name)
-    logging.info("Backup %s to %s." % (src_dir, dst_dir))
-    if os.path.exists(dst_dir) is False:
-        os.makedirs(dst_dir)
-
-    # run recursive backup
-    copytree(src_dir, dst_dir)
-
-    # TODO: trap the error message
-    return True
 
 if __name__ == '__main__':
     # get parameters from users
     parser = argparse.ArgumentParser()
-    parser.add_argument('--docker_volume_list', required=True, default=".*", \
+    parser.add_argument('--check_list_file', required=True, \
                         help="The list of volumes to backup. Separated by comma", type=str)
-    parser.add_argument('--volume_dir', required=False, default="/var/lib/docker/volumes", \
-                        help="The directory of the docker volumes", type=str)
-    parser.add_argument('--backup_dir', required=False, default="/data/backup", \
-                        help="Where to store the backupsets", type=str)
+    parser.add_argument('--whitelist_file', required=True, \
+                        help="The list of volumes to backup. Separated by comma", type=str)
+
     l = parser.parse_args()
     volume_dir = l.volume_dir
     backup_dir = l.backup_dir
     docker_volume_list = l.docker_volume_list
-
-    # Create backup directory, if missing
-    if os.path.exists(backup_dir) is False:
-        logging.warning("Warning: backup directory(%s) doesn't exist. Create it in advance." \
-                        % (backup_dir))
-        os.makedirs(backup_dir)
-
-    for volume_name in docker_volume_list.split(','):
-        backup_volume(volume_dir, volume_name, backup_dir)
-
-    # list folder size
-    logging.info("List folders under %s." % (backup_dir))
-    for directory in os.listdir(backup_dir):
-        size_mb = get_size_mb("%s/%s" % (backup_dir, directory))
-        logging.info("%s\t%sM" % (directory, "{:10.2f}".format(size_mb)))
 ## File : detect_big_docker_image.py ends
