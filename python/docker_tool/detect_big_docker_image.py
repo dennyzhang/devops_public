@@ -7,7 +7,7 @@
 ##
 ## File : detect_big_docker_image.py
 ## Author : Denny <denny@dennyzhang.com>
-## Description : Make sure all docker images you build is small enough
+## Description : Make sure all docker images you build in your docker host machine are small enough
 ## Usage:
 ##    python detect_big_docker_image.py --checklist_file "/tmp/check_list.txt" --whitelist_file "/tmp/whitelist.txt"
 ##
