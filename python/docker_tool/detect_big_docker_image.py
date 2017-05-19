@@ -32,12 +32,6 @@ import argparse
 import docker
 import re
 
-import logging
-log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
-
-logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s %(message)s')
-logging.getLogger().addHandler(logging.StreamHandler())
-
 def skip_items_by_whitelist(item_list, whitelist_file):
     ret_list = []
     skip_list = []
@@ -53,7 +47,7 @@ def skip_items_by_whitelist(item_list, whitelist_file):
         for skip_rule in skip_list:
             if re.search(skip_rule, item):
                 should_skip = True
-                logging.info("Skip check for %s" % (item))
+                print("Skip check for %s" % (item))
                 break
         if should_skip is False:
             ret_list.append(item)
@@ -73,10 +67,10 @@ def get_image_size_by_tag_mb(tag_name, client):
     return round(size_mb, 2)
 
 def list_image_list(tag_list, client):
-    logging.info("Show image status:\n%s\t%s" % ("IMAGE TAG", "SIZE"))
+    print("Show image status:\n%s\t%s" % ("IMAGE TAG", "SIZE"))
     for tag_name in tag_list:
         size_mb = get_image_size_by_tag_mb(tag_name, client)
-        logging.info("%s\t%sMB" % (tag_name, size_mb))
+        print("%s\t%sMB" % (tag_name, size_mb))
 
 def examine_docker_images(checklist_file, whitelist_file, client):
     problematic_list = []
@@ -124,9 +118,9 @@ if __name__ == '__main__':
     client = docker.from_env()
     problematic_list = examine_docker_images(checklist_file, whitelist_file, client)
     if len(problematic_list) == 0:
-        logging.info("OK: all docker images are as small as you wish.")
+        print("OK: all docker images are as small as you wish.")
     else:
-        logging.error("ERROR: below docker images are bigger than you wish.")
+        print("ERROR: below docker images are bigger than you wish.")
         list_image_list(problematic_list, client)
         sys.exit(1)
 ## File : detect_big_docker_image.py ends
