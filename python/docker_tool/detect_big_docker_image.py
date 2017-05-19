@@ -9,21 +9,19 @@
 ## Author : Denny <denny@dennyzhang.com>
 ## Description : Make sure all docker images you build is small enough
 ## Usage:
-##            python /usr/sbin/detect_big_docker_image.py \
-##                   --checklist_file "/tmp/check_list.txt"
-##                   --whitelist_file "/tmp/whitelist.txt"
+##    python detect_big_docker_image.py --checklist_file "/tmp/check_list.txt" --whitelist_file "/tmp/whitelist.txt"
 ##
-##            Example of /tmp/check_list.txt
-##                      # mysql should not exceed 450 MB
-##                      mysql.*:450
-##                      # all images should not exceed 300 MB
-##                      .*:300
+##    Example of /tmp/check_list.txt
+##              # mysql should not exceed 450 MB
+##              mysql.*:450
+##              # all images should not exceed 300 MB
+##              .*:300
 ##
-##            Example of /tmp/whitelist_file:
-##                      denny/jenkins.*
-##                      .*<none>.*
-##                      .*test.*
-##                      .*_JENKINS_TEST.*
+##    Example of /tmp/whitelist_file:
+##              denny/jenkins.*
+##              .*<none>.*
+##              .*test.*
+##              .*_JENKINS_TEST.*
 ##
 ## --
 ## Created : <2017-05-12>
