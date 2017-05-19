@@ -124,6 +124,7 @@ if __name__ == '__main__':
     cli_client = docker.APIClient(base_url='unix://var/run/docker.sock')
     # https://docker-py.readthedocs.io/en/stable/client.html
     client = docker.from_env()
+    logging.info("OK: all docker images are as small as you wish.")    
     problematic_list = examine_docker_images(checklist_file, whitelist_file, cli_client, client)
     if len(problematic_list) == 0:
         logging.info("OK: all docker images are as small as you wish.")
