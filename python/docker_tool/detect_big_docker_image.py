@@ -68,10 +68,10 @@ def get_image_size_by_tag_mb(tag_name, client):
 
 def list_image_list(tag_list, client):
     print("Show image status:")
-    print "{0:40} {1}".format("IMAGE_TAG", "SIZE")
+    print("{0:40} {1}".format("IMAGE_TAG", "SIZE"))
     for tag_name in tag_list:
         size_mb = get_image_size_by_tag_mb(tag_name, client)
-        print "{0:40} {1}MB".format(tag_name, size_mb)
+        print("{0:40} {1}MB".format(tag_name, size_mb))
 
 def examine_docker_images(checklist_file, whitelist_file, client):
     problematic_list = []
@@ -95,7 +95,7 @@ def examine_docker_images(checklist_file, whitelist_file, client):
             max_size_mb = float(l[-1])
             if re.search(tag_name_pattern, tag_name):
                 has_matched = True
-                # print "tag_name: %s, check_rule: %s" % (tag_name, check_rule)
+                # print("tag_name: %s, check_rule: %s" % (tag_name, check_rule))
                 image_size_mb = get_image_size_by_tag_mb(tag_name, client)
                 if image_size_mb > max_size_mb:
                     problematic_list.append(tag_name)

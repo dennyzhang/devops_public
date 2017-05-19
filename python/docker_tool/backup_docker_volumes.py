@@ -14,7 +14,7 @@
 ##               --volume_dir "/var/lib/docker/volumes" --backup_dir "/data/backup/"
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-05-15 13:52:30>
+## Updated: Time-stamp: <2017-05-19 16:42:59>
 ##-------------------------------------------------------------------
 import os, sys
 import argparse
@@ -94,7 +94,10 @@ if __name__ == '__main__':
 
     # list folder size
     logging.info("List folders under %s." % (backup_dir))
-    for directory in os.listdir(backup_dir):
+    logging.info("{0:70} {1}".format("Folder Name", "SIZE"))
+    folder_list = os.listdir(backup_dir)
+    folder_list.sort()
+    for directory in folder_list:
         size_mb = get_size_mb("%s/%s" % (backup_dir, directory))
-        logging.info("%s\t%sM" % (directory, "{:10.2f}".format(size_mb)))
+        logging.info("{0:70} {1}MB".format(directory, str("{:10.2f}".format(size_mb))))
 ## File : backup_docker_volumes.py ends
