@@ -96,8 +96,8 @@ def examine_docker_images(checklist_file, whitelist_file, cli_client, client):
         has_matched = False
         for check_rule in check_list:
             l = check_rule.split(":")
-            tag_name_pattern = l[0]
-            max_size_mb = float(l[1])
+            tag_name_pattern = ".".join(l[0:-1])
+            max_size_mb = float(l[-1])
             if re.search(tag_name_pattern, tag_name):
                 has_matched = True
                 # print "tag_name: %s, check_rule: %s" % (tag_name, check_rule)
