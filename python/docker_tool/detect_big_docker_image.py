@@ -22,6 +22,7 @@
 ##            Example of /tmp/whitelist_file:
 ##                      denny/jenkins.*
 ##                      .*<none>.*
+##                      .*test.*
 ##                      .*_JENKINS_TEST.*
 ##
 ## --
@@ -96,14 +97,16 @@ def examine_docker_images(tag_list, checklist_file, cli_client = None):
             if row == "" or row.startswith('#'):
                 continue
             check_list.append(row)
+    # print check_list
     for tag_name in tag_list:
         has_matched = False
         for check_rule in check_list:
             l = check_rule.split(":")
             tag_name_pattern = l[0]
             max_size_mb = float(l[1])
-            if re.search(check_rule, tag_name):
+            if re.search(tag_name_pattern, tag_name):
                 has_matched = True
+                # print "tag_name: %s, check_rule: %s" % (tag_name, check_rule)
                 image_size_mb = get_image_size_by_tag_mb(tag_name, cli_client)
                 if image_size_mb > max_size_mb:
                     problematic_list.append(tag_name)
