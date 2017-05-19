@@ -14,7 +14,7 @@
 ##                   --whitelist_file "/tmp/whitelist.txt"
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-05-19 10:35:54>
+## Updated: Time-stamp: <2017-05-19 10:49:47>
 ##-------------------------------------------------------------------
 import os, sys
 import argparse
@@ -31,13 +31,24 @@ def skip_items_by_whitelist(item_list, whitelist_file):
     ret_list = []
     return ret_list
 
-def list_all_docker_tag(client):
+def list_all_docker_tag(client = None):
+    # https://docker-py.readthedocs.io/en/stable/client.html
+    if client is None:
+        client = docker.from_env()
     tag_list = []
     for image in client.images.list():
         for tag in image.tags:
             tag_list.append(tag)
     return tag_list
 
+def get_image_size_by_tag_mb(tag_name, cli_client = None):
+    # Use Python Low-level API: https://docker-py.readthedocs.io/en/stable/api.html
+    if cli_client is None:
+        cli_client = docker.APIClient(base_url='unix://var/run/docker.sock')
+    # raise exception, if image not found
+    response_list = cli_client.inspect_image(tag_name)
+    size_mb = float(response_list['Size'])/(1024*1024)
+    return round(size_mb, 2)
 ################################################################################
 
 if __name__ == '__main__':
