@@ -67,10 +67,11 @@ def get_image_size_by_tag_mb(tag_name, client):
     return round(size_mb, 2)
 
 def list_image_list(tag_list, client):
-    print("Show image status:\n%s\t%s" % ("IMAGE TAG", "SIZE"))
+    print("Show image status:")
+    print "{0:40} {1}".format("IMAGE_TAG", "SIZE")
     for tag_name in tag_list:
         size_mb = get_image_size_by_tag_mb(tag_name, client)
-        print("%s\t%sMB" % (tag_name, size_mb))
+        print "{0:40} {1}MB".format(tag_name, size_mb)
 
 def examine_docker_images(checklist_file, whitelist_file, client):
     problematic_list = []
