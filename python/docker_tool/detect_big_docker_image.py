@@ -66,19 +66,19 @@ def list_all_docker_tag(client):
             tag_list.append(tag)
     return tag_list
 
-def get_image_size_by_tag_mb(tag_name, cli_client):
+def get_image_size_by_tag_mb(tag_name, client):
     # raise exception, if image not found
-    response_list = cli_client.inspect_image(tag_name)
-    size_mb = float(response_list['Size'])/(1024*1024)
+    image = client.images.get(tag_name)
+    size_mb = float(image.attrs['Size'])/(1024*1024)
     return round(size_mb, 2)
 
-def list_image_list(tag_list, cli_client):
+def list_image_list(tag_list, client):
     logging.info("Show image status:\n%s\t%s" % ("IMAGE TAG", "SIZE"))
     for tag_name in tag_list:
-        size_mb = get_image_size_by_tag_mb(tag_name, cli_client)
+        size_mb = get_image_size_by_tag_mb(tag_name, client)
         logging.info("%s\t%sMB" % (tag_name, size_mb))
 
-def examine_docker_images(checklist_file, whitelist_file, cli_client, client):
+def examine_docker_images(checklist_file, whitelist_file, client):
     problematic_list = []
 
     tag_list = list_all_docker_tag(client)
@@ -101,7 +101,7 @@ def examine_docker_images(checklist_file, whitelist_file, cli_client, client):
             if re.search(tag_name_pattern, tag_name):
                 has_matched = True
                 # print "tag_name: %s, check_rule: %s" % (tag_name, check_rule)
-                image_size_mb = get_image_size_by_tag_mb(tag_name, cli_client)
+                image_size_mb = get_image_size_by_tag_mb(tag_name, client)
                 if image_size_mb > max_size_mb:
                     problematic_list.append(tag_name)
                 break
@@ -120,16 +120,13 @@ if __name__ == '__main__':
     checklist_file = l.checklist_file
     whitelist_file = l.whitelist_file
 
-    # Use Python Low-level API: https://docker-py.readthedocs.io/en/stable/api.html
-    cli_client = docker.APIClient(base_url='unix://var/run/docker.sock')
     # https://docker-py.readthedocs.io/en/stable/client.html
     client = docker.from_env()
-    logging.info("OK: all docker images are as small as you wish.")    
-    problematic_list = examine_docker_images(checklist_file, whitelist_file, cli_client, client)
+    problematic_list = examine_docker_images(checklist_file, whitelist_file, client)
     if len(problematic_list) == 0:
         logging.info("OK: all docker images are as small as you wish.")
     else:
         logging.error("ERROR: below docker images are bigger than you wish.")
-        list_image_list(problematic_list, cli_client)
+        list_image_list(problematic_list, client)
         sys.exit(1)
 ## File : detect_big_docker_image.py ends
