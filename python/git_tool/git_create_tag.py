@@ -37,11 +37,17 @@ logging.getLogger().addHandler(logging.StreamHandler())
 
 # TODO: re-use current code folder
 
+def get_repo_name(repo_url):
+    # https://github.com/DennyZhang/devops_public.git -> devops_public
+    # git@github.com:DennyZhang/devops_public.git -> devops_public
+    l = repo_url.split(".")
+    return l[-2].split("/")[-1]
+
 # TODO: git passphrase
-def git_create_tag(repo_url, tag_name, delete_tag_already_exists):
+def git_create_tag(working_dir, repo_url, tag_name, delete_tag_already_exists):
     # https://gitpython.readthedocs.io/en/stable/tutorial.html#meet-the-repo-type
-    working_dir = "/tmp/kumku-u"
-    repo = git.Repo.clone_from(repo_url, working_dir)
+    code_dir = "%s/%s" % (working_dir, get_repo_name(repo_url))
+    repo = git.Repo.clone_from(repo_url, code_dir)
     if tag_name in repo.tags:
         if delete_tag_already_exists is True:
             logging.info("Tag(%s) already exists, delete it first. Git repo: %s" % \
@@ -59,7 +65,7 @@ def git_create_tag(repo_url, tag_name, delete_tag_already_exists):
     repo.remotes.origin.push(tag_name)
     return True
 
-def git_list_create_tag(git_list_file, tag_name, delete_tag_already_exists):
+def git_list_create_tag(working_dir, git_list_file, tag_name, delete_tag_already_exists):
     git_list = []
     with open(git_list_file,'r') as f:
         for row in f:
@@ -69,7 +75,7 @@ def git_list_create_tag(git_list_file, tag_name, delete_tag_already_exists):
             git_list.append(row)
 
     for repo_url in git_list:
-        git_create_tag(repo_url, tag_name, delete_tag_already_exists)
+        git_create_tag(working_dir, repo_url, tag_name, delete_tag_already_exists)
     return True
 
 if __name__ == '__main__':
@@ -77,18 +83,22 @@ if __name__ == '__main__':
 ##        python git_create_tag.py -tag_name "2017-08-01" --delete_tag_already_exists \
 ##               --git_list_file /tmp/git_list.txt"
     parser.add_argument('--tag_name', required=False, default=datetime.datetime.utcnow().strftime("%Y-%m-%d"), \
-                        help="Code directories to pull. If multiple, separated by comma", type=str)
+                        help="What tag name to create for git repos", type=str)
+    parser.add_argument('--git_list_file', required=False, default="", \
+                        help="The file should specify a list of git repos", type=str)
     parser.add_argument('--delete_tag_already_exists', dest='delete_tag_already_exists', \
                         action='store_true', default=False, \
-                        help="Only list delete candidates, instead perform the actual removal")
-    parser.add_argument('--git_list_file', required=False, default="", \
-                        help="Code directories to pull. If multiple, separated by comma", type=str)
+                        help="If enabled, we will delete existing tag if it already exists")
+    parser.add_argument('--working_dir', required=False, default="/tmp", \
+                        help="Working directory for creating git tags", type=str)
+
     l = parser.parse_args()
     tag_name = l.tag_name
     delete_tag_already_exists = l.delete_tag_already_exists
     git_list_file = l.git_list_file
+    working_dir = l.working_dir
 
-    if git_list_create_tag(git_list_file, tag_name, delete_tag_already_exists) is True:
+    if git_list_create_tag(working_dir, git_list_file, tag_name, delete_tag_already_exists) is True:
         logging.info("OK: Action is done successfully.")
         sys.exit(0)
     else:
