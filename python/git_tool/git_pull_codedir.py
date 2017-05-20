@@ -8,9 +8,11 @@
 ## File : git_pull_codedir.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
+## Dependency:
+##        pip install GitPython
 ## --
 ## Created : <2017-03-24>
-## Updated: Time-stamp: <2017-04-19 11:54:16>
+## Updated: Time-stamp: <2017-05-20 00:05:28>
 ##-------------------------------------------------------------------
 import os, sys
 import sys
