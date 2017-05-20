@@ -35,7 +35,28 @@ log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
 logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s %(message)s')
 logging.getLogger().addHandler(logging.StreamHandler())
 
+# TODO: re-use current code folder
+
+# TODO: git passphrase
 def git_create_tag(repo_url, tag_name, delete_tag_already_exists):
+    # https://gitpython.readthedocs.io/en/stable/tutorial.html#meet-the-repo-type
+    working_dir = "/tmp/kumku-u"
+    repo = git.Repo.clone_from(repo_url, working_dir)
+    if tag_name in repo.tags:
+        if delete_tag_already_exists is True:
+            logging.info("Tag(%s) already exists, delete it first. Git repo: %s" % \
+                         (tag_name, repo_url))
+            # TODO: delete tag
+            repo.remotes.origin.push(tag_name)
+        else:
+            logging.warn("Tag(%s) already exists, skip current process.")
+            return True
+
+    # TODO: check return code
+    logging.info("Create local tag(%s)" % (tag_name))
+    repo.create_tag(tag_name)
+    logging.info("Push local tag(%s) to remote" % (tag_name))
+    repo.remotes.origin.push(tag_name)
     return True
 
 def git_list_create_tag(git_list_file, tag_name, delete_tag_already_exists):
