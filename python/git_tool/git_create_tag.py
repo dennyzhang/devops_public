@@ -12,8 +12,8 @@
 ##        pip install GitPython
 ##
 ## Sample:
-##        python git_create_tag.py -tag_name "2017-08-01" --delete_tag_already_exists \
-##               --git_list_file /tmp/git_list.txt"
+##        python git_create_tag.py --tag_name "2017-08-01" --delete_tag_already_exists \
+##               --git_list_file "/tmp/git_list.txt"
 ##
 ##        Sample of git_list_file
 ##                   git@bitbucket.org:dennyzhang/devops.git
@@ -47,7 +47,7 @@ def git_list_create_tag(git_list_file, tag_name, delete_tag_already_exists):
                 continue
             git_list.append(row)
 
-    for git in git_list:
+    for repo_url in git_list:
         git_create_tag(repo_url, tag_name, delete_tag_already_exists)
     return True
 
