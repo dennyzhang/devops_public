@@ -35,13 +35,13 @@ log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
 logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s %(message)s')
 logging.getLogger().addHandler(logging.StreamHandler())
 
+# TODO: handle with git passphrase
 def get_repo_name(repo_url):
     # https://github.com/DennyZhang/devops_public.git -> devops_public
     # git@github.com:DennyZhang/devops_public.git -> devops_public
     l = repo_url.split(".")
     return l[-2].split("/")[-1]
 
-# TODO: git passphrase
 def git_create_tag(git_repo, tag_name, delete_tag_already_exists):
     # https://gitpython.readthedocs.io/en/stable/tutorial.html#meet-the-repo-type
     if tag_name in git_repo.tags:
@@ -71,9 +71,14 @@ def git_list_create_tag(working_dir, git_list_file, tag_name, delete_tag_already
             git_list.append(row)
 
     for repo_url in git_list:
-        # TODO: re-use current code folder
         code_dir = "%s/%s" % (working_dir, get_repo_name(repo_url))
-        git_repo = git.Repo.clone_from(repo_url, code_dir)
+        git_repo = None
+        if os.path.exists(code_dir):
+            # re-use current code folder
+            git_repo = git.Repo(code_dir)
+        else:
+            git_repo = git.Repo.clone_from(repo_url, code_dir)
+
         git_create_tag(git_repo, tag_name, delete_tag_already_exists)
     return True
 
