@@ -46,8 +46,8 @@ def git_create_tag(repo_url, tag_name, delete_tag_already_exists):
         if delete_tag_already_exists is True:
             logging.info("Tag(%s) already exists, delete it first. Git repo: %s" % \
                          (tag_name, repo_url))
-            # TODO: delete tag
-            repo.remotes.origin.push(tag_name)
+            repo.delete_tag(tag_name)
+            repo.git.execute(["git", "push", "--delete", "origin", tag_name])
         else:
             logging.warn("Tag(%s) already exists, skip current process.")
             return True
