@@ -5,14 +5,22 @@
 ## Licensed under MIT
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
-## File : git_pull_codedir.py
+## File : git_create_tag.py
 ## Author : Denny <denny@dennyzhang.com>
-## Description :
+## Description : Create monthly git tag for all repos in your projects
 ## Dependency:
 ##        pip install GitPython
+## Sample:
+##        python git_create_tag.py -tag_name "2017-08-01" --delete_tag_already_exists \
+##               --git_list_file /tmp/git_list.txt"
+##
+##        Sample of git_list_file
+##                   git@bitbucket.org:dennyzhang/devops.git
+##                   git@bitbucket.org:dennyzhang/frontend.git
+##                   git@bitbucket.org:dennyzhang/backend.git
 ## --
 ## Created : <2017-03-24>
-## Updated: Time-stamp: <2017-05-20 00:14:08>
+## Updated: Time-stamp: <2017-05-20 00:12:12>
 ##-------------------------------------------------------------------
 import os, sys
 import sys
@@ -56,4 +64,4 @@ if __name__ == '__main__':
         sys.exit(1)
     else:
         sys.exit(0)
-## File : git_pull_codedir.py ends
+## File : git_create_tag.py ends
