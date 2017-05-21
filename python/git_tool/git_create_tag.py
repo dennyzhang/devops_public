@@ -24,17 +24,11 @@
 ## Updated: Time-stamp: <2017-05-20 00:12:12>
 ##-------------------------------------------------------------------
 import os, sys
-import logging
 import argparse
 
 import datetime
 # Install package first: pip install GitPython
 import git
-
-# TODO:
-log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
-logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s %(message)s')
-logging.getLogger().addHandler(logging.StreamHandler())
 
 # TODO: handle with git passphrase
 def get_repo_name(repo_url):
@@ -47,18 +41,18 @@ def git_create_tag(git_repo, tag_name, delete_tag_already_exists):
     # https://gitpython.readthedocs.io/en/stable/tutorial.html#meet-the-repo-type
     if tag_name in git_repo.tags:
         if delete_tag_already_exists is True:
-            logging.info("Tag(%s) already exists, delete it first. Git repo: %s" % \
-                         (tag_name, git_repo.working_dir))
+            print("Tag(%s) already exists, delete it first. Git repo: %s" % \
+                  (tag_name, git_repo.working_dir))
             git_repo.delete_tag(tag_name)
             git_repo.git.execute(["git", "push", "--delete", "origin", tag_name])
         else:
-            logging.warn("Tag(%s) already exists, skip current process.")
+            print("Warning: Tag(%s) already exists, skip current process.")
             return True
 
     # TODO: check return code
-    logging.info("Create local tag(%s)" % (tag_name))
+    print("Create local tag(%s)" % (tag_name))
     git_repo.create_tag(tag_name, message = "Automatically create git tag.")
-    logging.info("Push local tag(%s) to remote" % (tag_name))
+    print("Push local tag(%s) to remote" % (tag_name))
     git_repo.remotes.origin.push(tag_name)
     return True
 
@@ -107,9 +101,9 @@ if __name__ == '__main__':
        tag_name = datetime.datetime.utcnow().strftime("%Y-%m-%d")
 
     if git_list_create_tag(working_dir, git_list_file, tag_name, delete_tag_already_exists) is True:
-        logging.info("OK: Action is done successfully.")
+        print("OK: Action is done successfully.")
         sys.exit(0)
     else:
-        logging.error("ERROR: Action has failed.")
+        print("ERROR: Action has failed.")
         sys.exit(0)
 ## File : git_create_tag.py ends
