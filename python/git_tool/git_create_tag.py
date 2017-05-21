@@ -31,6 +31,7 @@ import datetime
 # Install package first: pip install GitPython
 import git
 
+# TODO:
 log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
 logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s %(message)s')
 logging.getLogger().addHandler(logging.StreamHandler())
@@ -86,7 +87,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 ##        python git_create_tag.py -tag_name "2017-08-01" --delete_tag_already_exists \
 ##               --git_list_file /tmp/git_list.txt"
-    parser.add_argument('--tag_name', required=False, default=datetime.datetime.utcnow().strftime("%Y-%m-%d"), \
+    parser.add_argument('--tag_name', required=False, default='', \
                         help="What tag name to create for git repos", type=str)
     parser.add_argument('--git_list_file', required=False, default="", \
                         help="The file should specify a list of git repos", type=str)
@@ -101,6 +102,9 @@ if __name__ == '__main__':
     delete_tag_already_exists = l.delete_tag_already_exists
     git_list_file = l.git_list_file
     working_dir = l.working_dir
+
+    if tag_name == '':
+       tag_name = datetime.datetime.utcnow().strftime("%Y-%m-%d")
 
     if git_list_create_tag(working_dir, git_list_file, tag_name, delete_tag_already_exists) is True:
         logging.info("OK: Action is done successfully.")
