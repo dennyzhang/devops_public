@@ -13,8 +13,9 @@
 ##          pip install docker==2.0.0
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-05-15 20:34:17>
+## Updated: Time-stamp: <2017-05-22 14:32:08>
 ##-------------------------------------------------------------------
+import sys
 import docker
 
 def pull_image_by_container(client, container_name):
