@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/python
 ##-------------------------------------------------------------------
 ## @copyright 2017 DennyZhang.com
@@ -14,7 +13,7 @@
 ##               --volume_dir "/var/lib/docker/volumes" --backup_dir "/data/backup/"
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-05-19 16:42:59>
+## Updated: Time-stamp: <2017-05-22 17:11:54>
 ##-------------------------------------------------------------------
 import os, sys
 import argparse

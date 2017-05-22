@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/python
 ##-------------------------------------------------------------------
 ## @copyright 2017 DennyZhang.com
@@ -11,7 +10,7 @@
 ##    Check all ES indices have more than $min_replica_count replicas
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-04-07 12:27:56>
+## Updated: Time-stamp: <2017-05-22 17:12:01>
 ##-------------------------------------------------------------------
 import argparse
 import requests

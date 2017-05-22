@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/python
 ##-------------------------------------------------------------------
 ## @copyright 2017 DennyZhang.com
@@ -12,7 +11,7 @@
 ##        pip install GitPython
 ## --
 ## Created : <2017-03-24>
-## Updated: Time-stamp: <2017-05-20 00:14:08>
+## Updated: Time-stamp: <2017-05-22 17:12:13>
 ##-------------------------------------------------------------------
 import os, sys
 import sys

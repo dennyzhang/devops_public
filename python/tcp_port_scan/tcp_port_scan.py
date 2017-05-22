@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/python
 ##-------------------------------------------------------------------
 ## @copyright 2015 DennyZhang.com
@@ -7,7 +6,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2017-04-09 22:00:15>
+## Updated: Time-stamp: <2017-05-22 17:12:30>
 ##-------------------------------------------------------------------
 import argparse
 import subprocess

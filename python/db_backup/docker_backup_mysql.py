@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/python
 ##-------------------------------------------------------------------
 ## File : docker_backup_mysql.py
@@ -6,7 +5,7 @@
 ## Description :
 ## --
 ## Created : <2017-03-03>
-## Updated: Time-stamp: <2017-05-15 16:29:04>
+## Updated: Time-stamp: <2017-05-22 17:11:39>
 ##-------------------------------------------------------------------
 import os, sys
 import subprocess

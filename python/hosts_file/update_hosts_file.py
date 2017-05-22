@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/python
 ##-------------------------------------------------------------------
 ## @copyright 2017 DennyZhang.com
@@ -8,7 +7,7 @@
 ## File : update_hosts_file.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-11 14:13:42>
+## Updated: Time-stamp: <2017-05-22 17:12:17>
 ## Description :
 ##    Load an extra hosts binding into /etc/hosts
 ## Sample:

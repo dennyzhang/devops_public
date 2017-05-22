@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/python
 ##-------------------------------------------------------------------
 ## @copyright 2017 DennyZhang.com
@@ -10,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-05-14 16:22:46>
+## Updated: Time-stamp: <2017-05-22 17:12:09>
 ##-------------------------------------------------------------------
 import argparse
 import sys

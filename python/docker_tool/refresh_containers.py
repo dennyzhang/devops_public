@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/python
 ##-------------------------------------------------------------------
 ## @copyright 2017 DennyZhang.com
@@ -13,7 +12,7 @@
 ##          pip install docker==2.0.0
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-05-22 14:32:08>
+## Updated: Time-stamp: <2017-05-22 17:11:59>
 ##-------------------------------------------------------------------
 import sys
 import docker

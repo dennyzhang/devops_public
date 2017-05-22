@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/python
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
@@ -10,7 +9,7 @@
 ## Description : A Python module to parse haproxy stats
 ## --
 ## Created : <2016-10-04>
-## Updated: Time-stamp: <2016-10-06 17:00:03>
+## Updated: Time-stamp: <2017-05-22 17:12:22>
 ##-------------------------------------------------------------------
 import parse_haproxy_stats
 import datetime
