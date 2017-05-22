@@ -5,7 +5,7 @@
 ## Description :
 ## --
 ## Created : <2017-03-03>
-## Updated: Time-stamp: <2017-05-22 17:11:39>
+## Updated: Time-stamp: <2017-05-22 17:15:15>
 ##-------------------------------------------------------------------
 import os, sys
 import subprocess
@@ -82,6 +82,8 @@ def backup_db(container_name, db_name, db_username, \
 
     has_error = docker_backup_mysql(container_name, db_name, db_username, \
                                     db_passwd, dst_fname)
+    if has_error is True:
+        return has_error
 
     print("List existing backupset, after backup")
     # TODO: If free disk in docker host lower than 15%, the job will be marked as failed.
@@ -111,8 +113,9 @@ if __name__ == '__main__':
     l = parser.parse_args()
 
     has_error = backup_db(l.container_name, l.db_name, l.db_username, l.db_passwd, l.dst_dir)
-    if has_error is False:
+    if has_error is True:
         print "ERROR: db backup has failed."
+        sys.exit(1)
     else:
         print "OK: db backup has succeeded."
 ## File : docker_backup_mysql.py ends
