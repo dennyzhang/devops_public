@@ -11,7 +11,7 @@
 #   bash -e /root/devops_provision_os.sh
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2017-04-12 15:11:51>
+## Updated: Time-stamp: <2017-05-22 13:53:34>
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v5"
@@ -41,6 +41,14 @@ if [ -f "$git_deploy_key_file" ]; then
     git_deploy_key=$(cat "$git_deploy_key_file")
 fi
 ################################################################################
+function download_scripts() {
+    wget -O /usr/sbin/examine_hosts_file.py \
+         https://github.com/DennyZhang/devops_public/raw/tag_v5/python/hosts_file/examine_hosts_file.py
+
+    wget -O /usr/sbin/update_hosts_file.py \
+         https://github.com/DennyZhang/devops_public/raw/tag_v5/python/hosts_file/update_hosts_file.py
+}
+
 function disable_ipv6() {
     # TODO: persist the change
     sysctl -w net.ipv6.conf.all.disable_ipv6=1
@@ -97,6 +105,8 @@ if [ "$ssh_port" != "22" ]; then
     echo "Restart sshd to take effect"
     nohup service ssh restart &
 fi
+
+download_scripts
 
 # TODO: enforce this in chef, instead of bash
 echo "Create elasticsearch data path"
