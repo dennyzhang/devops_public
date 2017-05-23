@@ -9,9 +9,11 @@
 ## Description : Show OS and process resource usage: CPU, RAM and disk
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-05-22 23:07:59>
+## Updated: Time-stamp: <2017-05-22 23:21:26>
 ##-------------------------------------------------------------------
+import os, sys
 import psutil
+import argparse
 
 # http://www.programcreek.com/python/example/53878/psutil.disk_usage
 def show_disk_usage():
@@ -25,11 +27,13 @@ def show_disk_usage():
         print("\tParition:%s, %s, Total: %sGB, Used: %sGB, Free:%sGB." % \
               (part.mountpoint, percent_ratio_str, "{:.2f}".format(total_gb), "{:.2f}".format(used_gb), \
                "{:.2f}".format(free_gb)))
+    return True
 
 # https://stackoverflow.com/questions/276052/how-to-get-current-cpu-and-ram-usage-in-python
 def show_cpu_usage():
     # TODO: wrong calculation
     print("CPU Utilization. %s" % (psutil.cpu_percent()))
+    return True
 
 def show_memory_usage():
     memory_usage = psutil.virtual_memory()
@@ -41,17 +45,47 @@ def show_memory_usage():
     print("Memory Utilization. %s, Total: %sMB, Available: %sMB, Buffered: %sMB" % \
           (percent_ratio_str, "{:.2f}".format(memory_total_mb), "{:.2f}".format(memory_available_mb), \
            "{:.2f}".format(memory_buffers_mb)))
+    return True
 
-def get_process_usage(pid):
+def get_process_usage(pid_file):
+    if os.path.exists(pid_file) is False:
+        print("ERROR: pid file(%s) doesn't exist" % (pid_file))
+        return False
+
+    pid = ""
+    with open(pid_file) as f:
+        pid = f.readlines()
+        pid = int(pid[0])
+
     py = psutil.Process(pid)
-    # memory use in GB
+    # TODO: implement the logic
     memoryUse = py.memory_info()[0]/2.**30
 
-def show_usage():
-    show_memory_usage()
-    show_disk_usage()
-    show_cpu_usage()
+def show_usage(pid_file):
+    has_error = False
+    if pid_file is not None:
+        if get_process_usage(pid_file) is True:
+            has_error = True
+
+    if show_memory_usage() is False:
+        has_error = True
+    if show_disk_usage() is False:
+        has_error = True
+    if show_cpu_usage() is False:
+        has_error = True
+    return has_error
 
 if __name__ == '__main__':
-    show_usage()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--pid_file', required=False, \
+                        help="Process pidfile. If not given, the check of process resource usage will be skipped", type=str)
+    l = parser.parse_args()
+    pid_file = l.pid_file
+
+    if show_usage(pid_file) is False:
+        print("ERROR: some errors are detected.")
+        sys.exit(1)
+    else:
+        print("OK: Action is done.")
+        sys.exit(0)
 ## File : node_usage.py ends
