@@ -9,7 +9,7 @@
 ## Description : Show OS and process resource usage: CPU, RAM and disk
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-05-22 23:21:26>
+## Updated: Time-stamp: <2017-05-22 23:32:36>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -61,19 +61,21 @@ def get_process_usage(pid_file):
     # TODO: implement the logic
     memoryUse = py.memory_info()[0]/2.**30
 
+    return True
+
 def show_usage(pid_file):
-    has_error = False
+    is_ok = True
     if pid_file is not None:
-        if get_process_usage(pid_file) is True:
-            has_error = True
+        if get_process_usage(pid_file) is False:
+            is_ok = False
 
     if show_memory_usage() is False:
-        has_error = True
+        is_ok = False
     if show_disk_usage() is False:
-        has_error = True
+        is_ok = False
     if show_cpu_usage() is False:
-        has_error = True
-    return has_error
+        is_ok = False
+    return is_ok
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
