@@ -7,9 +7,12 @@
 ## File : cleanup_old_files.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-22 17:11:43>
+## Updated: Time-stamp: <2017-05-23 17:41:46>
 ## Description :
 ##    Remove old files in a safe and organized way
+##
+## More reading: http://www.dennyzhang.com/low_disk/
+##
 ## Sample:
 ##    # Remove files: Check /opt/app and remove files naming "app-.*-SNAPSHOT.jar". But keep latest 2 copies
 ##    python cleanup_old_files.py --working_dir "/opt/app" --filename_pattern "app-.*-SNAPSHOT.jar" \

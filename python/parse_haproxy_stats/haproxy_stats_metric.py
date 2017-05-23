@@ -7,9 +7,12 @@
 ## File : haproxy_stats_metric.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Description : A Python module to parse haproxy stats
+##
+## More reading: http://www.dennyzhang.com/haproxy_stats/
+##
 ## --
 ## Created : <2016-10-04>
-## Updated: Time-stamp: <2017-05-22 17:12:22>
+## Updated: Time-stamp: <2017-05-23 17:40:09>
 ##-------------------------------------------------------------------
 import parse_haproxy_stats
 import datetime

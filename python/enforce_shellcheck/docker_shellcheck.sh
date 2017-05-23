@@ -7,9 +7,12 @@
 ## File : docker_shellcheck.sh
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
+##
+## More reading: http://www.dennyzhang.com/shellcheck/
+##
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-05-13 22:32:15>
+## Updated: Time-stamp: <2017-05-23 17:40:45>
 ##-------------------------------------------------------------------
 code_dir=${1?""}
 ignore_file_list=${2-""}

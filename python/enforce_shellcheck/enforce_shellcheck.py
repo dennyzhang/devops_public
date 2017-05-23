@@ -7,9 +7,12 @@
 ## File : enforce_shellcheck.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
+##
+## More reading: http://www.dennyzhang.com/shellcheck/
+##
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-05-22 17:12:09>
+## Updated: Time-stamp: <2017-05-23 17:40:41>
 ##-------------------------------------------------------------------
 import argparse
 import sys

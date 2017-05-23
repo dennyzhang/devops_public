@@ -6,9 +6,12 @@
 ## Description : http://www.dennyzhang.com/suspicious_process/
 ##        python ./detect_suspicious_process.py
 ##        python ./detect_suspicious_process.py --whitelist_file /tmp/whitelist.txt
+##
+## More reading: http://www.dennyzhang.com/suspicious_process/
+##
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2017-05-22 17:11:52>
+## Updated: Time-stamp: <2017-05-23 17:41:27>
 ##-------------------------------------------------------------------
 import argparse
 import subprocess
