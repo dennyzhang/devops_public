@@ -7,9 +7,11 @@
 ## File : node_usage.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Description : Show OS and process resource usage: CPU, RAM and disk
+## Sample:
+##         python ./node_usage.py
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-05-22 23:32:36>
+## Updated: Time-stamp: <2017-05-23 11:44:35>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
