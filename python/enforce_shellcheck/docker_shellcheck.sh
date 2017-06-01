@@ -12,10 +12,11 @@
 ##
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-06-01 13:10:53>
+## Updated: Time-stamp: <2017-06-01 13:12:50>
 ##-------------------------------------------------------------------
 code_dir=${1?""}
 ignore_file_list=${2-""}
+exclude_code_list=${3-""}
 
 image_name="denny/shellcheck:1.0"
 check_filename="/enforce_shellcheck.py"
