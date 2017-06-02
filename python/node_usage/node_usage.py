@@ -11,14 +11,16 @@
 ##         python ./node_usage.py
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-06-02 14:22:53>
+## Updated: Time-stamp: <2017-06-02 15:25:51>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
 import argparse
+import json
+import socket
 
 # http://www.programcreek.com/python/example/53878/psutil.disk_usage
-def show_disk_usage():
+def show_disk_usage(output_dict):
     print("Disk Utilization.")
     for part in psutil.disk_partitions(all=False):
         usage = psutil.disk_usage(part.mountpoint)
@@ -29,15 +31,15 @@ def show_disk_usage():
         print("\tParition:%s, %s, Total: %sGB, Used: %sGB, Free:%sGB." % \
               (part.mountpoint, percent_ratio_str, "{:.2f}".format(total_gb), "{:.2f}".format(used_gb), \
                "{:.2f}".format(free_gb)))
-    return True
+    return (True, output_dict)
 
 # https://stackoverflow.com/questions/276052/how-to-get-current-cpu-and-ram-usage-in-python
-def show_cpu_usage():
+def show_cpu_usage(output_dict):
     # TODO: wrong calculation
     print("CPU Utilization. %s" % (psutil.cpu_percent()))
-    return True
+    return (True, output_dict)
 
-def show_memory_usage():
+def show_memory_usage(output_dict):
     memory_usage = psutil.virtual_memory()
     memory_total_mb = memory_usage.total/(1024*1024)
     memory_available_mb = memory_usage.available/(1024*1024)
@@ -47,12 +49,12 @@ def show_memory_usage():
     print("Memory Utilization. %s, Total: %sMB, Available: %sMB, Buffered: %sMB" % \
           (percent_ratio_str, "{:.2f}".format(memory_total_mb), "{:.2f}".format(memory_available_mb), \
            "{:.2f}".format(memory_buffers_mb)))
-    return True
+    return (True, output_dict)
 
-def get_process_usage(pid_file):
+def get_process_usage(output_dict, pid_file):
     if os.path.exists(pid_file) is False:
         print("ERROR: pid file(%s) doesn't exist" % (pid_file))
-        return False
+        return (False, output_dict)
 
     pid = ""
     with open(pid_file) as f:
@@ -63,20 +65,33 @@ def get_process_usage(pid_file):
     # TODO: implement the logic
     memoryUse = py.memory_info()[0]/2.**30
 
-    return True
+    return (True, output_dict)
 
 def show_usage(pid_file):
+    output_dict = {}
+    output_dict['hostname'] = socket.gethostname()
+
     is_ok = True
     if pid_file is not None:
-        if get_process_usage(pid_file) is False:
+        (status, output_dict) = get_process_usage(output_dict, pid_file)
+        if status is False:
             is_ok = False
 
-    if show_memory_usage() is False:
+    (status, output_dict) = show_memory_usage(output_dict)
+    if status is False:
         is_ok = False
-    if show_disk_usage() is False:
+
+    (status, output_dict) = show_disk_usage(output_dict)
+    if status is False:
         is_ok = False
-    if show_cpu_usage() is False:
+
+    (status, output_dict) = show_cpu_usage(output_dict)
+    if status is False:
         is_ok = False
+
+    # show output as json
+    print json.dumps(output_dict)
+
     return is_ok
 
 if __name__ == '__main__':
@@ -87,6 +102,7 @@ if __name__ == '__main__':
     pid_file = l.pid_file
 
     if show_usage(pid_file) is False:
+        print "ERROR: fail to get node_usage.py"
         sys.exit(1)
     else:
         sys.exit(0)
