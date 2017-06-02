@@ -11,7 +11,7 @@
 ##         python ./node_usage.py
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-06-02 17:48:46>
+## Updated: Time-stamp: <2017-06-02 18:08:10>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -40,7 +40,7 @@ def show_disk_usage(output_dict):
         else:
             my_dict["used_percentage"] = current_used_percentage
 
-        my_dict[i] = dist_entry_dict
+        my_dict["disk_%d" % i] = dist_entry_dict
         i = i + 1
     output_dict["disk"] = my_dict
     return (True, output_dict)
