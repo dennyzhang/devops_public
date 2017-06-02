@@ -11,7 +11,7 @@
 #   bash -e /root/devops_provision_os.sh
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2017-05-22 14:09:15>
+## Updated: Time-stamp: <2017-06-02 18:43:28>
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v5"
@@ -67,6 +67,12 @@ download_facility "/root/manage_all_services.sh" "${DOWNLOAD_PREFIX}/bash/manage
 download_facility "/root/ufw_add_node_to_cluster.sh" "${DOWNLOAD_PREFIX}/bash/ufw/ufw_add_node_to_cluster.sh"
 download_facility "/usr/sbin/examine_hosts_file.py" "${DOWNLOAD_PREFIX}/python/hosts_file/examine_hosts_file.py"
 download_facility "/usr/sbin/update_hosts_file.py" "${DOWNLOAD_PREFIX}/python/hosts_file/update_hosts_file.py"
+download_facility "/usr/sbin/node_usage.py" "${DOWNLOAD_PREFIX}/python/node_usage/node_usage.py"
+
+# TODO:
+# apt-get install -y python-dev python-pip
+
+# pip install psutil==5.2.2
 
 # inject ssh key for ssh with keyfile
 if [ -n "$ssh_public_key" ]; then
