@@ -11,7 +11,7 @@
 ##         python ./node_usage.py
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-06-02 15:25:51>
+## Updated: Time-stamp: <2017-06-02 15:34:58>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -21,34 +21,43 @@ import socket
 
 # http://www.programcreek.com/python/example/53878/psutil.disk_usage
 def show_disk_usage(output_dict):
-    print("Disk Utilization.")
+    my_dict = {}
+    i = 0
     for part in psutil.disk_partitions(all=False):
+        dist_entry_dict = {}
         usage = psutil.disk_usage(part.mountpoint)
         total_gb = usage.total/(1024*1024*1024)
         used_gb = usage.used/(1024*1024*1024)
         free_gb = usage.free/(1024*1024*1024)
-        percent_ratio_str = "Used ratio: %s" % "{:.2f}".format(usage.percent) + "%"
-        print("\tParition:%s, %s, Total: %sGB, Used: %sGB, Free:%sGB." % \
-              (part.mountpoint, percent_ratio_str, "{:.2f}".format(total_gb), "{:.2f}".format(used_gb), \
-               "{:.2f}".format(free_gb)))
+        dist_entry_dict["partition"] = part.mountpoint
+        dist_entry_dict["total_gb"] = "{:.2f}".format(total_gb)
+        dist_entry_dict["used_gb"] = "{:.2f}".format(used_gb)
+        dist_entry_dict["free_gb"] = "{:.2f}".format(free_gb)
+        dist_entry_dict["used_percentage"] = "{:.2f}".format(usage.percent)
+        my_dict[i] = dist_entry_dict
+        i = i + 1
+    output_dict["disk"] = my_dict
     return (True, output_dict)
 
 # https://stackoverflow.com/questions/276052/how-to-get-current-cpu-and-ram-usage-in-python
 def show_cpu_usage(output_dict):
-    # TODO: wrong calculation
-    print("CPU Utilization. %s" % (psutil.cpu_percent()))
+    # TODO: be done
+    # print("CPU Utilization. %s" % (psutil.cpu_percent()))
     return (True, output_dict)
 
 def show_memory_usage(output_dict):
+    my_dict = {}
     memory_usage = psutil.virtual_memory()
     memory_total_mb = memory_usage.total/(1024*1024)
     memory_available_mb = memory_usage.available/(1024*1024)
     memory_buffers_mb = memory_usage.buffers/(1024*1024)
-    percent_ratio = (memory_total_mb - memory_available_mb)*100/memory_total_mb
-    percent_ratio_str = "Used ratio: %s" % "{:.2f}".format(percent_ratio) + "%"
-    print("Memory Utilization. %s, Total: %sMB, Available: %sMB, Buffered: %sMB" % \
-          (percent_ratio_str, "{:.2f}".format(memory_total_mb), "{:.2f}".format(memory_available_mb), \
-           "{:.2f}".format(memory_buffers_mb)))
+    percent_ratio = (memory_total_mb - memory_available_mb)/memory_total_mb
+    my_dict["ram_total_mb"] = "{:.2f}".format(memory_total_mb)
+    my_dict["ram_available_mb"] = "{:.2f}".format(memory_available_mb)
+    my_dict["ram_buffers_mb"] = "{:.2f}".format(memory_buffers_mb)
+    my_dict["used_percentage"] = "{:.2f}".format(percent_ratio)
+
+    output_dict["ram"] = my_dict
     return (True, output_dict)
 
 def get_process_usage(output_dict, pid_file):
