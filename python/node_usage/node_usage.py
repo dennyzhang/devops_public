@@ -11,7 +11,7 @@
 ##         python ./node_usage.py
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-06-02 18:08:10>
+## Updated: Time-stamp: <2017-06-02 18:20:30>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -33,10 +33,12 @@ def show_disk_usage(output_dict):
         dist_entry_dict["total_gb"] = "{:.2f}".format(total_gb)
         dist_entry_dict["used_gb"] = "{:.2f}".format(used_gb)
         dist_entry_dict["free_gb"] = "{:.2f}".format(free_gb)
-        current_used_percentage = "%s(%s)" % (part.mountpoint, \
-                                              "{:.2f}".format(usage.percent) + "%")
+        current_used_percentage = "{:.2f}".format(usage.percent) + "%"
+        dist_entry_dict["used_percentage"] = current_used_percentage
+
         if "used_percentage" in my_dict:
-            my_dict["used_percentage"] = "%s, %s" % (my_dict["used_percentage"], current_used_percentage)
+            my_dict["used_percentage"] = "%s, %s(%s)" % (my_dict["used_percentage"], \
+                                                         part.mountpoint, current_used_percentage)
         else:
             my_dict["used_percentage"] = current_used_percentage
 
