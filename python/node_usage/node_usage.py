@@ -11,7 +11,7 @@
 ##         python ./node_usage.py
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-06-02 15:34:58>
+## Updated: Time-stamp: <2017-06-02 17:48:46>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -33,7 +33,13 @@ def show_disk_usage(output_dict):
         dist_entry_dict["total_gb"] = "{:.2f}".format(total_gb)
         dist_entry_dict["used_gb"] = "{:.2f}".format(used_gb)
         dist_entry_dict["free_gb"] = "{:.2f}".format(free_gb)
-        dist_entry_dict["used_percentage"] = "{:.2f}".format(usage.percent)
+        current_used_percentage = "%s(%s)" % (part.mountpoint, \
+                                              "{:.2f}".format(usage.percent) + "%")
+        if "used_percentage" in my_dict:
+            my_dict["used_percentage"] = "%s, %s" % (my_dict["used_percentage"], current_used_percentage)
+        else:
+            my_dict["used_percentage"] = current_used_percentage
+
         my_dict[i] = dist_entry_dict
         i = i + 1
     output_dict["disk"] = my_dict
@@ -51,11 +57,11 @@ def show_memory_usage(output_dict):
     memory_total_mb = memory_usage.total/(1024*1024)
     memory_available_mb = memory_usage.available/(1024*1024)
     memory_buffers_mb = memory_usage.buffers/(1024*1024)
-    percent_ratio = (memory_total_mb - memory_available_mb)/memory_total_mb
+    percent_ratio = float(memory_total_mb - memory_available_mb)*100/memory_total_mb
     my_dict["ram_total_mb"] = "{:.2f}".format(memory_total_mb)
     my_dict["ram_available_mb"] = "{:.2f}".format(memory_available_mb)
     my_dict["ram_buffers_mb"] = "{:.2f}".format(memory_buffers_mb)
-    my_dict["used_percentage"] = "{:.2f}".format(percent_ratio)
+    my_dict["used_percentage"] = "{:.2f}".format(percent_ratio) + "%"
 
     output_dict["ram"] = my_dict
     return (True, output_dict)
