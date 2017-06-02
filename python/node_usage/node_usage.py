@@ -11,7 +11,7 @@
 ##         python ./node_usage.py
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-05-23 11:44:35>
+## Updated: Time-stamp: <2017-06-02 14:22:53>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -87,9 +87,7 @@ if __name__ == '__main__':
     pid_file = l.pid_file
 
     if show_usage(pid_file) is False:
-        print("ERROR: some errors are detected.")
         sys.exit(1)
     else:
-        print("OK: Action is done.")
         sys.exit(0)
 ## File : node_usage.py ends
