@@ -11,7 +11,7 @@
 ##         python ./node_usage.py
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-06-02 18:20:30>
+## Updated: Time-stamp: <2017-06-02 23:04:55>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -23,12 +23,20 @@ import socket
 def show_disk_usage(output_dict):
     my_dict = {}
     i = 0
+    sum_total_gb = 0
+    sum_used_gb = 0
+    sum_free_gb = 0
     for part in psutil.disk_partitions(all=False):
         dist_entry_dict = {}
         usage = psutil.disk_usage(part.mountpoint)
         total_gb = usage.total/(1024*1024*1024)
         used_gb = usage.used/(1024*1024*1024)
         free_gb = usage.free/(1024*1024*1024)
+
+        sum_total_gb = sum_total_gb + total_gb
+        sum_used_gb = sum_used_gb + used_gb
+        sum_free_gb = sum_free_gb + free_gb
+
         dist_entry_dict["partition"] = part.mountpoint
         dist_entry_dict["total_gb"] = "{:.2f}".format(total_gb)
         dist_entry_dict["used_gb"] = "{:.2f}".format(used_gb)
@@ -44,13 +52,12 @@ def show_disk_usage(output_dict):
 
         my_dict["disk_%d" % i] = dist_entry_dict
         i = i + 1
-    output_dict["disk"] = my_dict
-    return (True, output_dict)
 
-# https://stackoverflow.com/questions/276052/how-to-get-current-cpu-and-ram-usage-in-python
-def show_cpu_usage(output_dict):
-    # TODO: be done
-    # print("CPU Utilization. %s" % (psutil.cpu_percent()))
+    my_dict["total_gb"] = "{:.2f}".format(sum_total_gb)
+    my_dict["used_gb"] = "{:.2f}".format(sum_used_gb)
+    my_dict["free_gb"] = "{:.2f}".format(sum_free_gb)
+
+    output_dict["disk"] = my_dict
     return (True, output_dict)
 
 def show_memory_usage(output_dict):
@@ -66,6 +73,12 @@ def show_memory_usage(output_dict):
     my_dict["used_percentage"] = "{:.2f}".format(percent_ratio) + "%"
 
     output_dict["ram"] = my_dict
+    return (True, output_dict)
+
+# https://stackoverflow.com/questions/276052/how-to-get-current-cpu-and-ram-usage-in-python
+def show_cpu_usage(output_dict):
+    # TODO: be done
+    # print("CPU Utilization. %s" % (psutil.cpu_percent()))
     return (True, output_dict)
 
 def get_process_usage(output_dict, pid_file):
