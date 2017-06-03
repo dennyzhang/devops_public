@@ -11,7 +11,7 @@
 ##         python ./node_usage.py
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-06-03 15:11:30>
+## Updated: Time-stamp: <2017-06-03 15:22:41>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -77,7 +77,7 @@ def show_memory_usage(output_dict):
     my_dict["ram_available_gb"] = "{:.2f}".format(memory_available_gb)
     my_dict["ram_buffers_gb"] = "{:.2f}".format(memory_buffers_gb)
     percent_ratio = float(my_dict["ram_used_gb"])*100/float(my_dict["ram_total_gb"])
-    my_dict["used_percentage"] = "%s(%smb/%smb)" % \
+    my_dict["used_percentage"] = "%s(%sgb/%sgb)" % \
                                  ("{:.2f}".format(percent_ratio) + "%", \
                                   my_dict["ram_used_gb"], my_dict["ram_total_gb"])
 
