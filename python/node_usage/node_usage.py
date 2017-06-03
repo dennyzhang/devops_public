@@ -11,7 +11,7 @@
 ##         python ./node_usage.py
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-06-03 14:02:46>
+## Updated: Time-stamp: <2017-06-03 14:05:23>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -29,9 +29,9 @@ def show_disk_usage(output_dict):
     for part in psutil.disk_partitions(all=False):
         dist_entry_dict = {}
         usage = psutil.disk_usage(part.mountpoint)
-        total_gb = usage.total/(1024*1024*1024)
-        used_gb = usage.used/(1024*1024*1024)
-        free_gb = usage.free/(1024*1024*1024)
+        total_gb = float(usage.total)/(1024*1024*1024)
+        used_gb = float(usage.used)/(1024*1024*1024)
+        free_gb = float(usage.free)/(1024*1024*1024)
 
         sum_total_gb = sum_total_gb + total_gb
         sum_used_gb = sum_used_gb + used_gb
@@ -68,10 +68,10 @@ def show_disk_usage(output_dict):
 def show_memory_usage(output_dict):
     my_dict = {}
     memory_usage = psutil.virtual_memory()
-    memory_total_mb = memory_usage.total/(1024*1024)
-    memory_used_mb = memory_usage.used/(1024*1024)
-    memory_available_mb = memory_usage.available/(1024*1024)
-    memory_buffers_mb = memory_usage.buffers/(1024*1024)
+    memory_total_mb = float(memory_usage.total)/(1024*1024)
+    memory_used_mb = float(memory_usage.used)/(1024*1024)
+    memory_available_mb = float(memory_usage.available)/(1024*1024)
+    memory_buffers_mb = float(memory_usage.buffers)/(1024*1024)
     my_dict["ram_total_mb"] = "{:.2f}".format(memory_total_mb)
     my_dict["ram_used_mb"] = "{:.2f}".format(memory_used_mb)
     my_dict["ram_available_mb"] = "{:.2f}".format(memory_available_mb)
