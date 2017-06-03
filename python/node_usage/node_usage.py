@@ -11,7 +11,7 @@
 ##         python ./node_usage.py
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-06-02 23:04:55>
+## Updated: Time-stamp: <2017-06-02 23:15:15>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -64,10 +64,12 @@ def show_memory_usage(output_dict):
     my_dict = {}
     memory_usage = psutil.virtual_memory()
     memory_total_mb = memory_usage.total/(1024*1024)
+    memory_used_mb = memory_usage.used/(1024*1024)
     memory_available_mb = memory_usage.available/(1024*1024)
     memory_buffers_mb = memory_usage.buffers/(1024*1024)
     percent_ratio = float(memory_total_mb - memory_available_mb)*100/memory_total_mb
     my_dict["ram_total_mb"] = "{:.2f}".format(memory_total_mb)
+    my_dict["ram_used_mb"] = "{:.2f}".format(memory_used_mb)
     my_dict["ram_available_mb"] = "{:.2f}".format(memory_available_mb)
     my_dict["ram_buffers_mb"] = "{:.2f}".format(memory_buffers_mb)
     my_dict["used_percentage"] = "{:.2f}".format(percent_ratio) + "%"
