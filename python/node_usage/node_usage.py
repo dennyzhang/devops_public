@@ -11,7 +11,7 @@
 ##         python ./node_usage.py
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-06-03 13:59:12>
+## Updated: Time-stamp: <2017-06-03 14:02:46>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -41,17 +41,18 @@ def show_disk_usage(output_dict):
         dist_entry_dict["total_gb"] = "{:.2f}".format(total_gb)
         dist_entry_dict["used_gb"] = "{:.2f}".format(used_gb)
         dist_entry_dict["free_gb"] = "{:.2f}".format(free_gb)
-        current_used_percentage = "{:.2f}".format(usage.percent) + "%"
-        dist_entry_dict["used_percentage"] = current_used_percentage
+        current_used_percentage = float(dist_entry_dict["used_gb"])*100/float(dist_entry_dict["total_gb"])
+        percent_ratio = "{:.2f}".format(current_used_percentage) + "%"
+        dist_entry_dict["used_percentage"] = percent_ratio
 
         if "used_percentage" in my_dict:
             my_dict["used_percentage"] = "%s, %s %s(%sgb/%sgb)" % \
                                          (my_dict["used_percentage"], \
-                                          part.mountpoint, current_used_percentage,
+                                          part.mountpoint, percent_ratio,
                                           dist_entry_dict["used_gb"], dist_entry_dict["total_gb"])
         else:
             my_dict["used_percentage"] = "%s %s(%sgb/%sgb)" % \
-                                         (part.mountpoint, current_used_percentage, \
+                                         (part.mountpoint, percent_ratio, \
                                           dist_entry_dict["used_gb"], dist_entry_dict["total_gb"])
 
         my_dict["disk_%d" % i] = dist_entry_dict
