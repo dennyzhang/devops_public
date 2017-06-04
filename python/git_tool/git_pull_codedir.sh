@@ -10,14 +10,22 @@
 ## Sample: bash git_pull_codedir.sh "/data/code_dir/repo1,/data/code_dir/repo2"
 ## --
 ## Created : <2017-06-04>
-## Updated: Time-stamp: <2017-06-04 16:27:31>
+## Updated: Time-stamp: <2017-06-04 16:33:08>
 ##-------------------------------------------------------------------
 # https://coderwall.com/p/rdi_wq/fix-could-not-open-a-connection-to-your-authentication-agent-when-using-ssh-add
 
 function detect_ssh_auth_sock() {
-    # If no ssh agent is found, exit with error
-    # TODO
-    echo "/tmp/ssh-CQvj4eoYn5ha/agent.2340"
+    ssh_agent_pid=$(pgrep ssh-agent  | head -n 1)
+    if [ -z "$ssh_agent_pid" ]; then
+        echo "ERROR: no ssh agent is found."
+        exit 1
+    fi
+    # Sample output:
+    # lsof -p 2341 | grep "/tmp/"
+    # ssh-agent 2341 root    3u  unix 0xffff88009057d000      0t0 1092136 /tmp/ssh-CQvj4eoYn5ha/agent.2340 type=STREAM
+    ssh_auth_sock=$(lsof -p "$ssh_agent_pid" | grep '/tmp/' | awk -F' ' '{print $9}')
+    # Return: /tmp/ssh-CQvj4eoYn5ha/agent.2340
+    echo "$ssh_auth_sock"
 }
 
 function get_agentid_from_authsock() {
