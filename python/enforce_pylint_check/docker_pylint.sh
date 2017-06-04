@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-05-13 22:32:07>
+## Updated: Time-stamp: <2017-06-03 19:11:56>
 ##-------------------------------------------------------------------
 code_dir=${1?""}
 preinstall_pip_packages=${2-""}
@@ -66,6 +66,6 @@ for pip_package in $package_list; do
     docker exec -t "$container_name" pip install "$pip_package"
 done
 
-echo "Run code check"
+echo "Run code check: python $check_filename --code_dir /code --check_ignore_file /${ignore_file}"
 docker exec -t "$container_name" python "$check_filename" --code_dir /code --check_ignore_file "/${ignore_file}"
 ## File : docker_pylint.sh ends

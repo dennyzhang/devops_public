@@ -12,7 +12,7 @@
 ##
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-06-01 13:12:50>
+## Updated: Time-stamp: <2017-06-03 19:12:32>
 ##-------------------------------------------------------------------
 code_dir=${1?""}
 ignore_file_list=${2-""}
@@ -62,6 +62,6 @@ docker run -t -d --privileged -v "${code_dir}:/code" --name "$container_name" --
 echo "Copy ignore file"
 docker cp "/tmp/$ignore_file" "$container_name:/$ignore_file"
 
-echo "Run code check"
+echo "Run code check: python $check_filename --code_dir /code --check_ignore_file /${ignore_file} --exclude_code_list ${exclude_code_list}"
 docker exec -t "$container_name" python "$check_filename" --code_dir /code --check_ignore_file "/${ignore_file}" --exclude_code_list "${exclude_code_list}"
 ## File : docker_shellcheck.sh ends
