@@ -7,11 +7,13 @@
 ## File : git_pull_codedir.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
+## Sample:
+##          python git_pull_codedir.py --code_dirs "/data/code_dir/repo1,/data/code_dir/repo2"
 ## Dependency:
 ##        pip install GitPython
 ## --
 ## Created : <2017-03-24>
-## Updated: Time-stamp: <2017-05-22 17:12:13>
+## Updated: Time-stamp: <2017-06-04 16:26:11>
 ##-------------------------------------------------------------------
 import os, sys
 import sys
@@ -34,7 +36,6 @@ def git_pull(code_dir):
     output = g.pull()
     return output
 
-# Sample python git_pull_codedir.py --code_dirs "/data/code_dir/repo1,/data/code_dir/repo2"
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--code_dirs', required=True, \
