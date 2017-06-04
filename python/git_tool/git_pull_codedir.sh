@@ -10,7 +10,7 @@
 ## Sample: bash git_pull_codedir.sh "/data/code_dir/repo1,/data/code_dir/repo2"
 ## --
 ## Created : <2017-06-04>
-## Updated: Time-stamp: <2017-06-04 16:36:25>
+## Updated: Time-stamp: <2017-06-04 16:47:10>
 ##-------------------------------------------------------------------
 # https://coderwall.com/p/rdi_wq/fix-could-not-open-a-connection-to-your-authentication-agent-when-using-ssh-add
 
@@ -43,7 +43,7 @@ if [[ "${ssh_auth_sock}" == ERROR* ]]; then
     exit 1
 fi
 
-ssh_agent_id=$(get_agentid_from_authsock "ssh_auth_sock")
+ssh_agent_id=$(get_agentid_from_authsock "$ssh_auth_sock")
 export SSH_AUTH_SOCK="$ssh_auth_sock"
 export SSH_AGENT_PID="$ssh_agent_id"
 
