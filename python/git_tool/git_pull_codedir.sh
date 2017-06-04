@@ -10,16 +10,17 @@
 ## Sample: bash git_pull_codedir.sh "/data/code_dir/repo1,/data/code_dir/repo2"
 ## --
 ## Created : <2017-06-04>
-## Updated: Time-stamp: <2017-06-04 16:33:08>
+## Updated: Time-stamp: <2017-06-04 16:36:25>
 ##-------------------------------------------------------------------
 # https://coderwall.com/p/rdi_wq/fix-could-not-open-a-connection-to-your-authentication-agent-when-using-ssh-add
 
 function detect_ssh_auth_sock() {
     ssh_agent_pid=$(pgrep ssh-agent  | head -n 1)
     if [ -z "$ssh_agent_pid" ]; then
-        echo "ERROR: no ssh agent is found."
+        echo "ERROR: no ssh agent is found. Please run eval \$(ssh-agent) and ssh-add \$ssh_keyfile first."
         exit 1
     fi
+
     # Sample output:
     # lsof -p 2341 | grep "/tmp/"
     # ssh-agent 2341 root    3u  unix 0xffff88009057d000      0t0 1092136 /tmp/ssh-CQvj4eoYn5ha/agent.2340 type=STREAM
@@ -36,6 +37,12 @@ function get_agentid_from_authsock() {
 
 code_dir_list=${1?}
 ssh_auth_sock=$(detect_ssh_auth_sock)
+
+if [[ "${ssh_auth_sock}" == ERROR* ]]; then
+    echo "$ssh_auth_sock"
+    exit 1
+fi
+
 ssh_agent_id=$(get_agentid_from_authsock "ssh_auth_sock")
 export SSH_AUTH_SOCK="$ssh_auth_sock"
 export SSH_AGENT_PID="$ssh_agent_id"
