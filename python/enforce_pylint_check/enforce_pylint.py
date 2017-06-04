@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-05-22 17:12:07>
+## Updated: Time-stamp: <2017-06-03 21:15:06>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -47,11 +47,11 @@ def run_check(file_list, check_pattern):
     has_error = False
     for fname in file_list:
         check_command = check_pattern % (fname)
-        print "Run check command: %s" % (check_command)
+        print("Run check command: %s" % (check_command))
         returncode = subprocess.call(check_command, shell=True)
         if returncode != 0:
             has_error = True
-            print "Error to run %s. Return code: %d" % (check_command, returncode)
+            print("Error to run %s. Return code: %d" % (check_command, returncode))
     return has_error
 ################################################################################
 #
@@ -73,7 +73,7 @@ if __name__ == '__main__':
     if check_ignore_file != "":
         check_ignore_file = os.path.expanduser(l.check_ignore_file)
 
-    print "Run pylint for *.py under %s" % (code_dir)
+    print("Run pylint for *.py under %s" % (code_dir))
     file_list = find_files_by_postfix(code_dir, ".py")
     if check_ignore_file != "":
         with open(check_ignore_file) as f:
@@ -82,9 +82,9 @@ if __name__ == '__main__':
 
     has_error = run_check(file_list, "pylint -E %s")
     if has_error is False:
-        print "OK: no error detected from pylint"
+        print("OK: no error detected from pylint")
         sys.exit(0)
     else:
-        print "ERROR: %s has failed." % (os.path.basename(__file__))
+        print("ERROR: %s has failed." % (os.path.basename(__file__)))
         sys.exit(1)
 ## File : enforce_pylint.py ends
