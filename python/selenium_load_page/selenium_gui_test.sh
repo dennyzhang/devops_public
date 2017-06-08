@@ -5,7 +5,7 @@
 ## Description :
 ## --
 ## Created : <2017-05-18>
-## Updated: Time-stamp: <2017-06-07 18:27:36>
+## Updated: Time-stamp: <2017-06-07 19:59:55>
 ##-------------------------------------------------------------------
 url_test=${1?}
 bind_hosts_list=${2:-""}
@@ -22,8 +22,12 @@ if docker ps -a | grep "$container_name"; then
     docker stop "$container_name"; docker rm "$container_name"
 fi
 
+if [ -n "$bind_hosts_list" ]; then
+   echo "TODO: update hosts"
+fi
+
 # Destroy docker container
 docker exec selenium python "$test_py_script" \
-       --page_url "$url_test"  --max_load_seconds $maximum_seconds
+       --page_url "$url_test"  --max_load_seconds "$maximum_seconds"
 ################################################################################
 ## File : selenium_gui_test.sh ends
