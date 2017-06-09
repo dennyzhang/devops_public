@@ -9,15 +9,23 @@
 ## Description : Show OS and process resource usage: CPU, RAM and disk
 ## Sample:
 ##         python ./node_usage.py
+##             {"disk": {"disk_0": {"free_gb": "170.42", "total_gb": "377.83", "partition": "/", "used_percentage": "49.82%", "used_gb": "188.22"}, "free_gb": "170.42", "total_gb": "377.83", "used_percentage": "/ 49.82%(188.22gb/377.83gb)", "used_gb": "188.22"}, "hostname": "totvsjenkins", "ram": {"used_percentage": "8.79%(2.07gb/23.55gb)", "ram_buffers_gb": "8.17", "ram_available_gb": "21.40", "ram_total_gb": "23.55", "ram_used_gb": "2.07"}}
+##
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-06-03 15:22:41>
+## Updated: Time-stamp: <2017-06-08 20:15:47>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
 import argparse
 import json
 import socket
+
+import socket
+def get_ip_address():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    return s.getsockname()[0]
 
 # http://www.programcreek.com/python/example/53878/psutil.disk_usage
 def show_disk_usage(output_dict):
@@ -109,6 +117,7 @@ def get_process_usage(output_dict, pid_file):
 def show_usage(pid_file):
     output_dict = {}
     output_dict['hostname'] = socket.gethostname()
+    output_dict['ipaddress_eth0'] = get_ip_address()
 
     is_ok = True
     if pid_file is not None:
