@@ -1,0 +1,3 @@
+- sshd listen on another port
+- Only take ssh by key, instead of username
+- Reset root password
