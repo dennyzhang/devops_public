@@ -10,7 +10,7 @@
 ## Sample: bash git_pull_codedir.sh "/data/code_dir/repo1,/data/code_dir/repo2"
 ## --
 ## Created : <2017-06-04>
-## Updated: Time-stamp: <2017-06-19 14:23:30>
+## Updated: Time-stamp: <2017-06-19 14:25:09>
 ##-------------------------------------------------------------------
 # https://coderwall.com/p/rdi_wq/fix-could-not-open-a-connection-to-your-authentication-agent-when-using-ssh-add
 
@@ -24,10 +24,10 @@ function detect_ssh_auth_sock() {
         # ssh-agent 2341 root    3u  unix 0xffff88009057d000      0t0 1092136 /tmp/ssh-CQvj4eoYn5ha/agent.2340 type=STREAM
         ssh_auth_sock=$(lsof -p "$ssh_agent_pid" | grep '/tmp/' | awk -F' ' '{print $9}')
         # Return: /tmp/ssh-CQvj4eoYn5ha/agent.2340
-        if [ -f "$ssh_auth_sock" ]; then
+        if [ -S "$ssh_auth_sock" ]; then
             echo "$ssh_auth_sock"
         else
-            echo "ERROR: ssh_auth_sock doesn't exist"
+            echo "ERROR: $ssh_auth_sock doesn't exist, or it's not a socket"
             exit 1
         fi
     fi
