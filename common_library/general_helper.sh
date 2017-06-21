@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2017-04-08 14:30:43>
+## Updated: Time-stamp: <2017-06-20 21:59:52>
 ##-------------------------------------------------------------------
 function log() {
     # log message to both stdout and logfile on condition
@@ -63,22 +63,33 @@ function os_release() {
     # os_release true -> ubuntu-14.04
     local show_version=${1:-"false"}
     set -e
-    distributor_id=$(lsb_release -a 2>/dev/null | grep 'Distributor ID' | awk -F":\t" '{print $2}')
-    if [ "$distributor_id" == "RedHatEnterpriseServer" ]; then
-        os_type="redhat"
-    elif [ "$distributor_id" == "Ubuntu" ]; then
-        os_type="ubuntu"
-    else
-        if grep CentOS /etc/issue 1>/dev/null 2>/dev/null; then
-            os_type="centos"
-        else
-            if uname -a | grep '^Darwin' 1>/dev/null 2>/dev/null; then
-                os_type="osx"
-            else
-                echo"ERROR: Not supported OS"
-                exit 1
-            fi
+    os_type=""
+    if which lsb_release 1>/dev/null 2>/dev/null; then
+        distributor_id=$(lsb_release -a 2>/dev/null | grep 'Distributor ID' | awk -F":\t" '{print $2}')
+        if [ "$distributor_id" == "RedHatEnterpriseServer" ]; then
+            os_type="redhat"
         fi
+
+        if [ "$distributor_id" == "Ubuntu" ]; then
+            os_type="ubuntu"
+        fi
+    fi
+
+    if grep CentOS /etc/issue 1>/dev/null 2>/dev/null; then
+        os_type="centos"
+    fi
+
+    if grep Debian /etc/issue 1>/dev/null 2>/dev/null; then
+        os_type="debian"
+    fi
+
+    if uname -a | grep '^Darwin' 1>/dev/null 2>/dev/null; then
+        os_type="osx"
+    fi
+
+    if [ -z "$os_type" ]; then
+        echo"ERROR: Not supported OS"
+        exit 1
     fi
 
     if [ "$show_version" = "true" ]; then
