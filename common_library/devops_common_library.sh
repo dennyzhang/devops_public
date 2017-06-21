@@ -25,7 +25,7 @@ fi
 library_list="
 1550237670 1949 devops_common_library.sh
 4106968546 2330 docker_helper.sh
-2809828229 7417 general_helper.sh
+3316460335 7407 general_helper.sh
 4132387734 3040 git_helper.sh
 3267528388 2977 language_helper.sh
 1056265537 2369 network_helper.sh
