@@ -7,7 +7,7 @@ Install Jenkins jobs
 Update Common Library Checksum 
 ==============================
 ```
-cd /Users/mac/baidu/*/private_data/project/devops_consultant/consultant_code/devops_public/jenkins_scripts
-find . -name "*.sh" | xargs sed  -i "" "s/1107596501/902389197/g"
+cd /Users/mac/baidu/*/private_data/project/devops_consultant/consultant_code/devops_public/
+find . -name "*.sh" | xargs sed  -i "" "s/4106968546/2886589901/g"
 find . -name "*.sh" | xargs grep "bash /var/lib/devops/refresh_common_library.sh"
 ```
