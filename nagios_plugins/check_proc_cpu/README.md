@@ -2,7 +2,7 @@ check_proc_cpu
 ==============
 
 - Link: http://www.dennyzhang.com/nagois_monitor_process_cpu/
-- Code: https://github.com/DennyZhang/devops_public/tree/tag_v5/nagios_plugins/check_proc_cpu
+- Code: https://github.com/DennyZhang/devops_public/tree/tag_v6/nagios_plugins/check_proc_cpu
 
 Nagios plugin to check proc cpu usage.
 

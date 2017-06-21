@@ -9,6 +9,6 @@ How To Use
 user_home_list='mac:/Users/mac,root:/root'
 ssh_email='denny@dennyzhang.com'
 ssh_key='AAAAB3NzaC1yc2EAAAADAQABAAABAQDAwp69ZIA8Usz5EgSh5gBXKGFZBUawP8nDSgZVW6Vl...'
-wget -O inject_ssh_key.sh  https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v5/bash/inject_ssh_key/inject_ssh_key.sh
+wget -O inject_ssh_key.sh  https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v6/bash/inject_ssh_key/inject_ssh_key.sh
 sudo bash ./inject_ssh_key.sh $user_home_list $ssh_email $ssh_key
 ```

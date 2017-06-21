@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-05-10>
-## Updated: Time-stamp: <2017-04-08 15:03:07>
+## Updated: Time-stamp: <2017-06-20 22:18:06>
 ##-------------------------------------------------------------------
 ################################################################################
 require 'socket'
@@ -20,7 +20,7 @@ require 'open3'
 set :backend, :exec
 
 # TODO: don't hardcode download link
-url_prefix = 'https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v5/'
+url_prefix = 'https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v6/'
 
 # TODO: conditional download to avoid network turbulence
 %w(general_helper db_helper jenkins_helper).each do |library|

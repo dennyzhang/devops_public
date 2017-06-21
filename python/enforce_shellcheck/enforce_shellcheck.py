@@ -12,7 +12,7 @@
 ##
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-05-23 17:40:41>
+## Updated: Time-stamp: <2017-06-20 22:17:48>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -58,7 +58,7 @@ def run_check(file_list, check_pattern):
     return has_error
 ################################################################################
 #
-# wget -O /tmp/enforce_shellcheck.py https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v5/python/enforce_shellcheck/enforce_shellcheck.py
+# wget -O /tmp/enforce_shellcheck.py https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v6/python/enforce_shellcheck/enforce_shellcheck.py
 # python /tmp/enforce_shellcheck.py --code_dir devops_code/devops_public
 ################################################################################
 

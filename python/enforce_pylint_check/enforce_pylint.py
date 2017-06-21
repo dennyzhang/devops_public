@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-06-03 21:15:06>
+## Updated: Time-stamp: <2017-06-20 22:17:48>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -55,7 +55,7 @@ def run_check(file_list, check_pattern):
     return has_error
 ################################################################################
 #
-# wget -O /tmp/enforce_pylint_check.py https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v5/python/enforce_pylint_check/enforce_pylint_check.py
+# wget -O /tmp/enforce_pylint_check.py https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v6/python/enforce_pylint_check/enforce_pylint_check.py
 # python /tmp/enforce_pylint_check.py --code_dir devops_code/devops_public
 # python /tmp/enforce_pylint_check.py --code_dir devops_code/devops_public --check_ignore_file .pylint_ignore
 ################################################################################

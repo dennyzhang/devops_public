@@ -9,10 +9,10 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2017-04-12 19:46:04>
+## Updated: Time-stamp: <2017-06-20 22:17:32>
 ##-------------------------------------------------------------------
 . /etc/profile
-[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v5"
+[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
 export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/${DOWNLOAD_TAG_NAME}"
 # TODO: don't hardcode download link
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
