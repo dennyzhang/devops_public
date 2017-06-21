@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2017-06-20 21:59:52>
+## Updated: Time-stamp: <2017-06-20 22:19:31>
 ##-------------------------------------------------------------------
 function log() {
     # log message to both stdout and logfile on condition
@@ -124,8 +124,8 @@ function bindhosts() {
     done
 
     # Fix acl issue
-    sudo touch /tmp/deploy_cluster_bindhosts.sh
-    sudo chmod 777 /tmp/deploy_cluster_bindhosts.sh
+    touch /tmp/deploy_cluster_bindhosts.sh
+    chmod 777 /tmp/deploy_cluster_bindhosts.sh
     cat << "EOF" > /tmp/deploy_cluster_bindhosts.sh
 #!/bin/bash -xe
 
