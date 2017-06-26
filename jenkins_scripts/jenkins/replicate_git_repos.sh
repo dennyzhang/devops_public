@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-13>
-## Updated: Time-stamp: <2017-06-26 14:14:18>
+## Updated: Time-stamp: <2017-06-26 15:23:21>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -130,7 +130,7 @@ trap shell_exit SIGHUP SIGINT SIGTERM 0
 ########################################################
 source_string "$env_parameters"
 [ -n "$working_dir" ] || working_dir="$HOME/code/replicate_git_repo"
-[ -d "$working_dir" ] || mkdir -p $working_dir
+[ -d "$working_dir" ] || mkdir -p "$working_dir"
 
 if [ -n "$CLEAN_START" ] && $CLEAN_START; then
     echo "Since clean_start is true, delete working_dir first: $working_dir"

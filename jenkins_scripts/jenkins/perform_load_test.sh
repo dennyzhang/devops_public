@@ -8,7 +8,7 @@
 ## Description :
 ## --
 ## Created : <2015-11-19>
-## Updated: Time-stamp: <2017-06-26 14:14:11>
+## Updated: Time-stamp: <2017-06-26 15:23:02>
 ##-------------------------------------------------------------------
 ################################################################################################
 . /etc/profile
@@ -32,9 +32,9 @@ $test_plan
 EOF
 
 log "scp $jmeter_testplan to /tmp/jmeter_testplan.jmx"
-scp -i $ssh_key_file -P "$ssh_server_port" -o StrictHostKeyChecking=no "$jmeter_testplan" "root@${ssh_server_ip}:/tmp/jmeter_testplan.jmx"
+scp -i "$ssh_key_file" -P "$ssh_server_port" -o StrictHostKeyChecking=no "$jmeter_testplan" "root@${ssh_server_ip}:/tmp/jmeter_testplan.jmx"
 
 log "ssh to autotest container to run the test plan: $code_sh"
-ssh -i $ssh_key_file -p "$ssh_server_port" -o StrictHostKeyChecking=no "root@${ssh_server_ip}" "\$code_sh"
+ssh -i "$ssh_key_file" -p "$ssh_server_port" -o StrictHostKeyChecking=no "root@${ssh_server_ip}" "\$code_sh"
 
 ## File : perform_load_test.sh ends

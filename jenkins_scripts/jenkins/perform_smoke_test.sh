@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-08-16>
-## Updated: Time-stamp: <2017-06-26 14:14:13>
+## Updated: Time-stamp: <2017-06-26 15:22:40>
 ##-------------------------------------------------------------------
 ################################################################################################
 . /etc/profile
@@ -99,8 +99,8 @@ function test_protractor() {
 
 #################################################################################
 working_dir="$HOME/code/smoketest/"
-[ -d $working_dir ] || mkdir -p $working_dir
+[ -d "$working_dir" ] || mkdir -p "$working_dir"
 
-prepare_protractor $working_dir "$server_ip" "gui_test_case"
-test_protractor $working_dir
+prepare_protractor "$working_dir" "$server_ip" "gui_test_case"
+test_protractor "$working_dir"
 ## File : perform_smoke_test.sh ends

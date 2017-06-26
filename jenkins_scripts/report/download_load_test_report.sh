@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-09-24>
-## Updated: Time-stamp: <2017-06-26 14:14:41>
+## Updated: Time-stamp: <2017-06-26 15:22:09>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -93,7 +93,7 @@ if [ -n "$START_COMMAND" ]; then
     sleep 5
 fi
 
-ssh -i $ssh_key_file -p "$ssh_port" -o StrictHostKeyChecking=no "root@$ssh_server_ip" test -f $report_remote_path
+ssh -i "$ssh_key_file" -p "$ssh_port" -o StrictHostKeyChecking=no "root@$ssh_server_ip" test -f $report_remote_path
 errcode=$?
 if [ $errcode -ne 0 ];then
     log "The load test report file don't be found in the container."
@@ -102,8 +102,8 @@ fi
 
 mkdir -p "$report_dir_path"
 
-scp -i $ssh_key_file -P "$ssh_port" -o StrictHostKeyChecking=no "root@$ssh_server_ip:${report_remote_path%/*}/*" "$report_dir_path"
-scp -i $ssh_key_file -P "$ssh_port" -o StrictHostKeyChecking=no "root@$ssh_server_ip:$report_check_log" "$report_dir_path"
+scp -i "$ssh_key_file" -P "$ssh_port" -o StrictHostKeyChecking=no "root@$ssh_server_ip:${report_remote_path%/*}/*" "$report_dir_path"
+scp -i "$ssh_key_file" -P "$ssh_port" -o StrictHostKeyChecking=no "root@$ssh_server_ip:$report_check_log" "$report_dir_path"
 cat "$report_dir_path/${report_check_log##*/}"
 result=$(grep -w "Check failed" "$report_dir_path/${report_check_log##*/}" | sed -n '1p')
 
