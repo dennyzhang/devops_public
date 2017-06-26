@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-29>
-## Updated: Time-stamp: <2017-06-26 14:14:42>
+## Updated: Time-stamp: <2017-06-26 14:42:34>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -30,7 +30,7 @@ bash /var/lib/devops/refresh_common_library.sh "2886589901" "/var/lib/devops/dev
      "${DOWNLOAD_PREFIX}/common_library/devops_common_library.sh"
 . /var/lib/devops/devops_common_library.sh
 ################################################################################################
-fail_unless_os "ubuntu|redhat/centos/osx"
+fail_unless_os "ubuntu|redhat/centos/osx/debian"
 function install_serverspec() {
     if ! sudo gem list | grep serverspec 2>/dev/null 1>/dev/null; then
         sudo gem install serverspec
