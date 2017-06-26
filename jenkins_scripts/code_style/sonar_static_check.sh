@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2017-06-20 22:17:31>
+## Updated: Time-stamp: <2017-06-26 13:50:30>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -23,7 +23,7 @@
 ##         export SONAR_PROJECTNAME=
 ##         export REFRESH_SONAR_CONF=true
 ##         export SONAR_LANGUAGE=java
-##         export working_dir=/var/lib/jenkins/code/sonar
+##         export working_dir=$HOME/code/sonar
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
@@ -102,7 +102,7 @@ EOF
 
 ################################################################################################
 source_string "$env_parameters"
-[ -n "$working_dir" ] || working_dir="/var/lib/jenkins/code/$JOB_NAME"
+[ -n "$working_dir" ] || working_dir="$HOME/code/$JOB_NAME"
 
 git_repo=$(parse_git_repo "$git_repo_url")
 code_dir=$working_dir/$branch_name/$git_repo

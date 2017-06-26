@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2017-06-20 22:17:31>
+## Updated: Time-stamp: <2017-06-26 13:50:31>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -28,7 +28,7 @@
 ##         export TEST_KITCHEN_YAML=
 ##               To test for *kitchen*.yml, set TEST_KITCHEN_YAML as ALL
 ##         export TEST_KITCHEN_YAML_BLACKLIST=".kitchen.vagrant.yml,.kitchen.digitalocean.yml"
-##         export working_dir=/var/lib/jenkins/code/dockerfeature
+##         export working_dir=$HOME/code/dockerfeature
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
@@ -145,7 +145,7 @@ function shell_exit() {
 ########################################################################
 source_string "$env_parameters"
 [ -n "$TEST_KITCHEN_YAML" ] || TEST_KITCHEN_YAML=".kitchen.yml"
-[ -n "$working_dir" ] || working_dir="/var/lib/jenkins/code/$JOB_NAME"
+[ -n "$working_dir" ] || working_dir="$HOME/code/$JOB_NAME"
 
 git_repo=$(parse_git_repo "$git_repo_url")
 code_dir="$working_dir/$branch_name/$git_repo"

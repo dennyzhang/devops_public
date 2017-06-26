@@ -10,7 +10,7 @@
 ##      Demo: http://jenkinscn.dennyzhang.com:18088/job/PythonCodeQualityCheck/
 ## --
 ## Created : <2016-04-25>
-## Updated: Time-stamp: <2017-06-20 22:17:31>
+## Updated: Time-stamp: <2017-06-26 13:50:31>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -18,7 +18,7 @@
 ##           git@github.com:DennyZhang/devops_public.git,dev
 ##           git@gitlabcn.dennyzhang.com:devops/devops_scripts.git,dev
 ##      env_parameters:
-##           export working_dir="/var/lib/jenkins/code/codestyle"
+##           export working_dir="$HOME/code/codestyle"
 ##           export pip_packages_install="elasticsearch,flask"
 ################################################################################################
 . /etc/profile
@@ -108,7 +108,7 @@ function shell_exit() {
 trap shell_exit SIGHUP SIGINT SIGTERM 0
 
 source_string "$env_parameters"
-[ -n "$working_dir" ] || working_dir="/var/lib/jenkins/code/codestyle"
+[ -n "$working_dir" ] || working_dir="$HOME/code/codestyle"
 
 failed_git_repos=""
 install_pylint

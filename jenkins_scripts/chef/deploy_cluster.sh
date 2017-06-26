@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2017-06-20 22:17:31>
+## Updated: Time-stamp: <2017-06-26 13:50:31>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -124,7 +124,7 @@ server_list=$(string_strip_comments "$server_list")
 server_list=$(string_strip_whitespace "$server_list")
 echo "server_list: ${server_list}"
 
-[ -n "$ssh_key_file" ] || export ssh_key_file="/var/lib/jenkins/.ssh/ci_id_rsa"
+[ -n "$ssh_key_file" ] || export ssh_key_file="$HOME/.ssh/ci_id_rsa"
 [ -n "$KILL_RUNNING_CHEF_UPDATE" ] || export KILL_RUNNING_CHEF_UPDATE=false
 [ -n "$EXIT_NODE_CONNECT_FAIL" ] || export EXIT_NODE_CONNECT_FAIL=true
 [ -n "$code_dir" ] || code_dir="/root/test"

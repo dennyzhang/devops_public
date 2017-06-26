@@ -9,7 +9,7 @@
 ## Description : collect the files across servers, and transfer to specific destination
 ## --
 ## Created : <2016-04-14>
-## Updated: Time-stamp: <2017-06-20 22:17:30>
+## Updated: Time-stamp: <2017-06-26 13:50:30>
 ################################################################################################
 ## env variables:
 ##      server_list:
@@ -22,7 +22,7 @@
 ##
 ##      file_list:
 ##         # Jenkins backup
-##         eval: find /var/lib/jenkins/jobs -name config.xml
+##         eval: find $HOME/jobs -name config.xml
 ##         # Confluence backup
 ##         eval: find /var/atlassian/application-data/confluence/backups/ -name *.zip | head -n 1
 ##         # JIRA backup
@@ -31,7 +31,7 @@
 ##         eval: find /var/opt/gitlab/backups -name *.tar | head -n 1
 ##
 ##      env_parameters:
-##          export ssh_key_file="/var/lib/jenkins/.ssh/id_rsa"
+##          export ssh_key_file="$HOME/.ssh/id_rsa"
 ##          export REMOVE_PREVIOUS_DOWNLOAD=false
 ##          export KEEP_DAY=7
 ##          export SERVER_REMOTE_COPY="104.236.159.226:22:root/data/backup/server1"
@@ -171,7 +171,7 @@ ensure_variable_isset "ERROR wrong parameter: file_list can't be empty" "$file_l
 ensure_variable_isset "ERROR wrong parameter: JOB_NAME can't be empty" "$JOB_NAME"
 
 collect_time=$(date +'%Y%m%d-%H%M%S')
-[ -n "$ssh_key_file" ] || export ssh_key_file="/var/lib/jenkins/.ssh/id_rsa"
+[ -n "$ssh_key_file" ] || export ssh_key_file="$HOME/.ssh/id_rsa"
 [ -n "$EXIT_NODE_CONNECT_FAIL" ] || export EXIT_NODE_CONNECT_FAIL=false
 
 server_list=$(string_strip_comments "$server_list")
@@ -186,7 +186,7 @@ verify_comon_jenkins_parameters
 [ -n "$KEEP_DAY" ] || KEEP_DAY="7"
 [ -n "$JENKINS_BASEURL" ] || JENKINS_BASEURL=$JENKINS_URL
 
-[ -n "$transfer_dst_path" ] || transfer_dst_path="/var/lib/jenkins/jobs/$JOB_NAME/workspace"
+[ -n "$transfer_dst_path" ] || transfer_dst_path="$HOME/jobs/$JOB_NAME/workspace"
 [ -n "$save_path" ] || save_path="/tmp/"
 
 if [ -z "$REMOVE_PREVIOUS_DOWNLOAD" ] || $REMOVE_PREVIOUS_DOWNLOAD; then

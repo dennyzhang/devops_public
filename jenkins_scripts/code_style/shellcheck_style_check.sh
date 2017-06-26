@@ -10,7 +10,7 @@
 ##      Demo: http://jenkinscn.dennyzhang.com:18088/job/BashCodeQualityCheck/
 ## --
 ## Created : <2016-04-25>
-## Updated: Time-stamp: <2017-06-20 22:17:31>
+## Updated: Time-stamp: <2017-06-26 13:51:20>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -22,7 +22,7 @@
 ##           export SHELLCHECK_IGNORE_FILE=".shellcheck_ignore"
 ##               ##  Use SHELLCHECK_IGNORE_FILE to skip checks for certain files
 ##               ##  The logic is similar like .gitignore for git
-##           export working_dir="/var/lib/jenkins/code/codestyle"
+##           export working_dir="$HOME/code/codestyle"
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
@@ -47,8 +47,8 @@ function install_shellcheck() {
                 if [ -f /root/.cabal/bin/shellcheck ]; then
                     sudo ln -s /root/.cabal/bin/shellcheck /usr/sbin/shellcheck
                 else
-                    if [ -f /var/lib/jenkins/.cabal/bin/shellcheck ]; then
-                       sudo ln -s /var/lib/jenkins/.cabal/bin/shellcheck /usr/sbin/shellcheck
+                    if [ -f "$HOME/.cabal/bin/shellcheck" ]; then
+                       sudo ln -s "$HOME/.cabal/bin/shellcheck" /usr/sbin/shellcheck
                     fi
                 fi
             fi
@@ -125,7 +125,7 @@ function shell_exit() {
 trap shell_exit SIGHUP SIGINT SIGTERM 0
 
 source_string "$env_parameters"
-[ -n "$working_dir" ] || working_dir="/var/lib/jenkins/code/codestyle"
+[ -n "$working_dir" ] || working_dir="$HOME/code/codestyle"
 [ -n "$SHELLCHECK_IGNORE_FILE" ] || SHELLCHECK_IGNORE_FILE=".shellcheck_ignore"
 
 # http://github.com/koalaman/shellcheck/wiki/SC1091

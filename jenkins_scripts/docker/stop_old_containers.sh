@@ -10,7 +10,7 @@
 ## Description : Stop old long-run docker containers, to save OS resource
 ## --
 ## Created : <2015-12-03>
-## Updated: Time-stamp: <2017-06-20 22:17:31>
+## Updated: Time-stamp: <2017-06-26 13:50:30>
 ##-------------------------------------------------------------------
 ################################################################################################
 # * By Jenkins config
@@ -81,7 +81,7 @@ function stop_expired_container() {
     done
 }
 ############################## Shell Start #####################################################
-ssh_identity_file="/var/lib/jenkins/.ssh/id_rsa"
+ssh_identity_file="$HOME/.ssh/id_rsa"
 ensure_variable_isset "docker_ip_port parameter must be set" "$docker_ip_port"
 
 # Jenkins parameter judge
