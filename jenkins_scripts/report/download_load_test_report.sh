@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-09-24>
-## Updated: Time-stamp: <2017-06-20 22:17:28>
+## Updated: Time-stamp: <2017-06-26 14:14:41>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -73,7 +73,7 @@ log "Start to copy the remote report file..."
 jenkins_job_name="${test_report_url##*/}"
 log "variables. test_report_url: $test_report_url, jenkins_job_name=$jenkins_job_name, workspace_path=$workspace_path"
 
-ssh_key_file="/var/lib/jenkins/.ssh/id_rsa"
+ssh_key_file="$HOME/.ssh/id_rsa"
 report_file_name="jmeter.html"
 report_check_log="/etc/jmeter/plans.d/verify_load_test.log"
 report_remote_path="/etc/jmeter/plans.d/$report_file_name"

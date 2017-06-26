@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-13>
-## Updated: Time-stamp: <2017-06-20 22:17:30>
+## Updated: Time-stamp: <2017-06-26 14:14:18>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -20,7 +20,7 @@
 ##
 ##       env_parameters:
 ##             export CLEAN_START=false
-##             export working_dir="/var/lib/jenkins/code/replicate_git_repo"
+##             export working_dir="$HOME/code/replicate_git_repo"
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
@@ -129,7 +129,7 @@ function replicate_git_repo() {
 trap shell_exit SIGHUP SIGINT SIGTERM 0
 ########################################################
 source_string "$env_parameters"
-[ -n "$working_dir" ] || working_dir="/var/lib/jenkins/code/replicate_git_repo"
+[ -n "$working_dir" ] || working_dir="$HOME/code/replicate_git_repo"
 [ -d "$working_dir" ] || mkdir -p $working_dir
 
 if [ -n "$CLEAN_START" ] && $CLEAN_START; then

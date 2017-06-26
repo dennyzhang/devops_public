@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-08-05>
-## Updated: Time-stamp: <2017-06-20 22:17:29>
+## Updated: Time-stamp: <2017-06-26 14:14:42>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -52,8 +52,8 @@ function detect_matched_branch() {
     done
 }
 
-flag_file="/var/lib/jenkins/$JOB_NAME.flag"
-previous_activesprint_file="/var/lib/jenkins/previous_activesprint_$JOB_NAME.flag"
+flag_file="$HOME/$JOB_NAME.flag"
+previous_activesprint_file="$HOME/previous_activesprint_$JOB_NAME.flag"
 
 function shell_exit() {
     errcode=$?
@@ -67,7 +67,7 @@ function shell_exit() {
 ########################################################################
 trap shell_exit SIGHUP SIGINT SIGTERM 0
 source_string "$env_parameters"
-[ -n "$working_dir" ] || working_dir="/var/lib/jenkins/code/$JOB_NAME"
+[ -n "$working_dir" ] || working_dir="$HOME/code/$JOB_NAME"
 
 git_repo=$(parse_git_repo "$git_repo_url")
 code_dir="$working_dir/$branch_name/$git_repo"

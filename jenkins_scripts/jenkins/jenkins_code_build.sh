@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2017-06-20 22:17:30>
+## Updated: Time-stamp: <2017-06-26 14:13:58>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -23,7 +23,7 @@
 ##           export IS_PACK_FILE=false
 ##           export IS_GENERATE_SHA1SUM=false
 ##           export repo_dir=/var/www/repo
-##           export working_dir=/var/lib/jenkins/code/build
+##           export working_dir=$HOME/code/build
 ##      build_command: make
 ################################################################################################
 . /etc/profile
@@ -95,7 +95,7 @@ function pack_files(){
     mv "$package_name" "$repo_dir"
 }
 
-flag_file="/var/lib/jenkins/$JOB_NAME.flag"
+flag_file="$HOME/$JOB_NAME.flag"
 
 function shell_exit() {
     errcode=$?
@@ -109,7 +109,7 @@ function shell_exit() {
 }
 
 ########################################################################
-[ -n "$working_dir" ] || working_dir="/var/lib/jenkins/code/$JOB_NAME"
+[ -n "$working_dir" ] || working_dir="$HOME/code/$JOB_NAME"
 # $GIT_BRANCH environment variable override $branch_name
 [ -z "$GIT_BRANCH" ] || branch_name="$GIT_BRANCH"
 # Build Repo

@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-13>
-## Updated: Time-stamp: <2017-06-20 22:38:07>
+## Updated: Time-stamp: <2017-06-26 14:14:21>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -22,7 +22,7 @@
 ##
 ##       env_parameters:
 ##          export EXIT_NODE_CONNECT_FAIL=false
-##          export ssh_key_file="/var/lib/jenkins/.ssh/id_rsa"
+##          export ssh_key_file="$HOME/.ssh/id_rsa"
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
@@ -57,7 +57,7 @@ function get_hostname_by_ssh() {
 trap shell_exit SIGHUP SIGINT SIGTERM 0
 source_string "$env_parameters"
 
-[ -n "$ssh_key_file" ] || export ssh_key_file="/var/lib/jenkins/.ssh/id_rsa"
+[ -n "$ssh_key_file" ] || export ssh_key_file="$HOME/.ssh/id_rsa"
 [ -n "$EXIT_NODE_CONNECT_FAIL" ] || export EXIT_NODE_CONNECT_FAIL=false
 
 server_list=$(string_strip_comments "$server_list")

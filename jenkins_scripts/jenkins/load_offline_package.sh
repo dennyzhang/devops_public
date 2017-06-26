@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-06>
-## Updated: Time-stamp: <2017-06-20 22:17:30>
+## Updated: Time-stamp: <2017-06-26 14:14:07>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -68,7 +68,8 @@ from_ssh_port=${from_server_split[1]}
 START=$(date +%s)
 
 log "The parameter :package_location=${package_location}, package_new_location=${package_new_location}"
-ssh_key_file="/var/lib/jenkins/.ssh/id_rsa"
+
+ssh_key_file="$HOME/.ssh/id_rsa"
 
 common_ssh_options="-i $ssh_key_file -o StrictHostKeyChecking=no "
 

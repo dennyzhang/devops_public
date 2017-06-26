@@ -9,14 +9,14 @@
 ## Description :
 ## --
 ## Created : <2015-08-05>
-## Updated: Time-stamp: <2017-06-20 22:17:29>
+## Updated: Time-stamp: <2017-06-26 14:14:42>
 ##-------------------------------------------------------------------
 
 ################################################################################################
 ## env variables:
 ##       ssh_server_ip: 123.57.240.189
 ##       ssh_port:22
-##       ssh_key_file:/var/lib/jenkins/.ssh/id_rsa
+##       ssh_key_file:$HOME/.ssh/id_rsa
 ##       src_dir:/var/www/repo/dev
 ##       dst_dir:/var/www/repo/dev
 ##       tmp_dir:/tmp/artifact
@@ -38,7 +38,7 @@ source_string "$env_parameters"
 [ -n "$tmp_dir" ] || tmp_dir="/root/artifact/"
 [ -n "$src_dir" ] || src_dir="/var/www/repo/dev"
 [ -n "$dst_dir" ] || dst_dir="/var/www/repo/dev"
-[ -n "$ssh_key_file" ] || ssh_key_file="/var/lib/jenkins/.ssh/id_rsa"
+[ -n "$ssh_key_file" ] || ssh_key_file="$HOME/.ssh/id_rsa"
 [ -n "$ssh_port" ] || ssh_port="22"
 
 ssh -i $ssh_key_file -p "$ssh_port" -o StrictHostKeyChecking=no "root@$ssh_server_ip" mkdir -p $tmp_dir

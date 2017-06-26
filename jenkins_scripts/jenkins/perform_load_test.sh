@@ -8,7 +8,7 @@
 ## Description :
 ## --
 ## Created : <2015-11-19>
-## Updated: Time-stamp: <2017-06-20 22:17:30>
+## Updated: Time-stamp: <2017-06-26 14:14:11>
 ##-------------------------------------------------------------------
 ################################################################################################
 . /etc/profile
@@ -23,7 +23,7 @@ bash /var/lib/devops/refresh_common_library.sh "2886589901" "/var/lib/devops/dev
 . /var/lib/devops/devops_common_library.sh
 ################################################################################################
 jmeter_testplan="$workspace_path/jmeter_testplan.jmx"
-ssh_key_file="/var/lib/jenkins/.ssh/id_rsa"
+ssh_key_file="$HOME/.ssh/id_rsa"
 code_sh="jmeter -n -t jmeter_testplan.jmx -l jmeter_testplan_$(date +['%Y-%m-%d-%H:%M:%S']).jtl"
 
 log "generate $jmeter_testplan"

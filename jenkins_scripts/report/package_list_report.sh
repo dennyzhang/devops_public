@@ -5,7 +5,7 @@
 ## Description :
 ## --
 ## Created : <2016-02-23>
-## Updated: Time-stamp: <2017-06-20 22:17:28>
+## Updated: Time-stamp: <2017-06-26 14:14:41>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -17,7 +17,7 @@
 ##          export CHECK_SCENARIO="all"
 ##          export OUTPUT_DIR="/root/version.d"
 ##          export JENKINS_BASEURL="http://123.57.240.189:58080"
-##          export ssh_key_file="/var/lib/jenkins/.ssh/id_rsa"
+##          export ssh_key_file="$HOME/.ssh/id_rsa"
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
@@ -33,9 +33,9 @@ bash /var/lib/devops/refresh_common_library.sh "2886589901" "/var/lib/devops/dev
 source_string "$env_parameters"
 [ -n "$CHECK_SCENARIO" ] || CHECK_SCENARIO="all"
 [ -n "$OUTPUT_DIR" ] || OUTPUT_DIR="/root/version.d"
-[ -n "$TRANSFER_DST_PATH" ] || TRANSFER_DST_PATH="/var/lib/jenkins/jobs/$JOB_NAME/workspace"
+[ -n "$TRANSFER_DST_PATH" ] || TRANSFER_DST_PATH="$HOME/jobs/$JOB_NAME/workspace"
 [ -n "$JENKINS_BASEURL" ] || JENKINS_BASEURL=$JENKINS_URL
-[ -n "$ssh_key_file" ] || ssh_key_file="/var/lib/jenkins/.ssh/id_rsa"
+[ -n "$ssh_key_file" ] || ssh_key_file="$HOME/.ssh/id_rsa"
 
 # Input Parameters check
 check_list_fields "IP:TCP_PORT:STRING" "$ssh_server"

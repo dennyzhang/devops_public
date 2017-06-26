@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-29>
-## Updated: Time-stamp: <2017-06-20 22:17:29>
+## Updated: Time-stamp: <2017-06-26 14:14:42>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -90,7 +90,7 @@ EOF
 }
 
 
-flag_file="/var/lib/jenkins/$JOB_NAME.flag"
+flag_file="$HOME/$JOB_NAME.flag"
 
 function shell_exit() {
     errcode=$?
@@ -105,7 +105,7 @@ function shell_exit() {
 trap shell_exit SIGHUP SIGINT SIGTERM 0
 
 #####################################################
-[ -n "$working_dir" ] || working_dir="/var/lib/jenkins/code/$JOB_NAME"
+[ -n "$working_dir" ] || working_dir="$HOME/code/$JOB_NAME"
 
 mkdir -p "$working_dir/spec/localhost"
 cd "$working_dir"

@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-08-16>
-## Updated: Time-stamp: <2017-06-20 22:17:30>
+## Updated: Time-stamp: <2017-06-26 14:14:13>
 ##-------------------------------------------------------------------
 ################################################################################################
 . /etc/profile
@@ -98,7 +98,7 @@ function test_protractor() {
 }
 
 #################################################################################
-working_dir="/var/lib/jenkins/code/smoketest/"
+working_dir="$HOME/code/smoketest/"
 [ -d $working_dir ] || mkdir -p $working_dir
 
 prepare_protractor $working_dir "$server_ip" "gui_test_case"

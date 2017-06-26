@@ -9,7 +9,7 @@
 ## Description : collect the files across servers, and transfer to specific destination
 ## --
 ## Created : <2016-04-14>
-## Updated: Time-stamp: <2017-06-20 22:17:29>
+## Updated: Time-stamp: <2017-06-26 14:14:42>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -18,7 +18,7 @@
 ##
 ##      file_list:
 ##         # Jenkins backup
-##         eval: find /var/lib/jenkins/jobs -name config.xml
+##         eval: find $HOME/jobs -name config.xml
 ##         # Confluence backup
 ##         eval: find /var/atlassian/application-data/confluence/backups/ -name *.zip | head -n 1
 ##         # JIRA backup
@@ -28,7 +28,7 @@
 ##
 ##      env_parameters:
 ##          export TAIL_LINE_COUNT=200
-##          export ssh_key_file="/var/lib/jenkins/.ssh/id_rsa"
+##          export ssh_key_file="$HOME/.ssh/id_rsa"
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
@@ -86,7 +86,7 @@ source_string "$env_parameters"
 ensure_variable_isset "ERROR wrong parameter: ssh_server can't be empty" "$ssh_server"
 ensure_variable_isset "ERROR wrong parameter: file_list can't be empty" "$file_list"
 
-[ -n "$ssh_key_file" ] || export ssh_key_file="/var/lib/jenkins/.ssh/id_rsa"
+[ -n "$ssh_key_file" ] || export ssh_key_file="$HOME/.ssh/id_rsa"
 export EXIT_NODE_CONNECT_FAIL=true
 
 ssh_server=$(string_strip_comments "$ssh_server")

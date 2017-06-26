@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-08-05>
-## Updated: Time-stamp: <2017-06-20 22:17:29>
+## Updated: Time-stamp: <2017-06-26 14:14:42>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -24,7 +24,7 @@
 ##      env_parameters:
 ##         export MARK_PREVIOUS_FIXED=false
 ##         export CLEAN_START=false
-##         export working_dir=/var/lib/jenkins/code/monitorfile
+##         export working_dir=$HOME/code/monitorfile
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
@@ -65,7 +65,7 @@ function detect_changed_file() {
     done
 }
 
-flag_file="/var/lib/jenkins/$JOB_NAME.flag"
+flag_file="$HOME/$JOB_NAME.flag"
 
 function shell_exit() {
     errcode=$?
@@ -101,7 +101,7 @@ function git_http_compare_link() {
 ########################################################################
 trap shell_exit SIGHUP SIGINT SIGTERM 0
 source_string "$env_parameters"
-[ -n "$working_dir" ] || working_dir="/var/lib/jenkins/code/$JOB_NAME"
+[ -n "$working_dir" ] || working_dir="$HOME/code/$JOB_NAME"
 
 log "env variables. CLEAN_START: $CLEAN_START"
 

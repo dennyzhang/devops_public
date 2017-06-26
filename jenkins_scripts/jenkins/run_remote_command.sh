@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-13>
-## Updated: Time-stamp: <2017-06-20 22:17:29>
+## Updated: Time-stamp: <2017-06-26 14:14:42>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -19,7 +19,7 @@
 ##        172.17.0.1:23:root:rm /tmp/npm-*
 ##
 ##       env_parameters:
-##         export ssh_key_file="/var/lib/jenkins/.ssh/id_rsa"
+##         export ssh_key_file="$HOME/.ssh/id_rsa"
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
@@ -34,7 +34,7 @@ bash /var/lib/devops/refresh_common_library.sh "2886589901" "/var/lib/devops/dev
 ################################################################################################
 source_string "$env_parameters"
 
-[ -n "$ssh_key_file" ] || export ssh_key_file="/var/lib/jenkins/.ssh/id_rsa"
+[ -n "$ssh_key_file" ] || export ssh_key_file="$HOME/.ssh/id_rsa"
 
 command_list=$(string_strip_comments "$command_list")
 # TODO: verify command_list is valid, in case users have wrong input

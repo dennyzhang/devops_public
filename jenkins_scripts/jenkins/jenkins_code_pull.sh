@@ -9,17 +9,17 @@
 ## Description :
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2017-06-20 22:17:30>
+## Updated: Time-stamp: <2017-06-26 14:14:03>
 ##-------------------------------------------------------------------
 
 ################################################################################################
 ## env variables:
 ##      git_pull_list:
-##               /var/lib/jenkins/code/bash_dir/,git@XXX:XXX/XXX.git,dev
-##               /var/lib/jenkins/code/dockerfeaturemustpass/,git@XXX:XXX/XXX.git,dev
-##               /var/lib/jenkins/code/dockerbasicmustpass/,git@XXX:XXX/XXX.git,dev
-##               /var/lib/jenkins/code/dockerallinonemustpass/,git@XXX:XXX/XXX.git,dev
-##               /var/lib/jenkins/code/codestylemustpass/,git@XXX:XXX/XXX.git,dev
+##               $HOME/code/bash_dir/,git@XXX:XXX/XXX.git,dev
+##               $HOME/code/dockerfeaturemustpass/,git@XXX:XXX/XXX.git,dev
+##               $HOME/code/dockerbasicmustpass/,git@XXX:XXX/XXX.git,dev
+##               $HOME/code/dockerallinonemustpass/,git@XXX:XXX/XXX.git,dev
+##               $HOME/code/codestylemustpass/,git@XXX:XXX/XXX.git,dev
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"

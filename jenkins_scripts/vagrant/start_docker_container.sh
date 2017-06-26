@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-05-28>
-## Updated: Time-stamp: <2017-06-20 22:17:27>
+## Updated: Time-stamp: <2017-06-26 14:14:41>
 ##-------------------------------------------------------------------
 ################################################################################################
 . /etc/profile
@@ -116,7 +116,7 @@ if [ "$container_status" = "running" ] && [ "$image_has_new_version" = "yes" ]; 
 fi
 
 if [ $container_status = "none" ]; then
-    docker run -d -t -h dockerjenkins --privileged -v /root/docker/:/var/lib/jenkins/code/ \
+    docker run -d -t -h dockerjenkins --privileged -v /root/docker/:$HOME/code/ \
            --name $container_name -p 4022:22 -p 28000:28000 -p 28080:28080 -p 3128:3128 \
            "$image_name" /usr/sbin/sshd -D
 elif [ $container_status = "dead" ]; then

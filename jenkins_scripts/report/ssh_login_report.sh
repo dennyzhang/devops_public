@@ -13,7 +13,7 @@
 ##              sometimes no client ip tracked in auth.log
 ## --
 ## Created : <2016-04-03>
-## Updated: Time-stamp: <2017-06-20 22:17:28>
+## Updated: Time-stamp: <2017-06-26 14:14:41>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -235,7 +235,7 @@ trap shell_exit SIGHUP SIGINT SIGTERM 0
 
 source_string "$env_parameters"
 
-[ -n "$ssh_key_file" ] || ssh_key_file="/var/lib/jenkins/.ssh/id_rsa"
+[ -n "$ssh_key_file" ] || ssh_key_file="$HOME/.ssh/id_rsa"
 [ -n "$WORKING_DIR" ] || WORKING_DIR=/tmp/auth
 [ -n "$HAS_INIT_ANALYSIS" ] || HAS_INIT_ANALYSIS=false
 [ -n "$PARSE_MAXIMUM_ENTRIES" ] || PARSE_MAXIMUM_ENTRIES="5000"

@@ -5,7 +5,7 @@
 ## Description :
 ## --
 ## Created : <2016-06-14>
-## Updated: Time-stamp: <2017-06-20 22:17:28>
+## Updated: Time-stamp: <2017-06-26 14:14:42>
 ##-------------------------------------------------------------------
 ## env variables:
 ##      server_list:
@@ -15,7 +15,7 @@
 ##          export FORCE_RESTART_JUSTNIFFER_PROCESS=false
 ##          export STOP_JUSTNIFFER_PROCESS=false
 ##          export TRAFFIC_LOG_FILE="/root/justniffer.log"
-##          export ssh_key_file="/var/lib/jenkins/.ssh/id_rsa"
+##          export ssh_key_file="$HOME/.ssh/id_rsa"
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
@@ -71,7 +71,7 @@ source_string "$env_parameters"
 
 # TODO: check remote server: only support ubuntu
 
-[ -n "$ssh_key_file" ] || ssh_key_file="/var/lib/jenkins/.ssh/id_rsa"
+[ -n "$ssh_key_file" ] || ssh_key_file="$HOME/.ssh/id_rsa"
 [ -n "$FORCE_RESTART_JUSTNIFFER_PROCESS" ] || FORCE_RESTART_JUSTNIFFER_PROCESS=false
 [ -n "$STOP_JUSTNIFFER_PROCESS" ] || STOP_JUSTNIFFER_PROCESS=false
 [ -n "$TRAFFIC_LOG_FILE" ] || TRAFFIC_LOG_FILE="/root/justniffer.log"

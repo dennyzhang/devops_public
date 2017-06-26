@@ -8,7 +8,7 @@
 ## Description :
 ## --
 ## Created : <2015-10-27>
-## Updated: Time-stamp: <2017-06-20 22:17:30>
+## Updated: Time-stamp: <2017-06-26 14:14:16>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -43,7 +43,7 @@ function check_jenkins_job_status()
     local check_flag=true
 
     for flag_file_name in ${status_files[*]}; do
-        local flag_file="/var/lib/jenkins/$flag_file_name"
+        local flag_file="$HOME/$flag_file_name"
         if test -f "$flag_file" ;then
             if [ "$(cat "$flag_file")" != "OK" ];then
                 log "The status of $flag_file is ERROR."
