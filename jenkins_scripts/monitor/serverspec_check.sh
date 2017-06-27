@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-29>
-## Updated: Time-stamp: <2017-06-26 14:42:34>
+## Updated: Time-stamp: <2017-06-27 12:36:20>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -23,7 +23,7 @@
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
 export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/${DOWNLOAD_TAG_NAME}"
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
-    [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
+    [ -d /var/lib/devops/ ] || (mkdir -p  /var/lib/devops/ && chmod 777 /var/lib/devops)
     wget -O /var/lib/devops/refresh_common_library.sh "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
 fi
 bash /var/lib/devops/refresh_common_library.sh "2886589901" "/var/lib/devops/devops_common_library.sh" \
@@ -32,14 +32,14 @@ bash /var/lib/devops/refresh_common_library.sh "2886589901" "/var/lib/devops/dev
 ################################################################################################
 fail_unless_os "ubuntu|redhat/centos/osx/debian"
 function install_serverspec() {
-    if ! sudo gem list | grep serverspec 2>/dev/null 1>/dev/null; then
-        sudo gem install serverspec
+    if ! gem list | grep serverspec 2>/dev/null 1>/dev/null; then
+        gem install serverspec
     fi
 
     os_version=$(os_release)
     if [ "$os_version" == "ubuntu" ]; then
-        if ! sudo dpkg -l rake 2>/dev/null 1>/dev/null; then
-            sudo apt-get install -y rake
+        if ! dpkg -l rake 2>/dev/null 1>/dev/null; then
+            apt-get install -y rake
         fi
     else
         echo "Warning: not implemented supported for OS: $os_version"
@@ -110,7 +110,7 @@ trap shell_exit SIGHUP SIGINT SIGTERM 0
 mkdir -p "$working_dir/spec/localhost"
 cd "$working_dir"
 
-# sudo /usr/sbin/locale-gen --lang en_US.UTF-8
+# /usr/sbin/locale-gen --lang en_US.UTF-8
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 
