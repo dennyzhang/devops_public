@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2017-06-27 11:27:33>
+## Updated: Time-stamp: <2017-06-27 11:29:21>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -156,7 +156,7 @@ fi
 
 if [ ! -d "$working_dir" ]; then
     mkdir -p "$working_dir"
-    chown -R jenkins:jenkins "$working_dir"
+    # chown -R jenkins:jenkins "$working_dir"
 fi
 
 if [ -d "$code_dir" ]; then
