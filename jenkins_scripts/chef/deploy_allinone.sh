@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-08-05>
-## Updated: Time-stamp: <2017-06-26 13:51:52>
+## Updated: Time-stamp: <2017-06-26 20:31:55>
 ################################################################################################
 ## Purpose: General function to deploy all-in-one env by chef
 ##
@@ -53,7 +53,6 @@ bash /var/lib/devops/refresh_common_library.sh "2886589901" "/var/lib/devops/dev
 ################################################################################################
 function shell_exit() {
     errcode=$?
-    unset common_ssh_options
     if $STOP_CONTAINER; then
         if [ -n "$PRE_STOP_COMMAND" ]; then
             ssh_pre_stop_command="ssh $common_ssh_options -p $ssh_port root@$ssh_server_ip \"$PRE_STOP_COMMAND\""

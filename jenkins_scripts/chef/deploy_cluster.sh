@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2017-06-26 13:50:31>
+## Updated: Time-stamp: <2017-06-26 20:32:28>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -104,7 +104,6 @@ function check_command() {
 
 function shell_exit() {
     errcode=$?
-    unset common_ssh_options
     if $STOP_CONTAINER; then
         if [ -n "$PRE_STOP_COMMAND" ]; then
             log "$PRE_STOP_COMMAND"
