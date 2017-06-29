@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-12>
-## Updated: Time-stamp: <2017-06-20 22:37:05>
+## Updated: Time-stamp: <2017-06-28 20:24:03>
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
@@ -18,6 +18,7 @@ export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_publ
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
     wget -O /var/lib/devops/refresh_common_library.sh "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
+    chmod 777 /var/lib/devops/refresh_common_library.sh
 fi
 bash /var/lib/devops/refresh_common_library.sh "2886589901" "/var/lib/devops/devops_common_library.sh" \
      "${DOWNLOAD_PREFIX}/common_library/devops_common_library.sh"
