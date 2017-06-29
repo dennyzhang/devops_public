@@ -9,13 +9,13 @@
 ## Description : Note the OS user running the script may be root or kitchen!
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2016-06-24 15:52:57>
+## Updated: Time-stamp: <2017-06-29 13:18:48>
 ##-------------------------------------------------------------------
 set +e
 
 # get list of nodes
 hosts_list=""
-for node in $(kitchen list | grep -v '^Instance' | awk -F' ' '{print $1}'); do
+for node in $(kitchen list | grep -v '^Instance' | grep -v 'WARN' | awk -F' ' '{print $1}'); do
     output=$(kitchen exec "$node" -c "sudo /sbin/ifconfig eth0 | grep 'inet addr:'")
     ip=$(echo "$output" | grep -v LC_ALL | grep -v '^---' | cut -d: -f2 | awk '{print $1}')
     output=$(kitchen exec "$node" -c "sudo hostname")
@@ -36,7 +36,7 @@ do
     ip=${host_split[0]}
     domain=${host_split[1]}
 
-    for node in $(kitchen list | grep -v '^Instance' | awk -F' ' '{print $1}'); do
+    for node in $(kitchen list | grep -v '^Instance' | grep -v 'WARN' | awk -F' ' '{print $1}'); do
         kitchen exec "$node" -c "sudo cp -f /etc/hosts /root/hosts"
         if kitchen exec "$node" -c "sudo grep ${domain} /root/hosts" 1>/dev/null 2>&1; then
             command="sudo sed -i \"/${domain}/c\\${ip}    ${domain}\" /root/hosts"
