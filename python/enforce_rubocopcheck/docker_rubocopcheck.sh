@@ -12,13 +12,12 @@
 ##
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-06-29 14:32:57>
+## Updated: Time-stamp: <2017-06-30 17:08:13>
 ##-------------------------------------------------------------------
 code_dir=${1?""}
 ignore_file_list=${2-""}
-exclude_code_list=${3-""}
 
-image_name="denny/rubocop:1.0"
+image_name="denny/rubocopcheck:1.0"
 check_filename="/enforce_rubocopcheck.py"
 
 current_filename=$(basename "$0")
@@ -62,6 +61,6 @@ docker run -t -d --privileged -v "${code_dir}:/code" --name "$container_name" --
 echo "Copy ignore file"
 docker cp "/tmp/$ignore_file" "$container_name:/$ignore_file"
 
-echo "Run code check: python $check_filename --code_dir /code --check_ignore_file /${ignore_file} --exclude_code_list ${exclude_code_list}"
-docker exec -t "$container_name" python "$check_filename" --code_dir /code --check_ignore_file "/${ignore_file}" --exclude_code_list "${exclude_code_list}"
+echo "Run code check: python $check_filename --code_dir /code --check_ignore_folder /${ignore_folder}"
+docker exec -t "$container_name" python "$check_filename" --code_dir /code --check_ignore_folder "/${ignore_file}" 
 ## File : docker_rubocopcheck.sh ends
