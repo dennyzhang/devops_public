@@ -12,7 +12,7 @@
 ##
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-06-30 16:53:16>
+## Updated: Time-stamp: <2017-06-30 16:56:22>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -27,9 +27,9 @@ def ignore_folder(code_dir, check_ignore_folder):
             ignore_folder_list = f.readlines()
 
     folder_list = []
-    for f in os.listdir("/tmp/"):
-        if os.path.f.is_file() is False:
-            folder_list.append(f)
+    for f in os.listdir(code_dir):
+        if os.path.isfile(f) is False:
+            folder_list.append("%s/%s" % (code_dir, f))
 
     l = []
     for folder in folder_list:
@@ -48,11 +48,11 @@ def ignore_folder(code_dir, check_ignore_folder):
 def run_check(code_folder, check_pattern):
     has_error = False
     os.chdir(code_folder)
-    print "Run check command: %s, under %s" % (check_command, code_folder)
-    returncode = subprocess.call(check_command, shell=True)
+    print "Run check command: %s, under %s" % (check_pattern, code_folder)
+    returncode = subprocess.call(check_pattern, shell=True)
     if returncode != 0:
         has_error = True
-        print "Error to run %s. Return code: %d" % (check_command, returncode)
+        print "Error to run %s. Return code: %d" % (check_pattern, returncode)
     return has_error
 ################################################################################
 #
