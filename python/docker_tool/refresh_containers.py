@@ -12,7 +12,7 @@
 ##          pip install docker==2.0.0
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-05-22 17:11:59>
+## Updated: Time-stamp: <2017-06-30 23:21:22>
 ##-------------------------------------------------------------------
 import sys
 import docker
@@ -22,7 +22,7 @@ def pull_image_by_container(client, container_name):
     try:
         container = client.containers.get(container_name)
     except docker.errors.NotFound as e:
-        print "Error: No container is found with name of %s" % (container_name)
+        print("Error: No container is found with name of %s" % (container_name))
         sys.exit(1)
 
     docker_image = container.attrs['Config']['Image']

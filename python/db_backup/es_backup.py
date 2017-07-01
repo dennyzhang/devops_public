@@ -5,7 +5,7 @@
 ## Description : Elasticsearch Backup By ES Snapshot feature
 ## --
 ## Created : <2016-08-01>
-## Updated: Time-stamp: <2017-05-10 16:07:26>
+## Updated: Time-stamp: <2017-06-30 23:20:57>
 ##-------------------------------------------------------------------
 # TODO: move to common library
 import os
@@ -65,6 +65,6 @@ def es_backup_indices(index_list):
 ################################################################################
 
 if __name__=='__main__':
-    print "TODO: to be implemented"
+    print("TODO: to be implemented")
     log.info("Backup succeed for Elasticsearch.")
 ## File : es_backup.py ends

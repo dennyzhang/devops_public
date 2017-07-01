@@ -57,7 +57,7 @@ def initialize_ufw_status(ssh_ip, ssh_username, ssh_key, ssh_port, \
 
     command = "ansible all -i %s -m script -a '/root/ufw_add_node_to_cluster.sh' %s %s" % \
               (tmp_host_fname, ",".join(allow_ip_list), ",".join(allow_port_list))
-    print "Initialize ufw status, command: %s" % (command) # TODO
+    print("Initialize ufw status, command: %s" % (command))
     # TODO: quit, if the command fails
     p = subprocess.Popen(command, shell=True, stderr=subprocess.PIPE)
     while True:
@@ -77,7 +77,7 @@ def allow_src_ip(ssh_ip, ssh_username, ssh_key, ssh_port, src_ip):
 
     command = "ansible all -i %s -m command -a 'ufw allow from %s'" \
               % (tmp_host_fname, src_ip)
-    print "allow_src_ip. ssh_ip: %s, command: %s" % (ssh_ip, command)
+    print("allow_src_ip. ssh_ip: %s, command: %s" % (ssh_ip, command))
     # TODO: quit, if the command fails
     p = subprocess.Popen(command, shell=True, stderr=subprocess.PIPE)
     while True:
@@ -92,7 +92,7 @@ def allow_src_ip(ssh_ip, ssh_username, ssh_key, ssh_port, src_ip):
 def disallow_src_ip(ssh_ip, ssh_username, ssh_key, ssh_port, src_ip):
     # ansible all -m command -a "ufw delete allow from 192.168.0.3"
     command = "ansible all -m command -a 'ufw delete allow from %s'" % (src_ip)
-    print "disallow_src_ip. ssh_ip: %s, command: %s" % (ssh_ip, command)
+    print("disallow_src_ip. ssh_ip: %s, command: %s" % (ssh_ip, command))
     # TODO: quit, if the command fails
     p = subprocess.Popen(command, shell=True, stderr=subprocess.PIPE)
     while True:
@@ -132,7 +132,7 @@ if __name__ == '__main__':
                         required=True, help="Supported action: add or remove", type=str)
     l = parser.parse_args()
     if l.action not in ['add', 'remove']:
-        print "Error: supported action is either add or remove"
+        print("Error: supported action is either add or remove")
         sys.exit(1)
 
     script_fname="/root/ufw_add_node_to_cluster.sh"
@@ -155,14 +155,14 @@ if __name__ == '__main__':
     # TODO: get action from user input
     if l.action == "add":
         allow_port_list = ["2702", "80", "443", "22"]
-        print "Update ufw rules in new server: %s" % (ssh_ip)
+        print("Update ufw rules in new server: %s" % (ssh_ip))
         initialize_ufw_status(ssh_ip, ssh_username, ssh_key, ssh_port, \
                               server_list_existing.split("\n"), allow_port_list)
 
         for src_ip_tmp in server_list_existing.split("\n"):
             allow_src_ip(ssh_ip, ssh_username, ssh_key, ssh_port, src_ip_tmp)
 
-        print "Update ufw rules in existing servers"
+        print("Update ufw rules in existing servers")
         # TODO: use ansible python module to spped up the logic
         for ssh_ip_tmp in server_list_existing.split("\n"):
             allow_src_ip(ssh_ip_tmp, ssh_username, ssh_key, ssh_port, ssh_ip)

@@ -7,7 +7,7 @@
 ## More reading: http://www.dennyzhang.com/nmap_port_scan/
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2017-05-23 17:39:02>
+## Updated: Time-stamp: <2017-06-30 23:25:57>
 ##-------------------------------------------------------------------
 import argparse
 import subprocess
@@ -74,9 +74,9 @@ def nmap_check(server_ip, ports):
     else:
         nmap_opts = "-p %s %s" % (ports, server_ip)
     command = nmap_command % (nmap_opts)
-    print output_prefix, "Run: %s" % (command)
+    print(output_prefix, "Run: %s" % (command))
     nmap_output = subprocess.check_output(command, shell=True)
-    print nmap_output
+    print(nmap_output)
     return nmap_output
 
 def get_portlist_by_nmap_output(nmap_output):
@@ -113,7 +113,7 @@ def tcp_port_scan(server_list, white_list, extra_port_list):
     # TODO: change to multi-threading
     extra_ports = ",".join(extra_port_list)
     if extra_ports != "":
-        print "%s Run extra checks for given ports: %s" % (output_prefix, extra_ports)
+        print("%s Run extra checks for given ports: %s" % (output_prefix, extra_ports))
         for server_ip in server_list:
             nmap_output = nmap_check(server_ip, "T:%s" % (extra_ports))
             nmap_port_list = get_portlist_by_nmap_output(nmap_output)
@@ -129,13 +129,13 @@ def tcp_port_scan(server_list, white_list, extra_port_list):
             insecure_port_dict[server_ip] = ports
 
     if detected_insecure_ports is True:
-        print output_prefix, "Error: Detected Insecure TCP Ports Open"
+        print(output_prefix, "Error: Detected Insecure TCP Ports Open")
         for server_ip in insecure_port_dict.keys():
-            print "\nServer: %s" % (server_ip)
-            print "\n".join(insecure_port_dict[server_ip])
+            print("\nServer: %s" % (server_ip))
+            print("\n".join(insecure_port_dict[server_ip]))
         sys.exit(1)
     else:
-        print "OK: No Insecure TCP Ports Open"
+        print("OK: No Insecure TCP Ports Open")
 
 ################################################################################
 if __name__=='__main__':

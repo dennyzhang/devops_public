@@ -11,7 +11,7 @@
 ##
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2017-05-23 17:41:27>
+## Updated: Time-stamp: <2017-06-30 23:21:15>
 ##-------------------------------------------------------------------
 import argparse
 import subprocess
@@ -26,7 +26,6 @@ def string_in_regex_list(string, regex_list):
         if regex == "":
             continue
         if re.search(regex, string) is not None:
-            # print "regex: %s, string: %s" % (regex, string)
             return True
     return False
 
@@ -59,10 +58,10 @@ def get_nonkernel_process():
 def load_whitelist(fname):
     white_list = ""
     if fname is None:
-        print "No white list file is given. Use default value."
+        print("No white list file is given. Use default value.")
         white_list = DEFAULT_WHITE_LIST
     else:
-        print "load white list from %s" % (fname)
+        print("load white list from %s" % (fname))
         with open(fname) as f:
             white_list = f.readlines()
     return white_list
@@ -89,6 +88,6 @@ if __name__=='__main__':
     process_list = list_process(nonkernel_process_list, white_list)
 
     # Remove header
-    print "Identified processes count: %d." % (len(process_list) - 1)
-    print "\n".join(process_list)
+    print("Identified processes count: %d." % (len(process_list) - 1))
+    print("\n".join(process_list))
 ## File : detect_suspicious_process.py ends

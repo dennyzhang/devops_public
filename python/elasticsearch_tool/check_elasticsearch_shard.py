@@ -11,7 +11,7 @@
 ##    Make sure no same shard(primary, replica) are in the same node, to avoid SPOF
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-05-22 17:12:03>
+## Updated: Time-stamp: <2017-06-30 23:22:23>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -36,7 +36,7 @@ def get_gb_size_from_string(string):
     elif string.endswith("b"):
         val = float(string.replace("b", "")) * 0.001 * 0.001 * 0.001
     else:
-        print "ERROR: unexpected. size string: %s" % (string)
+        print("ERROR: unexpected. size string: %s" % (string))
         sys.exit(NAGIOS_EXIT_ERROR)
     return val
 
@@ -54,7 +54,7 @@ green  open   master-index-13a1f8adbec032ed68f3d035449ef48d    1   0          1 
 ...
 '''
     if r.status_code != 200:
-        print "ERROR: fail to run REST API: %s" % (url)
+        print("ERROR: fail to run REST API: %s" % (url))
         sys.exit(NAGIOS_EXIT_ERROR)
     # TODO: use python library for ES
     # TODO: error handling, if curl requests fails
@@ -84,8 +84,8 @@ def confirm_es_shard_count(es_host, es_port, es_index_list, min_shard_count):
         index_name = l[0]
         number_of_shards = int(l[1])
         if number_of_shards < min_shard_count:
-            print "ERROR: index(%s) only has %d shards, less than %d." \
-                % (index_name, number_of_shards, min_shard_count)
+            print("ERROR: index(%s) only has %d shards, less than %d." \
+                % (index_name, number_of_shards, min_shard_count))
             failed_index_list.append(index_name)
     return failed_index_list
 
@@ -96,11 +96,10 @@ def confirm_es_shard_size(es_host, es_port, es_index_list, max_shard_size):
         index_name = l[0]
         number_of_shards = int(l[1])
         pri_store_size = l[2]
-        # print l, pri_store_size, number_of_shards
         avg_shard_size_gb = get_gb_size_from_string(pri_store_size)/number_of_shards
         if avg_shard_size_gb > max_shard_size:
-            print "ERROR: index(%s) has some shards bigger than %s gb." \
-                % (index_name, max_shard_size)
+            print("ERROR: index(%s) has some shards bigger than %s gb." \
+                % (index_name, max_shard_size))
             failed_index_list.append(index_name)
     return failed_index_list
 
@@ -140,19 +139,19 @@ if __name__ == '__main__':
 
     failed_index_list = confirm_es_shard_count(es_host, es_port, es_index_list, min_shard_count)
     if len(failed_index_list) != 0:
-        print "ERROR: Below indices don't have enough shards:\n%s" % \
-            (",".join(failed_index_list))
+        print("ERROR: Below indices don't have enough shards:\n%s" % \
+            (",".join(failed_index_list)))
         sys.exit(NAGIOS_EXIT_ERROR)
     else:
         # TODO: make sure no same shard in one node, to avoid SPOF
-        print "OK: all matched ES indices have no less than %d shards" % (min_shard_count)
+        print("OK: all matched ES indices have no less than %d shards" % (min_shard_count))
 
     failed_index_list = confirm_es_shard_size(es_host, es_port, es_index_list, max_shard_size)
     if len(failed_index_list) != 0:
-        print "ERROR: Below indices have shards bigger than %s gb:\n%s" % \
-            (max_shard_size, ",".join(failed_index_list))
+        print("ERROR: Below indices have shards bigger than %s gb:\n%s" % \
+            (max_shard_size, ",".join(failed_index_list)))
         sys.exit(NAGIOS_EXIT_ERROR)
     else:
         # TODO: make sure no same shard in one node, to avoid SPOF
-        print "OK: all matched ES indices have no shards bigger than %s gb." % (max_shard_size)
+        print("OK: all matched ES indices have no shards bigger than %s gb." % (max_shard_size))
 ## File : check_elasticsearch_shard.py ends

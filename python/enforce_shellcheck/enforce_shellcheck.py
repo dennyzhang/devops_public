@@ -12,7 +12,7 @@
 ##
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-06-20 22:17:48>
+## Updated: Time-stamp: <2017-06-30 23:22:58>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -50,11 +50,11 @@ def run_check(file_list, check_pattern):
     has_error = False
     for fname in file_list:
         check_command = check_pattern % (fname)
-        print "Run check command: %s" % (check_command)
+        print("Run check command: %s" % (check_command))
         returncode = subprocess.call(check_command, shell=True)
         if returncode != 0:
             has_error = True
-            print "Error to run %s. Return code: %d" % (check_command, returncode)
+            print("Error to run %s. Return code: %d" % (check_command, returncode))
     return has_error
 ################################################################################
 #
@@ -82,7 +82,7 @@ if __name__ == '__main__':
 
     exclude_code_list = l.exclude_code_list
 
-    print "Run shellcheck for *.sh under %s" % (code_dir)
+    print("Run shellcheck for *.sh under %s" % (code_dir))
     file_list = find_files_by_postfix(code_dir, ".sh")
     if check_ignore_file != "":
         with open(check_ignore_file) as f:
@@ -92,9 +92,9 @@ if __name__ == '__main__':
     has_error = run_check(file_list, \
                           "shellcheck -e " + exclude_code_list + " %s")
     if has_error is False:
-        print "OK: no error detected from shellcheck"
+        print("OK: no error detected from shellcheck")
         sys.exit(0)
     else:
-        print "ERROR: %s has failed." % (os.path.basename(__file__))
+        print("ERROR: %s has failed." % (os.path.basename(__file__)))
         sys.exit(1)
 ## File : enforce_shellcheck.py ends

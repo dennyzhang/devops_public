@@ -85,7 +85,6 @@ def examine_docker_images(checklist_file, whitelist_file, client):
             if row == "" or row.startswith('#'):
                 continue
             check_list.append(row)
-    # print check_list
     for tag_name in tag_list:
         has_matched = False
         for check_rule in check_list:

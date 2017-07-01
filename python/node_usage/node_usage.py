@@ -13,7 +13,7 @@
 ##
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-06-08 20:15:47>
+## Updated: Time-stamp: <2017-06-30 23:24:44>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -138,7 +138,7 @@ def show_usage(pid_file):
         is_ok = False
 
     # show output as json
-    print json.dumps(output_dict)
+    print(json.dumps(output_dict))
 
     return is_ok
 
@@ -150,7 +150,7 @@ if __name__ == '__main__':
     pid_file = l.pid_file
 
     if show_usage(pid_file) is False:
-        print "ERROR: fail to get node_usage.py"
+        print("ERROR: fail to get node_usage.py")
         sys.exit(1)
     else:
         sys.exit(0)

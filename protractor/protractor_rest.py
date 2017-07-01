@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2016-05-29>
-## Updated: Time-stamp: <2016-06-24 15:53:26>
+## Updated: Time-stamp: <2017-06-30 23:20:54>
 ##-------------------------------------------------------------------
 # pip install flask
 # export FLASK_DEBUG=1
@@ -49,7 +49,7 @@ def make_tree(path):
 # curl -v -F conf_js=@/tmp/conf.js protractor_js=@/tmp/protractor.js  http://127.0.0.1:5000/protractor_request
 @app.route("/protractor_request", methods=['POST'])
 def protractor_request():
-    print "Accept request"
+    print("Accept request")
     if os.path.exists(WORKING_DIR) is False:
         os.mkdir(WORKING_DIR)
 
@@ -66,7 +66,7 @@ def protractor_request():
 
     # Run protractor Command
     cmd = "protractor %s" % (conf_js_file)
-    print cmd
+    print(cmd)
     os.chdir(WORKING_DIR)
     status, output = commands.getstatusoutput(cmd)
 

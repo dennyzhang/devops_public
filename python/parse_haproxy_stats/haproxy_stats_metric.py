@@ -12,7 +12,7 @@
 ##
 ## --
 ## Created : <2016-10-04>
-## Updated: Time-stamp: <2017-05-23 17:40:09>
+## Updated: Time-stamp: <2017-06-30 23:24:44>
 ##-------------------------------------------------------------------
 import parse_haproxy_stats
 import datetime
@@ -27,13 +27,13 @@ def haproxy_stats_metric(stat_output, timestamp):
     haproxy_dict = parse_haproxy_stats.parse_haproxy_stats(stat_output)
 
     for field in 'hrsp_2xx,hrsp_4xx,hrsp_5xx'.split(','):
-        print "%s %s %s %s" % (timestamp, 'HTTPCode', field, haproxy_dict[field])
+        print("%s %s %s %s" % (timestamp, 'HTTPCode', field, haproxy_dict[field]))
 
     for field in 'scur,smax'.split(','):
-        print "%s %s %s %s" % (timestamp, 'SessionThread', field, haproxy_dict[field])
+        print("%s %s %s %s" % (timestamp, 'SessionThread', field, haproxy_dict[field]))
 
     for field in 'ctime,rtime,ttime'.split(','):
-        print "%s %s %s %s" % (timestamp, 'AvgTime', field, haproxy_dict[field])
+        print("%s %s %s %s" % (timestamp, 'AvgTime', field, haproxy_dict[field]))
 
 # python ./haproxy_stats_metric.py --haproxy_stats_cmd "echo 'show stat' | nc -U /var/run/haproxy/admin.sock | grep 'backend-https,BACKEND'"
 if __name__=='__main__':

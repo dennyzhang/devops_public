@@ -12,7 +12,7 @@
 ##
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-06-30 16:56:22>
+## Updated: Time-stamp: <2017-06-30 23:22:42>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -48,11 +48,11 @@ def ignore_folder(code_dir, check_ignore_folder):
 def run_check(code_folder, check_pattern):
     has_error = False
     os.chdir(code_folder)
-    print "Run check command: %s, under %s" % (check_pattern, code_folder)
+    print("Run check command: %s, under %s" % (check_pattern, code_folder))
     returncode = subprocess.call(check_pattern, shell=True)
     if returncode != 0:
         has_error = True
-        print "Error to run %s. Return code: %d" % (check_pattern, returncode)
+        print("Error to run %s. Return code: %d" % (check_pattern, returncode))
     return has_error
 ################################################################################
 #
@@ -75,7 +75,7 @@ if __name__ == '__main__':
     if check_ignore_folder != "":
         check_ignore_folder = os.path.expanduser(l.check_ignore_folder)
 
-    print "Run rubocop for *.rb under %s" % (code_dir)
+    print("Run rubocop for *.rb under %s" % (code_dir))
     folder_list = ignore_folder(code_dir, check_ignore_folder)
 
     has_error = True
@@ -84,9 +84,9 @@ if __name__ == '__main__':
             has_error = False
 
     if has_error is False:
-        print "OK: no error detected from rubocop check"
+        print("OK: no error detected from rubocop check")
         sys.exit(0)
     else:
-        print "ERROR: %s has failed." % (os.path.basename(__file__))
+        print("ERROR: %s has failed." % (os.path.basename(__file__)))
         sys.exit(1)
 ## File : enforce_rubocopcheck.py ends

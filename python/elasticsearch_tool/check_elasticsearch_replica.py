@@ -10,7 +10,7 @@
 ##    Check all ES indices have more than $min_replica_count replicas
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-05-22 17:12:01>
+## Updated: Time-stamp: <2017-06-30 23:21:46>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -35,7 +35,7 @@ green  open   master-index-13a1f8adbec032ed68f3d035449ef48d    1   0          1 
 ...
 '''
     if r.status_code != 200:
-        print "ERROR: fail to run REST API: %s" % (url)
+        print("ERROR: fail to run REST API: %s" % (url))
         sys.exit(NAGIOS_EXIT_ERROR)
     # TODO: error handling, if curl requests fails
     for line in r.content.split("\n"):
@@ -66,7 +66,7 @@ Sample output:
         ...
     '''
     if r.status_code != 200:
-        print "ERROR: fail to run REST API: %s" % (url)
+        print("ERROR: fail to run REST API: %s" % (url))
         sys.exit(NAGIOS_EXIT_ERROR)
     # TODO: error handling, if curl requests fails
     for line in r.content.split("\n"):
@@ -90,8 +90,8 @@ def confirm_es_replica_count(es_host, es_port, es_index_list, \
                 continue
         number_of_replicas = get_es_replica_count(es_host, es_port, index_name)
         if number_of_replicas < min_replica_count:
-            print "ERROR: index(%s) only has %d replicas, less than %d." \
-                % (index_name, number_of_replicas, min_replica_count)
+            print("ERROR: index(%s) only has %d replicas, less than %d." \
+                % (index_name, number_of_replicas, min_replica_count))
             failed_index_list.append(index_name)
     return failed_index_list
 
@@ -114,7 +114,7 @@ if __name__ == '__main__':
     es_host = l.es_host
 
     if min_replica_count == 0:
-        print "OK: skip the check, since the given min_replica_count is 0"
+        print("OK: skip the check, since the given min_replica_count is 0")
         sys.exit(NAGIOS_OK_ERROR)
         
     # get ip of eth0, if es_host is not given
@@ -129,10 +129,10 @@ if __name__ == '__main__':
                                                  min_replica_count, es_pattern_regexp)
 
     if len(failed_index_list) != 0:
-        print "ERROR: Below indices don't have enough replica:\n%s" % \
-            (",".join(failed_index_list))
+        print("ERROR: Below indices don't have enough replica:\n%s" % \
+            (",".join(failed_index_list)))
         sys.exit(NAGIOS_EXIT_ERROR)
     else:
-        print "OK: all ES indices have no less than %d replicas" % (min_replica_count)
+        print("OK: all ES indices have no less than %d replicas" % (min_replica_count))
         sys.exit(NAGIOS_OK_ERROR)
 ## File : check_elasticsearch_replica.py ends
