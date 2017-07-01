@@ -7,7 +7,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2016-06-04 13:48:52>
+## Updated: Time-stamp: <2017-06-30 23:18:52>
 ##-------------------------------------------------------------------
 import os, sys
 import re
@@ -20,8 +20,8 @@ def load_job_console_output(sqlite_file, console_file):
     # Sample original output:
     #   <span class="timestamp"><b>10:35:05</b> </span>Building in workspace ...
     table_name = "parse_jenkins"
-    print "Parse jenkins job output: %s\n" % (console_file)
-    print "Load to db: %s, table name: %s" % (sqlite_file, table_name)
+    print("Parse jenkins job output: %s\n" % (console_file))
+    print("Load to db: %s, table name: %s" % (sqlite_file, table_name))
     lineMatch = re.compile(r'<span class="timestamp"><b>.*</b> </span>', flags=re.IGNORECASE)
     fieldMatch = re.compile(r'<span class="timestamp"><b>(.*)</b> </span>(.*)', flags=re.IGNORECASE)
 
@@ -34,7 +34,7 @@ def load_job_console_output(sqlite_file, console_file):
         c.execute('create table {tn} (line_id INTEGER PRIMARY KEY, timestamp INTEGER, time_interval_seconds INTEGER, time_origin text, line_content text)' \
               .format(tn=table_name))
     except:
-        print "ERROR to create table"
+        print("ERROR to create table")
 
     line_id = 0
     previous_seconds = 0
@@ -53,7 +53,6 @@ def load_job_console_output(sqlite_file, console_file):
 
                 previous_seconds = timestamp
                 line_content  = str(matchObj.group(2))
-                # print "%s, %s, %s, %s" % (line_id, timestamp, time_interval_seconds, line_content)
                 # TODO: better way to escape
                 line_content = line_content.replace("'", "\'")
                 line_content = line_content.replace("\"", "\'")
@@ -62,8 +61,8 @@ def load_job_console_output(sqlite_file, console_file):
                     c.execute("INSERT OR IGNORE INTO {tn} (line_id, timestamp, time_interval_seconds, time_origin, line_content) VALUES ({line_id}, {timestamp}, {time_interval_seconds}, \"{time_origin}\", \"{line_content}\")".\
                               format(tn = table_name, line_id = line_id, timestamp = timestamp, time_interval_seconds = time_interval_seconds, time_origin = time_origin, line_content = line_content))
                 except:
-                    print "Warning: ERROR to insert record"
-                    print "%s, %s, %s" % (time_interval_seconds, time_origin, line_content)
+                    print("Warning: ERROR to insert record")
+                    print("%s, %s, %s" % (time_interval_seconds, time_origin, line_content))
                     
                 line_id += 1
 
@@ -71,7 +70,7 @@ def load_job_console_output(sqlite_file, console_file):
     conn.close()
 
     if line_id == 0:
-        print "ERROR: no records recognized. Make sure target Jenkins run has Jenkins timstamper plugin enabled."
+        print("ERROR: no records recognized. Make sure target Jenkins run has Jenkins timstamper plugin enabled.")
         sys.exit(-1)
 
 def time_string_to_seconds(time_str):
@@ -80,8 +79,8 @@ def time_string_to_seconds(time_str):
     return seconds
 
 def show_report(sqlite_file, top_count):
-    print "\n=================================\n"    
-    print "The %s slowest steps:" % (top_count)
+    print("\n=================================\n")
+    print("The %s slowest steps:" % (top_count))
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
     table_name = "parse_jenkins"
@@ -89,7 +88,7 @@ def show_report(sqlite_file, top_count):
               format(tn=table_name, top_count=top_count))
     all_rows = c.fetchall()
     for row in all_rows:
-        print "%s seconds: %s %s" % (row[0], row[1], row[2])
+        print("%s seconds: %s %s" % (row[0], row[1], row[2]))
     conn.close()
 
 # Usage: python ./diagnostic_jenkinsjob_slow.py

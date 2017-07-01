@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2017-01-01>
-## Updated: Time-stamp: <2017-01-05 00:55:26>
+## Updated: Time-stamp: <2017-06-30 23:19:22>
 ##-------------------------------------------------------------------
 import os, sys, json
 import requests
@@ -18,7 +18,7 @@ import subprocess
 
 def quit_if_empty(string, err_msg):
     if string is None or string == '':
-        print "Error: string is null or empty. %s" % (err_msg)
+        print("Error: string is null or empty. %s" % (err_msg))
         sys.exit(-1)
 
 ################################################################################
@@ -27,7 +27,7 @@ def linode_get_price(cloud_token):
     price_dict = {}
     r = requests.get(url)
     if r.status_code != 200:
-        print "Error to call rest api. response: %s" % (r.text)
+        print("Error to call rest api. response: %s" % (r.text))
         sys.exit(1)
     response_json = r.json()
     for d in response_json['DATA']:
@@ -39,7 +39,7 @@ def linode_get_ip(cloud_token):
     ip_dict = {}
     r = requests.get(url)
     if r.status_code != 200:
-        print "Error to call rest api. response: %s" % (r.text)
+        print("Error to call rest api. response: %s" % (r.text))
         sys.exit(1)
     response_json = r.json()
     for d in response_json['DATA']:
@@ -52,7 +52,7 @@ def linode_list_vm(cloud_token):
     url = "https://api.linode.com/?api_key=%s&api_action=linode.list" % (cloud_token)
     r = requests.get(url)
     if r.status_code != 200:
-        print "Error to call rest api. response: %s" % (r.text)
+        print("Error to call rest api. response: %s" % (r.text))
         sys.exit(1)
     response_json = r.json()
     vm_list = []
@@ -83,7 +83,7 @@ def digitalocean_list_vm(cloud_token):
                'Authorization': "Bearer %s" % (cloud_token)}
     r = requests.get(url, headers = headers)
     if r.status_code != 200:
-        print "Error to call rest api. response: %s" % (r.text)
+        print("Error to call rest api. response: %s" % (r.text))
         sys.exit(1)
     response_json = r.json()
     vm_list = []
@@ -110,7 +110,7 @@ def generate_slack_message(vm_list, cloud_type, \
     tmp_fname = "/tmp/%s_Cost_For_All_VMs.txt" % (cloud_type)
     initial_comment = "Cost Breakdown For All Running VMs of %s" % (cloud_type)
 
-    print "Generate slack message to %s" % (slack_channel)
+    print("Generate slack message to %s" % (slack_channel))
 
     # generate file
     f = open(tmp_fname,'wab')
@@ -121,7 +121,7 @@ def generate_slack_message(vm_list, cloud_type, \
 
     curl_command = "curl -F \"file=@%s\" -F initial_comment=\"Cost Breakdown For All Running VMs of %s\" -F channels=\"#%s\" -F token=\"%s\" https://slack.com/api/files.upload" \
                                     % (tmp_fname, cloud_type, slack_channel, slack_token)
-    print curl_command
+    print(curl_command)
     # TODO: trap errors of curl failure
     p = subprocess.Popen(curl_command, shell = True, stderr = subprocess.PIPE)
     while True:
@@ -166,13 +166,13 @@ if __name__ == '__main__':
     quit_if_empty(slack_channel, "SLACK_CHANNEL must be given.")
 
     vm_list = []
-    print "Call rest api to list vms"
+    print("Call rest api to list vms")
     if cloud_type == 'DIGITALOCEAN':
         vm_list = digitalocean_list_vm(cloud_token)
     elif cloud_type == 'LINODE':
         vm_list = linode_list_vm(cloud_token)
     else:
-        print "Error: unsupported cloud type: %s" % (cloud_type)
+        print("Error: unsupported cloud type: %s" % (cloud_type))
         sys.exit(1)
 
     generate_slack_message(vm_list, cloud_type, \

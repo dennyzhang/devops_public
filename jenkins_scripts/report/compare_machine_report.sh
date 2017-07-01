@@ -5,7 +5,7 @@
 ## Description :
 ## --
 ## Created : <2016-06-12>
-## Updated: Time-stamp: <2017-06-28 18:50:10>
+## Updated: Time-stamp: <2017-06-30 23:19:25>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -101,7 +101,6 @@ command="diff ${download_dir1}/os.txt ${download_dir2}/os.txt || true"
 echo "=============== $command"
 eval "$command"
 
-# Print download link at the bottom
 if [ -n "$JENKINS_BASEURL" ]; then
     echo -e "=============== Download link:\n${JENKINS_BASEURL}/job/${JOB_NAME}/ws/"
 fi
