@@ -12,7 +12,7 @@
 ##
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-06-30 23:22:58>
+## Updated: Time-stamp: <2017-07-01 21:44:37>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -67,7 +67,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--code_dir', required=False, default=".", \
                         help="Source code directory to be scanned", type=str)
-    parser.add_argument('--check_ignore_file', required=False, \
+    parser.add_argument('--check_ignore_file', required=False, default="", \
                         help="file pattern listed in the file will be skipped for scan", type=str)
     parser.add_argument('--exclude_code_list', required=False, \
                         default="SC1090,SC1091,SC2154,SC2001,SC2002,SC2181", \
