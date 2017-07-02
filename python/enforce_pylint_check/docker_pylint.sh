@@ -9,13 +9,13 @@
 ## Description :
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-06-03 19:11:56>
+## Updated: Time-stamp: <2017-07-02 15:56:56>
 ##-------------------------------------------------------------------
 code_dir=${1?""}
 preinstall_pip_packages=${2-""}
 ignore_file_list=${3-""}
 
-image_name="denny/pylint:1.0"
+image_name="denny/pylintcheck:1.0"
 check_filename="/enforce_pylint.py"
 
 current_filename=$(basename "$0")
