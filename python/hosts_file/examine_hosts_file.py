@@ -7,7 +7,7 @@
 ## File : examine_hosts_file.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-22 17:12:15>
+## Updated: Time-stamp: <2017-07-05 18:58:18>
 ## Description :
 ##    Examine /etc/hosts:
 ##        1. Whether expected list of ip-hostname are included in /etc/hosts
@@ -22,7 +22,8 @@ import argparse
 import socket
 
 import logging
-log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
+os.makedirs("%s/log" % (os.path.expanduser('~')))
+log_file = "%s/log/%s.log" % (os.path.expanduser('~'), os.path.basename(__file__).rstrip('\.py'))
 
 logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s %(message)s')
 logging.getLogger().addHandler(logging.StreamHandler())
