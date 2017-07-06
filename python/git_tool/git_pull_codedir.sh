@@ -10,7 +10,7 @@
 ## Sample: bash git_pull_codedir.sh "/data/code_dir/repo1,/data/code_dir/repo2"
 ## --
 ## Created : <2017-06-04>
-## Updated: Time-stamp: <2017-07-05 19:46:39>
+## Updated: Time-stamp: <2017-07-05 22:04:50>
 ##-------------------------------------------------------------------
 # https://coderwall.com/p/rdi_wq/fix-could-not-open-a-connection-to-your-authentication-agent-when-using-ssh-add
 
@@ -21,7 +21,7 @@ ssh_agent_bash_file="/tmp/ssh_agent.sh"
 bash -ex /usr/sbin/detect_existing_ssh_agent.sh "$ssh_agent_bash_file"
 . $ssh_agent_bash_file
 
-echo "export SSH_AUTH_SOCK=$ssh_auth_sock; export SSH_AGENT_PID=$ssh_agent_id"
+echo "export SSH_AUTH_SOCK=$SSH_AUTH_SOCK; export SSH_AGENT_PID=$SSH_AGENT_PID"
 if [ ! -f /usr/sbin/git_pull_codedir.py ]; then
     echo "ERROR: /usr/sbin/git_pull_codedir.py is not found!"
     echo "Get it from: https://github.com/DennyZhang/devops_public/tree/master/python/git_tool"
