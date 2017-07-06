@@ -7,7 +7,7 @@
 ## File : cleanup_old_files.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-07-05 20:29:10>
+## Updated: Time-stamp: <2017-07-05 20:35:05>
 ## Description :
 ##    Remove old files in a safe and organized way
 ##
@@ -35,8 +35,8 @@ import re
 import shutil
 
 import logging
-log_folder = "%s/log" % (os.path.expanduser('~')
-if os.path.exists(log_folder) is False
+log_folder = "%s/log" % (os.path.expanduser('~'))
+if os.path.exists(log_folder) is False:
     os.makedirs(log_folder)
 log_file = "%s/%s.log" % (log_folder, os.path.basename(__file__).rstrip('\.py'))
 

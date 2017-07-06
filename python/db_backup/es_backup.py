@@ -5,7 +5,7 @@
 ## Description : Elasticsearch Backup By ES Snapshot feature
 ## --
 ## Created : <2016-08-01>
-## Updated: Time-stamp: <2017-07-05 20:29:34>
+## Updated: Time-stamp: <2017-07-05 20:35:14>
 ##-------------------------------------------------------------------
 # TODO: move to common library
 import os
@@ -15,8 +15,8 @@ import subprocess
 
 from elasticsearch import Elasticsearch
 
-log_folder = "%s/log" % (os.path.expanduser('~')
-if os.path.exists(log_folder) is False
+log_folder = "%s/log" % (os.path.expanduser('~'))
+if os.path.exists(log_folder) is False:
     os.makedirs(log_folder)
 log_file = "%s/%s.log" % (log_folder, os.path.basename(__file__).rstrip('\.py'))
 # setup logging
