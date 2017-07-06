@@ -7,7 +7,7 @@
 ## File : cleanup_old_files.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-07-05 18:57:55>
+## Updated: Time-stamp: <2017-07-05 20:29:10>
 ## Description :
 ##    Remove old files in a safe and organized way
 ##
@@ -35,8 +35,10 @@ import re
 import shutil
 
 import logging
-os.makedirs("%s/log" % (os.path.expanduser('~')))
-log_file = "%s/log/%s.log" % (os.path.expanduser('~'), os.path.basename(__file__).rstrip('\.py'))
+log_folder = "%s/log" % (os.path.expanduser('~')
+if os.path.exists(log_folder) is False
+    os.makedirs(log_folder)
+log_file = "%s/%s.log" % (log_folder, os.path.basename(__file__).rstrip('\.py'))
 
 logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s %(message)s')
 logging.getLogger().addHandler(logging.StreamHandler())

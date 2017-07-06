@@ -13,7 +13,7 @@
 ##               --volume_dir "/var/lib/docker/volumes" --backup_dir "/data/backup/"
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-07-05 18:58:10>
+## Updated: Time-stamp: <2017-07-05 20:29:38>
 ##-------------------------------------------------------------------
 import os, sys
 import argparse
@@ -21,8 +21,10 @@ from datetime import datetime
 import shutil, errno
 
 import logging
-os.makedirs("%s/log" % (os.path.expanduser('~')))
-log_file = "%s/log/%s.log" % (os.path.expanduser('~'), os.path.basename(__file__).rstrip('\.py'))
+log_folder = "%s/log" % (os.path.expanduser('~')
+if os.path.exists(log_folder) is False
+    os.makedirs(log_folder)
+log_file = "%s/%s.log" % (log_folder, os.path.basename(__file__).rstrip('\.py'))
 
 logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s %(message)s')
 logging.getLogger().addHandler(logging.StreamHandler())
