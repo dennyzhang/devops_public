@@ -10,14 +10,14 @@
 ## Sample: bash git_pull_codedir.sh "/data/code_dir/repo1,/data/code_dir/repo2"
 ## --
 ## Created : <2017-06-04>
-## Updated: Time-stamp: <2017-07-05 22:07:24>
+## Updated: Time-stamp: <2017-07-05 22:08:19>
 ##-------------------------------------------------------------------
 # https://coderwall.com/p/rdi_wq/fix-could-not-open-a-connection-to-your-authentication-agent-when-using-ssh-add
 
 # wget -O /usr/sbin/detect_existing_ssh_agent.sh \
 #      https://github.com/DennyZhang/devops_public/raw/tag_v6/python/git_tool/detect_existing_ssh_agent.sh
 
-local code_dir=${1?}
+code_dir=${1?}
 ssh_agent_bash_file="/tmp/ssh_agent.sh"
 bash -ex /usr/sbin/detect_existing_ssh_agent.sh "$ssh_agent_bash_file"
 source $ssh_agent_bash_file
