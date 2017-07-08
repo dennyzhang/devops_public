@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-08-05>
-## Updated: Time-stamp: <2017-07-08 14:58:51>
+## Updated: Time-stamp: <2017-07-08 16:08:08>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -65,6 +65,9 @@ function shell_exit() {
         else
             echo "ERROR" > "$flag_file"
         fi
+    else
+        rm -rf "$flag_file"
+        rm -rf "$previous_activesprint_file"
     fi
     exit $errcode
 }
