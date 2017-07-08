@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-12-31>
-## Updated: Time-stamp: <2017-06-28 18:50:11>
+## Updated: Time-stamp: <2017-07-08 14:58:46>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -26,6 +26,7 @@
 ##      env_parameters:
 ##         export MARK_PREVIOUS_FIXED=false
 ##         export CLEAN_START=false
+##         export SKIP_UPDATE_FLAGFILE=false
 ##         export working_dir=$HOME/code/monitorgitcontent
 ################################################################################################
 . /etc/profile
@@ -72,10 +73,12 @@ flag_file="$HOME/$JOB_NAME.flag"
 
 function shell_exit() {
     errcode=$?
-    if [ $errcode -eq 0 ]; then
-        echo "OK" > "$flag_file"
-    else
-        echo "ERROR" > "$flag_file"
+    if [ -z "$SKIP_UPDATE_FLAGFILE" ] || [ "$SKIP_UPDATE_FLAGFILE" = "false" ]; then
+        if [ $errcode -eq 0 ]; then
+            echo "OK" > "$flag_file"
+        else
+            echo "ERROR" > "$flag_file"
+        fi
     fi
     exit $errcode
 }

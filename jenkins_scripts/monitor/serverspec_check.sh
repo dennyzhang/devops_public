@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-29>
-## Updated: Time-stamp: <2017-06-28 18:50:10>
+## Updated: Time-stamp: <2017-07-08 14:57:56>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -95,10 +95,12 @@ flag_file="$HOME/$JOB_NAME.flag"
 
 function shell_exit() {
     errcode=$?
-    if [ $errcode -eq 0 ]; then
-        echo "OK" > "$flag_file"
-    else
-        echo "ERROR" > "$flag_file"
+    if [ -z "$SKIP_UPDATE_FLAGFILE" ] || [ "$SKIP_UPDATE_FLAGFILE" = "false" ]; then
+        if [ $errcode -eq 0 ]; then
+            echo "OK" > "$flag_file"
+        else
+            echo "ERROR" > "$flag_file"
+        fi
     fi
     exit $errcode
 }
