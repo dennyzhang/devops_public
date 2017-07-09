@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-08-05>
-## Updated: Time-stamp: <2017-07-09 12:03:28>
+## Updated: Time-stamp: <2017-07-09 12:14:44>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -66,6 +66,7 @@ function shell_exit() {
             echo "ERROR" > "$flag_file"
         fi
     else
+        echo "$matched_branch_list" > "$previous_activesprint_file"
         rm -rf "$flag_file"
     fi
     exit $errcode
