@@ -13,7 +13,7 @@
 ##
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-07-12 10:29:42>
+## Updated: Time-stamp: <2017-07-12 11:35:57>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -120,7 +120,7 @@ def get_process_usage(output_dict, pid_file):
     output_dict["process_status"] = process_status
 
 def tail_log_file(output_dict, log_file, tail_log_num):
-    log_message = "tail -n %d tail_log_num %s:" % (tail_log_num, log_file)
+    log_message = "tail -n %d %s:" % (tail_log_num, log_file)
     # TODO: implement this logic
     log_message = "%s\nTODO: implement this logic\nhello, world\nthis is a test" % (log_message)
     output_dict["tail_log_file"] = log_message
