@@ -13,7 +13,7 @@
 ##
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-06-30 23:24:44>
+## Updated: Time-stamp: <2017-07-11 22:50:16>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -21,7 +21,6 @@ import argparse
 import json
 import socket
 
-import socket
 def get_ip_address():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
@@ -94,8 +93,11 @@ def show_memory_usage(output_dict):
 
 # https://stackoverflow.com/questions/276052/how-to-get-current-cpu-and-ram-usage-in-python
 def show_cpu_usage(output_dict):
-    # TODO: be done
-    # print("CPU Utilization. %s" % (psutil.cpu_percent()))
+    p = psutil.Process(os.getpid())
+    output_dict["cpu_count"] = psutil.cpu_count()
+    with open('/proc/loadavg') as f:
+        content = f.readlines()
+    output_dict["cpu_load"] = content[0].rstrip("\n")
     return (True, output_dict)
 
 def get_process_usage(output_dict, pid_file):
