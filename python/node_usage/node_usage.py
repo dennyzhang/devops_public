@@ -13,7 +13,7 @@
 ##
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-07-11 22:50:16>
+## Updated: Time-stamp: <2017-07-12 10:13:51>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -27,7 +27,7 @@ def get_ip_address():
     return s.getsockname()[0]
 
 # http://www.programcreek.com/python/example/53878/psutil.disk_usage
-def show_disk_usage(output_dict):
+def get_disk_usage(output_dict):
     my_dict = {}
     i = 0
     sum_total_gb = 0
@@ -70,9 +70,8 @@ def show_disk_usage(output_dict):
     my_dict["free_gb"] = "{:.2f}".format(sum_free_gb)
 
     output_dict["disk"] = my_dict
-    return (True, output_dict)
 
-def show_memory_usage(output_dict):
+def get_memory_usage(output_dict):
     my_dict = {}
     memory_usage = psutil.virtual_memory()
     memory_total_gb = float(memory_usage.total)/(1024*1024*1024)
@@ -89,71 +88,67 @@ def show_memory_usage(output_dict):
                                   my_dict["ram_used_gb"], my_dict["ram_total_gb"])
 
     output_dict["ram"] = my_dict
-    return (True, output_dict)
 
 # https://stackoverflow.com/questions/276052/how-to-get-current-cpu-and-ram-usage-in-python
-def show_cpu_usage(output_dict):
+def get_cpu_usage(output_dict):
     p = psutil.Process(os.getpid())
     output_dict["cpu_count"] = psutil.cpu_count()
     with open('/proc/loadavg') as f:
         content = f.readlines()
     output_dict["cpu_load"] = content[0].rstrip("\n")
-    return (True, output_dict)
 
 def get_process_usage(output_dict, pid_file):
     if os.path.exists(pid_file) is False:
-        print("ERROR: pid file(%s) doesn't exist" % (pid_file))
-        return (False, output_dict)
+        output_dict["process_status"] = "ERROR: pid file(%s) doesn't exist" % (pid_file)
+        return
 
     pid = ""
     with open(pid_file) as f:
         pid = f.readlines()
         pid = int(pid[0])
 
-    py = psutil.Process(pid)
+    try:
+        py = psutil.Process(pid)
+    except psutil.NoSuchProcess as e:
+        output_dict["process_status"] = "ERROR: pid(%d) is not running" % (pid)
+        return
+
+    process_status = "Process is running with pid(%d).\n" % (pid)
+
     # TODO: implement the logic
     memoryUse = py.memory_info()[0]/2.**30
+    output_dict["process_status"] = process_status
 
-    return (True, output_dict)
+def tail_log_file(output_dict, log_file, tail_log_num):
+    output_dict["tail_log_file"] = "tail -n %d tail_log_num %s:\n" % (tail_log_num, log_file)
+    # TODO
 
-def show_usage(pid_file):
+def show_usage(pid_file, log_file, tail_log_num):
     output_dict = {}
     output_dict['hostname'] = socket.gethostname()
     output_dict['ipaddress_eth0'] = get_ip_address()
 
-    is_ok = True
     if pid_file is not None:
-        (status, output_dict) = get_process_usage(output_dict, pid_file)
-        if status is False:
-            is_ok = False
+        get_process_usage(output_dict, pid_file)
 
-    (status, output_dict) = show_memory_usage(output_dict)
-    if status is False:
-        is_ok = False
+    if log_file is not None:
+        tail_log_file(output_dict, log_file, tail_log_num)
 
-    (status, output_dict) = show_disk_usage(output_dict)
-    if status is False:
-        is_ok = False
-
-    (status, output_dict) = show_cpu_usage(output_dict)
-    if status is False:
-        is_ok = False
+    get_memory_usage(output_dict)
+    get_disk_usage(output_dict)
+    get_cpu_usage(output_dict)
 
     # show output as json
     print(json.dumps(output_dict))
-
-    return is_ok
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--pid_file', required=False, \
                         help="Process pidfile. If not given, the check of process resource usage will be skipped", type=str)
+    parser.add_argument('--log_file', required=False, \
+                        help="Tail log file", type=str)
+    parser.add_argument('--tail_log_num', required=False, default=20,\
+                        help="Tail last multiple lines of log file", type=int)
     l = parser.parse_args()
-    pid_file = l.pid_file
-
-    if show_usage(pid_file) is False:
-        print("ERROR: fail to get node_usage.py")
-        sys.exit(1)
-    else:
-        sys.exit(0)
+    show_usage(l.pid_file, l.log_file, l.tail_log_num)
 ## File : node_usage.py ends
