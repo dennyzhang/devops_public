@@ -13,7 +13,7 @@
 ##
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-07-13 16:57:07>
+## Updated: Time-stamp: <2017-07-13 17:20:46>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -21,6 +21,34 @@ import argparse
 import json
 import socket
 import subprocess
+
+# https://stackoverflow.com/questions/136168/get-last-n-lines-of-a-file-with-python-similar-to-tail
+def tail(f, lines=20):
+    total_lines_wanted = lines
+
+    BLOCK_SIZE = 1024
+    f.seek(0, 2)
+    block_end_byte = f.tell()
+    lines_to_go = total_lines_wanted
+    block_number = -1
+    blocks = [] # blocks of size BLOCK_SIZE, in reverse order starting
+                # from the end of the file
+    while lines_to_go > 0 and block_end_byte > 0:
+        if (block_end_byte - BLOCK_SIZE > 0):
+            # read the last block we haven't yet read
+            f.seek(block_number*BLOCK_SIZE, 2)
+            blocks.append(f.read(BLOCK_SIZE))
+        else:
+            # file too small, start from begining
+            f.seek(0,0)
+            # only read what was not read
+            blocks.append(f.read(block_end_byte))
+        lines_found = blocks[-1].count('\n')
+        lines_to_go -= lines_found
+        block_end_byte -= BLOCK_SIZE
+        block_number -= 1
+    all_read_text = ''.join(reversed(blocks))
+    return '\n'.join(all_read_text.splitlines()[-total_lines_wanted:])
 
 def get_ip_address():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -104,8 +132,13 @@ def get_service_status(output_dict, service_command):
 
 def tail_log_file(output_dict, log_file, tail_log_num):
     log_message = "tail -n %d %s:" % (tail_log_num, log_file)
-    # TODO: implement this logic
-    log_message = "%s\nTODO: implement this logic\nhello, world\nthis is a test" % (log_message)
+    try:
+        with open(log_file,'r') as f:
+            message = tail(f, tail_log_num)
+            # TODO: get json output
+            log_message = "%s\n%s" % (log_message, message)
+    except Exception as e:
+        log_message = "%s\nFailed to tail log: %s" % (log_message, e)
     output_dict["tail_log_file"] = log_message
 
 def show_usage(service_command, log_file, tail_log_num):
@@ -132,7 +165,7 @@ if __name__ == '__main__':
                         help="What command to check service status. If not given, service check will be skipped", type=str)
     parser.add_argument('--log_file', required=False, \
                         help="Tail log file", type=str)
-    parser.add_argument('--tail_log_num', required=False, default=20,\
+    parser.add_argument('--tail_log_num', required=False, default=30,\
                         help="Tail last multiple lines of log file", type=int)
     l = parser.parse_args()
     show_usage(l.check_service_command, l.log_file, l.tail_log_num)
