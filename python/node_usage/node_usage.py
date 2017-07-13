@@ -13,7 +13,7 @@
 ##
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-07-13 16:55:28>
+## Updated: Time-stamp: <2017-07-13 16:56:36>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -100,7 +100,7 @@ def get_cpu_usage(output_dict):
 
 def get_service_status(output_dict, service_command):
     command_output = subprocess.check_output(service_command.split(" "))
-    output_dict["service_status"] = "Service Status: \n%s" % (command_output.decode("utf-8"))
+    output_dict["service_status"] = "%s:\n%s" % (service_command, command_output.decode("utf-8"))
 
 def tail_log_file(output_dict, log_file, tail_log_num):
     log_message = "tail -n %d %s:" % (tail_log_num, log_file)
