@@ -13,7 +13,7 @@
 ##
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-07-13 17:25:34>
+## Updated: Time-stamp: <2017-07-13 17:27:38>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -137,6 +137,7 @@ def tail_log_file(output_dict, log_file, tail_log_num):
             message = tail(f, tail_log_num)
             # Escape double quotes for JSON
             message = message.replace('"', '\\"')
+            message = message.replace('\n', '\\n')
             log_message = "%s\n%s" % (log_message, message)
     except Exception as e:
         log_message = "%s\nFailed to tail log: %s" % (log_message, e)
