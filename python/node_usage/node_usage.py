@@ -13,7 +13,7 @@
 ##
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-07-12 11:35:57>
+## Updated: Time-stamp: <2017-07-13 08:31:40>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -113,7 +113,7 @@ def get_process_usage(output_dict, pid_file):
         output_dict["process_status"] = "ERROR: pid(%d) is not running" % (pid)
         return
 
-    process_status = "Process is running with pid(%d).\n" % (pid)
+    process_status = "Service Status: Process is running with pid(%d).\n" % (pid)
 
     # TODO: implement the logic
     memoryUse = py.memory_info()[0]/2.**30
