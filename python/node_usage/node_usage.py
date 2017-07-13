@@ -13,13 +13,14 @@
 ##
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-07-13 16:47:18>
+## Updated: Time-stamp: <2017-07-13 16:55:28>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
 import argparse
 import json
 import socket
+import subprocess
 
 def get_ip_address():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -97,9 +98,9 @@ def get_cpu_usage(output_dict):
         content = f.readlines()
     output_dict["cpu_load"] = content[0].rstrip("\n")
 
-def get_service_status(service_command):
+def get_service_status(output_dict, service_command):
     command_output = subprocess.check_output(service_command.split(" "))
-    output_dict["process_status"] = command_output.decode("utf-8")
+    output_dict["service_status"] = "Service Status: \n%s" % (command_output.decode("utf-8"))
 
 def tail_log_file(output_dict, log_file, tail_log_num):
     log_message = "tail -n %d %s:" % (tail_log_num, log_file)
@@ -107,13 +108,13 @@ def tail_log_file(output_dict, log_file, tail_log_num):
     log_message = "%s\nTODO: implement this logic\nhello, world\nthis is a test" % (log_message)
     output_dict["tail_log_file"] = log_message
 
-def show_usage(pid_file, log_file, tail_log_num):
+def show_usage(service_command, log_file, tail_log_num):
     output_dict = {}
     output_dict['hostname'] = socket.gethostname()
     output_dict['ipaddress_eth0'] = get_ip_address()
 
-    if pid_file is not None:
-        get_process_usage(output_dict, pid_file)
+    if service_command is not None:
+        get_service_status(output_dict, service_command)
 
     if log_file is not None:
         tail_log_file(output_dict, log_file, tail_log_num)
