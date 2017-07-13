@@ -13,7 +13,7 @@
 ##
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-07-13 16:56:36>
+## Updated: Time-stamp: <2017-07-13 16:57:07>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -135,5 +135,5 @@ if __name__ == '__main__':
     parser.add_argument('--tail_log_num', required=False, default=20,\
                         help="Tail last multiple lines of log file", type=int)
     l = parser.parse_args()
-    show_usage(l.pid_file, l.log_file, l.tail_log_num)
+    show_usage(l.check_service_command, l.log_file, l.tail_log_num)
 ## File : node_usage.py ends
