@@ -13,7 +13,7 @@
 ##
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-07-13 17:27:38>
+## Updated: Time-stamp: <2017-07-13 17:29:09>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -21,6 +21,7 @@ import argparse
 import json
 import socket
 import subprocess
+import json
 
 # https://stackoverflow.com/questions/136168/get-last-n-lines-of-a-file-with-python-similar-to-tail
 def tail(f, lines=20):
@@ -136,8 +137,7 @@ def tail_log_file(output_dict, log_file, tail_log_num):
         with open(log_file,'r') as f:
             message = tail(f, tail_log_num)
             # Escape double quotes for JSON
-            message = message.replace('"', '\\"')
-            message = message.replace('\n', '\\n')
+            message = json.dumps(message)
             log_message = "%s\n%s" % (log_message, message)
     except Exception as e:
         log_message = "%s\nFailed to tail log: %s" % (log_message, e)
