@@ -13,7 +13,7 @@
 ##
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-07-13 08:31:40>
+## Updated: Time-stamp: <2017-07-13 16:47:18>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -97,27 +97,9 @@ def get_cpu_usage(output_dict):
         content = f.readlines()
     output_dict["cpu_load"] = content[0].rstrip("\n")
 
-def get_process_usage(output_dict, pid_file):
-    if os.path.exists(pid_file) is False:
-        output_dict["process_status"] = "ERROR: pid file(%s) doesn't exist" % (pid_file)
-        return
-
-    pid = ""
-    with open(pid_file) as f:
-        pid = f.readlines()
-        pid = int(pid[0])
-
-    try:
-        py = psutil.Process(pid)
-    except psutil.NoSuchProcess as e:
-        output_dict["process_status"] = "ERROR: pid(%d) is not running" % (pid)
-        return
-
-    process_status = "Service Status: Process is running with pid(%d).\n" % (pid)
-
-    # TODO: implement the logic
-    memoryUse = py.memory_info()[0]/2.**30
-    output_dict["process_status"] = process_status
+def get_service_status(service_command):
+    command_output = subprocess.check_output(service_command.split(" "))
+    output_dict["process_status"] = command_output.decode("utf-8")
 
 def tail_log_file(output_dict, log_file, tail_log_num):
     log_message = "tail -n %d %s:" % (tail_log_num, log_file)
@@ -145,8 +127,8 @@ def show_usage(pid_file, log_file, tail_log_num):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--pid_file', required=False, \
-                        help="Process pidfile. If not given, the check of process resource usage will be skipped", type=str)
+    parser.add_argument('--check_service_command', required=False, \
+                        help="What command to check service status. If not given, service check will be skipped", type=str)
     parser.add_argument('--log_file', required=False, \
                         help="Tail log file", type=str)
     parser.add_argument('--tail_log_num', required=False, default=20,\
