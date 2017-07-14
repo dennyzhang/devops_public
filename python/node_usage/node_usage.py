@@ -13,7 +13,7 @@
 ##
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-07-13 17:29:09>
+## Updated: Time-stamp: <2017-07-14 11:38:25>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -132,7 +132,7 @@ def get_service_status(output_dict, service_command):
     output_dict["service_status"] = "%s:\n%s" % (service_command, command_output.decode("utf-8"))
 
 def tail_log_file(output_dict, log_file, tail_log_num):
-    log_message = "tail -n %d %s:" % (tail_log_num, log_file)
+    log_message = "[Log] tail -n %d %s:" % (tail_log_num, log_file)
     try:
         with open(log_file,'r') as f:
             message = tail(f, tail_log_num)
