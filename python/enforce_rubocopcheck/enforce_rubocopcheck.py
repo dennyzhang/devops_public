@@ -12,7 +12,7 @@
 ##
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-06-30 23:22:42>
+## Updated: Time-stamp: <2017-07-14 10:31:37>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -72,6 +72,11 @@ if __name__ == '__main__':
 
     code_dir = os.path.expanduser(l.code_dir)
     check_ignore_folder = l.check_ignore_folder
+
+    if len(os.listdir(code_dir)) == 0:
+        print("ERROR: code directory(%s) is empty." % (code_dir))
+        sys.exit(1)
+
     if check_ignore_folder != "":
         check_ignore_folder = os.path.expanduser(l.check_ignore_folder)
 
