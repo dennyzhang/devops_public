@@ -41,7 +41,7 @@ def load_page(page_url, remote_server, max_load_seconds, \
     # Cleanup cache
     driver.delete_all_cookies()
 
-    driver.set_page_load_timeout(load_timeout)
+    # driver.set_page_load_timeout(load_timeout)
 
     print("Open page: %s" % (page_url))
     start_clock = time.clock()
@@ -74,6 +74,7 @@ def load_page(page_url, remote_server, max_load_seconds, \
         print("Save screenshot to %s" % (save_screenshot_filepath))
         driver.get_screenshot_as_file(save_screenshot_filepath)
     driver.close()
+    driver.quit()
     return is_ok
 
 if __name__ == '__main__':
