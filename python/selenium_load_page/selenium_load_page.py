@@ -30,6 +30,9 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
+sleep_delay = 5
+IGNORE_ERROR_LIST = ["favicon.ico"]
+
 def load_page(page_url, remote_server, max_load_seconds, \
               screenshot_dir, should_save_screenshot):
     load_timeout = 120 # seconds
@@ -45,9 +48,6 @@ def load_page(page_url, remote_server, max_load_seconds, \
 
         print("Open page: %s" % (page_url))
         start_clock = time.clock()
-
-        # TODO
-        login_shibgeek_gui(driver, page_url)
 
         end_clock = time.clock()
         elapsed_seconds = ((end_clock - start_clock) * 1000 - sleep_delay)
