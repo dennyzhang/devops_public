@@ -11,7 +11,7 @@
 #   bash -e /root/devops_provision_os.sh
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2017-06-28 20:24:05>
+## Updated: Time-stamp: <2017-07-18 10:18:40>
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
@@ -28,7 +28,7 @@ bash /var/lib/devops/refresh_common_library.sh "2886589901" "/var/lib/devops/dev
 # TODO: better way to update this bash common library
 ssh_port=${1:-"2702"}
 chef_version="12.4.1"
-ssh_email="auto.devops@totvs.com"
+ssh_email="auto.ci@devops.com"
 ssh_public_key_file="/root/ssh_id_rsa.pub"
 git_deploy_key_file="/root/git_deploy_key"
 

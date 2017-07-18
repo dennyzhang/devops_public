@@ -4,7 +4,7 @@
 ## Description :
 ## --
 ## Created : <2017-01-25>
-## Updated: Time-stamp: <2017-06-30 23:24:45>
+## Updated: Time-stamp: <2017-07-18 10:18:59>
 ##-------------------------------------------------------------------
 import sys, os
 import argparse
@@ -77,13 +77,13 @@ def analyze_jstack_logfile(jstack_logfile, apikey, min_runnable_percentage):
 ##   export JAVA_ANALYZE_ACTION="analyze_gc_logfile"
 ##   export JAVA_ANALYZE_LOGFILE="/tmp/gc.log"
 ##   export JAVA_ANALYZE_APIKEY="29792f0d-5d5f-43ad-9358..."
-##   curl -L https://raw.githubusercontent.com/TOTVS/.../java_analyze.py | bash
+##   curl -L https://raw.githubusercontent.com/.../java_analyze.py | bash
 ##
 ##   # analyze jstack logfile:
 ##   export JAVA_ANALYZE_ACTION="analyze_jstack_logfile"
 ##   export JAVA_ANALYZE_LOGFILE="/tmp/jstack.log"
 ##   export JAVA_ANALYZE_APIKEY="29792f0d-5d5f-43ad-9358..."
-##   curl -L https://raw.githubusercontent.com/TOTVS/.../java_analyze.py | bash
+##   curl -L https://raw.githubusercontent.com/.../java_analyze.py | bash
 ##
 ## Sample: Run with argument parameters.
 ##   python ./java_analyze.py --action analyze_gc_logfile \\
