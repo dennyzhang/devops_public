@@ -1,0 +1,1 @@
+Read more: http://www.dennyzhang.com/hostsfile_issues/
