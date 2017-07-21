@@ -1,5 +1,5 @@
 # S3Sync
-Check more: http://www.dennyzhang.com/sync_s3_directory/
+Check more: https://www.dennyzhang.com/sync_s3_directory/
 
 Sync a directory to/from S3 bucket
 

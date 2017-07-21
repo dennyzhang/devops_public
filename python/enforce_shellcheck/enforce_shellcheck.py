@@ -8,11 +8,11 @@
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
 ##
-## More reading: http://www.dennyzhang.com/shellcheck/
+## More reading: https://www.dennyzhang.com/shellcheck/
 ##
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-07-14 10:31:25>
+## Updated: Time-stamp: <2017-07-21 15:35:06>
 ##-------------------------------------------------------------------
 import argparse
 import sys

@@ -4,7 +4,7 @@ Nagios Monitor thread count of a given program
 
 check_proc_threadcount v1.0
 
-- Link: http://www.dennyzhang.com/nagois_threadcount/
+- Link: https://www.dennyzhang.com/nagois_threadcount/
 - Code: https://github.com/DennyZhang/devops_public/tree/tag_v6/nagios_plugins/check_proc_threadcount
 
 ```

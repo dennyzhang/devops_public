@@ -4,10 +4,10 @@
 ## File : tcp_port_scan.py
 ## Author : DennyZhang.com <denny@dennyzhang.com>
 ## Description :
-## More reading: http://www.dennyzhang.com/nmap_port_scan/
+## More reading: https://www.dennyzhang.com/nmap_port_scan/
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2017-06-30 23:25:57>
+## Updated: Time-stamp: <2017-07-21 15:35:05>
 ##-------------------------------------------------------------------
 import argparse
 import subprocess

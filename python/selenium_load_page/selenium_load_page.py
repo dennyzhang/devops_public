@@ -7,17 +7,17 @@
 ##    Test page loading with selenium: slow load, severe 
 ##              errors when launching network requests, and save screenshots as images.
 ##
-## More reading: http://www.dennyzhang.com/selenium_docker/
+## More reading: https://www.dennyzhang.com/selenium_docker/
 ##
 ## Sample:
 ##   - Test page load: basic test
-##        python ./selenium_load_page.py --page_url http://www.dennyzhang.com
+##        python ./selenium_load_page.py --page_url https://www.dennyzhang.com
 ##
 ##   - Test page load: if it takes more than 5 seconds, fail the test. Default timeout is 10 seconds
-##        python ./selenium_load_page.py --page_url http://www.dennyzhang.com --max_load_seconds 5
+##        python ./selenium_load_page.py --page_url https://www.dennyzhang.com --max_load_seconds 5
 ##
 ##   - Test page load: after page loading, save screenshot
-##        python ./selenium_load_page.py --page_url http://www.dennyzhang.com --should_save_screenshot true
+##        python ./selenium_load_page.py --page_url https://www.dennyzhang.com --should_save_screenshot true
 ##
 ## --
 ## Created : <2017-02-24>

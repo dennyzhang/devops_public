@@ -10,9 +10,9 @@
 ## Description : Detect whether OOM(Out Of Memory) has happened in the previous several hours
 ## --
 ## Created : <2017-02-28>
-## Updated: Time-stamp: <2017-06-30 23:20:44>
+## Updated: Time-stamp: <2017-07-21 15:35:06>
 ##-------------------------------------------------------------------
-# Check: http://www.dennyzhang.com/monitor_oom/
+# Check: https://www.dennyzhang.com/monitor_oom/
 import argparse
 import platform
 import sys
