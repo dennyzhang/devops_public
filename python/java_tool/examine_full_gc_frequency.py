@@ -2,9 +2,12 @@
 ##-------------------------------------------------------------------
 ## File : examine_full_gc_frequency.py
 ## Description : If too many full GC has happened recently, raise alerts
+##
+## Example: examine_full_gc_frequency.py --gc_logfile /opt/app/app-gc.log --warning_gc_count 10 --critical_gc_count 20
+##
 ## --
 ## Created : <2017-07-25>
-## Updated: Time-stamp: <2017-07-25 18:13:43>
+## Updated: Time-stamp: <2017-07-25 18:31:29>
 ##-------------------------------------------------------------------
 import sys, os
 import argparse
