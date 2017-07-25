@@ -4,12 +4,15 @@
 ## Description : If too many full GC has happened recently, raise alerts
 ## --
 ## Created : <2017-07-25>
-## Updated: Time-stamp: <2017-07-25 17:51:38>
+## Updated: Time-stamp: <2017-07-25 18:06:07>
 ##-------------------------------------------------------------------
 import sys, os
 import argparse
 import requests, json
 
+SYS_EXIT_WARN = 1
+SYS_EXIT_CRI = 2
+SYS_EXIT_OK = 0
 ################################################################################
 # https://stackoverflow.com/questions/136168/get-last-n-lines-of-a-file-with-python-similar-to-tail
 def tail(f, lines=20):
@@ -39,20 +42,46 @@ def tail(f, lines=20):
     all_read_text = ''.join(reversed(blocks))
     return '\n'.join(all_read_text.splitlines()[-total_lines_wanted:])
 
-def count_full_gc_from_logfile(gc_logfile, tail_log_count = 100):
-    full_gc_count = 0
-    full_gc_pattern = "Full GC"
 
-    with open(gclog_file,'r') as f:
+def count_pattern_in_log_tail(fname, tail_log_count, pattern_string):
+    count = 0
+
+    with open(fname,'r') as f:
         message = tail(f, tail_log_count)
         # Escape double quotes for JSON
         for line in message.spli("\n"):
-            if full_gc_pattern in line:
-                full_gc_count = full_gc_count + 1
-    return full_gc_count
-
+            if pattern_string in line:
+                count = count + 1
+    return count
 
 ############################################################################
-# main logic
-sys.exit(1)
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--gc_logfile', required=True, \
+                        help="Tail log file", type=str)
+    parser.add_argument('--tail_log_num', required=False, default=100,\
+                        help="Tail last multiple lines of log file", type=int)
+    parser.add_argument('--warning_gc_count', required=False, default=5,\
+                        help="If GC count over than this, but lower than --critical_gc_count, quit with warning", \
+                        type=int)
+    parser.add_argument('--critical_gc_count', required=False, default=10,\
+                        help="If GC count over than this, quit with error", \
+                        type=int)
+    l = parser.parse_args()
+    pattern_string = "Full GC"
+
+    pattern_count = count_pattern_in_log_tail(l.gc_logfile, l.tail_log_num, pattern_string)
+    if pattern_count >= l.critical_gc_count:
+        print "ERROR: %d full gc has happened in last %d lines of %s|full_gc_count=%d"  \
+            % (pattern_count, l.tail_log_num, l.gc_logfile, pattern_count)
+        sys.exit(SYS_EXIT_CRI)
+
+    if pattern_count >= l.warning_gc_count:
+        print "WARNING: %d full gc has happened in last %d lines of %s|full_gc_count=%d"  \
+            % (pattern_count, l.tail_log_num, l.gc_logfile, pattern_count)
+        sys.exit(SYS_EXIT_WARN)
+
+    print "OK: %d full gc has happened in last %d lines of %s|full_gc_count=%d"  \
+        % (pattern_count, l.tail_log_num, l.gc_logfile, pattern_count)
+    sys.exit(SYS_EXIT_OK)
 ## File : examine_full_gc_frequency.py ends
