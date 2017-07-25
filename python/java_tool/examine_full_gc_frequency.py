@@ -4,7 +4,7 @@
 ## Description : If too many full GC has happened recently, raise alerts
 ## --
 ## Created : <2017-07-25>
-## Updated: Time-stamp: <2017-07-25 18:06:07>
+## Updated: Time-stamp: <2017-07-25 18:13:43>
 ##-------------------------------------------------------------------
 import sys, os
 import argparse
@@ -70,18 +70,22 @@ if __name__ == '__main__':
     l = parser.parse_args()
     pattern_string = "Full GC"
 
-    pattern_count = count_pattern_in_log_tail(l.gc_logfile, l.tail_log_num, pattern_string)
-    if pattern_count >= l.critical_gc_count:
-        print "ERROR: %d full gc has happened in last %d lines of %s|full_gc_count=%d"  \
+    try:
+        pattern_count = count_pattern_in_log_tail(l.gc_logfile, l.tail_log_num, pattern_string)
+        if pattern_count >= l.critical_gc_count:
+            print "ERROR: %d full gc has happened in last %d lines of %s|full_gc_count=%d"  \
+                % (pattern_count, l.tail_log_num, l.gc_logfile, pattern_count)
+            sys.exit(SYS_EXIT_CRI)
+
+        if pattern_count >= l.warning_gc_count:
+            print "WARNING: %d full gc has happened in last %d lines of %s|full_gc_count=%d"  \
+                % (pattern_count, l.tail_log_num, l.gc_logfile, pattern_count)
+            sys.exit(SYS_EXIT_WARN)
+
+        print "OK: %d full gc has happened in last %d lines of %s|full_gc_count=%d"  \
             % (pattern_count, l.tail_log_num, l.gc_logfile, pattern_count)
+        sys.exit(SYS_EXIT_OK)
+    except Exception as e:
+        print "ERROR: Fail to get gc count: %s" % (e)
         sys.exit(SYS_EXIT_CRI)
-
-    if pattern_count >= l.warning_gc_count:
-        print "WARNING: %d full gc has happened in last %d lines of %s|full_gc_count=%d"  \
-            % (pattern_count, l.tail_log_num, l.gc_logfile, pattern_count)
-        sys.exit(SYS_EXIT_WARN)
-
-    print "OK: %d full gc has happened in last %d lines of %s|full_gc_count=%d"  \
-        % (pattern_count, l.tail_log_num, l.gc_logfile, pattern_count)
-    sys.exit(SYS_EXIT_OK)
 ## File : examine_full_gc_frequency.py ends
