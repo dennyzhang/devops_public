@@ -7,7 +7,7 @@
 ##
 ## --
 ## Created : <2017-07-25>
-## Updated: Time-stamp: <2017-07-26 08:38:48>
+## Updated: Time-stamp: <2017-07-26 08:40:53>
 ##-------------------------------------------------------------------
 import sys, os
 import argparse
@@ -52,7 +52,7 @@ def count_pattern_in_log_tail(fname, tail_log_count, pattern_string):
     with open(fname,'r') as f:
         message = tail(f, tail_log_count)
         # Escape double quotes for JSON
-        for line in message.spli("\n"):
+        for line in message.split("\n"):
             if pattern_string in line:
                 count = count + 1
     return count
