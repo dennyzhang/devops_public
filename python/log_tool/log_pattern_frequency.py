@@ -7,7 +7,7 @@
 ##
 ## --
 ## Created : <2017-07-25>
-## Updated: Time-stamp: <2017-07-25 21:06:54>
+## Updated: Time-stamp: <2017-07-26 08:38:48>
 ##-------------------------------------------------------------------
 import sys, os
 import argparse
@@ -76,19 +76,19 @@ if __name__ == '__main__':
     try:
         pattern_count = count_pattern_in_log_tail(l.logfile, l.tail_log_num, pattern_string)
         if pattern_count >= l.critical_count:
-            print "ERROR: %d full gc has happened in last %d lines of %s|full_count=%d"  \
-                % (pattern_count, l.tail_log_num, l.logfile, pattern_count)
+            print("ERROR: %d full gc has happened in last %d lines of %s|full_count=%d"  \
+                  % (pattern_count, l.tail_log_num, l.logfile, pattern_count))
             sys.exit(SYS_EXIT_CRI)
 
         if pattern_count >= l.warning_count:
-            print "WARNING: %d full gc has happened in last %d lines of %s|full_count=%d"  \
-                % (pattern_count, l.tail_log_num, l.logfile, pattern_count)
+            print("WARNING: %d full gc has happened in last %d lines of %s|full_count=%d"  \
+                  % (pattern_count, l.tail_log_num, l.logfile, pattern_count))
             sys.exit(SYS_EXIT_WARN)
 
-        print "OK: %d full gc has happened in last %d lines of %s|full_count=%d"  \
-            % (pattern_count, l.tail_log_num, l.logfile, pattern_count)
+        print("OK: %d full gc has happened in last %d lines of %s|full_count=%d"  \
+              % (pattern_count, l.tail_log_num, l.logfile, pattern_count))
         sys.exit(SYS_EXIT_OK)
     except Exception as e:
-        print "ERROR: Fail to get gc count: %s" % (e)
+        print("ERROR: Fail to get gc count: %s" % (e))
         sys.exit(SYS_EXIT_CRI)
 ## File : log_pattern_frequency.py ends
