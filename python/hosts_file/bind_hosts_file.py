@@ -1,18 +1,26 @@
 #!/usr/bin/python
 ## File : bind_hosts_file.py
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-07-26 15:08:15>
+## Updated: Time-stamp: <2017-07-26 17:46:49>
 ## Description :
 ##    Configure /etc/hosts for a list of nodes.
 ##    1. Given a list of ip.
 ##    2. Get the ip-hostname list for each node by ssh
 ##    3. Update /etc/hosts for each node, thus every node to talk with others by hostname
 ## Sample:
-##    python ./bind_hosts_file.py --ip_list_file /tmp/hosts --ssh_username root --ssh_port 22
+##    python ./bind_hosts_file.py --ip_list_file /tmp/hosts --ssh_username root
+##                \ --ssh_port 22 --ssh_key_file ~/.ssh/id_rsa
+## Requirements:
+##     1. pip install paramiko
+##     2. Python version: Python2, instead of Python3
 ##-------------------------------------------------------------------
 import os, sys
+import paramiko
 import argparse
-import socket, datetime
+
+# multiple threading for a list of ssh servers
+import Queue
+import threading
 
 import logging
 log_folder = "%s/log" % (os.path.expanduser('~'))
@@ -23,70 +31,46 @@ log_file = "%s/%s.log" % (log_folder, os.path.basename(__file__).rstrip('\.py'))
 logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s %(message)s')
 logging.getLogger().addHandler(logging.StreamHandler())
 
-def load_hostsfile_to_dict(host_file):
-    host_dict = {}
-    with open(host_file,'r') as f:
-        for row in f:
-            row = row.strip()
-            if row.startswith('#') or row == '':
-                continue
-            entry_l = row.split()
+def get_hostname_by_ssh(server_ip, ssh_username, ssh_port, ssh_key_file, key_passphrase):
+    ssh_command = "hostname"
+    try:
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        key = paramiko.RSAKey.from_private_key_file(ssh_key_file, password=key_passphrase)
+        ssh.connect(server, username=username, port=ssh_port, pkey=key)
+        stdin, stdout, stderr = ssh.exec_command(ssh_command)
+        output = "\n".join(stdout.readlines())
+        ssh.close()
+        info_dict = json.loads(output)
+        return (server, info_dict, None)
+    except:
+        return (server, {}, "Unexpected on server: %s error: %s" % (server, sys.exc_info()[0]))
 
-            if '::' in entry_l[0]:
-                continue
-
-            ip = entry_l[0]
-
-            if len(entry_l) == 2:
-                hostname = entry_l[1]
-                host_dict[hostname] = ip
-            else:
-                for hostname in entry_l[1:]:
-                    host_dict[hostname] = ip
-    return host_dict
+def get_hostname_ip_dict(server_list, ssh_username, ssh_port, ssh_key_file, key_passphrase):
+    binding_dict = {}
+    # get_hostname_by_ssh(server_ip, ssh_username, ssh_port, ssh_key_file, key_passphrase)
+    binding_dict = {"172.0.0.1":"localhost"}
+    return binding_dict
 
 ###############################################################
 
 if __name__ == '__main__':
     # get parameters from users
     parser = argparse.ArgumentParser()
-    parser.add_argument('--extra_hosts_file', required=False, default="", \
-                        help="Load extra hosts into /etc/hosts", type=str)
-    parser.add_argument('--skip_current_hostname', required=False, dest='skip_current_hostname', \
-                        action='store_true', default=False, \
-                        help="Skip the binding for current hostname, if it's specified in --extra_hosts_file")
+    parser.add_argument('--ip_list_file', required=True, default="", \
+                        help="File for a list of ip address", type=str)
+    parser.add_argument('--ssh_username', required=False, default="root", \
+                        help="Which OS user to ssh", type=str)
+    parser.add_argument('--ssh_port', required=False, default="22", \
+                        help="Which port to connect sshd", type=int)
+    parser.add_argument('--ssh_key_file', required=False, default="%s/.ssh/id_rsa" % os.path.expanduser('~'), \
+                        help="ssh key file to connect", type=str)
+    parser.add_argument('--key_passphrase', required=False, default="", \
+                        help="Which OS user to ssh", type=str)
 
     l = parser.parse_args()
-    extra_hosts_file = l.extra_hosts_file
-    skip_current_hostname = l.skip_current_hostname
-
-    current_hosts_dict = load_hostsfile_to_dict("/etc/hosts")
-    extra_hosts_dict = load_hostsfile_to_dict(extra_hosts_file)
-    has_changed = False
-    has_backup = False
-
-    current_hostname = socket.gethostname()
-    for hostname in extra_hosts_dict:
-        if skip_current_hostname is True and hostname == current_hostname:
-            continue
-
-        if hostname not in current_hosts_dict:
-            if has_backup is False:
-                host_backup_file = "/etc/hosts.%s" % \
-                                   (datetime.datetime.utcnow().strftime("%Y-%m-%d_%H%M%S"))
-                logging.info("Backup /etc/hosts to %s" % (host_backup_file))
-                has_backup = True
-            open("/etc/hosts", "ab").write("%s %s" % (extra_hosts_dict[hostname]), hostname)
-            logging.error("Append /etc/hosts: (%s:%s)" % (hostname, extra_hosts_dict[hostname]))
-            has_changed = True
-        else:
-            if current_hosts_dict[hostname] != extra_hosts_dict[hostname]:
-                logging.error("ERROR /etc/hosts is conflict with %s for entry of hostname(%s)" % \
-                              (extra_hosts_file, hostname))
-                sys.exit(1)
-
-    if has_changed is True:
-        logging.info("OK: /etc/hosts is good after some updates.")
-    else:
-        logging.info("OK: /etc/hosts is gook with no changes.")
+    # TODO
+    server_list = "127.0.0.1"
+    binding_dict = get_hostname_ip_dict(server_list, l.ssh_username, l.ssh_port, l.ssh_key_file, l.key_passphrase)
+    print(binding_dict)
 ## File : bind_hosts_file.py ends
