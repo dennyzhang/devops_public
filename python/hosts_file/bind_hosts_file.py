@@ -1,7 +1,7 @@
 #!/usr/bin/python
 ## File : bind_hosts_file.py
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-07-26 17:46:49>
+## Updated: Time-stamp: <2017-07-26 17:52:10>
 ## Description :
 ##    Configure /etc/hosts for a list of nodes.
 ##    1. Given a list of ip.
@@ -31,25 +31,26 @@ log_file = "%s/%s.log" % (log_folder, os.path.basename(__file__).rstrip('\.py'))
 logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s %(message)s')
 logging.getLogger().addHandler(logging.StreamHandler())
 
-def get_hostname_by_ssh(server_ip, ssh_username, ssh_port, ssh_key_file, key_passphrase):
+def get_hostname_by_ssh(server_ip, username, ssh_port, ssh_key_file, key_passphrase):
     ssh_command = "hostname"
+    output = ""
     try:
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         key = paramiko.RSAKey.from_private_key_file(ssh_key_file, password=key_passphrase)
-        ssh.connect(server, username=username, port=ssh_port, pkey=key)
+        ssh.connect(server_ip, username=username, port=ssh_port, pkey=key)
         stdin, stdout, stderr = ssh.exec_command(ssh_command)
         output = "\n".join(stdout.readlines())
-        ssh.close()
-        info_dict = json.loads(output)
-        return (server, info_dict, None)
     except:
-        return (server, {}, "Unexpected on server: %s error: %s" % (server, sys.exc_info()[0]))
+        return ("ERROR", "Unexpected on server: %s error: %s" % (server_ip, sys.exc_info()[0]))
+    return ("OK", output)
 
 def get_hostname_ip_dict(server_list, ssh_username, ssh_port, ssh_key_file, key_passphrase):
     binding_dict = {}
-    # get_hostname_by_ssh(server_ip, ssh_username, ssh_port, ssh_key_file, key_passphrase)
-    binding_dict = {"172.0.0.1":"localhost"}
+    # TODO:
+    server_ip = "127.0.0.1"
+    (status, hostname) = get_hostname_by_ssh(server_ip, ssh_username, ssh_port, ssh_key_file, key_passphrase)
+    binding_dict[server_ip] = hostname
     return binding_dict
 
 ###############################################################
