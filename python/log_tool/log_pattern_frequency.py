@@ -3,11 +3,12 @@
 ## File : log_pattern_frequency.py
 ## Description : If too many pattern of log entries has happened recently, raise alerts
 ##
-## Example: log_pattern_frequency.py --logfile /opt/app/app-gc.log --warning_count 10 --critical_count 20
+## Example: log_pattern_frequency.py --logfile /opt/app/app-gc.log --check_pattern "Full GC"
+##                          \--warning_count 10 --critical_count 20
 ##
 ## --
 ## Created : <2017-07-25>
-## Updated: Time-stamp: <2017-07-26 08:40:53>
+## Updated: Time-stamp: <2017-07-26 09:18:03>
 ##-------------------------------------------------------------------
 import sys, os
 import argparse
@@ -62,6 +63,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--logfile', required=True, \
                         help="Tail log file", type=str)
+    parser.add_argument('--check_pattern', required=True, \
+                        help="What pattern to check", type=str)
     parser.add_argument('--tail_log_num', required=False, default=100,\
                         help="Tail last multiple lines of log file", type=int)
     parser.add_argument('--warning_count', required=False, default=5,\
@@ -71,10 +74,9 @@ if __name__ == '__main__':
                         help="If matched entries more than this, quit with error", \
                         type=int)
     l = parser.parse_args()
-    pattern_string = "Full GC"
 
     try:
-        pattern_count = count_pattern_in_log_tail(l.logfile, l.tail_log_num, pattern_string)
+        pattern_count = count_pattern_in_log_tail(l.logfile, l.tail_log_num, l.check_pattern)
         if pattern_count >= l.critical_count:
             print("ERROR: %d full gc has happened in last %d lines of %s|full_count=%d"  \
                   % (pattern_count, l.tail_log_num, l.logfile, pattern_count))
