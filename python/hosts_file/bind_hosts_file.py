@@ -1,7 +1,7 @@
 #!/usr/bin/python
 ## File : bind_hosts_file.py
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-07-26 17:57:32>
+## Updated: Time-stamp: <2017-07-26 19:00:38>
 ## Description :
 ##    Configure /etc/hosts for a list of nodes.
 ##    1. Given a list of ip.
@@ -13,6 +13,7 @@
 ## Requirements:
 ##     1. pip install paramiko
 ##     2. Python version: Python2, instead of Python3
+##     3. In each node: wget -O /usr/sbin/update_hosts_file.py https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v6/python/hosts_file/update_hosts_file.py
 ##-------------------------------------------------------------------
 import os, sys
 import paramiko
@@ -58,10 +59,31 @@ def get_hostname_by_ssh(server_ip, username, ssh_port, ssh_key_file, key_passphr
 
 def get_hostname_ip_dict(server_list, ssh_username, ssh_port, ssh_key_file, key_passphrase):
     binding_dict = {}
+    # TODO: speed up this process by multi-threading
     for server_ip in server_list:
         (status, hostname) = get_hostname_by_ssh(server_ip, ssh_username, ssh_port, ssh_key_file, key_passphrase)
         binding_dict[server_ip] = hostname
     return binding_dict
+
+def bind_hosts_file(server_list, hostname_ip_dict, ssh_username, ssh_port, ssh_key_file, key_passphrase):
+    ip_hostname_list = []
+    for hostname in hostname_ip_dict:
+        ip_hostname_list.append("%s %s" % (hosntame, hostname_ip_dict[hostname]))
+
+    # TODO: speed up this process by multi-threading
+    ssh_command = "cat > /tmp/hosts << EOF
+%s
+EOF && \
+python update_hosts_file.py --extra_hosts_file /tmp/hosts" % ("\n".join(ip_hostname_list))
+    for server_ip in server_list:
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        key = paramiko.RSAKey.from_private_key_file(ssh_key_file, password=key_passphrase)
+        ssh.connect(server_ip, username=username, port=ssh_port, pkey=key)
+        stdin, stdout, stderr = ssh.exec_command(ssh_command)
+        output = "\n".join(stdout.readlines())
+        output = output.rstrip("\n")
+        # TODO: verify status
 
 ###############################################################
 
@@ -83,5 +105,6 @@ if __name__ == '__main__':
     # TODO: improve error handling
     server_list = get_list_from_file(l.ip_list_file)
     binding_dict = get_hostname_ip_dict(server_list, l.ssh_username, l.ssh_port, l.ssh_key_file, l.key_passphrase)
-    print(binding_dict)
+    bind_hosts_file(server_list, binding_dict, l.ssh_username, l.ssh_port, l.ssh_key_file, l.key_passphrase)
+    # TODO: check status
 ## File : bind_hosts_file.py ends

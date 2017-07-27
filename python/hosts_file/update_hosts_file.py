@@ -7,11 +7,11 @@
 ## File : update_hosts_file.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-07-26 18:02:38>
+## Updated: Time-stamp: <2017-07-26 18:52:36>
 ## Description :
 ##    Load an extra hosts binding into /etc/hosts
 ## Sample:
-##        python ./examine_hosts_file.py --extra_hosts_file /tmp/hosts
+##        python ./update_hosts_file.py --extra_hosts_file /tmp/hosts
 ##
 ## Read More: https://www.dennyzhang.com/hostsfile_issues
 ##-------------------------------------------------------------------
