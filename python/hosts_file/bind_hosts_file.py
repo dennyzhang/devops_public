@@ -1,7 +1,7 @@
 #!/usr/bin/python
 ## File : bind_hosts_file.py
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-07-26 19:00:38>
+## Updated: Time-stamp: <2017-07-27 09:35:33>
 ## Description :
 ##    Configure /etc/hosts for a list of nodes.
 ##    1. Given a list of ip.
@@ -68,18 +68,19 @@ def get_hostname_ip_dict(server_list, ssh_username, ssh_port, ssh_key_file, key_
 def bind_hosts_file(server_list, hostname_ip_dict, ssh_username, ssh_port, ssh_key_file, key_passphrase):
     ip_hostname_list = []
     for hostname in hostname_ip_dict:
-        ip_hostname_list.append("%s %s" % (hosntame, hostname_ip_dict[hostname]))
+        ip_hostname_list.append("%s %s" % (hostname, hostname_ip_dict[hostname]))
 
     # TODO: speed up this process by multi-threading
-    ssh_command = "cat > /tmp/hosts << EOF
-%s
-EOF && \
-python update_hosts_file.py --extra_hosts_file /tmp/hosts" % ("\n".join(ip_hostname_list))
+    ssh_command = ""
+#     ssh_command = "cat > /tmp/hosts << EOF
+# %s
+# EOF && \
+# python update_hosts_file.py --extra_hosts_file /tmp/hosts" % ("\n".join(ip_hostname_list))
     for server_ip in server_list:
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         key = paramiko.RSAKey.from_private_key_file(ssh_key_file, password=key_passphrase)
-        ssh.connect(server_ip, username=username, port=ssh_port, pkey=key)
+        ssh.connect(server_ip, username=ssh_username, port=ssh_port, pkey=key)
         stdin, stdout, stderr = ssh.exec_command(ssh_command)
         output = "\n".join(stdout.readlines())
         output = output.rstrip("\n")
