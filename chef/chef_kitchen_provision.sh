@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-11-30>
-## Updated: Time-stamp: <2017-07-31 11:26:27>
+## Updated: Time-stamp: <2017-07-31 11:42:09>
 ##-------------------------------------------------------------------
 # pre-cache Chef Omnibus installation
 mkdir -p /tmp/install.sh.14
@@ -34,6 +34,7 @@ sudo bash ./inject_ssh_key.sh $user_home_list $ssh_email $ssh_key
 echo "enable chef"
 if ! which chef-solo; then
     export version="12.17.44"
+    apt-get install -y software-properties-common python-software-properties
     curl -L https://www.opscode.com/chef/install.sh | bash
 fi
 

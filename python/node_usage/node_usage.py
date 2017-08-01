@@ -13,7 +13,7 @@
 ##
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-07-18 10:19:10>
+## Updated: Time-stamp: <2017-08-01 17:42:56>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
@@ -128,7 +128,12 @@ def get_cpu_usage(output_dict):
     output_dict["cpu_load"] = content[0].rstrip("\n")
 
 def get_service_status(output_dict, service_command):
-    command_output = subprocess.check_output(service_command.split(" "))
+    try:
+        command_output = \
+                         subprocess.check_output(service_command.split(" "), \
+                                                 shell = True, stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError as grepexc:
+        command_output = "Error. code: %d, errmsg: %s" % (grepexc.returncode, grepexc.output)
     output_dict["service_status"] = "%s:\n%s" % (service_command, command_output.decode("utf-8"))
 
 def tail_log_file(output_dict, log_file, tail_log_num):
