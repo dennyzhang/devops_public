@@ -1,14 +1,14 @@
 #!/usr/bin/python
-## File : bind_hosts_file.py
+## File : generate_extra_hosts_file.py
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-08-02 11:08:02>
+## Updated: Time-stamp: <2017-08-02 11:29:09>
 ## Description :
-##    Configure /etc/hosts for a list of nodes.
+##    Generate ip-host binding list for a list of nodes, when internal DNS is missing.
 ##    1. Given a list of ip.
 ##    2. Get the ip-hostname list for each node by ssh
 ##    3. Update /etc/hosts for each node, thus every node to talk with others by hostname
 ## Sample:
-##    python ./bind_hosts_file.py --ip_list_file /tmp/bind_hosts --ssh_username root
+##    python ./generate_extra_hosts_file.py --ip_list_file /tmp/bind_hosts --ssh_username root
 ##                \ --ssh_port 22 --ssh_key_file ~/.ssh/id_rsa
 ## Requirements:
 ##     1. pip install paramiko
@@ -97,8 +97,10 @@ def bind_hosts_file(server_list, hostname_ip_dict, ssh_username, ssh_port, ssh_k
 if __name__ == '__main__':
     # get parameters from users
     parser = argparse.ArgumentParser()
-    parser.add_argument('--ip_list_file', required=True, default="", \
+    parser.add_argument('--ip_list_file', required=True, default="/tmp/bind_hosts", \
                         help="File for a list of ip address", type=str)
+    parser.add_argument('--target_hosts_file', required=False, default="/tmp/hosts", \
+                        help="Target host file", type=str)
     parser.add_argument('--ssh_username', required=False, default="root", \
                         help="Which OS user to ssh", type=str)
     parser.add_argument('--ssh_port', required=False, default="22", \
@@ -114,4 +116,4 @@ if __name__ == '__main__':
     binding_dict = get_hostname_ip_dict(server_list, l.ssh_username, l.ssh_port, l.ssh_key_file, l.key_passphrase)
     bind_hosts_file(server_list, binding_dict, l.ssh_username, l.ssh_port, l.ssh_key_file, l.key_passphrase)
     # TODO: check status
-## File : bind_hosts_file.py ends
+## File : generate_extra_hosts_file.py ends
