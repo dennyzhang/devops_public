@@ -1,7 +1,7 @@
 #!/usr/bin/python
 ## File : bind_hosts_file.py
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-07-27 09:35:33>
+## Updated: Time-stamp: <2017-08-02 10:41:51>
 ## Description :
 ##    Configure /etc/hosts for a list of nodes.
 ##    1. Given a list of ip.
@@ -53,6 +53,7 @@ def get_hostname_by_ssh(server_ip, username, ssh_port, ssh_key_file, key_passphr
         stdin, stdout, stderr = ssh.exec_command(ssh_command)
         output = "\n".join(stdout.readlines())
         output = output.rstrip("\n")
+        ssh.close()
     except:
         return ("ERROR", "Unexpected on server: %s error: %s" % (server_ip, sys.exc_info()[0]))
     return ("OK", output)
@@ -67,15 +68,19 @@ def get_hostname_ip_dict(server_list, ssh_username, ssh_port, ssh_key_file, key_
 
 def bind_hosts_file(server_list, hostname_ip_dict, ssh_username, ssh_port, ssh_key_file, key_passphrase):
     ip_hostname_list = []
-    for hostname in hostname_ip_dict:
-        ip_hostname_list.append("%s %s" % (hostname, hostname_ip_dict[hostname]))
+    for ip in hostname_ip_dict:
+        ip_hostname_list.append("%s %s" % (ip, hostname_ip_dict[ip]))
+    print("Host files binding:\n%s" % "\n".join(ip_hostname_list))
 
+    tmp_host_file = "/tmp/hosts"
     # TODO: speed up this process by multi-threading
     ssh_command = ""
 #     ssh_command = "cat > /tmp/hosts << EOF
 # %s
 # EOF && \
 # python update_hosts_file.py --extra_hosts_file /tmp/hosts" % ("\n".join(ip_hostname_list))
+
+    # TODO: if update_hosts_file.py not found, raise error
     for server_ip in server_list:
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -85,6 +90,7 @@ def bind_hosts_file(server_list, hostname_ip_dict, ssh_username, ssh_port, ssh_k
         output = "\n".join(stdout.readlines())
         output = output.rstrip("\n")
         # TODO: verify status
+        ssh.close()
 
 ###############################################################
 
