@@ -1,14 +1,14 @@
 #!/usr/bin/python
 ## File : bind_hosts_file.py
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-08-02 10:41:51>
+## Updated: Time-stamp: <2017-08-02 11:08:02>
 ## Description :
 ##    Configure /etc/hosts for a list of nodes.
 ##    1. Given a list of ip.
 ##    2. Get the ip-hostname list for each node by ssh
 ##    3. Update /etc/hosts for each node, thus every node to talk with others by hostname
 ## Sample:
-##    python ./bind_hosts_file.py --ip_list_file /tmp/hosts --ssh_username root
+##    python ./bind_hosts_file.py --ip_list_file /tmp/bind_hosts --ssh_username root
 ##                \ --ssh_port 22 --ssh_key_file ~/.ssh/id_rsa
 ## Requirements:
 ##     1. pip install paramiko
