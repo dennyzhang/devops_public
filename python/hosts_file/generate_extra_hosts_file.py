@@ -1,7 +1,7 @@
 #!/usr/bin/python
 ## File : generate_extra_hosts_file.py
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-08-02 11:29:09>
+## Updated: Time-stamp: <2017-08-02 11:38:56>
 ## Description :
 ##    Generate ip-host binding list for a list of nodes, when internal DNS is missing.
 ##    1. Given a list of ip.
@@ -42,7 +42,8 @@ def get_list_from_file(fname):
             l.append(row)
     return l
 
-def get_hostname_by_ssh(server_ip, username, ssh_port, ssh_key_file, key_passphrase):
+def get_hostname_by_ssh(server_ip, ssh_connect_args):
+    [ssh_username, ssh_port, ssh_key_file, key_passphrase] = ssh_connect_args
     ssh_command = "hostname"
     output = ""
     try:
@@ -58,46 +59,20 @@ def get_hostname_by_ssh(server_ip, username, ssh_port, ssh_key_file, key_passphr
         return ("ERROR", "Unexpected on server: %s error: %s" % (server_ip, sys.exc_info()[0]))
     return ("OK", output)
 
-def get_hostname_ip_dict(server_list, ssh_username, ssh_port, ssh_key_file, key_passphrase):
+def get_hostname_ip_dict(server_list, ssh_connect_args):
     binding_dict = {}
     # TODO: speed up this process by multi-threading
     for server_ip in server_list:
-        (status, hostname) = get_hostname_by_ssh(server_ip, ssh_username, ssh_port, ssh_key_file, key_passphrase)
+        (status, hostname) = get_hostname_by_ssh(server_ip, ssh_connect_args)
         binding_dict[server_ip] = hostname
     return binding_dict
-
-def bind_hosts_file(server_list, hostname_ip_dict, ssh_username, ssh_port, ssh_key_file, key_passphrase):
-    ip_hostname_list = []
-    for ip in hostname_ip_dict:
-        ip_hostname_list.append("%s %s" % (ip, hostname_ip_dict[ip]))
-    print("Host files binding:\n%s" % "\n".join(ip_hostname_list))
-
-    tmp_host_file = "/tmp/hosts"
-    # TODO: speed up this process by multi-threading
-    ssh_command = ""
-#     ssh_command = "cat > /tmp/hosts << EOF
-# %s
-# EOF && \
-# python update_hosts_file.py --extra_hosts_file /tmp/hosts" % ("\n".join(ip_hostname_list))
-
-    # TODO: if update_hosts_file.py not found, raise error
-    for server_ip in server_list:
-        ssh = paramiko.SSHClient()
-        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        key = paramiko.RSAKey.from_private_key_file(ssh_key_file, password=key_passphrase)
-        ssh.connect(server_ip, username=ssh_username, port=ssh_port, pkey=key)
-        stdin, stdout, stderr = ssh.exec_command(ssh_command)
-        output = "\n".join(stdout.readlines())
-        output = output.rstrip("\n")
-        # TODO: verify status
-        ssh.close()
 
 ###############################################################
 
 if __name__ == '__main__':
     # get parameters from users
     parser = argparse.ArgumentParser()
-    parser.add_argument('--ip_list_file', required=True, default="/tmp/bind_hosts", \
+    parser.add_argument('--ip_list_file', required=False, default="/tmp/bind_hosts", \
                         help="File for a list of ip address", type=str)
     parser.add_argument('--target_hosts_file', required=False, default="/tmp/hosts", \
                         help="Target host file", type=str)
@@ -111,9 +86,15 @@ if __name__ == '__main__':
                         help="Which OS user to ssh", type=str)
 
     l = parser.parse_args()
-    # TODO: improve error handling
+    target_hosts_file = l.target_hosts_file
     server_list = get_list_from_file(l.ip_list_file)
-    binding_dict = get_hostname_ip_dict(server_list, l.ssh_username, l.ssh_port, l.ssh_key_file, l.key_passphrase)
-    bind_hosts_file(server_list, binding_dict, l.ssh_username, l.ssh_port, l.ssh_key_file, l.key_passphrase)
-    # TODO: check status
+    ssh_connect_args = [l.ssh_username, l.ssh_port, l.ssh_key_file, l.key_passphrase]
+    binding_dict = get_hostname_ip_dict(server_list, ssh_connect_args)
+
+    print("Generate extra hosts file to %s" % (target_hosts_file))
+    f = open(target_hosts_file, 'w')
+    ip_hostname_list = []
+    for ip in binding_dict:
+        f.write("%s %s" % (ip, binding_dict[ip]))
+    f.close()
 ## File : generate_extra_hosts_file.py ends
