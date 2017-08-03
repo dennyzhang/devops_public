@@ -1,7 +1,7 @@
 #!/usr/bin/python
 ## File : ufw_allow_ip.py
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-08-03 11:34:33>
+## Updated: Time-stamp: <2017-08-03 11:45:25>
 ## Description :
 ##    Generate ip-host binding list for a list of nodes, when internal DNS is missing.
 ##    1. For existing nodes, allow traffic from new nodes
@@ -39,9 +39,15 @@ def get_list_from_file(fname):
             l.append(row)
     return l
 
-def get_hostname_by_ssh(server_ip, ssh_connect_args):
+def ufw_allow_ip_list(server_ip, ip_list, ssh_connect_args):
     [ssh_username, ssh_port, ssh_key_file, key_passphrase] = ssh_connect_args
-    ssh_command = "hostname"
+    ssh_command = ""
+    for ip in ip_list:
+        ssh_command = "%s && ufw allow from %s" % (ssh_command, ip)
+    if ssh_command.startswith(" && "):
+        ssh_command = ssh_command[len(" && "):]
+
+    print(ssh_command) # TODO
     output = ""
     try:
         ssh = paramiko.SSHClient()
@@ -56,25 +62,15 @@ def get_hostname_by_ssh(server_ip, ssh_connect_args):
         return ("ERROR", "Unexpected on server: %s error: %s\n" % (server_ip, sys.exc_info()[0]))
     return ("OK", output)
 
-def get_hostname_ip_dict(server_list, ssh_connect_args):
-    binding_dict = {}
-    # TODO: speed up this process by multi-threading
-    for server_ip in server_list:
-        (status, output) = get_hostname_by_ssh(server_ip, ssh_connect_args)
-        if status != "OK":
-            raise Exception("Fail to get hostname for %s: %s" % (server_ip, output))
-        binding_dict[server_ip] = output
-    return binding_dict
-
 ###############################################################
 
 if __name__ == '__main__':
     # get parameters from users
     parser = argparse.ArgumentParser()
-    parser.add_argument('--ip_list_file', required=False, default="/tmp/bind_hosts", \
-                        help="File for a list of ip address", type=str)
-    parser.add_argument('--target_hosts_file', required=False, default="/tmp/hosts", \
-                        help="Target host file", type=str)
+    parser.add_argument('--old_ip_list_file', required=True, \
+                        help="IP list of current cluster", type=str)
+    parser.add_argument('--new_ip_list_file', required=True, \
+                        help="IP list of new nodes", type=str)
     parser.add_argument('--ssh_username', required=False, default="root", \
                         help="Which OS user to ssh", type=str)
     parser.add_argument('--ssh_port', required=False, default="22", \
@@ -85,15 +81,12 @@ if __name__ == '__main__':
                         help="Which OS user to ssh", type=str)
 
     l = parser.parse_args()
-    target_hosts_file = l.target_hosts_file
-    server_list = get_list_from_file(l.ip_list_file)
     ssh_connect_args = [l.ssh_username, l.ssh_port, l.ssh_key_file, l.key_passphrase]
-    binding_dict = get_hostname_ip_dict(server_list, ssh_connect_args)
 
-    print("Generate extra hosts file to %s" % (target_hosts_file))
-    f = open(target_hosts_file, 'w')
-    ip_hostname_list = []
-    for ip in binding_dict:
-        f.write("%s %s\n" % (ip, binding_dict[ip]))
-    f.close()
+    old_ip_list = get_list_from_file(l.old_ip_list_file)
+    new_ip_list = get_list_from_file(l.new_ip_list_file)
+
+    # TODO: speed up this process
+    for old_ip in old_ip_list:
+        ufw_allow_ip_list(old_ip, new_ip_list, ssh_connect_args)
 ## File : ufw_allow_ip.py ends
