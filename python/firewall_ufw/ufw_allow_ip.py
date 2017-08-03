@@ -1,7 +1,7 @@
 #!/usr/bin/python
 ## File : ufw_allow_ip.py
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-08-03 11:45:25>
+## Updated: Time-stamp: <2017-08-03 11:48:06>
 ## Description :
 ##    Generate ip-host binding list for a list of nodes, when internal DNS is missing.
 ##    1. For existing nodes, allow traffic from new nodes
@@ -42,25 +42,27 @@ def get_list_from_file(fname):
 def ufw_allow_ip_list(server_ip, ip_list, ssh_connect_args):
     [ssh_username, ssh_port, ssh_key_file, key_passphrase] = ssh_connect_args
     ssh_command = ""
+    # TODO: improve this command, by using a library
     for ip in ip_list:
         ssh_command = "%s && ufw allow from %s" % (ssh_command, ip)
     if ssh_command.startswith(" && "):
         ssh_command = ssh_command[len(" && "):]
 
+    print("Update ufw in %s" % (server_ip))
     print(ssh_command) # TODO
-    output = ""
-    try:
-        ssh = paramiko.SSHClient()
-        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        key = paramiko.RSAKey.from_private_key_file(ssh_key_file, password=key_passphrase)
-        ssh.connect(server_ip, username=ssh_username, port=ssh_port, pkey=key)
-        stdin, stdout, stderr = ssh.exec_command(ssh_command)
-        output = "\n".join(stdout.readlines())
-        output = output.rstrip("\n")
-        ssh.close()
-    except:
-        return ("ERROR", "Unexpected on server: %s error: %s\n" % (server_ip, sys.exc_info()[0]))
-    return ("OK", output)
+    # output = ""
+    # try:
+    #     ssh = paramiko.SSHClient()
+    #     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    #     key = paramiko.RSAKey.from_private_key_file(ssh_key_file, password=key_passphrase)
+    #     ssh.connect(server_ip, username=ssh_username, port=ssh_port, pkey=key)
+    #     stdin, stdout, stderr = ssh.exec_command(ssh_command)
+    #     output = "\n".join(stdout.readlines())
+    #     output = output.rstrip("\n")
+    #     ssh.close()
+    # except:
+    #     return ("ERROR", "Unexpected on server: %s error: %s\n" % (server_ip, sys.exc_info()[0]))
+    # return ("OK", output)
 
 ###############################################################
 
@@ -89,4 +91,7 @@ if __name__ == '__main__':
     # TODO: speed up this process
     for old_ip in old_ip_list:
         ufw_allow_ip_list(old_ip, new_ip_list, ssh_connect_args)
+
+    for new_ip in new_ip_list:
+        ufw_allow_ip_list(new_ip, new_ip_list + old_ip_list, ssh_connect_args)
 ## File : ufw_allow_ip.py ends
