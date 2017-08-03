@@ -1,7 +1,7 @@
 #!/usr/bin/python
 ## File : ufw_allow_ip.py
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-08-03 12:11:02>
+## Updated: Time-stamp: <2017-08-03 12:12:51>
 ## Description :
 ##    Generate ip-host binding list for a list of nodes, when internal DNS is missing.
 ##    1. For existing nodes, allow traffic from new nodes
@@ -42,7 +42,8 @@ def get_list_from_file(fname):
 def ufw_allow_ip_list(server_ip, ip_list, ssh_connect_args):
     if len(ip_list) == 0:
         print("Skip run ufw update in %s, since ip_list is empty" % (server_ip))
-        continue
+        return("OK", "")
+
     [ssh_username, ssh_port, ssh_key_file, key_passphrase] = ssh_connect_args
     ssh_command = ""
     # TODO: improve this command, by using a library
