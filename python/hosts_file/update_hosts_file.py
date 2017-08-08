@@ -7,7 +7,7 @@
 ## File : update_hosts_file.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-08-02 11:03:13>
+## Updated: Time-stamp: <2017-08-08 15:53:54>
 ## Description :
 ##    Load an extra hosts binding into /etc/hosts
 ## Sample:
@@ -67,7 +67,11 @@ if __name__ == '__main__':
     skip_current_hostname = l.skip_current_hostname
 
     current_hosts_dict = load_hostsfile_to_dict("/etc/hosts")
-    extra_hosts_dict = load_hostsfile_to_dict(extra_hosts_file)
+    if extra_hosts_file != "":
+        extra_hosts_dict = load_hostsfile_to_dict(extra_hosts_file)
+    else:
+        extra_hosts_dict = {}
+
     has_changed = False
     has_backup = False
 
