@@ -11,7 +11,7 @@
 #   bash -e /root/devops_provision_os.sh
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2017-07-18 10:18:40>
+## Updated: Time-stamp: <2017-08-11 13:25:16>
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
@@ -61,6 +61,7 @@ change_vm_swappiness
 
 log "enable chef deployment"
 install_package_list "wget,curl,git,tmux,zip"
+# TODO: error handling
 install_chef $chef_version
 
 download_facility "/root/git_update.sh" "${DOWNLOAD_PREFIX}/bash/git_update.sh"

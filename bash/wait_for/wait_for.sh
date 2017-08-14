@@ -13,7 +13,7 @@
 ##         wait_for "nc -z -v -w 5 172.17.0.3 8443"
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-07-28 14:16:46>
+## Updated: Time-stamp: <2017-08-14 14:59:41>
 ##-------------------------------------------------------------------
 . /etc/profile
 
@@ -30,14 +30,14 @@ function log() {
 function wait_for() {
     local check_command=${1?}
     local timeout_seconds=${2?}
-
+    local wait_interval=${3?}
     log "Wait for: $check_command"
     for((i=0; i<timeout_seconds; i++)); do
         if eval "$check_command"; then
             log "Action pass"
             exit 0
         fi
-        sleep 1
+        sleep "$wait_interval"
     done
 
     log "Error: wait for more than $timeout_seconds seconds"
@@ -47,6 +47,7 @@ function wait_for() {
 ################################################################################
 check_command=${1:-"true"}
 timeout_seconds=${2:-30}
+wait_interval=${3:-1}
 
-wait_for "$check_command" "$timeout_seconds"
+wait_for "$check_command" "$timeout_seconds" "$wait_interval"
 ## File: wait_for.sh ends
