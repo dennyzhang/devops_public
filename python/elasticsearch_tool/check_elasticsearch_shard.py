@@ -11,7 +11,7 @@
 ##    Make sure no same shard(primary, replica) are in the same node, to avoid SPOF
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-08-15 16:40:32>
+## Updated: Time-stamp: <2017-08-15 16:41:34>
 ##-------------------------------------------------------------------
 import argparse
 import requests
@@ -142,7 +142,6 @@ if __name__ == '__main__':
         print("ERROR: Below indices don't have enough shards:\n%s" % \
             (",".join(failed_index_list)))
         sys.exit(NAGIOS_EXIT_ERROR)
-    else:
 
     failed_index_list = confirm_es_shard_size(es_host, es_port, es_index_list, max_shard_size)
     if len(failed_index_list) != 0:
