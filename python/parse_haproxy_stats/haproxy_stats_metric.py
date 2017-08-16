@@ -8,11 +8,11 @@
 ## Author : Denny <denny@dennyzhang.com>
 ## Description : A Python module to parse haproxy stats
 ##
-## More reading: https://www.dennyzhang.com/haproxy_stats/
+## More reading: https://www.dennyzhang.com/haproxy_stats
 ##
 ## --
 ## Created : <2016-10-04>
-## Updated: Time-stamp: <2017-07-21 15:35:06>
+## Updated: Time-stamp: <2017-08-16 12:58:08>
 ##-------------------------------------------------------------------
 import parse_haproxy_stats
 import datetime

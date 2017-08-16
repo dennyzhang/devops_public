@@ -1,7 +1,7 @@
 check_proc_fd
 ==============
 
-- Link: https://www.dennyzhang.com/nagois_monitor_process_fd/
+- Link: https://www.dennyzhang.com/nagois_monitor_process_fd
 - Code: https://github.com/DennyZhang/devops_public/tree/tag_v6/nagios_plugins/check_proc_fd
 
 Nagios plugin to check proc fd: Monitor fd opened by a given process

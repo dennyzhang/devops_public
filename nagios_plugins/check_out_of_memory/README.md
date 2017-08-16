@@ -1,7 +1,7 @@
 check_proc_fd
 ==============
 
-- Link: https://www.dennyzhang.com/monitor_oom/
+- Link: https://www.dennyzhang.com/monitor_oom
 - Code: https://github.com/DennyZhang/devops_public/tree/tag_v6/nagios_plugins/check_out_of_memory
 
 Nagios plugin to check whether OOM issues have happend

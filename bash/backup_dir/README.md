@@ -1,5 +1,5 @@
 # backup_dir
-Check more: https://www.dennyzhang.com/howto_backup_directory/
+Check more: https://www.dennyzhang.com/howto_backup_directory
 
 By default, backup_dir.sh will backup file and directories:
 - Backup file list specified by backup_dir.rc

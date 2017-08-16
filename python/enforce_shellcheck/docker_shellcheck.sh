@@ -8,11 +8,11 @@
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
 ##
-## More reading: https://www.dennyzhang.com/shellcheck/
+## More reading: https://www.dennyzhang.com/shellcheck
 ##
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-07-21 15:35:23>
+## Updated: Time-stamp: <2017-08-16 12:58:09>
 ##-------------------------------------------------------------------
 code_dir=${1?""}
 ignore_file_list=${2-""}

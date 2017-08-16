@@ -1,1 +1,1 @@
-Read more: https://www.dennyzhang.com/haproxy_stats/
+Read more: https://www.dennyzhang.com/haproxy_stats

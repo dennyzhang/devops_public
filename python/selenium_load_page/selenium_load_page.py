@@ -7,7 +7,7 @@
 ##    Test page loading with selenium: slow load, severe 
 ##              errors when launching network requests, and save screenshots as images.
 ##
-## More reading: https://www.dennyzhang.com/selenium_docker/
+## More reading: https://www.dennyzhang.com/selenium_docker
 ##
 ## Sample:
 ##   - Test page load: basic test

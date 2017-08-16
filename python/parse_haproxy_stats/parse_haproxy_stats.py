@@ -8,11 +8,11 @@
 ## Author : Denny <denny@dennyzhang.com>
 ## Description : A Python module to parse haproxy stats
 ##
-## More reading: https://www.dennyzhang.com/haproxy_stats/
+## More reading: https://www.dennyzhang.com/haproxy_stats
 ##
 ## --
 ## Created : <2016-10-04>
-## Updated: Time-stamp: <2017-07-21 15:35:05>
+## Updated: Time-stamp: <2017-08-16 12:58:08>
 ##-------------------------------------------------------------------
 # Name haproxy status output field by field
 HEADER_FIELD_NAMES = 'pxname,svname,qcur,qmax,scur,smax,slim,stot,bin,bout,dreq,dresp,ereq,econ,eresp,wretr,wredis,status,weight,act,bck,chkfail,chkdown,lastchg,downtime,qlimit,pid,iid,sid,throttle,lbtot,tracked,type,rate,rate_lim,rate_max,check_status,check_code,check_duration,hrsp_1xx,hrsp_2xx,hrsp_3xx,hrsp_4xx,hrsp_5xx,hrsp_other,hanafail,req_rate,req_rate_max,req_tot,cli_abrt,srv_abrt,comp_in,comp_out,comp_byp,comp_rsp,lastsess,last_chk,last_agt,qtime,ctime,rtime,ttime,'

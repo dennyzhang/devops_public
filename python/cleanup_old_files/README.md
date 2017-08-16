@@ -1,1 +1,1 @@
-Read more: https://www.dennyzhang.com/low_disk/
+Read more: https://www.dennyzhang.com/low_disk
