@@ -7,7 +7,7 @@
 ## File : update_hosts_file.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-08-16 12:58:09>
+## Updated: Time-stamp: <2017-08-17 10:43:55>
 ## Description :
 ##    Load an extra hosts binding into /etc/hosts
 ## Sample:
@@ -99,5 +99,5 @@ if __name__ == '__main__':
     if has_changed is True:
         logging.info("OK: /etc/hosts is good after some updates.")
     else:
-        logging.info("OK: /etc/hosts is gook with no changes.")
+        logging.info("OK: /etc/hosts is good with no changes.")
 ## File : update_hosts_file.py ends
