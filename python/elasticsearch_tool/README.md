@@ -1,1 +1,0 @@
-Read more: https://www.dennyzhang.com/es_shard
