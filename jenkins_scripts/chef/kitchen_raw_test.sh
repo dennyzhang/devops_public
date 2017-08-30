@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2017-06-28 18:50:13>
+## Updated: Time-stamp: <2017-08-30 14:04:23>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -103,6 +103,7 @@ if [ -n "$REMOVE_BERKSFILE_LOCK" ] && $REMOVE_BERKSFILE_LOCK; then
 fi
 
 kitchen_dir=$(pwd)
+exec_kitchen_cmd "${kitchen_dir}" list
 if [ -z "$SKIP_KITCHEN_DESTROY" ] || ! $SKIP_KITCHEN_DESTROY; then
     exec_kitchen_cmd "${kitchen_dir}" destroy "$show_log"
 else
