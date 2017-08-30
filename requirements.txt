@@ -1,0 +1,3 @@
+Flask==0.11.1
+paramiko==2.1.2
+slackclient==1.0.5
