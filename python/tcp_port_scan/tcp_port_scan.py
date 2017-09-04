@@ -2,12 +2,12 @@
 ##-------------------------------------------------------------------
 ## @copyright 2015 DennyZhang.com
 ## File : tcp_port_scan.py
-## Author : DennyZhang.com <denny@dennyzhang.com>
+## Author : DennyZhang.com <contact@dennyzhang.com>
 ## Description :
 ## More reading: https://www.dennyzhang.com/nmap_port_scan
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2017-08-16 12:58:07>
+## Updated: Time-stamp: <2017-09-04 18:55:30>
 ##-------------------------------------------------------------------
 import argparse
 import subprocess

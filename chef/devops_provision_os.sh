@@ -5,13 +5,13 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : devops_provision_os.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 #   curl -o /root/devops_provision_os.sh https://raw.githubusercontent.com/.../.../chef/devops_provision_os.sh
 #   bash -e /root/devops_provision_os.sh
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2017-08-11 13:25:16>
+## Updated: Time-stamp: <2017-09-04 18:54:42>
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"

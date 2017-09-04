@@ -5,7 +5,7 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : node_usage.py
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description : Show OS and process resource usage: CPU, RAM and disk
 ## Sample:
 ##         python ./node_usage.py
@@ -13,7 +13,7 @@
 ##
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-08-01 17:42:56>
+## Updated: Time-stamp: <2017-09-04 18:55:31>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil

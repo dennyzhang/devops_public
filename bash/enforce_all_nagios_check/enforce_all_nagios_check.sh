@@ -5,13 +5,13 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : enforce_all_nagios_check.sh
-## Author : Denny <denny@dennyzhang.com>, Syrett <syrett_uu@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>, Syrett <syrett_uu@dennyzhang.com>
 ## Description :
 ##     ./enforce_all_nagios_check.sh help
 ##     ./enforce_all_nagios_check.sh -s "check_.*_log|check_memory|check_tomcat_cpu"
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-07-06 20:35:12>
+## Updated: Time-stamp: <2017-09-04 18:54:43>
 ##-------------------------------------------------------------------
 
 function check_one_server(){

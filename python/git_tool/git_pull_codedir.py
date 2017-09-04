@@ -5,7 +5,7 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : git_pull_codedir.py
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ## Sample:
 ##          python git_pull_codedir.py --code_dirs "/data/code_dir/repo1,/data/code_dir/repo2"
@@ -13,7 +13,7 @@
 ##        pip install GitPython
 ## --
 ## Created : <2017-03-24>
-## Updated: Time-stamp: <2017-08-08 16:54:43>
+## Updated: Time-stamp: <2017-09-04 18:55:31>
 ##-------------------------------------------------------------------
 import os, sys
 import sys

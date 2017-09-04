@@ -5,11 +5,11 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : git_update.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-04-15>
-## Updated: Time-stamp: <2016-10-27 16:45:29>
+## Updated: Time-stamp: <2017-09-04 18:54:43>
 ##-------------------------------------------------------------------
 working_dir=${1?}
 git_repo_url=${2?}

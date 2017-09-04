@@ -5,11 +5,11 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : tail_file.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description : collect the files across servers, and transfer to specific destination
 ## --
 ## Created : <2016-04-14>
-## Updated: Time-stamp: <2017-06-28 18:50:11>
+## Updated: Time-stamp: <2017-09-04 18:54:38>
 ##-------------------------------------------------------------------
 
 ################################################################################################

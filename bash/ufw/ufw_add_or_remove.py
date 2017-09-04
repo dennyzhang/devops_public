@@ -6,7 +6,7 @@
 ## https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : ufw_add_or_remove.py
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ## Here we assume firewall should allow all traffic within the Intranet.
 ##      Running a cluster of nodes in certain public cloud,

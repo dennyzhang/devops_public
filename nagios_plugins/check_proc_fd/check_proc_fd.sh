@@ -5,14 +5,14 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File: check_proc_fd.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ## --
 ##
 ## Link: http://https://github.com/DennyZhang/check_proc_fd
 ##
 ## Created : <2014-12-17>
-## Updated: Time-stamp: <2016-06-24 15:52:55>
+## Updated: Time-stamp: <2017-09-04 18:54:36>
 ##-------------------------------------------------------------------
 if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
     [ "$3" = "-c" ] && [ "$4" -gt "0" ]; then
@@ -61,7 +61,7 @@ else
     echo "check_proc_fd.sh -w 1024 -c 2048 --pid 11325"
     echo "check_proc_fd.sh -w 1024 -c 2048 --cmdpattern \"tomcat7.*java.*MaxPermSize\""
     echo ""
-    echo "Copyright (C) 2014 DennyZhang (denny@dennyzhang.com)"
+    echo "Copyright (C) 2014 DennyZhang (contact@dennyzhang.com)"
     exit
 fi
 ## File - check_proc_fd.sh ends

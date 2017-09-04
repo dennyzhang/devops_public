@@ -5,11 +5,11 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : monitor_git_contentchanges.sh
-## Author : DennyZhang.com <denny@dennyzhang.com>
+## Author : DennyZhang.com <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-12-31>
-## Updated: Time-stamp: <2017-07-08 14:58:46>
+## Updated: Time-stamp: <2017-09-04 18:54:38>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:

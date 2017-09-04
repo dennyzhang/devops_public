@@ -5,12 +5,12 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : detect_existing_ssh_agent.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ## Sample: bash git_pull_codedir.sh "/data/code_dir/repo1,/data/code_dir/repo2"
 ## --
 ## Created : <2017-06-04>
-## Updated: Time-stamp: <2017-07-05 19:45:09>
+## Updated: Time-stamp: <2017-09-04 18:54:36>
 ##-------------------------------------------------------------------
 # https://coderwall.com/p/rdi_wq/fix-could-not-open-a-connection-to-your-authentication-agent-when-using-ssh-add
 

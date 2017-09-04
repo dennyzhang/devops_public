@@ -5,9 +5,9 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : cleanup_old_files.py
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-08-16 12:57:21>
+## Updated: Time-stamp: <2017-09-04 18:55:32>
 ## Description :
 ##    Remove old files in a safe and organized way
 ##

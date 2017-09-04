@@ -1,11 +1,11 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
 ## File : compare_machine_report.sh
-## Author : DennyZhang.com <denny@dennyzhang.com>
+## Author : DennyZhang.com <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-06-12>
-## Updated: Time-stamp: <2017-06-30 23:19:25>
+## Updated: Time-stamp: <2017-09-04 18:54:37>
 ##-------------------------------------------------------------------
 
 ################################################################################################

@@ -5,7 +5,7 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : git_create_tag.py
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description : Create monthly git tag for all repos in your projects
 ## Dependency:
 ##        pip install GitPython

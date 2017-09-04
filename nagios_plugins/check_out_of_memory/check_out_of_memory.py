@@ -6,11 +6,11 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : check_out_of_memory.py
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description : Detect whether OOM(Out Of Memory) has happened in the previous several hours
 ## --
 ## Created : <2017-02-28>
-## Updated: Time-stamp: <2017-08-16 12:57:01>
+## Updated: Time-stamp: <2017-09-04 18:55:32>
 ##-------------------------------------------------------------------
 # Check: https://www.dennyzhang.com/monitor_oom
 import argparse

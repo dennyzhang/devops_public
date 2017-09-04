@@ -5,11 +5,11 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : backup_dir.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description : Backup directory and tar it with timestamp
 ## --
 ## Created : <2015-04-21>
-## Updated: Time-stamp: <2016-06-24 15:52:59>
+## Updated: Time-stamp: <2017-09-04 18:54:44>
 ##-------------------------------------------------------------------
 
 ## Trap exit and dump status

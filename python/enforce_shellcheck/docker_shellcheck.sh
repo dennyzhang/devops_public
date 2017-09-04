@@ -5,14 +5,14 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : docker_shellcheck.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ##
 ## More reading: https://www.dennyzhang.com/shellcheck
 ##
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-08-16 12:58:09>
+## Updated: Time-stamp: <2017-09-04 18:54:36>
 ##-------------------------------------------------------------------
 code_dir=${1?""}
 ignore_file_list=${2-""}

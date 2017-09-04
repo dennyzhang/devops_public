@@ -1,11 +1,11 @@
 #!/usr/bin/python
 ##-------------------------------------------------------------------
 ## File : docker_backup_mysql.py
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2017-03-03>
-## Updated: Time-stamp: <2017-06-30 23:17:35>
+## Updated: Time-stamp: <2017-09-04 18:55:32>
 ##-------------------------------------------------------------------
 import os, sys
 import subprocess

@@ -5,11 +5,11 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : docker_pylint.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-07-02 15:56:56>
+## Updated: Time-stamp: <2017-09-04 18:54:36>
 ##-------------------------------------------------------------------
 code_dir=${1?""}
 preinstall_pip_packages=${2-""}

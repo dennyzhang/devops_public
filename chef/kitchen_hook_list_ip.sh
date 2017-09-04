@@ -5,11 +5,11 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : kitchen_hook_list_ip.sh
-## Author : DennyZhang.com <denny@dennyzhang.com>
+## Author : DennyZhang.com <contact@dennyzhang.com>
 ## Description : Note the OS user running the script may be root or kitchen!
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2017-06-29 17:24:46>
+## Updated: Time-stamp: <2017-09-04 18:54:42>
 ##-------------------------------------------------------------------
 set +e
 

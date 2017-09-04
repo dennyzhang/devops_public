@@ -1,11 +1,11 @@
 #!/usr/bin/python
 ##-------------------------------------------------------------------
 ## File : es_backup.py
-## Author : DennyZhang.com <denny@dennyzhang.com>
+## Author : DennyZhang.com <contact@dennyzhang.com>
 ## Description : Elasticsearch Backup By ES Snapshot feature
 ## --
 ## Created : <2016-08-01>
-## Updated: Time-stamp: <2017-07-05 20:35:14>
+## Updated: Time-stamp: <2017-09-04 18:55:32>
 ##-------------------------------------------------------------------
 # TODO: move to common library
 import os

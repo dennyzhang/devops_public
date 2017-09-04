@@ -5,11 +5,11 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : perform_smoke_test.sh
-## Author : DennyZhang.com <denny@dennyzhang.com>
+## Author : DennyZhang.com <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2015-08-16>
-## Updated: Time-stamp: <2017-06-28 18:50:11>
+## Updated: Time-stamp: <2017-09-04 18:54:39>
 ##-------------------------------------------------------------------
 ################################################################################################
 . /etc/profile

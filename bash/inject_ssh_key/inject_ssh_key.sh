@@ -5,11 +5,11 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : inject_ssh_key.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2015-05-13>
-## Updated: Time-stamp: <2016-06-24 15:52:58>
+## Updated: Time-stamp: <2017-09-04 18:54:43>
 ##-------------------------------------------------------------------
 user_home_list=${1?"To who the ssh key shall be injected. Users are separated by comma"}
 ssh_email=${2?"email associated to this ssh key"}

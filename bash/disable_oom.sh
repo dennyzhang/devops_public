@@ -5,12 +5,12 @@
 ## https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : disable_oom.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2017-02-28 17:59:33>
+## Updated: Time-stamp: <2017-09-04 18:54:44>
 ##-------------------------------------------------------------------
 pid_file=${1?}
 

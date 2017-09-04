@@ -5,7 +5,7 @@
 ## https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : list_os_packages.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ## Sample:
 ## list_os_packages.sh basic
@@ -13,7 +13,7 @@
 ## list_os_packages.sh python
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2017-06-28 20:24:01>
+## Updated: Time-stamp: <2017-09-04 18:54:43>
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"

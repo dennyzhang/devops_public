@@ -5,12 +5,12 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : chef_style_check.sh
-## Author : DennyZhang.com <denny@dennyzhang.com>
+## Author : DennyZhang.com <contact@dennyzhang.com>
 ## Description :
 ##      Demo: http://jenkinscn.dennyzhang.com:18088/job/ChefCodeQualityCheck/
 ## --
 ## Created : <2016-04-25>
-## Updated: Time-stamp: <2017-06-28 18:50:12>
+## Updated: Time-stamp: <2017-09-04 18:54:40>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:

@@ -6,11 +6,11 @@
 ##
 ## File : stop_old_containers.sh
 ## Author: doungni
-## Co-Author : Denny <denny@dennyzhang.com>
+## Co-Author : Denny <contact@dennyzhang.com>
 ## Description : Stop old long-run docker containers, to save OS resource
 ## --
 ## Created : <2015-12-03>
-## Updated: Time-stamp: <2017-06-28 18:50:12>
+## Updated: Time-stamp: <2017-09-04 18:54:39>
 ##-------------------------------------------------------------------
 ################################################################################################
 # * By Jenkins config

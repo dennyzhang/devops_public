@@ -5,11 +5,11 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : general_helper.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2017-06-20 22:19:31>
+## Updated: Time-stamp: <2017-09-04 18:54:41>
 ##-------------------------------------------------------------------
 function log() {
     # log message to both stdout and logfile on condition

@@ -1,10 +1,10 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
 ## File : update_ubuntu_system.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## --
 ## Created : <2016-12-13>
-## Updated: Time-stamp: <2017-07-18 10:18:49>
+## Updated: Time-stamp: <2017-09-04 18:54:42>
 ################################################################################################
 . /etc/profile
 # disable ipv6 to bypass Linode apt issue

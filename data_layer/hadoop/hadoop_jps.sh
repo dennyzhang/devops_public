@@ -5,11 +5,11 @@
 ## https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : hadoop_jps.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2016-06-24 15:52:56>
+## Updated: Time-stamp: <2017-09-04 18:54:41>
 ##-------------------------------------------------------------------
 user_list="hdfs yarn zookeeper mapred oozie hive hbase"
 for hadoop_user in $user_list; do

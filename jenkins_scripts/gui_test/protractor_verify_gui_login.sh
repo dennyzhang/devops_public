@@ -5,11 +5,11 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : protractor_verify_gui_login.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description : collect the files across servers, and transfer to specific destination
 ## --
 ## Created : <2016-05-29>
-## Updated: Time-stamp: <2017-06-28 18:50:12>
+## Updated: Time-stamp: <2017-09-04 18:54:39>
 ##-------------------------------------------------------------------
 
 ################################################################################################

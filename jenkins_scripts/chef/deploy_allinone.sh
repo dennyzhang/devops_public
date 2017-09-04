@@ -5,11 +5,11 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : deploy_allinone.sh
-## Author : DennyZhang.com <denny@dennyzhang.com>
+## Author : DennyZhang.com <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2015-08-05>
-## Updated: Time-stamp: <2017-06-28 18:48:22>
+## Updated: Time-stamp: <2017-09-04 18:54:40>
 ################################################################################################
 ## Purpose: General function to deploy all-in-one env by chef
 ##

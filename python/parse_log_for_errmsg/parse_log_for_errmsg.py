@@ -5,11 +5,11 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : parse_log_for_errmsg.py
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2017-03-23>
-## Updated: Time-stamp: <2017-06-30 23:25:10>
+## Updated: Time-stamp: <2017-09-04 18:55:30>
 ##-------------------------------------------------------------------
 import argparse
 import sys

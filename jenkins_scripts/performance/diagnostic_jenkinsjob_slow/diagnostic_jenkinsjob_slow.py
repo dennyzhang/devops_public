@@ -3,11 +3,11 @@
 ##-------------------------------------------------------------------
 ## @copyright 2015 DennyZhang.com
 ## File : diagnostic_jenkinsjob_slow.py
-## Author : DennyZhang.com <denny@dennyzhang.com>
+## Author : DennyZhang.com <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2017-06-30 23:18:52>
+## Updated: Time-stamp: <2017-09-04 18:55:32>
 ##-------------------------------------------------------------------
 import os, sys
 import re

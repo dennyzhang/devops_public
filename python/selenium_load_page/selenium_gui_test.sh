@@ -1,11 +1,11 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
 ## File : selenium_gui_test.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2017-05-18>
-## Updated: Time-stamp: <2017-06-07 21:23:10>
+## Updated: Time-stamp: <2017-09-04 18:54:35>
 ##-------------------------------------------------------------------
 url_test=${1?}
 test_py_script=${2?"/home/seluser/scripts/selenium_load_page.py"}

@@ -5,14 +5,14 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : refresh_containers.py
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description : Restart a list of docker containers.
 ##               If required, related docker images will be updated.
 ## Requirements:
 ##          pip install docker==2.0.0
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-06-30 23:21:22>
+## Updated: Time-stamp: <2017-09-04 18:55:31>
 ##-------------------------------------------------------------------
 import sys
 import docker

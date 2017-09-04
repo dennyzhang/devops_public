@@ -5,11 +5,11 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : string_helper.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-07-19 14:44:01>
+## Updated: Time-stamp: <2017-09-04 18:54:41>
 ##-------------------------------------------------------------------
 function source_string() {
     # Global variables needed to enable the current script

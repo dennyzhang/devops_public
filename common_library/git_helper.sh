@@ -5,11 +5,11 @@
 ## https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : git_helper.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-10-27 16:45:07>
+## Updated: Time-stamp: <2017-09-04 18:54:41>
 ##-------------------------------------------------------------------
 function current_git_sha() {
     set -e

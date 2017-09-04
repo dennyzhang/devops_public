@@ -5,14 +5,14 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : haproxy_stats_metric.py
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description : A Python module to parse haproxy stats
 ##
 ## More reading: https://www.dennyzhang.com/haproxy_stats
 ##
 ## --
 ## Created : <2016-10-04>
-## Updated: Time-stamp: <2017-08-16 12:58:08>
+## Updated: Time-stamp: <2017-09-04 18:55:31>
 ##-------------------------------------------------------------------
 import parse_haproxy_stats
 import datetime

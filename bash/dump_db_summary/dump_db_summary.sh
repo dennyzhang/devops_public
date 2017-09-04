@@ -5,7 +5,7 @@
 ## https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : dump_db_summary.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ## Sample:
 ##          /opt/devops/dump_db_summary/cfg_dir/couchbase.cfg -> dump_couchbase_summary

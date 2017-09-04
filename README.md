@@ -2,7 +2,9 @@ Travis CI Status: [![Build Status](https://travis-ci.org/DennyZhang/devops_publi
 
 This repo host common DevOps scripts, which are public and available for everyone.
 
-Please contact denny@dennyzhang.com, if you have any feedback or suggestions.
+Please contact contact@dennyzhang.com, if you have any feedback or suggestions.
 
 - Github Repo: https://github.com/DennyZhang/devops_public
 - Learn more: https://www.dennyzhang.com/tag/devops
+
+Discuss with Denny in [LinkedIn](https://www.linkedin.com/in/dennyzhang001) or [Blog](https://www.dennyzhang.com).

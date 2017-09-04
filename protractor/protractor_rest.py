@@ -6,11 +6,11 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : protractor_rest.py
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-05-29>
-## Updated: Time-stamp: <2017-06-30 23:20:54>
+## Updated: Time-stamp: <2017-09-04 18:55:32>
 ##-------------------------------------------------------------------
 # pip install flask
 # export FLASK_DEBUG=1

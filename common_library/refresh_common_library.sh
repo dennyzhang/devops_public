@@ -5,12 +5,12 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : refresh_common_library.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description : Use this file to update common library.
 ## By default, this file keeps stable and untouched
 ## --
 ## Created : <2016-04-07>
-## Updated: Time-stamp: <2017-06-20 22:17:32>
+## Updated: Time-stamp: <2017-09-04 18:54:41>
 ##-------------------------------------------------------------------
 function refresh_common_library() {
     local library_file=${1?}

@@ -6,11 +6,11 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : general_helper.rb
-## Author : DennyZhang.com <denny@dennyzhang.com>
+## Author : DennyZhang.com <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-05-10>
-## Updated: Time-stamp: <2017-07-03 10:19:00>
+## Updated: Time-stamp: <2017-09-04 18:55:45>
 ##-------------------------------------------------------------------
 ################################################################################
 require 'socket'

@@ -5,11 +5,11 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : monitor_git_branch_list.sh
-## Author : DennyZhang.com <denny@dennyzhang.com>
+## Author : DennyZhang.com <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2015-08-05>
-## Updated: Time-stamp: <2017-07-09 12:14:44>
+## Updated: Time-stamp: <2017-09-04 18:54:38>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:

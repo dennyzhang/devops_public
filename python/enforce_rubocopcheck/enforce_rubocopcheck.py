@@ -5,14 +5,14 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : enforce_rubocopcheck.py
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ##
 ## More reading: TODO
 ##
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-07-14 10:31:37>
+## Updated: Time-stamp: <2017-09-04 18:55:31>
 ##-------------------------------------------------------------------
 import argparse
 import sys

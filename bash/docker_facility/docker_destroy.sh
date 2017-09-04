@@ -5,11 +5,11 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : docker_destroy.sh
-## Author : DennyZhang.com <denny@dennyzhang.com>
+## Author : DennyZhang.com <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-01-02>
-## Updated: Time-stamp: <2016-06-24 15:52:59>
+## Updated: Time-stamp: <2017-09-04 18:54:44>
 ##-------------------------------------------------------------------
 if ! which docker 1>/dev/null 2>&1; then
     echo "Skip, since docker is not installed"

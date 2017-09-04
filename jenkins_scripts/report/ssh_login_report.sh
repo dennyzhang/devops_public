@@ -5,7 +5,7 @@
 ## https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : ssh_login_report.sh
-## Author : DennyZhang.com <denny@dennyzhang.com>
+## Author : DennyZhang.com <contact@dennyzhang.com>
 ## Description :
 ##        TODO: known issues
 ##              no message to /var/log/secure
@@ -13,7 +13,7 @@
 ##              sometimes no client ip tracked in auth.log
 ## --
 ## Created : <2016-04-03>
-## Updated: Time-stamp: <2017-06-28 18:50:09>
+## Updated: Time-stamp: <2017-09-04 18:54:37>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:

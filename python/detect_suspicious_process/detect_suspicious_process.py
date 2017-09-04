@@ -2,7 +2,7 @@
 ##-------------------------------------------------------------------
 ## @copyright 2015 DennyZhang.com
 ## File : detect_suspicious_process.py
-## Author : DennyZhang.com <denny@dennyzhang.com>
+## Author : DennyZhang.com <contact@dennyzhang.com>
 ## Description : https://www.dennyzhang.com/suspicious_process
 ##        python ./detect_suspicious_process.py
 ##        python ./detect_suspicious_process.py --whitelist_file /tmp/whitelist.txt
@@ -11,7 +11,7 @@
 ##
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2017-08-16 12:58:10>
+## Updated: Time-stamp: <2017-09-04 18:55:31>
 ##-------------------------------------------------------------------
 import argparse
 import subprocess

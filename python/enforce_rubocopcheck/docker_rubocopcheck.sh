@@ -5,14 +5,14 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : docker_rubocopcheck.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ##
 ## More reading: TODO
 ##
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-06-30 17:08:13>
+## Updated: Time-stamp: <2017-09-04 18:54:36>
 ##-------------------------------------------------------------------
 code_dir=${1?""}
 ignore_file_list=${2-""}

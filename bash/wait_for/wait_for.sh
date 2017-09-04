@@ -5,7 +5,7 @@
 ## https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : wait_for.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ## Sample:
 ##         wait_for "service apache2 status" 3
@@ -13,7 +13,7 @@
 ##         wait_for "nc -z -v -w 5 172.17.0.3 8443"
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2017-08-14 14:59:41>
+## Updated: Time-stamp: <2017-09-04 18:54:42>
 ##-------------------------------------------------------------------
 . /etc/profile
 

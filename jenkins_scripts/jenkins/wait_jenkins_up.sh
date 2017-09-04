@@ -5,11 +5,11 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : wait_jenkins_up.sh
-## Author : DennyZhang.com <denny@dennyzhang.com>
+## Author : DennyZhang.com <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2015-06-02>
-## Updated: Time-stamp: <2016-06-24 15:54:20>
+## Updated: Time-stamp: <2017-09-04 18:54:38>
 ##-------------------------------------------------------------------
 jenkins_url=${1:-"http://127.0.0.1:28080/jnlpJars/jenkins-cli.jar/"}
 max_wait_seconds=${2:-600}

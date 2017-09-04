@@ -16,5 +16,5 @@ check_proc_threadcount.sh -w 1024 -c 2048 --pidfile /var/run/tomcat7.pid
 check_proc_threadcount.sh -w 1024 -c 2048 --pid 11325
 check_proc_threadcount.sh -w 1024 -c 2048 --cmdpattern "tomcat7.*java.*MaxPermSize"
 
-Copyright (C) 2017 DennyZhang (denny@dennyzhang.com)
+Copyright (C) 2017 DennyZhang (contact@dennyzhang.com)
 ```

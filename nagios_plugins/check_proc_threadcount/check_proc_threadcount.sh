@@ -1,12 +1,12 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
 ## File: check_proc_threadcount.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ## --
 ##
 ## Created : <2015-02-25>
-## Updated: Time-stamp: <2017-01-12 08:01:32>
+## Updated: Time-stamp: <2017-09-04 18:54:36>
 ##-------------------------------------------------------------------
 if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
     [ "$3" = "-c" ] && [ "$4" -gt "0" ]; then
@@ -53,7 +53,7 @@ else
     echo "check_proc_threadcount.sh -w 1024 -c 2048 --pid 11325"
     echo "check_proc_threadcount.sh -w 1024 -c 2048 --cmdpattern \"tomcat7.*java.*MaxPermSize\""
     echo ""
-    echo "Copyright (C) 2017 DennyZhang (denny@dennyzhang.com)"
+    echo "Copyright (C) 2017 DennyZhang (contact@dennyzhang.com)"
     exit
 fi
 ## File - check_proc_threadcount.sh ends

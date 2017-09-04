@@ -5,11 +5,11 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : run_remote_command.sh
-## Author : DennyZhang.com <denny@dennyzhang.com>
+## Author : DennyZhang.com <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2016-04-13>
-## Updated: Time-stamp: <2017-06-28 18:50:11>
+## Updated: Time-stamp: <2017-09-04 18:54:39>
 ##-------------------------------------------------------------------
 
 ################################################################################################

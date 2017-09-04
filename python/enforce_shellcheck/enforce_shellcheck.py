@@ -5,14 +5,14 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : enforce_shellcheck.py
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ##
 ## More reading: https://www.dennyzhang.com/shellcheck
 ##
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-08-16 12:58:09>
+## Updated: Time-stamp: <2017-09-04 18:55:31>
 ##-------------------------------------------------------------------
 import argparse
 import sys

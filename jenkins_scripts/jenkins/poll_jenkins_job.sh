@@ -5,11 +5,11 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : poll_jenkins_job.sh
-## Author : DennyZhang.com <denny@dennyzhang.com>
+## Author : DennyZhang.com <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2015-06-02>
-## Updated: Time-stamp: <2016-06-24 15:54:21>
+## Updated: Time-stamp: <2017-09-04 18:54:39>
 ##-------------------------------------------------------------------
 jenkins_cli_jar=${1?}
 jenkins_url=${2:-"http://localhost:18080/"}

@@ -5,11 +5,11 @@
 ## https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : update_sshd_security.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2015-05-13>
-## Updated: Time-stamp: <2017-06-09 14:38:00>
+## Updated: Time-stamp: <2017-09-04 18:54:42>
 ##-------------------------------------------------------------------
 ssh_port=${1:-"2702"}
 root_pwd=${2:-""}
