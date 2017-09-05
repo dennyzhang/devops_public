@@ -12,7 +12,7 @@
 ##
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-09-04 18:55:31>
+## Updated: Time-stamp: <2017-09-05 17:46:10>
 ##-------------------------------------------------------------------
 import argparse
 import sys
@@ -52,7 +52,7 @@ def run_check(code_folder, check_pattern):
     returncode = subprocess.call(check_pattern, shell=True)
     if returncode != 0:
         has_error = True
-        print("Error to run %s. Return code: %d" % (check_pattern, returncode))
+        print("Error to run '%s'. Return code: %d" % (check_pattern, returncode))
     return has_error
 ################################################################################
 #
@@ -83,10 +83,10 @@ if __name__ == '__main__':
     print("Run rubocop for *.rb under %s" % (code_dir))
     folder_list = ignore_folder(code_dir, check_ignore_folder)
 
-    has_error = True
+    has_error = False
     for folder in folder_list:
-        if run_check(folder, "rubocop .") is False:
-            has_error = False
+        if run_check(folder, "rubocop .") is True:
+            has_error = True
 
     if has_error is False:
         print("OK: no error detected from rubocop check")
