@@ -2,7 +2,7 @@
 ##-------------------------------------------------------------------
 ## @copyright 2017 DennyZhang.com
 ## Licensed under MIT
-##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##   https://www.dennyzhang.com/wp-content/mit_license.txt
 ##
 ## File : backup_docker_volumes.py
 ## Author : Denny <contact@dennyzhang.com>
@@ -13,7 +13,7 @@
 ##               --volume_dir "/var/lib/docker/volumes" --backup_dir "/data/backup/"
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-09-04 18:55:31>
+## Updated: Time-stamp: <2017-09-07 21:36:07>
 ##-------------------------------------------------------------------
 import os, sys
 import argparse

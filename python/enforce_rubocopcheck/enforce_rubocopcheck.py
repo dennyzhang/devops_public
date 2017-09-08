@@ -2,7 +2,7 @@
 ##-------------------------------------------------------------------
 ## @copyright 2017 DennyZhang.com
 ## Licensed under MIT
-##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##   https://www.dennyzhang.com/wp-content/mit_license.txt
 ##
 ## File : enforce_rubocopcheck.py
 ## Author : Denny <contact@dennyzhang.com>
@@ -12,7 +12,7 @@
 ##
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-09-05 17:46:10>
+## Updated: Time-stamp: <2017-09-07 21:36:06>
 ##-------------------------------------------------------------------
 import argparse
 import sys

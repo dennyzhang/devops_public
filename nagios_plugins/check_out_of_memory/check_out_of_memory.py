@@ -3,14 +3,14 @@
 ##-------------------------------------------------------------------
 ## @copyright 2017 DennyZhang.com
 ## Licensed under MIT 
-##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##   https://www.dennyzhang.com/wp-content/mit_license.txt
 ##
 ## File : check_out_of_memory.py
 ## Author : Denny <contact@dennyzhang.com>
 ## Description : Detect whether OOM(Out Of Memory) has happened in the previous several hours
 ## --
 ## Created : <2017-02-28>
-## Updated: Time-stamp: <2017-09-04 18:55:32>
+## Updated: Time-stamp: <2017-09-07 21:36:07>
 ##-------------------------------------------------------------------
 # Check: https://www.dennyzhang.com/monitor_oom
 import argparse

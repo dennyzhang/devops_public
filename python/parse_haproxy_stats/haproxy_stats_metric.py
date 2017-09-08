@@ -2,7 +2,7 @@
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
 ## Licensed under MIT 
-##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##   https://www.dennyzhang.com/wp-content/mit_license.txt
 ##
 ## File : haproxy_stats_metric.py
 ## Author : Denny <contact@dennyzhang.com>
@@ -12,7 +12,7 @@
 ##
 ## --
 ## Created : <2016-10-04>
-## Updated: Time-stamp: <2017-09-04 18:55:31>
+## Updated: Time-stamp: <2017-09-07 21:36:06>
 ##-------------------------------------------------------------------
 import parse_haproxy_stats
 import datetime

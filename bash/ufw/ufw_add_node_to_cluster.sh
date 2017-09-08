@@ -2,7 +2,7 @@
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
 ## Licensed under MIT
-## https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+## https://www.dennyzhang.com/wp-content/mit_license.txt
 ##
 ## File : ufw_add_node_to_cluster.sh
 ## Author : Denny <contact@dennyzhang.com>
@@ -11,7 +11,7 @@
 ## bash ./ufw_add_node_to_cluster.sh "192.168.1.2,192.168.1.3"
 ## --
 ## Created : <2016-12-26>
-## Updated: Time-stamp: <2017-09-04 18:54:43>
+## Updated: Time-stamp: <2017-09-07 21:35:49>
 ##-------------------------------------------------------------------
 function install_packages() {
     if ! which ufw 1>/dev/null 2>&1; then
