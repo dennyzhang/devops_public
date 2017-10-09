@@ -10,9 +10,11 @@
 ## Sample:
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2017-09-04 18:54:44>
+## Updated: Time-stamp: <2017-10-09 11:55:37>
 ##-------------------------------------------------------------------
 pid_file=${1?}
+
+LOG_FILE="/var/log/disable_oom.log"
 
 function log() {
     local msg=$*
