@@ -13,7 +13,7 @@
 ##        pip install GitPython
 ## --
 ## Created : <2017-03-24>
-## Updated: Time-stamp: <2017-09-07 21:36:06>
+## Updated: Time-stamp: <2017-10-19 18:15:47>
 ##-------------------------------------------------------------------
 import os, sys
 import sys
@@ -46,13 +46,12 @@ if __name__ == '__main__':
     l = parser.parse_args()
     code_dirs = l.code_dirs
 
+    has_changed = False
     separator = ","
     for code_dir in code_dirs.split(separator):
         git_output = git_pull(code_dir)
-        # print(git_output)
-        if git_output == 'Already up-to-date.':
-            has_changed = False
-        else:
+        print("git_output: %s" % (git_output))
+        if git_output != 'Already up-to-date.':
             has_changed = True
             logging.info("Code has changed in %s. Detail: %s" % (code_dir, git_output))
 
