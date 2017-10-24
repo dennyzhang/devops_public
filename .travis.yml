@@ -6,4 +6,5 @@ install:
   - pip install -r requirements.txt
   - pip install nose pylint
 # command to run tests
-script: bash .travis/test.sh
+script:
+  - find . -name "*.py" | xargs pylint -E
