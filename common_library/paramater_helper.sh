@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2017-09-04 18:54:41>
+## Updated: Time-stamp: <2018-02-07 16:23:17>
 ##-------------------------------------------------------------------
 function fail_unless_root() {
     # Make sure only root can run our script
@@ -267,7 +267,7 @@ function verify_comon_jenkins_parameters() {
     fi
 
     if [ -n "$server_list" ]; then
-        check_list_fields "IP:TCP_PORT" "$server_list"
+        check_list_fields "STRING:TCP_PORT" "$server_list"
     fi
 
     if [ -n "$server_list" ] && [ -n "$EXIT_NODE_CONNECT_FAIL" ]; then

@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-12>
-## Updated: Time-stamp: <2017-09-04 18:54:43>
+## Updated: Time-stamp: <2018-01-29 16:08:48>
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
@@ -86,6 +86,17 @@ EOF
 ################################################################################
 function shell_exit() {
     errcode=$?
+    if [ $? -eq 0 ]; then
+        log "Backup operation is done"
+        log "########## Backup operation is done #############################"
+        echo "State: DONE Timestamp: $(current_time)" >> "$STATUS_FILE"
+    else
+        log "ERROR: Backup operation fail"
+        log "########## ERROR: Backup operation fail #########################"
+        echo "State: FAILED Timestamp: $(current_time)" >> "$STATUS_FILE"
+        # TODO: send out email
+        exit 1
+    fi
     exit $errcode
 }
 
