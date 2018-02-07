@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-08-05>
-## Updated: Time-stamp: <2017-09-04 18:54:40>
+## Updated: Time-stamp: <2018-02-07 16:26:41>
 ################################################################################################
 ## Purpose: General function to deploy all-in-one env by chef
 ##
@@ -97,7 +97,7 @@ if [ -n "$CODE_SH" ]; then
 fi
 
 # Input Parameters check
-check_list_fields "IP" "$ssh_server_ip"
+# check_list_fields "IP" "$ssh_server_ip"
 check_list_fields "TCP_PORT" "$ssh_port"
 enforce_ssh_check "$EXIT_NODE_CONNECT_FAIL" "$ssh_server_ip:$ssh_port" "$ssh_key_file"
 
