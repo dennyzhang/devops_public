@@ -5,7 +5,7 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install nose pylint
-  - pip install docker
+  - pip install docker GitPython
 # command to run tests
 script:
-  - find . -name "*.py" | grep -v git_pull_codedir.py | xargs pylint -E
+  - find . -name "*.py" | xargs pylint -E
