@@ -13,7 +13,7 @@
 ##        pip install GitPython
 ## --
 ## Created : <2017-03-24>
-## Updated: Time-stamp: <2017-10-19 18:15:47>
+## Updated: Time-stamp: <2018-07-10 14:16:05>
 ##-------------------------------------------------------------------
 import os, sys
 import sys
