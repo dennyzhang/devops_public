@@ -61,6 +61,6 @@ else
     echo "check_proc_cpu.sh -w 200 -c 400 --cmdpattern \"tomcat7.*java.*Dcom\""
     echo ""
     echo "Copyright (C) 2015 DennyZhang (contact@dennyzhang.com)"
-    exit
+    exit 3
 fi
 ## File - check_proc_cpu.sh ends
