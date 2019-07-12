@@ -65,6 +65,6 @@ else
     echo "check_proc_mem.sh -w 1024 -c 2048 --cmdpattern \"tomcat7.*java.*Dcom\""
     echo ""
     echo "Copyright (C) 2014 DennyZhang (contact@dennyzhang.com)"
-    exit
+    exit 3
 fi
 ## File - check_proc_mem.sh ends
