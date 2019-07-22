@@ -14,41 +14,8 @@
 ## Created : <2015-02-25>
 ## Updated: Time-stamp: <2017-09-04 18:54:36>
 ##-------------------------------------------------------------------
-if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && \
-    [ "$3" = "-c" ] && [ "$4" -gt "0" ]; then
-    pidPattern=${5?"specify how to get pid"}
 
-    if [ "$pidPattern" = "--pidfile" ]; then
-        pidfile=${6?"pidfile to get pid"}
-        pid=$(cat "$pidfile")
-    elif [ "$pidPattern" = "--cmdpattern" ]; then
-        cmdpattern=${6?"command line pattern to find out pid"}
-        pid=$(pgrep -a -f "$cmdpattern" | grep -v check_proc_cpu.sh | head -n 1 | awk -F' ' '{print $1}')
-    elif [ "$pidPattern" = "--pid" ]; then
-        pid=${6?"pid"}
-    else
-        echo "ERROR input for pidpattern"
-        exit 2
-    fi
-
-    if [ -z "$pid" ]; then
-        echo "ERROR: no related process is found"
-        exit 2
-    fi
-
-    cpuUsage=$(ps -p "$pid" -o "%cpu" | tail -n 1 | sed -e 's/^[ \t]*//')
-
-    if [ "$(echo "$cpuUsage>$4" | bc)" = "1" ]; then
-        echo "Critical CPU used by process($pid) is $cpuUsage % is more than $4 %!|CPU=$cpuUsage"
-        exit 2
-    elif [ "$(echo "$cpuUsage>$2" | bc)" = "1" ]; then
-        echo "Warning CPU used by process($pid) is $cpuUsage % is more than $2 %!|CPU=$cpuUsage"
-        exit 1
-    else
-        echo "OK CPU used by process($pid) is $cpuUsage %|CPU=$cpuUsage"
-        exit 0
-    fi
-else
+function print_help {
     echo "check_proc_cpu v1.0"
     echo ""
     echo "Usage:"
@@ -61,6 +28,63 @@ else
     echo "check_proc_cpu.sh -w 200 -c 400 --cmdpattern \"tomcat7.*java.*Dcom\""
     echo ""
     echo "Copyright (C) 2015 DennyZhang (contact@dennyzhang.com)"
+}
+
+while [ "$#" -gt 0 ]
+do
+    opt=$1
+    case $opt in
+        -w)
+            warn_cpu=$2
+            shift 2 # Past argument and value
+        ;;
+        -c)
+            criti_cpu=$2
+            shift 2 # Past argument and value
+        ;;
+        --pidfile)
+            pidfile=$2
+            pid=$(cat "$pidfile")
+            shift 2 # Past argument and value
+        ;;
+        --cmdpattern)
+            cmdpattern=$2
+            pid=$(pgrep -a -f "$cmdpattern" | grep -v `basename $0` | head -n 1 | awk -F' ' '{print $1}')
+            shift 2 # Past argument and value
+        ;;
+        --pid)
+            pid=$2
+            shift 2 # Past argument and value
+        ;;
+        *)
+            print_help
+            exit 3
+        ;;
+    esac
+done
+
+num_re='^[0-9]+$'
+if ! [[ "$warn_cpu" =~ $num_re ]] || ! [[ "$criti_cpu" =~ $num_re ]]
+then
+    echo "ERROR: Warning or Critical level is not a number"
     exit 3
+fi
+
+if [ -z "$pid" ]; then
+    echo "ERROR: no related process is found"
+    exit 2
+fi
+
+cpuUsage=$(ps -p "$pid" -o "%cpu" | tail -n 1 | sed -e 's/^[ \t]*//')
+
+if [ "$(echo "$cpuUsage>$criti_cpu" | bc)" = "1" ]; then
+    echo "Critical CPU used by process($pid) is $cpuUsage % is more than $criti_cpu %!|CPU=$cpuUsage"
+    exit 2
+elif [ "$(echo "$cpuUsage>$warn_cpu" | bc)" = "1" ]; then
+    echo "Warning CPU used by process($pid) is $cpuUsage % is more than $warn_cpu %!|CPU=$cpuUsage"
+    exit 1
+else
+    echo "OK CPU used by process($pid) is $cpuUsage %|CPU=$cpuUsage"
+    exit 0
 fi
 ## File - check_proc_cpu.sh ends
