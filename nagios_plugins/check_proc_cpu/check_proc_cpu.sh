@@ -78,13 +78,13 @@ fi
 cpuUsage=$(ps -p "$pid" -o "%cpu" | tail -n 1 | sed -e 's/^[ \t]*//')
 
 if [ "$(echo "$cpuUsage>$criti_cpu" | bc)" = "1" ]; then
-    echo "Critical CPU used by process($pid) is $cpuUsage % is more than $criti_cpu %!|CPU=$cpuUsage"
+    echo "CRITICAL: CPU usage (${cpuUsage}%) of process $pid is higher than ${criti_cpu}%!|CPU=$cpuUsage"
     exit 2
 elif [ "$(echo "$cpuUsage>$warn_cpu" | bc)" = "1" ]; then
-    echo "Warning CPU used by process($pid) is $cpuUsage % is more than $warn_cpu %!|CPU=$cpuUsage"
+    echo "WARNING: CPU usage (${cpuUsage}%) of process $pid is higher than ${warn_cpu}%!|CPU=$cpuUsage"
     exit 1
 else
-    echo "OK CPU used by process($pid) is $cpuUsage %|CPU=$cpuUsage"
+    echo "OK: CPU usage of process $pid is ${cpuUsage}%|CPU=$cpuUsage"
     exit 0
 fi
 ## File - check_proc_cpu.sh ends
