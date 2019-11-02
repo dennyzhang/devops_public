@@ -1,4 +1,4 @@
-Flask==0.11.1
+Flask==1.0
 paramiko==2.1.2
 slackclient==1.0.5
 elasticsearch==2.3.0
